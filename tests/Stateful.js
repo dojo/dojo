@@ -117,30 +117,24 @@ doh.register("tests.Stateful", [
 		});
 		
 		var attr1 = new StatefulClass1();
-	    var originalFoo = attr1.get("foo");
-	    var originalBar = attr1.get("bar");
-	    var originalBaz = attr1.get("baz");
-		var originalFooz = attr1.get("fooz");
-	    attr1.watch("foo", function(propName, oldValue, newValue) {
-	        t.is("foo", propName);
-	        t.is(originalFoo, oldValue);
-	        t.is(attr1.get("foo"), newValue); // get("foo") will always return "bar"
-	    });
-	    attr1.watch("bar", function(propName, oldValue, newValue) {
-	        t.is("bar", propName);
-	        t.is(originalBar, oldValue);
-	        t.is(attr1.get("bar"), newValue);
-	    });
-	    attr1.watch("baz", function(propName, oldValue, newValue) {
-			t.is("baz", propName);
-			t.is(originalBaz, oldValue);
-			t.is(attr1.get("baz"), newValue);
-	    });
-		attr1.watch("fooz", function(propName, oldValue, newValue) {
-			t.is("fooz", propName);
-			t.is(originalFooz, oldValue);
-			t.is(attr1.get("fooz"), newValue);
-		});
+		var originalValues = {
+			foo: attr1.get("foo"),
+			bar: attr1.get("bar"),
+			baz: attr1.get("baz"),
+			fooz: attr1.get("fooz")
+		};
+
+		function testWatch(propName) {
+			attr1.watch(propName, function(watcherPropName, oldValue, newValue) {
+				t.is(propName, watcherPropName , "watcher should report property name \"" + propName + "\" changed");
+				t.is(originalValues[propName], oldValue, "watcher for \"" + propName + "\" should report oldValue as originalValue");
+				t.is(attr1.get(propName), newValue, "watcher for \"" + propName + "\" should report newValue as currentValue");
+			});
+		}
+		testWatch("foo");
+		testWatch("bar");
+		testWatch("baz");
+		testWatch("fooz");
 
 		attr1.set("foo", "nothing");
 		attr1.set("bar", 2);

@@ -49,15 +49,15 @@ doh.register("tests.Stateful", [
 		watching.remove();
 		watching.remove();
 		s.set("foo", 5);
-		
+
 		t.is(3, assertions, "assertions");
 	},
 	function setHash(t){
 		var s = new Stateful(),
-			fooCount = 0, 
-			handle = s.watch('foo', function () { 
-				fooCount++; 
-			}); 
+			fooCount = 0,
+			handle = s.watch('foo', function () {
+				fooCount++;
+			});
 		s.set({
 			foo:3,
 			bar: 5
@@ -69,9 +69,9 @@ doh.register("tests.Stateful", [
 		s2.set(s);
 		doh.is(3, s2.get("foo"));
 		doh.is(5, s2.get("bar"));
-		// s watchers should not be copied to s2 
-		doh.is(1, fooCount); 
-		handle.unwatch(); 
+		// s watchers should not be copied to s2
+		doh.is(1, fooCount);
+		handle.unwatch();
 	},
 	function wildcard(t){
 		var s = new Stateful();
@@ -97,7 +97,7 @@ doh.register("tests.Stateful", [
 			foo: "",
 			bar: 0,
 			baz: "",
-			fooz: null,
+			qux: null,
 
 			_fooSetter: function(value){
 				this.foo = value;
@@ -105,23 +105,23 @@ doh.register("tests.Stateful", [
 			_fooGetter: function(){
 				return "bar";
 			},
-			
+
 			_barSetter: function(value){
 				this.bar = value;
 			},
 
-			_foozSetter: function(value) {
-				this.fooz = typeof value === "string" ? value.trim() : null;
+			_quxSetter: function(value) {
+				this.qux = typeof value === "string" ? value.trim() : null;
 			}
 
 		});
-		
+
 		var attr1 = new StatefulClass1();
 		var originalValues = {
 			foo: attr1.get("foo"),
 			bar: attr1.get("bar"),
 			baz: attr1.get("baz"),
-			fooz: attr1.get("fooz")
+			qux: attr1.get("qux")
 		};
 
 		function testWatch(propName) {
@@ -134,12 +134,12 @@ doh.register("tests.Stateful", [
 		testWatch("foo");
 		testWatch("bar");
 		testWatch("baz");
-		testWatch("fooz");
+		testWatch("qux");
 
 		attr1.set("foo", "nothing");
 		attr1.set("bar", 2);
 		attr1.set("baz", "bar");
-		attr1.set("fooz", "  a whole lot of nothing   ");
+		attr1.set("qux", "  a whole lot of nothing   ");
 
 		t.is("nothing", attr1.foo, "attribute set properly");
 		t.is("bar", attr1.get("foo"), "getter working properly");
@@ -152,7 +152,7 @@ doh.register("tests.Stateful", [
 		var StatefulClass2 = declare([Stateful], {
 			foo: null,
 			bar: 5,
-			
+
 			_fooSetter: function(value){
 				this.foo = value;
 			},
@@ -160,14 +160,14 @@ doh.register("tests.Stateful", [
 				this.bar = value;
 			}
 		});
-		
+
 		var attr2 = new StatefulClass2({
 			foo: function(){
 				return "baz";
 			},
 			bar: 4
 		});
-		
+
 		t.is("function", typeof attr2.foo, "function attribute set");
 		t.is("baz", attr2.foo(), "function has proper return value");
 		t.is(4, attr2.get("bar"), "attribute has proper value");
@@ -176,7 +176,7 @@ doh.register("tests.Stateful", [
 		var td = new doh.Deferred();
 		var StatefulClass3 = declare([Stateful], {
 			foo: null,
-			
+
 			_fooSetter: function(value){
 				var d = new Deferred();
 				var self = this;
@@ -187,7 +187,7 @@ doh.register("tests.Stateful", [
 				return d;
 			}
 		});
-		
+
 		var attr3 = new StatefulClass3();
 		attr3.watch("foo", function(name, oldValue, value){
 			t.is("foo", name, "right attribute");
@@ -196,7 +196,7 @@ doh.register("tests.Stateful", [
 			td.callback(true);
 		});
 		attr3.set("foo", 3);
-		
+
 		return td;
 	},
 	function changeAttrValue(t){
@@ -204,7 +204,7 @@ doh.register("tests.Stateful", [
 		var StatefulClass4 = declare([Stateful], {
 			foo: null,
 			bar: null,
-			
+
 			_fooSetter: function(value){
 				this._changeAttrValue("bar", value);
 				this.foo = value;
@@ -214,7 +214,7 @@ doh.register("tests.Stateful", [
 				this.bar = value;
 			}
 		});
-		
+
 		var attr4 = new StatefulClass4();
 		attr4.watch("foo", function(name, oldValue, value){
 			output.push(name, oldValue, value);
@@ -235,11 +235,11 @@ doh.register("tests.Stateful", [
 				this.foo = value + "baz";
 			}
 		});
-		
+
 		var obj = new StatefulClass5({
 			foo: "bar"
 		});
-		
+
 		t.is('{"foo":"barbaz"}', JSON.stringify(obj), "object serializes properly");
 	}
 ]);

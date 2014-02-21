@@ -1,6 +1,10 @@
 define(["doh/main", "../Stateful", "../_base/declare", "../Deferred", "../json", "../when"],
 function(doh, Stateful, declare, Deferred, JSON, when){
 
+function isTheSame(one, other) {
+	return one === other;
+}
+
 doh.register("tests.Stateful", [
 	function getSetWatch(t){
 		var s = new Stateful({
@@ -124,11 +128,14 @@ doh.register("tests.Stateful", [
 			qux: attr1.get("qux")
 		};
 
+		var counter = 0;
 		function testWatch(propName) {
 			attr1.watch(propName, function(watcherPropName, oldValue, newValue) {
+				t.f(isTheSame(oldValue, newValue), "watcher should only be called on actual change");
 				t.is(propName, watcherPropName , "watcher should report property name \"" + propName + "\" changed");
 				t.is(originalValues[propName], oldValue, "watcher for \"" + propName + "\" should report oldValue as originalValue");
 				t.is(attr1.get(propName), newValue, "watcher for \"" + propName + "\" should report newValue as currentValue");
+				counter++;
 			});
 		}
 		testWatch("foo");
@@ -147,6 +154,21 @@ doh.register("tests.Stateful", [
 		t.is( 2, attr1.get("bar"), "getter working properly");
 		t.is("bar", attr1.get("baz"), "getter working properly");
 		t.is("bar", attr1.baz, "properly set properly");
+		t.is(3, counter); // foo does not change
+
+		// no change, no events
+		attr1.set("foo", "nothing");
+		attr1.set("bar", 2);
+		attr1.set("baz", "bar");
+		attr1.set("qux", "  a whole lot of nothing   ");
+
+		t.is("nothing", attr1.foo, "attribute set properly");
+		t.is("bar", attr1.get("foo"), "getter working properly");
+		t.is(2, attr1.bar, "attribute set properly");
+		t.is( 2, attr1.get("bar"), "getter working properly");
+		t.is("bar", attr1.get("baz"), "getter working properly");
+		t.is("bar", attr1.baz, "properly set properly");
+		t.is(3, counter); // foo does not change
 	},
 	function paramHandling(t){
 		var StatefulClass2 = declare([Stateful], {
@@ -201,6 +223,7 @@ doh.register("tests.Stateful", [
 		function testWatch(propName) {
 			attr3.watch(propName, function(watcherPropName, oldValue, newValue) {
 				try {
+					t.f(isTheSame(oldValue, newValue));
 					t.is(propName, watcherPropName , "watcher should report property name \"" + propName + "\" changed");
 					t.is(originalValues[propName], oldValue, "watcher for \"" + propName + "\" should report oldValue as originalValue");
 					t.is(attr3.get(propName), newValue, "watcher for \"" + propName + "\" should report newValue as currentValue");
@@ -256,6 +279,7 @@ doh.register("tests.Stateful", [
 		var counter = 0;
 		function testWatch(propName) {
 			attr4.watch(propName, function(watcherPropName, oldValue, newValue) {
+				t.f(isTheSame(oldValue, newValue));
 				t.is(propName, watcherPropName , "watcher should report property name \"" + propName + "\" changed");
 				t.is(originalValues[propName], oldValue, "watcher for \"" + propName + "\" should report oldValue as originalValue");
 				t.is(attr4.get(propName), newValue, "watcher for \"" + propName + "\" should report newValue as currentValue");
@@ -274,7 +298,14 @@ doh.register("tests.Stateful", [
 		t.is(4, attr4.get("foo"), "value set properly");
 		attr4.set("baz", 17);
 		attr4.set("qux", 19);
-		t.is(counter, 8);
+		t.is(8, counter);
+
+		// no change, no events
+		attr4.set("foo", 4);
+		attr4.set("bar", 4);
+		attr4.set("baz", 12); // event from qux only
+		attr4.set("qux", 12); // event from baz only
+		t.is(10, counter);
 	},
 	function serialize(t){
 		var StatefulClass5 = declare([Stateful], {

@@ -97,7 +97,8 @@ doh.register("tests.Stateful", [
 			foo: "",
 			bar: 0,
 			baz: "",
-			
+			fooz: null,
+
 			_fooSetter: function(value){
 				this.foo = value;
 			},
@@ -107,13 +108,19 @@ doh.register("tests.Stateful", [
 			
 			_barSetter: function(value){
 				this.bar = value;
+			},
+
+			_foozSetter: function(value) {
+				this.fooz = typeof value === "string" ? value.trim() : null;
 			}
+
 		});
 		
 		var attr1 = new StatefulClass1();
 	    var originalFoo = attr1.get("foo");
 	    var originalBar = attr1.get("bar");
 	    var originalBaz = attr1.get("baz");
+		var originalFooz = attr1.get("fooz");
 	    attr1.watch("foo", function(propName, oldValue, newValue) {
 	        t.is("foo", propName);
 	        t.is(originalFoo, oldValue);
@@ -129,11 +136,17 @@ doh.register("tests.Stateful", [
 			t.is(originalBaz, oldValue);
 			t.is(attr1.get("baz"), newValue);
 	    });
+		attr1.watch("fooz", function(propName, oldValue, newValue) {
+			t.is("fooz", propName);
+			t.is(originalFooz, oldValue);
+			t.is(attr1.get("fooz"), newValue);
+		});
 
 		attr1.set("foo", "nothing");
 		attr1.set("bar", 2);
 		attr1.set("baz", "bar");
-		
+		attr1.set("fooz", "  a whole lot of nothing   ");
+
 		t.is("nothing", attr1.foo, "attribute set properly");
 		t.is("bar", attr1.get("foo"), "getter working properly");
 		t.is(2, attr1.bar, "attribute set properly");

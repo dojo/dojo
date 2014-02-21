@@ -111,6 +111,25 @@ doh.register("tests.Stateful", [
 		});
 		
 		var attr1 = new StatefulClass1();
+	    var originalFoo = attr1.get("foo");
+	    var originalBar = attr1.get("bar");
+	    var originalBaz = attr1.get("baz");
+	    attr1.watch("foo", function(propName, oldValue, newValue) {
+	        t.is("foo", propName);
+	        t.is(originalFoo, oldValue);
+	        t.is(attr1.get("foo"), newValue); // get("foo") will always return "bar"
+	    });
+	    attr1.watch("bar", function(propName, oldValue, newValue) {
+	        t.is("bar", propName);
+	        t.is(originalBar, oldValue);
+	        t.is(attr1.get("bar"), newValue);
+	    });
+	    attr1.watch("baz", function(propName, oldValue, newValue) {
+			t.is("baz", propName);
+			t.is(originalBaz, oldValue);
+			t.is(attr1.get("baz"), newValue);
+	    });
+
 		attr1.set("foo", "nothing");
 		attr1.set("bar", 2);
 		attr1.set("baz", "bar");

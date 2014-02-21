@@ -123,13 +123,14 @@ return declare("dojo.Stateful", null, {
 			// no setter so set attribute directly
 			this[name] = value;
 		}
-		if(this._watchCallbacks){
-			var self = this;
-			// If setter returned a promise, wait for it to complete, otherwise call watches immediatly
-			when(result, function(){
-				self._watchCallbacks(name, oldValue, self.get(name));
-			});
-		}
+		var self = this;
+		// If setter returned a promise, wait for it to complete, otherwise call watches immediatly
+		when(result, function(){
+			var newValue = self.get(name);
+			if(self._watchCallbacks && oldValue !== newValue){
+				self._watchCallbacks(name, oldValue, newValue);
+			}
+		});
 		return this; // dojo/Stateful
 	},
 	_changeAttrValue: function(name, value){
@@ -149,8 +150,9 @@ return declare("dojo.Stateful", null, {
 
 		var oldValue = this.get(name);
 		this[name] = value;
-		if(this._watchCallbacks){
-			this._watchCallbacks(name, oldValue, this.get(name));
+		var newValue = this.get(name);
+		if(this._watchCallbacks && oldValue !== newValue){
+			this._watchCallbacks(name, oldValue, newValue);
 		}
 		return this; // dojo/Stateful
 	},

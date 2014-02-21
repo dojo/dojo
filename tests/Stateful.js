@@ -218,10 +218,11 @@ doh.register("tests.Stateful", [
 		return td;
 	},
 	function changeAttrValue(t){
-		var output = [];
 		var StatefulClass4 = declare([Stateful], {
 			foo: null,
 			bar: null,
+			baz: 0,
+			qux: 0,
 
 			_fooSetter: function(value){
 				this._changeAttrValue("bar", value);
@@ -230,21 +231,50 @@ doh.register("tests.Stateful", [
 			_barSetter: function(value){
 				this._changeAttrValue("foo", value);
 				this.bar = value;
+			},
+			_bazSetter: function(value){
+				this._changeAttrValue("qux", value);
+				this.baz = value + 7;
+			},
+			_quxSetter: function(value) {
+				this._changeAttrValue("baz", value);
+				this.qux = value;
+			},
+			_quxGetter: function() {
+				return this.qux + 11;
 			}
 		});
 
 		var attr4 = new StatefulClass4();
-		attr4.watch("foo", function(name, oldValue, value){
-			output.push(name, oldValue, value);
-		});
-		attr4.watch("bar", function(name, oldValue, value){
-			output.push(name, oldValue, value);
-		});
+		var originalValues = {
+			foo: attr4.get("foo"),
+			bar: attr4.get("bar"),
+			baz: attr4.get("baz"),
+			qux: attr4.get("qux")
+		};
+
+		var counter = 0;
+		function testWatch(propName) {
+			attr4.watch(propName, function(watcherPropName, oldValue, newValue) {
+				t.is(propName, watcherPropName , "watcher should report property name \"" + propName + "\" changed");
+				t.is(originalValues[propName], oldValue, "watcher for \"" + propName + "\" should report oldValue as originalValue");
+				t.is(attr4.get(propName), newValue, "watcher for \"" + propName + "\" should report newValue as currentValue");
+				originalValues[propName] = newValue;
+				counter++;
+			});
+		}
+		testWatch("foo");
+		testWatch("bar");
+		testWatch("baz");
+		testWatch("qux");
+
 		attr4.set("foo", 3);
 		t.is(3, attr4.get("bar"), "value set properly");
 		attr4.set("bar", 4);
 		t.is(4, attr4.get("foo"), "value set properly");
-		t.is(["bar", null, 3, "foo", null, 3, "foo", 3, 4, "bar", 3, 4], output);
+		attr4.set("baz", 17);
+		attr4.set("qux", 19);
+		t.is(counter, 8);
 	},
 	function serialize(t){
 		var StatefulClass5 = declare([Stateful], {

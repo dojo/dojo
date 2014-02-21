@@ -1,5 +1,5 @@
-define(["doh/main", "../Stateful", "../_base/declare", "../Deferred", "../json"],
-function(doh, Stateful, declare, Deferred, JSON){
+define(["doh/main", "../Stateful", "../_base/declare", "../Deferred", "../json", "../when"],
+function(doh, Stateful, declare, Deferred, JSON, when){
 
 doh.register("tests.Stateful", [
 	function getSetWatch(t){
@@ -181,20 +181,38 @@ doh.register("tests.Stateful", [
 				var d = new Deferred();
 				var self = this;
 				setTimeout(function(){
-					self.foo = value;
+					self.foo = value + 7;
 					d.resolve(value);
 				}, 50);
 				return d;
+			},
+
+			_fooGetter: function() {
+				return this.foo + 11;
 			}
+
 		});
 
 		var attr3 = new StatefulClass3();
-		attr3.watch("foo", function(name, oldValue, value){
-			t.is("foo", name, "right attribute");
-			t.f(oldValue, "no value previously");
-			t.is(3, value, "new value set");
-			td.callback(true);
-		});
+		var originalValues = {
+			foo: attr3.get("foo")
+		};
+
+		function testWatch(propName) {
+			attr3.watch(propName, function(watcherPropName, oldValue, newValue) {
+				try {
+					t.is(propName, watcherPropName , "watcher should report property name \"" + propName + "\" changed");
+					t.is(originalValues[propName], oldValue, "watcher for \"" + propName + "\" should report oldValue as originalValue");
+					t.is(attr3.get(propName), newValue, "watcher for \"" + propName + "\" should report newValue as currentValue");
+					td.callback(true);
+				}
+				catch (err) {
+					td.errback(err);
+				}
+			});
+		}
+		testWatch("foo");
+
 		attr3.set("foo", 3);
 
 		return td;

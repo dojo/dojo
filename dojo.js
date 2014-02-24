@@ -1953,7 +1953,6 @@
 			"dojo-sync-loader":1,
 			"dojo-test-sniff":1,
 			"config-deferredInstrumentation":1,
-			"config-useDeferredInstrumentation":"report-unhandled-rejections",
 			"config-tlmSiblingOfDojo":1
 		},
 		packages:[{

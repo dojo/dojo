@@ -4,6 +4,8 @@ define([
 	"../_base/lang",
 	"../_base/array"
 ], function(tracer, has, lang, arrayUtil){
+	has.add("config-useDeferredInstrumentation", "report-unhandled-rejections");
+
 	function logError(error, rejection, deferred){
 		var stack = "";
 		if(error && error.stack){

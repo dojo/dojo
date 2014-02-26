@@ -36,7 +36,14 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 			}
 		}else if(hasTouch){
 			return function(node, listener){
-				var handle1 = on(node, touchType, listener),
+				var handle1 = on(node, touchType, function(evt){
+						listener.call(this, evt);
+
+						// On slow mobile browsers (see https://bugs.dojotoolkit.org/ticket/17634),
+						// a handler for a touch event may take >1s to run.  That time shouldn't
+						// be included in the calculation for lastTouch.
+						lastTouch = (new Date()).getTime();
+					}),
 					handle2 = on(node, mouseType, function(evt){
 						if(!lastTouch || (new Date()).getTime() > lastTouch + 1000){
 							listener.call(this, evt);

@@ -45,7 +45,6 @@ define(["exports", "./sniff", "./_base/lang", "./dom", "./dom-construct", "./dom
 		//		Juse uses nodedValue so things like <br/> tags do not end up in
 		//		the text as any sort of line return.
 		var text = "", ch = node.childNodes;
-		debugger;
 		for(var i = 0, n; n = ch[i]; i++){
 			//Skip comments.
 			if(n.nodeType != 8){

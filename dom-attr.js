@@ -1,5 +1,5 @@
-define(["exports", "./sniff", "./_base/lang", "./dom", "./dom-style", "./dom-prop"],
-		function(exports, has, lang, dom, style, prop){
+define(["exports", "./sniff", "./_base/lang", "./dom", "./dom-construct", "./dom-style", "./dom-prop"],
+		function(exports, has, lang, dom, construct, style, prop){
 	// module:
 	//		dojo/dom-attr
 	// summary:
@@ -19,6 +19,7 @@ define(["exports", "./sniff", "./_base/lang", "./dom", "./dom-style", "./dom-pro
 
 	var forcePropNames = {
 			innerHTML:	1,
+			textContent:1,
 			className:	1,
 			htmlFor:	has("ie"),
 			value:		1
@@ -35,6 +36,27 @@ define(["exports", "./sniff", "./_base/lang", "./dom", "./dom-style", "./dom-pro
 	function _hasAttr(node, name){
 		var attr = node.getAttributeNode && node.getAttributeNode(name);
 		return attr && attr.specified; // Boolean
+	}
+	
+	function getText(/*DOMNode*/node){
+		// summary:
+		//		recursion method for get('textContent') to use. Gets text value for a node.
+		// description:
+		//		Juse uses nodedValue so things like <br/> tags do not end up in
+		//		the text as any sort of line return.
+		var text = "", ch = node.childNodes;
+		debugger;
+		for(var i = 0, n; n = ch[i]; i++){
+			//Skip comments.
+			if(n.nodeType != 8){
+				if(n.nodeType == 1){
+					text += getText(n);
+				}else{
+					text += n.nodeValue;
+				}
+			}
+		}
+		return text;
 	}
 
 	// There is a difference in the presence of certain properties and their default values
@@ -90,6 +112,11 @@ define(["exports", "./sniff", "./_base/lang", "./dom", "./dom-style", "./dom-pro
 			// node's property
 			return value;	// Anything
 		}
+		
+		if(has("ie") <= 8 && propName == "textContent") {
+			return getText(node);
+		}
+		
 		if(propName != "href" && (typeof value == "boolean" || lang.isFunction(value))){
 			// node's property
 			return value;	// Anything
@@ -156,6 +183,12 @@ define(["exports", "./sniff", "./_base/lang", "./dom", "./dom-style", "./dom-pro
 			// special case: setting a style
 			style.set(node, value);
 			return node; // DomNode
+		}
+		if(has("ie") <= 8 && propName == "textContent") {
+			construct.empty(node);
+			node.appendChild(node.ownerDocument.createTextNode(value));
+			return node;
+
 		}
 		if(forceProp || typeof value == "boolean" || lang.isFunction(value)){
 			return prop.set(node, name, value);

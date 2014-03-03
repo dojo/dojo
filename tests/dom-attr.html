@@ -1,0 +1,91 @@
+<html>
+	<head>
+		<title>testing dom-attr</title>
+		<script type="text/javascript" src="../dojo.js" data-dojo-config="isDebug:true"></script>
+		<script type="text/javascript">
+			require(["dojo", "doh", "dojo/dom-attr", "dojo/dom", "dojo/domReady!"], function(dojo, doh, domAttr, dom){
+				doh.register([
+					{
+						name: "set / get Attribute",
+						runTest: function(t){
+							try {
+								var node = dom.byId("node"),
+									content = domAttr.get(dom.byId("lorem"), "textContent"),
+									content2 = domAttr.get(dom.byId("example"), "textContent");
+								node.innerHTML = "" //empty the node before testing
+								
+								doh.is(content != null, true);
+								doh.is(content.substr(0, 5), "Etiam");
+								
+								domAttr.set(node, "textContent", content);
+								doh.is(node.innerHTML, content);
+								
+								domAttr.set(node, "textContent", "<b>this is bold</b>");
+								doh.is(node.innerHTML.indexOf("<"), -1);
+								
+								domAttr.set(node, "textContent", content2);
+								
+								var test = node.innerHTML.replace(/\n/g, "");
+								doh.is(test.indexOf("(comment)"), 1);
+
+							} catch (err) {
+								console.error(err);
+								doh.t(false);
+							}
+						}
+					}
+				]);
+
+				doh.run();
+			});
+		</script>
+	</head>
+	<body>
+	<div id="lorem">Etiam a odio tristique, 
+		eleifend nulla at, aliquam enim. 
+		<b>Nulla quis velit lobortis sapien tempor suscipit.</b>
+		Fusce non congue mi. Donec tincidunt consectetur sollicitudin. 
+		Nullam consectetur lacus et dolor condimentum, ut congue sapien pellentesque. 
+		Proin ut ligula magna. Integer tortor est, laoreet eget mi non, posuere sodales urna. 
+		Nunc porta mattis nunc, eget laoreet erat varius condimentum.
+	</div>
+<div id="example">
+	<table>
+		<tr>
+			<td>TL</td>
+			<td>TR</td>
+		</tr>
+		<tr>
+			<td>BL</td>
+			<td>BR</td>
+		</tr>
+	</table>
+	<p>
+		Start a paragraph, <span>then a span</span> end para.
+	</p>
+	<p>
+		New Para then    4 spaces, then a line<br/>break.
+	</p>
+	<p style="display:none;">
+		This should not show (display:none).
+	</p>
+	<!-- <p>This should not show (comment).</p>-->
+	<p>
+		This is text before<span style="display:block;">a span
+                with display:block.</span>...and after.
+	</p>
+	<p id="preNode" style="white-space:pre;">
+This			text
+		is pre
+	text.
+	</p>
+	<script>var a = "Mike"</script>
+	<ul>
+		<li>one bullet</li>
+		<li>two bullet</li>
+		<li>three bullet</li>
+	</ul>
+</div>
+	<pre id="node"></pre>
+	</body>
+</html>

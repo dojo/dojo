@@ -1,4 +1,4 @@
-define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeList-dom"], function(dquery, lang, array, construct){
+define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./dom-attr", "./NodeList-dom"], function(dquery, lang, array, construct, attr){
 	// module:
 	//		dojo/NodeList-manipulate
 
@@ -14,25 +14,6 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 
 	//TODO: add a way to parse for widgets in the injected markup?
 
-	function getText(/*DOMNode*/node){
-		// summary:
-		//		recursion method for text() to use. Gets text value for a node.
-		// description:
-		//		Juse uses nodedValue so things like <br/> tags do not end up in
-		//		the text as any sort of line return.
-		var text = "", ch = node.childNodes;
-		for(var i = 0, n; n = ch[i]; i++){
-			//Skip comments.
-			if(n.nodeType != 8){
-				if(n.nodeType == 1){
-					text += getText(n);
-				}else{
-					text += n.nodeValue;
-				}
-			}
-		}
-		return text;
-	}
 
 	function getWrapInsertion(/*DOMNode*/node){
 		// summary:
@@ -195,15 +176,14 @@ define(["./query", "./_base/lang", "./_base/array", "./dom-construct", "./NodeLi
 			if(arguments.length){
 				for(var i = 0, node; node = this[i]; i++){
 					if(node.nodeType == 1){
-						construct.empty(node);
-						node.appendChild(node.ownerDocument.createTextNode(value));
+						attr.set(node, 'textContent', value);
 					}
 				}
 				return this; // dojo/NodeList
 			}else{
 				var result = "";
 				for(i = 0; node = this[i]; i++){
-					result += getText(node);
+					result += attr.get(node, 'textContent');
 				}
 				return result; //String
 			}

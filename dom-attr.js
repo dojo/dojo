@@ -1,5 +1,5 @@
-define(["exports", "./sniff", "./_base/lang", "./dom", "./dom-construct", "./dom-style", "./dom-prop"],
-		function(exports, has, lang, dom, construct, style, prop){
+define(["exports", "./sniff", "./_base/lang", "./dom", "./dom-style", "./dom-prop"],
+		function(exports, has, lang, dom, style, prop){
 	// module:
 	//		dojo/dom-attr
 	// summary:

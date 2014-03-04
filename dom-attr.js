@@ -15,8 +15,9 @@ define(["exports", "./sniff", "./_base/lang", "./dom", "./dom-construct", "./dom
 
 	// dojo/dom-attr.get() should conform to http://www.w3.org/TR/DOM-Level-2-Core/
 
-	// attribute-related functions (to be obsolete soon)
+	has.add('dom-textContent', function (global, doc, element) { return 'textContent' in element; });
 
+	// attribute-related functions (to be obsolete soon)
 	var forcePropNames = {
 			innerHTML:	1,
 			textContent:1,
@@ -112,7 +113,7 @@ define(["exports", "./sniff", "./_base/lang", "./dom", "./dom-construct", "./dom
 			return value;	// Anything
 		}
 		
-		if(has("ie") <= 8 && propName == "textContent") {
+		if(propName == "textContent"){
 			return getText(node);
 		}
 		
@@ -183,11 +184,10 @@ define(["exports", "./sniff", "./_base/lang", "./dom", "./dom-construct", "./dom
 			style.set(node, value);
 			return node; // DomNode
 		}
-		if(has("ie") <= 8 && propName == "textContent") {
+		if(propName == "textContent" && !has("dom-textContent")) {
 			construct.empty(node);
 			node.appendChild(node.ownerDocument.createTextNode(value));
 			return node;
-
 		}
 		if(forceProp || typeof value == "boolean" || lang.isFunction(value)){
 			return prop.set(node, name, value);

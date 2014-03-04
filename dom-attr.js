@@ -15,8 +15,6 @@ define(["exports", "./sniff", "./_base/lang", "./dom", "./dom-construct", "./dom
 
 	// dojo/dom-attr.get() should conform to http://www.w3.org/TR/DOM-Level-2-Core/
 
-	has.add('dom-textContent', function (global, doc, element) { return 'textContent' in element; });
-
 	// attribute-related functions (to be obsolete soon)
 	var forcePropNames = {
 			innerHTML:	1,
@@ -39,26 +37,6 @@ define(["exports", "./sniff", "./_base/lang", "./dom", "./dom-construct", "./dom
 		return attr && attr.specified; // Boolean
 	}
 	
-	function getText(/*DOMNode*/node){
-		// summary:
-		//		recursion method for get('textContent') to use. Gets text value for a node.
-		// description:
-		//		Juse uses nodedValue so things like <br/> tags do not end up in
-		//		the text as any sort of line return.
-		var text = "", ch = node.childNodes;
-		for(var i = 0, n; n = ch[i]; i++){
-			//Skip comments.
-			if(n.nodeType != 8){
-				if(n.nodeType == 1){
-					text += getText(n);
-				}else{
-					text += n.nodeValue;
-				}
-			}
-		}
-		return text;
-	}
-
 	// There is a difference in the presence of certain properties and their default values
 	// between browsers. For example, on IE "disabled" is present on all elements,
 	// but it is value is "false"; "tabIndex" of <div> returns 0 by default on IE, yet other browsers
@@ -114,7 +92,7 @@ define(["exports", "./sniff", "./_base/lang", "./dom", "./dom-construct", "./dom
 		}
 		
 		if(propName == "textContent"){
-			return getText(node);
+			return prop.get(node, propName);
 		}
 		
 		if(propName != "href" && (typeof value == "boolean" || lang.isFunction(value))){
@@ -183,11 +161,6 @@ define(["exports", "./sniff", "./_base/lang", "./dom", "./dom-construct", "./dom
 			// special case: setting a style
 			style.set(node, value);
 			return node; // DomNode
-		}
-		if(propName == "textContent" && !has("dom-textContent")) {
-			construct.empty(node);
-			node.appendChild(node.ownerDocument.createTextNode(value));
-			return node;
 		}
 		if(forceProp || typeof value == "boolean" || lang.isFunction(value)){
 			return prop.set(node, name, value);

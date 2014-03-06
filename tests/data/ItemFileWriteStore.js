@@ -745,7 +745,7 @@ doh.register("tests.data.ItemFileWriteStore",
 				deferred.errback(error);
 			};
 
-			var intialFetch = function(items, request){
+			var initialFetch = function(items, request){
 				var initialCount = items.length;
 				var canada = store.newItem({name: "Canada", abbr:"ca", capital:"Ottawa"});
 				store.setValue(canada, "someattribute", "modified a new item!");
@@ -762,7 +762,7 @@ doh.register("tests.data.ItemFileWriteStore",
 				};
 				store.fetch({onComplete: afterNewFetch, onError: onError});
 			};
-			store.fetch({onComplete: intialFetch, onError: onError});
+			store.fetch({onComplete: initialFetch, onError: onError});
 			return deferred; //Object
 		},
 		function testWriteAPI_new_modify_delete_revert(){
@@ -781,7 +781,7 @@ doh.register("tests.data.ItemFileWriteStore",
 				deferred.errback(error);
 			};
 
-			var intialFetch = function(items, request){
+			var initialFetch = function(items, request){
 				var initialCount = items.length;
 				var canada = store.newItem({name: "Canada", abbr:"ca", capital:"Ottawa"});
 				store.setValue(canada, "someattribute", "modified a new item!");
@@ -832,7 +832,7 @@ doh.register("tests.data.ItemFileWriteStore",
 				};
 				store.fetch({onComplete: afterNewFetch, onError: onError});
 			};
-			store.fetch({onComplete: intialFetch, onError: onError});
+			store.fetch({onComplete: initialFetch, onError: onError});
 			return deferred; //Object
 		},
 		function testNotificationAPI_onSet(){

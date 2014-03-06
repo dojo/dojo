@@ -407,7 +407,7 @@ doh.register("tests.number",
 
 
 /**
- * In ICU4J, testing logic for NumberFormat.format() is seperated into
+ * In ICU4J, testing logic for NumberFormat.format() is separated into
  * differernt single tese cases. So part of these logic are
  * collected together in this single method.
  *
@@ -724,7 +724,7 @@ function test_number_format_pad(){
 			name: "parse_icu4j3_6",
 			runTest: function(t){
 /**
- * In ICU4J, testing logic for NumberFormat.parse() is seperated into
+ * In ICU4J, testing logic for NumberFormat.parse() is separated into
  * differernt single tese cases. So part of these logic are
  * collected together in this test case. *
  */

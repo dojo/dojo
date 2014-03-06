@@ -294,7 +294,7 @@ define(["./kernel", "../has", "require", "module", "../json", "./lang", "./array
 			startApplication  // the position in text where the function application expression starts
 		){
 			// find end of the call by finding the matching end paren
-			// Warning: as usual, this will fail in the presense of unmatched right parans contained in strings, regexs, or unremoved comments
+			// Warning: as usual, this will fail in the presence of unmatched right parans contained in strings, regexs, or unremoved comments
 			var parenRe = /\(|\)/g,
 				matchCount = 1,
 				match;
@@ -720,7 +720,7 @@ define(["./kernel", "../has", "require", "module", "../json", "./lang", "./array
 		//		optionally load dojo modules. The map is indexed by the
 		//		possible dojo.name_ values, with two additional values:
 		//		"default" and "common". The items in the "default" array will
-		//		be loaded if none of the other items have been choosen based on
+		//		be loaded if none of the other items have been chosen based on
 		//		dojo.name_, set by your host environment. The items in the
 		//		"common" array will *always* be loaded, regardless of which
 		//		list is chosen.

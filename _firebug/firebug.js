@@ -341,7 +341,7 @@ define([
 		},
 		recss: function(){
 			// this is placed in dojo since the console is most likely
-			// in another window and dojo is easilly accessible
+			// in another window and dojo is easily accessible
 			var i,a,s;a=document.getElementsByTagName('link');
 			for(i=0;i<a.length;i++){
 				s=a[i];

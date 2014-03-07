@@ -10,12 +10,12 @@ define(
 	"infinity": "∞",
 	"minusSign": "-",
 	"decimal": ",",
-	"nan": "не число",
+	"nan": "не редица",
 	"perMille": "‰",
 	"decimalFormat": "#,##0.###",
 	"currencyFormat": "#,##0.00 ¤",
 	"plusSign": "+",
-	"decimalFormat-long": "000 триллиона",
+	"decimalFormat-long": "000 трилион",
 	"decimalFormat-short": "000 трлн"
 }
 //end v1.x content

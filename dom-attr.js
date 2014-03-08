@@ -16,9 +16,9 @@ define(["exports", "./sniff", "./_base/lang", "./dom", "./dom-style", "./dom-pro
 	// dojo/dom-attr.get() should conform to http://www.w3.org/TR/DOM-Level-2-Core/
 
 	// attribute-related functions (to be obsolete soon)
-
 	var forcePropNames = {
 			innerHTML:	1,
+			textContent:1,
 			className:	1,
 			htmlFor:	has("ie"),
 			value:		1
@@ -36,7 +36,7 @@ define(["exports", "./sniff", "./_base/lang", "./dom", "./dom-style", "./dom-pro
 		var attr = node.getAttributeNode && node.getAttributeNode(name);
 		return attr && attr.specified; // Boolean
 	}
-
+	
 	// There is a difference in the presence of certain properties and their default values
 	// between browsers. For example, on IE "disabled" is present on all elements,
 	// but it is value is "false"; "tabIndex" of <div> returns 0 by default on IE, yet other browsers
@@ -90,6 +90,11 @@ define(["exports", "./sniff", "./_base/lang", "./dom", "./dom-style", "./dom-pro
 			// node's property
 			return value;	// Anything
 		}
+		
+		if(propName == "textContent"){
+			return prop.get(node, propName);
+		}
+		
 		if(propName != "href" && (typeof value == "boolean" || lang.isFunction(value))){
 			// node's property
 			return value;	// Anything

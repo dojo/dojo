@@ -13,6 +13,7 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/lang", "./dom", "./dom-
 
 	// helper to connect events
 	var _evtHdlrMap = {}, _ctr = 0, _attrId = dojo._scopeName + "attrid";
+	has.add('dom-textContent', function (global, doc, element) { return 'textContent' in element; });
 
 	exports.names = {
 		// properties renamed to avoid clashes with reserved words
@@ -24,8 +25,29 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/lang", "./dom", "./dom-
 		colspan: "colSpan",
 		frameborder: "frameBorder",
 		rowspan: "rowSpan",
+		textcontent: "textContent",
 		valuetype: "valueType"
 	};
+	
+	function getText(/*DOMNode*/node){
+		// summary:
+		//		recursion method for get('textContent') to use. Gets text value for a node.
+		// description:
+		//		Juse uses nodedValue so things like <br/> tags do not end up in
+		//		the text as any sort of line return.
+		var text = "", ch = node.childNodes;
+		for(var i = 0, n; n = ch[i]; i++){
+			//Skip comments.
+			if(n.nodeType != 8){
+				if(n.nodeType == 1){
+					text += getText(n);
+				}else{
+					text += n.nodeValue;
+				}
+			}
+		}
+		return text;
+	}
 
 	exports.get = function getProp(/*DOMNode|String*/ node, /*String*/ name){
 		// summary:
@@ -50,6 +72,11 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/lang", "./dom", "./dom-
 
 		node = dom.byId(node);
 		var lc = name.toLowerCase(), propName = exports.names[lc] || name;
+		
+		if(propName == "textContent" && !has("dom-textContent")){
+			return getText(node);
+		}
+		
 		return node[propName];	// Anything
 	};
 
@@ -120,6 +147,11 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/lang", "./dom", "./dom-
 				node[propName] = value;
 			}
 			return node; // DomNode
+		}
+		if(propName == "textContent" && !has("dom-textContent")) {
+			ctr.empty(node);
+			node.appendChild(node.ownerDocument.createTextNode(value));
+			return node;
 		}
 		if(lang.isFunction(value)){
 			// special case: assigning an event handler

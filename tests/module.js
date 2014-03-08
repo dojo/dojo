@@ -25,6 +25,8 @@ define([
 	"dojo/tests/Stateful",
 	"dojo/tests/errors",
 	"dojo/has!host-node?dojo/tests/node",
+	"dojo/has!host-browser?dojo/tests/dom-prop",
+	"dojo/has!host-browser?dojo/tests/dom-construct",
 	"dojo/has!host-browser?dojo/tests/router",
 	"dojo/has!host-browser?dojo/tests/request",
 	"dojo/has!host-browser?dojo/tests/behavior",

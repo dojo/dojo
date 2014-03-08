@@ -2,7 +2,7 @@ define(["../has", "../_base/kernel"], function(has, dojo){
 "use strict";
 
 var testDiv = document.createElement("div");
-var matchesSelector = testDiv.matchesSelector || testDiv.webkitMatchesSelector || testDiv.mozMatchesSelector || testDiv.msMatchesSelector || testDiv.oMatchesSelector; // IE9, WebKit, Firefox have this, but not Opera yet
+var matchesSelector = testDiv.matches || testDiv.webkitMatchesSelector || testDiv.mozMatchesSelector || testDiv.msMatchesSelector || testDiv.oMatchesSelector;
 var querySelectorAll = testDiv.querySelectorAll;
 var unionSplit = /([^\s,](?:"(?:\\.|[^"])+"|'(?:\\.|[^'])+'|[^,])*)/g;
 has.add("dom-matches-selector", !!matchesSelector);

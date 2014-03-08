@@ -81,7 +81,7 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 			clickTarget = (useTarget?markedNode:e.target);
 			if(useTarget){
 				// We expect a click, so prevent any other 
-				// defaut action on "touchpress"
+				// default action on "touchpress"
 				e.preventDefault();
 			}
 			clickX = e.touches ? e.touches[0].pageX : e.clientX;

@@ -263,7 +263,7 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 			//	|	dojo.body().appendChild(img);
 			// example:
 			//		you may de-reference as far as you like down the package
-			//		hierarchy.  This is sometimes handy to avoid lenghty relative
+			//		hierarchy.  This is sometimes handy to avoid lengthy relative
 			//		urls or for building portable sub-packages. In this example,
 			//		the `acme.widget` and `acme.util` directories may be located
 			//		under different roots (see `dojo.registerModulePath`) but the

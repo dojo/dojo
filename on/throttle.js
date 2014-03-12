@@ -1,8 +1,8 @@
-define(['dojo/throttle', 'dojo/on/debounce'], function(throttle, debounce) {
+define(['dojo/throttle', 'dojo/on/_delayedEventFactory'], function(throttle, _delayedEventFactory) {
 	// summary:
-	//		This module provide an event throttler to use with dojo/on
+	//		This module provide an event throttler for dojo/on
 	// module:
 	//		dojo/on/throttle
 
-	return debounce._customEvent(throttle, false);
+	return _delayedEventFactory(throttle, false);
 });

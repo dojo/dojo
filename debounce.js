@@ -1,8 +1,8 @@
-define(['dojo/has'], function(has) {
+define([], function() {
 	// module:
 	//		dojo/debounce
 	// summary:
-	//		This module provide a generic debounce method, and an event debouncer to use with dojo/on
+	//		This module provide a debouncer
 
 	return function(cb, wait) {
 		// summary:

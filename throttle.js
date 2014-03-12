@@ -2,7 +2,7 @@ define([], function() {
 	// module:
 	//		dojo/throttle
 	// summary:
-	//		This module provide a generic throttle method
+	//		This module provide a throttler
 
 	return function(cb, wait){
 		// summary:

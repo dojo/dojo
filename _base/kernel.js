@@ -164,7 +164,7 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 				(function(){
 					var tcn = tn + "";
 					console[tcn] = ('log' in console) ? function(){
-						var a = Array.apply({}, arguments);
+						var a = Array.prototype.slice.call(arguments);
 						a.unshift(tcn + ":");
 						console["log"](a.join(" "));
 					} : function(){};

@@ -1,8 +1,12 @@
 define([
 	"dojo/dom-construct",
-	"doh"
-], function(construct, doh){
-	
+	"doh",
+	"require"
+], function(construct, doh, require){
+
+	if(doh.isBrowser){
+		doh.register("tests.dom-construct-place", require.toUrl("./dom-construct-place.html"), 30000);
+	}
 
 	doh.register("tests.dom-construct", [
 		{
@@ -15,4 +19,5 @@ define([
 			}
 		}
 	]);
+
 });

@@ -19,29 +19,37 @@ define([
 			'MSXML2.DOMDocument.3.0',
 			'MSXML.DOMDocument' // 2.0
 		];
+		var lastParser;
 
 		handleXML = function(response){
 			var result = response.data;
+			var text = response.text;
 
 			if(result && has('dom-qsa2.1') && !result.querySelectorAll && has('dom-parser')){
 				// http://bugs.dojotoolkit.org/ticket/15631
-				// IE9 supports a CSS3 querySelectorAll implementation, but the DOM implementation 
-				// returned by IE9 xhr.responseXML does not. Manually create the XML DOM to gain 
+				// IE9 supports a CSS3 querySelectorAll implementation, but the DOM implementation
+				// returned by IE9 xhr.responseXML does not. Manually create the XML DOM to gain
 				// the fuller-featured implementation and avoid bugs caused by the inconsistency
 				result = new DOMParser().parseFromString(response.text, 'application/xml');
 			}
 
-			if(!result || !result.documentElement){
-				var text = response.text;
-				array.some(dp, function(p){
+			function createDocument(p) {
 					try{
 						var dom = new ActiveXObject(p);
 						dom.async = false;
 						dom.loadXML(text);
 						result = dom;
+						lastParser = p;
 					}catch(e){ return false; }
 					return true;
-				});
+			}
+
+			if(!result || !result.documentElement){
+				//try to use the cached parser
+				if(!lastParser || !createDocument(lastParser)) {
+					//find one that works
+					array.some(dp, createDocument);
+				}
 			}
 
 			return result;

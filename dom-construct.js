@@ -135,11 +135,11 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 		return df; // DocumentFragment
 	};
 
-	exports.place = function place(/*DOMNode|String*/ node, /*DOMNode|String*/ refNode, /*String|Number?*/ position){
+	exports.place = function place(node, refNode, position){
 		// summary:
 		//		Attempt to insert node into the DOM, choosing from various positioning options.
 		//		Returns the first argument resolved to a DOM node.
-		// node: DOMNode|String
+		// node: DOMNode|DocumentFragment|String
 		//		id or node reference, or HTML fragment starting with "<" to place relative to refNode
 		// refNode: DOMNode|String
 		//		id or node reference to use as basis for placement

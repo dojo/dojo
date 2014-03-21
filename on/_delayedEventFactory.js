@@ -1,12 +1,9 @@
-define(['dojo/on'], function(on) {
+define(['dojo/on'], function(on){
 	// summary:
 	//		This sub module provide an event factory for delayed events (like debounce or throttle)
 	// module:
 	//		dojo/on/debounce
-
-	var SELECTOR = /(.*):(.*)/;
-
-	function clone(arg) {
+	function clone(arg){
 		// summary:
 		//		clone the event
 		// description:
@@ -19,7 +16,7 @@ define(['dojo/on'], function(on) {
 		}
 		return argCopy;
 	}
-	return function(fnc, cloneArguments) {
+	return function(fnc, cloneArguments){
 		// summary:
 		//		return the custom event function
 		// fnc: Function
@@ -33,43 +30,18 @@ define(['dojo/on'], function(on) {
 			//		The selector to check against
 			// delay: Interger
 			//		The amount of ms before testing the selector
-			var events = selector.split(/\s*,\s*/);
 
-			return function(node, listener) {
-				var eventName,
-					eventType,
-					eventTypes = [],
-					i = 0;
-
-				//to avoid executing matcheSelector (from dojo/on) for every event we
-				//re-arange the seletors and remove the event delegation
-				//Then we execute manually matchesSelector (but only when the event handler is fired)
-				while(eventName = events[i++]){
-					eventType = eventName.match(SELECTOR);
-					eventTypes.push(eventType ? eventType[2] : eventName); //retrive the event type (click, mouseover, etc...)
-				}
+			return function(node, listener){
 				var cloneHandler = null,
-					handler = function(e) {
-						var i = 0,
-							match,
-							eventName;
-						while(eventName = events[i++]){
-							match = eventName.match(SELECTOR);
-							if(!match || (match && on.matchesSelector(e.target, match[1], node))) {
-								listener.apply(this, arguments);
-								break;
-							}
-						}
-					},
-					eventFnc = fnc(handler, delay);
-				if(cloneArguments) {
-					cloneHandler = function(e) {
+					eventFnc = fnc(listener, delay);
+				if(cloneArguments){
+					cloneHandler = function(e){
 						//lang.clone fail to clone events, so we use a custom function
 						eventFnc.call(this, clone(e));
 					};
 				}
 
-				return on(node, eventTypes.join(','), cloneHandler || eventFnc);
+				return on(node, selector, cloneHandler || eventFnc);
 			};
 		};
 	};

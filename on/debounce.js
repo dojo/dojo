@@ -1,4 +1,4 @@
-define(['dojo/debounce', 'dojo/has', 'dojo/on/_delayedEventFactory'], function(debounce, has, _delayedEventFactory) {
+define(['dojo/debounce', 'dojo/has', 'dojo/on/_delayedEventFactory'], function(debounce, has, _delayedEventFactory){
 	// summary:
 	//		This module provide an event debouncer for dojo/on
 	// module:

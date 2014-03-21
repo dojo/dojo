@@ -1,4 +1,4 @@
-define(['dojo/throttle', 'dojo/on/_delayedEventFactory'], function(throttle, _delayedEventFactory) {
+define(['dojo/throttle', 'dojo/on/_delayedEventFactory'], function(throttle, _delayedEventFactory){
 	// summary:
 	//		This module provide an event throttler for dojo/on
 	// module:

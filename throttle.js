@@ -1,4 +1,4 @@
-define([], function() {
+define([], function(){
 	// module:
 	//		dojo/throttle
 	// summary:
@@ -17,11 +17,13 @@ define([], function() {
 		// wait: Integer
 		//		time to delay before allowing cb to call again.
 		var canrun = true;
-		return function() {
-			if(!canrun) {return; }
+		return function(){
+			if(!canrun){
+				return;
+			}
 			canrun = false;
 			cb.apply(this, arguments);
-			setTimeout(function() {
+			setTimeout(function(){
 				canrun = true;
 			}, wait);
 		};

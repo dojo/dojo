@@ -1,10 +1,10 @@
-define([], function() {
+define([], function(){
 	// module:
 	//		dojo/debounce
 	// summary:
 	//		This module provide a debouncer
 
-	return function(cb, wait) {
+	return function(cb, wait){
 		// summary:
 		//		Create a function that will only execute after `wait` milliseconds
 		// description:
@@ -17,10 +17,12 @@ define([], function() {
 		// wait: Integer
 		//		Time to spend caching executions before actually executing.
 		var timer;
-		return function() {
-			if(timer) {clearTimeout(timer); }
+		return function(){
+			if(timer){
+				clearTimeout(timer);
+			}
 			var a = arguments;
-			timer = setTimeout(function() {
+			timer = setTimeout(function(){
 				cb.apply(this, a);
 			}, wait);
 		};

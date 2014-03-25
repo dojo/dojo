@@ -148,6 +148,15 @@ define(["./_base/lang", "./sniff", "./_base/window", "./dom", "./dom-geometry", 
 						return (isIE <= 6 || (isIE == 7 && backCompat))
 							? false
 							: (has("position-fixed-support") && (style.get(el, 'position').toLowerCase() == "fixed"));
+					},
+					self = this,
+					scrollElementBy = function(el, x, y){
+						if(el.tagName == "BODY" || el.tagName == "HTML"){
+							self.get(el.ownerDocument).scrollBy(x, y);
+						}else{
+							x && (el.scrollLeft += x);
+							y && (el.scrollTop += y);
+						}
 					};
 				if(isFixed(node)){ return; } // nothing to do
 				while(el){
@@ -203,14 +212,14 @@ define(["./_base/lang", "./sniff", "./_base/window", "./dom", "./dom-geometry", 
 						s = Math[l < 0? "max" : "min"](l, r);
 						if(rtl && ((isIE == 8 && !backCompat) || isIE >= 9)){ s = -s; }
 						old = el.scrollLeft;
-						el.scrollLeft += s;
+						scrollElementBy(el, s, 0);
 						s = el.scrollLeft - old;
 						nodePos.x -= s;
 					}
 					if(bot * t > 0 && (!!el.scrollTop || el == scrollRoot || el.scrollHeight > el.offsetHeight)){
 						s = Math.ceil(Math[t < 0? "max" : "min"](t, bot));
 						old = el.scrollTop;
-						el.scrollTop += s;
+						scrollElementBy(el, 0, s);
 						s = el.scrollTop - old;
 						nodePos.y -= s;
 					}

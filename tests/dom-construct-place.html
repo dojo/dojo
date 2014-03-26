@@ -45,27 +45,33 @@
 					fragment.appendChild(document.createElement("div"));
 				}
 
+				function elementsEqual(elementA, elementB) {
+					return elementA.id === elementB.id &&
+						elementA.tagName === elementB.tagName &&
+						elementA.innerHTML === elementB.innerHTML;
+				}
+
 				doh.register([
 					{
 						setUp: clearTarget,
 						name: "last - place html string with node reference",
 						runTest: function(t){
 							construct.place(HTMLString, nodes.last);
-							doh.assertEqual(HTMLString, nodes.last.lastChild.outerHTML);
+							doh.assertTrue(elementsEqual(child, nodes.last.lastChild));
 						}
 					},{
 						setUp: clearTarget,
 						name: "last - place html string with id reference",
 						runTest: function(t){
 							construct.place(HTMLString, "last");
-							doh.assertEqual(HTMLString, nodes.last.lastChild.outerHTML);
+							doh.assertTrue(elementsEqual(child, nodes.last.lastChild));
 						}
 					},{
 						setUp: clearTarget,
 						name: "last - place html string with fragment reference",
 						runTest: function(t){
 							construct.place(HTMLString, fragment);
-							doh.assertEqual(HTMLString, fragment.lastChild.outerHTML);
+							doh.assertTrue(elementsEqual(child, fragment.lastChild));
 						}
 					},{
 						setUp: clearTarget,
@@ -93,21 +99,21 @@
 						name: "first - place html string with node reference",
 						runTest: function(t){
 							construct.place(HTMLString, nodes.first, "first");
-							doh.assertEqual(HTMLString, nodes.first.firstChild.outerHTML);
+							doh.assertTrue(elementsEqual(child, nodes.first.firstChild));
 						}
 					},{
 						setUp: clearTarget,
 						name: "first - place html string with id reference",
 						runTest: function(t){
 							construct.place(HTMLString, "first", "first");
-							doh.assertEqual(HTMLString, nodes.first.firstChild.outerHTML);
+							doh.assertTrue(elementsEqual(child, nodes.first.firstChild));
 						}
 					},{
 						setUp: clearTarget,
 						name: "first - place html string with fragment reference",
 						runTest: function(t){
 							construct.place(HTMLString, fragment, "first");
-							doh.assertEqual(HTMLString, fragment.firstChild.outerHTML);
+							doh.assertTrue(elementsEqual(child, fragment.firstChild));
 						}
 					},{
 						setUp: clearTarget,
@@ -135,21 +141,21 @@
 						name: "before - place html string with node reference",
 						runTest: function(t){
 							construct.place(HTMLString, nodes.before, "before");
-							doh.assertEqual(HTMLString, nodes.before.previousSibling.outerHTML);
+							doh.assertTrue(elementsEqual(child, nodes.before.previousSibling));
 						}
 					},{
 						setUp: clearTarget,
 						name: "before - place html string with id reference",
 						runTest: function(t){
 							construct.place(HTMLString, "before", "before");
-							doh.assertEqual(HTMLString, nodes.before.previousSibling.outerHTML);
+							doh.assertTrue(elementsEqual(child, nodes.before.previousSibling));
 						}
 					},{
 						setUp: clearTarget,
 						name: "before - place node with node reference",
 						runTest: function(t){
 							construct.place(child, nodes.before, "before");
-							doh.assertEqual(child, nodes.before.previousSibling);
+							doh.assertTrue(child, nodes.before.previousSibling);
 						}
 					},{
 						setUp: clearTarget,
@@ -163,14 +169,14 @@
 						name: "after - place html string with node reference",
 						runTest: function(t){
 							construct.place(HTMLString, nodes.after, "after");
-							doh.assertEqual(HTMLString, nodes.after.nextSibling.outerHTML);
+							doh.assertTrue(elementsEqual(child, nodes.after.nextSibling));
 						}
 					},{
 						setUp: clearTarget,
 						name: "after - place html string with id reference",
 						runTest: function(t){
 							construct.place(HTMLString, "after", "after");
-							doh.assertEqual(HTMLString, nodes.after.nextSibling.outerHTML);
+							doh.assertTrue(elementsEqual(child, nodes.after.nextSibling));
 						}
 					},{
 						setUp: clearTarget,
@@ -192,7 +198,7 @@
 						runTest: function(t){
 							construct.place(HTMLString, nodes.replace, "replace");
 							doh.assertEqual(document.getElementById("replace"), undefined);
-							doh.assertEqual(HTMLString, document.getElementById('test').outerHTML);
+							doh.assertTrue(elementsEqual(child, document.getElementById('test')));
 						}
 					},{
 						setUp: clearTarget,
@@ -200,7 +206,7 @@
 						runTest: function(t){
 							construct.place(HTMLString, "replace", "replace");
 							doh.assertEqual(document.getElementById("replace"), undefined);
-							doh.assertEqual(HTMLString, document.getElementById('test').outerHTML);
+							doh.assertTrue(elementsEqual(child, document.getElementById('test')));
 						}
 					},{
 						setUp: clearTarget,
@@ -223,22 +229,24 @@
 						name: "only - place html string with node reference",
 						runTest: function(t){
 							construct.place(HTMLString, nodes.only, "only");
-							doh.assertEqual(HTMLString, nodes.only.innerHTML);
+							doh.assertEqual(nodes.only.children.length, 1);
+							doh.assertTrue(elementsEqual(child, nodes.only.firstChild));
 						}
 					},{
 						setUp: clearTarget,
 						name: "only - place html string with id reference",
 						runTest: function(t){
 							construct.place(HTMLString, "only", "only");
-							doh.assertEqual(HTMLString, nodes.only.innerHTML);
+							doh.assertEqual(nodes.only.children.length, 1);
+							doh.assertTrue(elementsEqual(child, nodes.only.firstChild));
 						}
 					},{
 						setUp: clearTarget,
 						name: "only - place html string with fragment reference",
 						runTest: function(t){
 							construct.place(HTMLString, fragment, "only");
-							doh.assertEqual(fragment.children.length, 1);
-							doh.assertEqual(HTMLString, fragment.firstChild.outerHTML);
+							doh.assertEqual(fragment.childNodes.length, 1);
+							doh.assertTrue(elementsEqual(child, fragment.firstChild));
 						}
 					},{
 						setUp: clearTarget,
@@ -261,7 +269,7 @@
 						name: "only - place node with fragment reference",
 						runTest: function(t){
 							construct.place(child, fragment, "only");
-							doh.assertEqual(fragment.children.length, 1);
+							doh.assertEqual(fragment.childNodes.length, 1);
 							doh.assertEqual(child, fragment.firstChild);
 						}
 					},{
@@ -269,21 +277,21 @@
 						name: "pos - place html string with node reference",
 						runTest: function(t){
 							construct.place(HTMLString, nodes.pos, TEST_POSITION);
-							doh.assertEqual(HTMLString, nodes.pos.children[TEST_POSITION].outerHTML);
+							doh.assertTrue(elementsEqual(child, nodes.pos.children[TEST_POSITION]));
 						}
 					},{
 						setUp: clearTarget,
 						name: "pos - place html string with id reference",
 						runTest: function(t){
 							construct.place(HTMLString, "pos", TEST_POSITION);
-							doh.assertEqual(HTMLString, nodes.pos.children[TEST_POSITION].outerHTML);
+							doh.assertTrue(elementsEqual(child, nodes.pos.children[TEST_POSITION]));
 						}
 					},{
 						setUp: clearTarget,
 						name: "pos - place html string with fragment reference",
 						runTest: function(t){
 							construct.place(HTMLString, fragment, TEST_POSITION);
-							doh.assertEqual(HTMLString, fragment.children[TEST_POSITION].outerHTML);
+							doh.assertTrue(elementsEqual(child, fragment.childNodes[TEST_POSITION]));
 						}
 					},{
 						setUp: clearTarget,
@@ -304,7 +312,7 @@
 						name: "pos - place node with fragment reference",
 						runTest: function(t){
 							construct.place(child, fragment, TEST_POSITION);
-							doh.assertEqual(child, fragment.children[TEST_POSITION]);
+							doh.assertEqual(child, fragment.childNodes[TEST_POSITION]);
 						}
 					}
 

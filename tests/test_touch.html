@@ -10,6 +10,8 @@
 				height: 150px;
 				border: 1px solid #7FB0DB;
 				background-color: #7FB0DB;
+				touch-action: none;
+				-ms-touch-action: none;
 			}
 			#innertest {
 				border: 1px solid white;
@@ -23,21 +25,27 @@
 				height: 50px;
 				border: 1px solid yellow;
 				background-color: yellow;
+				touch-action: none;
+				-ms-touch-action: none;
 			}
 			#test3 {
 				width: 300px;
 				height: 150px;
 				border: 1px solid red;
 				background-color: red;      
+				touch-action: none;
+				-ms-touch-action: none;
 			}
 			#innertest3 {
 				border: 1px solid white;
 				width: 250px;
 				height: 75px;
 				background-color: white;
+				touch-action: none;
+				-ms-touch-action: none;
 			}
 			#current, #log {
-				width: 300px;
+				width: 50%;
 				height: 200px;
 				float: left;
 			}
@@ -114,10 +122,25 @@
 					// stopPropagation() should work too
 					e.stopPropagation();
 				});
+				
+				
+				function logClickEvent(e) {
+					// synthetic click has _dojo_click = true
+					dom.byId("log").innerHTML = " - _dojo_click [" + e._dojo_click + "]<br/>" + dom.byId("log").innerHTML;
+					// display mouse event attributes
+					// http://www.w3.org/TR/DOM-Level-2-Events/events.html#Events-eventgroupings-mouseevents
+					var info = "",
+							mouseEventAttrNames = ["screenX", "screenY", "clientX", "clientY", "ctrlKey", "altKey", "shiftKey", "metaKey", "button"];
+					for (var attrIdx = 0, name; attrIdx < mouseEventAttrNames.length && (name = mouseEventAttrNames[attrIdx]); attrIdx++) {
+						info += " - " + name + " [" + e[name] + "]<br/>";
+					}
+					dom.byId("log").innerHTML = info + dom.byId("log").innerHTML;
+				}
 
 				dom.byId("test3").dojoClick = true;
 				on(dom.byId("test3"), "click", function(e){
-					if(has("touch")){
+					logClickEvent(e);
+					if(has("touch") || navigator.maxTouchPoints){
 						// click should be a synthetic click
 						dom.byId("log").innerHTML = (e._dojo_click ? "Synthetic click received in test3" : "ERROR: native click received in test3") + "<br/>" + dom.byId("log").innerHTML;
 					}else{
@@ -127,6 +150,7 @@
 				});
 				dom.byId("innertest3").dojoClick = false;
 				on(dom.byId("innertest3"), "click", function(e){
+					logClickEvent(e);
 					// click should be a native click
 					dom.byId("log").innerHTML = (e._dojo_click ? "ERROR: Synthetic click received in innertest3" : "Native click received in innertest3") + "<br/>" + dom.byId("log").innerHTML;;
 					e.stopPropagation();

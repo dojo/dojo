@@ -91,8 +91,8 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 				// default action on "touchpress"
 				e.preventDefault();
 			}
-			clickX = e.touches ? e.touches[0].pageX : e.clientX;
-			clickY = e.touches ? e.touches[0].pageY : e.clientY;
+			clickX = e.changedTouches ? e.changedTouches[0].pageX : e.clientX;
+			clickY = e.changedTouches ? e.changedTouches[0].pageY : e.clientY;
 			clickDx = (typeof clickTracker == "object" ? clickTracker.x : (typeof clickTracker == "number" ? clickTracker : 0)) || 4;
 			clickDy = (typeof clickTracker == "object" ? clickTracker.y : (typeof clickTracker == "number" ? clickTracker : 0)) || 4;
 
@@ -106,7 +106,7 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 						clickTracker = dom.isDescendant(win.doc.elementFromPoint((e.changedTouches ? e.changedTouches[0].pageX : e.clientX),(e.changedTouches ? e.changedTouches[0].pageY : e.clientY)),clickTarget);
 					}else{
 						clickTracker = clickTracker &&
-							e.target == clickTarget &&
+							(e.changedTouches ? e.changedTouches[0].target : e.target) == clickTarget &&
 							Math.abs((e.changedTouches ? e.changedTouches[0].pageX : e.clientX) - clickX) <= clickDx &&
 							Math.abs((e.changedTouches ? e.changedTouches[0].pageY : e.clientY) - clickY) <= clickDy;
 					}
@@ -130,12 +130,31 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 							// when clicking on a label, forward click to its associated input if any
 							target = dom.byId(target.getAttribute("for")) || target;
 						}
+						//some attributes can be on the Touch object, not on the Event:
+						//http://www.w3.org/TR/touch-events/#touch-interface
+						var src = (e.changedTouches) ? e.changedTouches[0] : e;
+						//create the synthetic event.
+						//http://www.w3.org/TR/DOM-Level-3-Events/#widl-MouseEvent-initMouseEvent
+						var clickEvt = document.createEvent("MouseEvents");
+						clickEvt._dojo_click = true;
+						clickEvt.initMouseEvent("click",
+							true, //bubbles
+							true, //cancelable
+							e.view,
+							e.detail,
+							src.screenX,
+							src.screenY,
+							src.clientX,
+							src.clientY,
+							e.ctrlKey,
+							e.altKey,
+							e.shiftKey,
+							e.metaKey,
+							0, //button
+							null //related target
+						);
 						setTimeout(function(){
-							on.emit(target, "click", {
-								bubbles : true,
-								cancelable : true,
-								_dojo_click : true
-							});
+							on.emit(target, "click", clickEvt);
 						}, 0);
 					}
 				}, true);

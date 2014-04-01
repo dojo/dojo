@@ -84,8 +84,8 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 				// default action on "touchpress"
 				e.preventDefault();
 			}
-			clickX = e.touches ? e.touches[0].pageX : e.clientX;
-			clickY = e.touches ? e.touches[0].pageY : e.clientY;
+			clickX = e.changedTouches ? e.changedTouches[0].pageX : e.clientX;
+			clickY = e.changedTouches ? e.changedTouches[0].pageY : e.clientY;
 			clickDx = (typeof clickTracker == "object" ? clickTracker.x : (typeof clickTracker == "number" ? clickTracker : 0)) || 4;
 			clickDy = (typeof clickTracker == "object" ? clickTracker.y : (typeof clickTracker == "number" ? clickTracker : 0)) || 4;
 
@@ -99,7 +99,7 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 						clickTracker = dom.isDescendant(win.doc.elementFromPoint((e.changedTouches ? e.changedTouches[0].pageX : e.clientX),(e.changedTouches ? e.changedTouches[0].pageY : e.clientY)),clickTarget);
 					}else{
 						clickTracker = clickTracker &&
-							e.target == clickTarget &&
+							e.changedTouches?e.changedTouches[0].target: e.target == clickTarget &&
 							Math.abs((e.changedTouches ? e.changedTouches[0].pageX : e.clientX) - clickX) <= clickDx &&
 							Math.abs((e.changedTouches ? e.changedTouches[0].pageY : e.clientY) - clickY) <= clickDy;
 					}
@@ -124,11 +124,13 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 							target = dom.byId(target.getAttribute("for")) || target;
 						}
 						setTimeout(function(){
-							on.emit(target, "click", {
-								bubbles : true,
-								cancelable : true,
-								_dojo_click : true
-							});
+							on.emit(target, "click",
+								lang.delegate (e.changedTouches?e.changedTouches[0]:e, {
+									bubbles : true,
+									cancelable : true,
+									_dojo_click : true
+								})
+							);
 						}, 0);
 					}
 				}, true);
@@ -200,7 +202,7 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 						bubbles: true
 					});
 				
-					doClicks(evt, "touchmove", "touchend"); // init click generation
+					doClicks(evt, "touchmove", "dojotouchend"); // init click generation
 				}, true);
 
 				function copyEventProps(evt){

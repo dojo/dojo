@@ -99,7 +99,7 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 						clickTracker = dom.isDescendant(win.doc.elementFromPoint((e.changedTouches ? e.changedTouches[0].pageX : e.clientX),(e.changedTouches ? e.changedTouches[0].pageY : e.clientY)),clickTarget);
 					}else{
 						clickTracker = clickTracker &&
-							e.changedTouches?e.changedTouches[0].target: e.target == clickTarget &&
+							(e.changedTouches ? e.changedTouches[0].target : e.target) == clickTarget &&
 							Math.abs((e.changedTouches ? e.changedTouches[0].pageX : e.clientX) - clickX) <= clickDx &&
 							Math.abs((e.changedTouches ? e.changedTouches[0].pageY : e.clientY) - clickY) <= clickDy;
 					}
@@ -125,7 +125,7 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 						}
 						setTimeout(function(){
 							on.emit(target, "click",
-								lang.delegate (e.changedTouches?e.changedTouches[0]:e, {
+								lang.delegate(e.changedTouches ? e.changedTouches[0] : e, {
 									bubbles : true,
 									cancelable : true,
 									_dojo_click : true

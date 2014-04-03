@@ -15,7 +15,8 @@ define(
 	"EUR_symbol": "€",
 	"CNY_symbol": "CN¥",
 	"GBP_displayName": "Brits pond sterling",
-	"AUD_symbol": "AU $",
+	"GBP_symbol": "£",
+	"AUD_symbol": "AU$",
 	"EUR_displayName": "Euro"
 }
 //end v1.x content

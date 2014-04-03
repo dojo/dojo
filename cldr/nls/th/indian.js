@@ -1,25 +1,14 @@
 define(
 //begin v1.x content
 {
-	"field-second": "วินาที",
-	"field-year-relative+-1": "ปีที่แล้ว",
-	"field-week": "สัปดาห์",
-	"field-month-relative+-1": "เดือนที่แล้ว",
+	"field-sat-relative+0": "เสาร์นี้",
+	"field-sat-relative+1": "เสาร์หน้า",
+	"field-dayperiod": "ช่วงวัน",
+	"field-sun-relative+-1": "อาทิตย์ที่แล้ว",
+	"field-mon-relative+-1": "จันทร์ที่แล้ว",
+	"field-minute": "นาที",
 	"field-day-relative+-1": "เมื่อวาน",
-	"months-format-narrow": [
-		"1",
-		"2",
-		"3",
-		"4",
-		"5",
-		"6",
-		"7",
-		"8",
-		"9",
-		"10",
-		"11",
-		"12"
-	],
+	"field-weekday": "วันในสัปดาห์",
 	"field-day-relative+-2": "เมื่อวานซืน",
 	"months-standAlone-narrow": [
 		"1",
@@ -35,22 +24,10 @@ define(
 		"11",
 		"12"
 	],
-	"months-standAlone-wide": [
-		"จิตรา",
-		"วิสาขา",
-		"เชษฐา",
-		"อัษฎา",
-		"ศรวณา",
-		"พัตรา",
-		"อัศวิชา",
-		"การติกา",
-		"มฤคศิรา",
-		"ปุษยา",
-		"มาฆะ",
-		"ผลคุณี"
-	],
-	"field-year": "ปี",
-	"field-week-relative+0": "สัปดาห์นี้",
+	"field-era": "สมัย",
+	"field-hour": "ชั่วโมง",
+	"field-sun-relative+0": "อาทิตย์นี้",
+	"field-sun-relative+1": "อาทิตย์หน้า",
 	"months-standAlone-abbr": [
 		"จิตรา",
 		"วิสาขา",
@@ -65,19 +42,25 @@ define(
 		"มาฆะ",
 		"ผลคุณี"
 	],
-	"field-week-relative+1": "สัปดาห์หน้า",
-	"field-minute": "นาที",
-	"field-week-relative+-1": "สัปดาห์ที่แล้ว",
+	"field-wed-relative+-1": "พุธที่แล้ว",
 	"field-day-relative+0": "วันนี้",
-	"field-hour": "ชั่วโมง",
 	"field-day-relative+1": "พรุ่งนี้",
+	"eraAbbr": [
+		"ม.ศ."
+	],
 	"field-day-relative+2": "มะรืนนี้",
-	"field-day": "วัน",
-	"field-month-relative+0": "เดือนนี้",
-	"field-month-relative+1": "เดือนหน้า",
-	"field-dayperiod": "ช่วงวัน",
-	"field-month": "เดือน",
-	"months-format-wide": [
+	"field-tue-relative+0": "อังคารนี้",
+	"field-zone": "เขตเวลา",
+	"field-tue-relative+1": "อังคารหน้า",
+	"field-week-relative+-1": "สัปดาห์ที่แล้ว",
+	"field-year-relative+0": "ปีนี้",
+	"field-year-relative+1": "ปีหน้า",
+	"field-sat-relative+-1": "เสาร์ที่แล้ว",
+	"field-year-relative+-1": "ปีที่แล้ว",
+	"field-year": "ปี",
+	"field-fri-relative+0": "ศุกร์นี้",
+	"field-fri-relative+1": "ศุกร์หน้า",
+	"months-standAlone-wide": [
 		"จิตรา",
 		"วิสาขา",
 		"เชษฐา",
@@ -91,9 +74,9 @@ define(
 		"มาฆะ",
 		"ผลคุณี"
 	],
-	"field-era": "สมัย",
-	"field-year-relative+0": "ปีนี้",
-	"field-year-relative+1": "ปีหน้า",
+	"field-week": "สัปดาห์",
+	"field-week-relative+0": "สัปดาห์นี้",
+	"field-week-relative+1": "สัปดาห์หน้า",
 	"months-format-abbr": [
 		"จิตรา",
 		"วิสาขา",
@@ -108,11 +91,50 @@ define(
 		"มาฆะ",
 		"ผลคุณี"
 	],
-	"eraAbbr": [
-		"ม.ศ."
+	"field-month-relative+0": "เดือนนี้",
+	"field-month": "เดือน",
+	"field-month-relative+1": "เดือนหน้า",
+	"field-fri-relative+-1": "ศุกร์ที่แล้ว",
+	"field-second": "วินาที",
+	"field-tue-relative+-1": "อังคารที่แล้ว",
+	"field-day": "วัน",
+	"months-format-narrow": [
+		"1",
+		"2",
+		"3",
+		"4",
+		"5",
+		"6",
+		"7",
+		"8",
+		"9",
+		"10",
+		"11",
+		"12"
 	],
-	"field-weekday": "วันในสัปดาห์",
-	"field-zone": "เขต"
+	"field-mon-relative+0": "จันทร์นี้",
+	"field-mon-relative+1": "จันทร์หน้า",
+	"field-thu-relative+0": "พฤหัสนี้",
+	"field-second-relative+0": "ขณะนี้",
+	"field-thu-relative+1": "พฤหัสหน้า",
+	"months-format-wide": [
+		"จิตรา",
+		"วิสาขา",
+		"เชษฐา",
+		"อัษฎา",
+		"ศรวณา",
+		"พัตรา",
+		"อัศวิชา",
+		"การติกา",
+		"มฤคศิรา",
+		"ปุษยา",
+		"มาฆะ",
+		"ผลคุณี"
+	],
+	"field-wed-relative+0": "พุธนี้",
+	"field-wed-relative+1": "พุธหน้า",
+	"field-month-relative+-1": "เดือนที่แล้ว",
+	"field-thu-relative+-1": "พฤหัสที่แล้ว"
 }
 //end v1.x content
 );

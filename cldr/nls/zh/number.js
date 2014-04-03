@@ -10,13 +10,14 @@ define(
 	"infinity": "∞",
 	"minusSign": "-",
 	"decimal": ".",
+	"superscriptingExponent": "×",
 	"nan": "NaN",
 	"perMille": "‰",
 	"decimalFormat": "#,##0.###",
 	"currencyFormat": "¤#,##0.00;(¤#,##0.00)",
 	"plusSign": "+",
-	"decimalFormat-long": "000万亿",
-	"decimalFormat-short": "000万亿"
+	"decimalFormat-long": "000兆",
+	"decimalFormat-short": "000兆"
 }
 //end v1.x content
 );

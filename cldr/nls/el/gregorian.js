@@ -1,14 +1,15 @@
 define(
 //begin v1.x content
 {
+	"dateFormatItem-Ehm": "E h:mm a",
 	"days-standAlone-short": [
 		"Κυ",
 		"Δε",
 		"Τρ",
 		"Τε",
-		"Πε",
+		"Πέ",
 		"Πα",
-		"Σα"
+		"Σά"
 	],
 	"months-format-narrow": [
 		"Ι",
@@ -24,6 +25,7 @@ define(
 		"Ν",
 		"Δ"
 	],
+	"field-second-relative+0": "τώρα",
 	"quarters-standAlone-narrow": [
 		"1",
 		"2",
@@ -33,22 +35,29 @@ define(
 	"field-weekday": "Ημέρα εβδομάδας",
 	"dateFormatItem-yQQQ": "y QQQ",
 	"dateFormatItem-yMEd": "E, d/M/y",
+	"field-wed-relative+0": "αυτήν την Τετάρτη",
+	"field-wed-relative+1": "επόμενη Τετάρτη",
+	"dateFormatItem-GyMMMEd": "E, d MMM y G",
 	"dateFormatItem-MMMEd": "E, d MMM",
 	"eraNarrow": [
 		"π.Χ.",
-		"μ.Χ."
+		"π.Κ.Χ.",
+		"μ.Χ.",
+		"ΚΧ"
 	],
-	"dateFormatItem-yMM": "MM/y",
+	"field-tue-relative+-1": "προηγούμενη Τρίτη",
 	"days-format-short": [
 		"Κυ",
 		"Δε",
 		"Τρ",
 		"Τε",
-		"Πε",
+		"Πέ",
 		"Πα",
-		"Σα"
+		"Σά"
 	],
 	"dateFormat-long": "d MMMM y",
+	"field-fri-relative+-1": "προηγούμενη Παρασκευή",
+	"field-wed-relative+-1": "προηγούμενη Τετάρτη",
 	"months-format-wide": [
 		"Ιανουαρίου",
 		"Φεβρουαρίου",
@@ -66,6 +75,7 @@ define(
 	"dateTimeFormat-medium": "{1} - {0}",
 	"dayPeriods-format-wide-pm": "μ.μ.",
 	"dateFormat-full": "EEEE, d MMMM y",
+	"field-thu-relative+-1": "επόμενη Πέμπτη",
 	"dateFormatItem-Md": "d/M",
 	"dateFormatItem-yMd": "d/M/y",
 	"field-era": "Περίοδος",
@@ -96,13 +106,12 @@ define(
 	"field-year": "Έτος",
 	"dateFormatItem-yMMM": "LLL y",
 	"field-hour": "Ώρα",
-	"dateFormatItem-MMdd": "dd/MM",
 	"months-format-abbr": [
 		"Ιαν",
 		"Φεβ",
 		"Μαρ",
 		"Απρ",
-		"Μαϊ",
+		"Μαΐ",
 		"Ιουν",
 		"Ιουλ",
 		"Αυγ",
@@ -111,10 +120,15 @@ define(
 		"Νοε",
 		"Δεκ"
 	],
+	"field-sat-relative+0": "αυτό το Σάββατο",
+	"field-sat-relative+1": "επόμενο Σάββατο",
 	"timeFormat-full": "h:mm:ss a zzzz",
-	"field-day-relative+0": "Σήμερα",
-	"field-day-relative+1": "Αύριο",
-	"field-day-relative+2": "Μεθαύριο",
+	"field-day-relative+0": "σήμερα",
+	"field-thu-relative+0": "αυτήν την Πέμπτη",
+	"field-day-relative+1": "αύριο",
+	"field-thu-relative+1": "επόμενη Πέμπτη",
+	"dateFormatItem-GyMMMd": "d MMM y G",
+	"field-day-relative+2": "μεθαύριο",
 	"dateFormatItem-H": "HH",
 	"months-standAlone-abbr": [
 		"Ιαν",
@@ -142,6 +156,7 @@ define(
 		"3ο τρίμηνο",
 		"4ο τρίμηνο"
 	],
+	"dateFormatItem-Gy": "y G",
 	"dateFormatItem-HHmmss": "HH:mm:ss",
 	"dateFormatItem-M": "L",
 	"days-standAlone-wide": [
@@ -155,7 +170,9 @@ define(
 	],
 	"dateFormatItem-MMMMd": "d MMMM",
 	"timeFormat-medium": "h:mm:ss a",
+	"field-sun-relative+0": "αυτήν την Κυριακή",
 	"dateFormatItem-Hm": "HH:mm",
+	"field-sun-relative+1": "επόμενη Κυριακή",
 	"quarters-standAlone-abbr": [
 		"Τ1",
 		"Τ2",
@@ -164,7 +181,9 @@ define(
 	],
 	"eraAbbr": [
 		"π.Χ.",
-		"μ.Χ."
+		"π.Κ.Χ.",
+		"μ.Χ.",
+		"ΚΧ"
 	],
 	"field-minute": "Λεπτό",
 	"field-dayperiod": "π.μ./μ.μ.",
@@ -185,14 +204,16 @@ define(
 		"3",
 		"4"
 	],
-	"field-day-relative+-1": "Χτες",
+	"field-day-relative+-1": "χθες",
 	"dateFormatItem-h": "h a",
 	"dateTimeFormat-long": "{1} - {0}",
-	"field-day-relative+-2": "Προχτές",
+	"field-day-relative+-2": "προχθές",
 	"dateFormatItem-MMMd": "d MMM",
 	"dateFormatItem-MEd": "E, d/M",
 	"dateTimeFormat-full": "{1} - {0}",
+	"field-fri-relative+0": "αυτήν την Παρασκευή",
 	"dateFormatItem-yMMMM": "LLLL y",
+	"field-fri-relative+1": "επόμενη Παρασκευή",
 	"field-day": "Ημέρα",
 	"days-format-wide": [
 		"Κυριακή",
@@ -219,8 +240,8 @@ define(
 		"Ν",
 		"Δ"
 	],
-	"field-year-relative+-1": "Προηγούμενο έτος",
-	"field-month-relative+-1": "Προηγούμενος μήνας",
+	"field-year-relative+-1": "προηγούμενο έτος",
+	"field-month-relative+-1": "προηγούμενος μήνας",
 	"dateFormatItem-hm": "h:mm a",
 	"days-format-abbr": [
 		"Κυρ",
@@ -234,7 +255,9 @@ define(
 	"dateFormatItem-yMMMd": "d MMM y",
 	"eraNames": [
 		"π.Χ.",
-		"μ.Χ."
+		"π.Κ.Χ.",
+		"μ.Χ.",
+		"ΚΧ"
 	],
 	"days-format-narrow": [
 		"Κ",
@@ -257,26 +280,36 @@ define(
 	"dateFormatItem-MMM": "LLL",
 	"field-month": "Μήνας",
 	"dateFormatItem-HHmm": "HH:mm",
+	"field-tue-relative+0": "αυτήν την Τρίτη",
+	"field-tue-relative+1": "επόμενη Τρίτη",
 	"dayPeriods-format-wide-am": "π.μ.",
 	"dateFormatItem-MMMMEd": "E, d MMMM",
-	"dateFormatItem-MMMMdd": "dd MMMM",
+	"dateFormatItem-EHm": "E HH:mm",
+	"field-mon-relative+0": "αυτήν τη Δευτέρα",
+	"field-mon-relative+1": "επόμενη Δευτέρα",
 	"dateFormat-short": "d/M/yy",
+	"dateFormatItem-EHms": "E HH:mm:ss",
+	"dateFormatItem-Ehms": "E h:mm:ss a",
 	"field-second": "Δευτερόλεπτο",
+	"field-sat-relative+-1": "προηγούμενο Σάββατο",
 	"dateFormatItem-yMMMEd": "E, d MMM y",
-	"field-month-relative+0": "Τρέχων μήνας",
-	"field-month-relative+1": "Επόμενος μήνας",
+	"field-sun-relative+-1": "προηγούμενη Κυριακή",
+	"field-month-relative+0": "τρέχων μήνας",
+	"field-month-relative+1": "επόμενος μήνας",
 	"dateFormatItem-Ed": "E d",
+	"dateTimeFormats-appendItem-Timezone": "{0} {1}",
 	"field-week": "Εβδομάδα",
 	"dateFormat-medium": "d MMM y",
-	"field-year-relative+0": "Φέτος",
-	"field-week-relative+-1": "Προηγούμενη εβδομάδα",
-	"field-year-relative+1": "Επόμενο έτος",
-	"dateFormatItem-mmss": "mm:ss",
+	"field-year-relative+0": "φέτος",
+	"field-week-relative+-1": "προηγούμενη εβδομάδα",
+	"field-year-relative+1": "επόμενο έτος",
 	"dateTimeFormat-short": "{1} - {0}",
 	"dateFormatItem-Hms": "HH:mm:ss",
 	"dateFormatItem-hms": "h:mm:ss a",
-	"field-week-relative+0": "Αυτήν την εβδομάδα",
-	"field-week-relative+1": "Επόμενη εβδομάδα"
+	"dateFormatItem-GyMMM": "LLL y G",
+	"field-mon-relative+-1": "προηγούμενη Δευτέρα",
+	"field-week-relative+0": "αυτήν την εβδομάδα",
+	"field-week-relative+1": "επόμενη εβδομάδα"
 }
 //end v1.x content
 );

@@ -10,26 +10,16 @@ define(
 		"ศ.",
 		"ส."
 	],
-	"months-format-narrow": [
-		"ม.ค.",
-		"ก.พ.",
-		"มี.ค.",
-		"เม.ย.",
-		"พ.ค.",
-		"มิ.ย",
-		"ก.ค.",
-		"ส.ค.",
-		"ก.ย.",
-		"ต.ค.",
-		"พ.ย.",
-		"ธ.ค."
-	],
+	"field-second-relative+0": "ขณะนี้",
 	"field-weekday": "วันในสัปดาห์",
+	"field-wed-relative+0": "พุธนี้",
+	"field-wed-relative+1": "พุธหน้า",
 	"dateFormatItem-GyMMMEd": "E d MMM G y",
 	"dateFormatItem-MMMEd": "E d MMM",
 	"eraNarrow": [
 		"พ.ศ."
 	],
+	"field-tue-relative+-1": "อังคารที่แล้ว",
 	"days-format-short": [
 		"อา.",
 		"จ.",
@@ -40,6 +30,8 @@ define(
 		"ส."
 	],
 	"dateFormat-long": "d MMMM y",
+	"field-fri-relative+-1": "ศุกร์ที่แล้ว",
+	"field-wed-relative+-1": "พุธที่แล้ว",
 	"months-format-wide": [
 		"มกราคม",
 		"กุมภาพันธ์",
@@ -55,10 +47,10 @@ define(
 		"ธันวาคม"
 	],
 	"dateFormatItem-yyyyQQQ": "QQQ y",
-	"dateTimeFormat-medium": "{1}, {0}",
 	"dayPeriods-format-wide-pm": "หลังเที่ยง",
 	"dateFormat-full": "EEEEที่ d MMMM G y",
 	"dateFormatItem-yyyyMEd": "E d/M/y",
+	"field-thu-relative+-1": "พฤหัสที่แล้ว",
 	"dateFormatItem-Md": "d/M",
 	"field-era": "สมัย",
 	"months-standAlone-wide": [
@@ -99,9 +91,13 @@ define(
 		"พ.ย.",
 		"ธ.ค."
 	],
+	"field-sat-relative+0": "เสาร์นี้",
+	"field-sat-relative+1": "เสาร์หน้า",
 	"timeFormat-full": "H นาฬิกา mm นาที ss วินาที zzzz",
 	"field-day-relative+0": "วันนี้",
+	"field-thu-relative+0": "พฤหัสนี้",
 	"field-day-relative+1": "พรุ่งนี้",
+	"field-thu-relative+1": "พฤหัสหน้า",
 	"dateFormatItem-GyMMMd": "d MMM G y",
 	"field-day-relative+2": "มะรืนนี้",
 	"dateFormatItem-H": "HH",
@@ -146,7 +142,9 @@ define(
 	"dateFormatItem-yyyyMMM": "MMM y",
 	"dateFormatItem-yyyyMMMd": "d MMM y",
 	"dateFormatItem-MMMMd": "d MMMM",
+	"field-sun-relative+0": "อาทิตย์นี้",
 	"dateFormatItem-Hm": "HH:mm",
+	"field-sun-relative+1": "อาทิตย์หน้า",
 	"quarters-standAlone-abbr": [
 		"ไตรมาส 1",
 		"ไตรมาส 2",
@@ -171,12 +169,11 @@ define(
 	"dateFormatItem-ms": "mm:ss",
 	"field-day-relative+-1": "เมื่อวาน",
 	"dateFormatItem-h": "h a",
-	"dateTimeFormat-long": "{1}, {0}",
-	"dayPeriods-format-narrow-am": "ก่อนเที่ยง",
 	"field-day-relative+-2": "เมื่อวานซืน",
 	"dateFormatItem-MMMd": "d MMM",
-	"dateFormatItem-MEd": "E, d/M",
-	"dateTimeFormat-full": "{1}, {0}",
+	"dateFormatItem-MEd": "E d/M",
+	"field-fri-relative+0": "ศุกร์นี้",
+	"field-fri-relative+1": "ศุกร์หน้า",
 	"field-day": "วัน",
 	"days-format-wide": [
 		"วันอาทิตย์",
@@ -187,7 +184,7 @@ define(
 		"วันศุกร์",
 		"วันเสาร์"
 	],
-	"field-zone": "เขต",
+	"field-zone": "เขตเวลา",
 	"dateFormatItem-y": "G y",
 	"months-standAlone-narrow": [
 		"ม.ค.",
@@ -219,30 +216,36 @@ define(
 		"พุทธศักราช"
 	],
 	"days-format-narrow": [
-		"อา.",
-		"จ.",
-		"อ.",
-		"พ.",
-		"พฤ.",
-		"ศ.",
-		"ส."
+		"อา",
+		"จ",
+		"อ",
+		"พ",
+		"พฤ",
+		"ศ",
+		"ส"
 	],
 	"dateFormatItem-yyyyMd": "d/M/y",
 	"field-month": "เดือน",
-	"days-standAlone-narrow": [
-		"อา.",
-		"จ.",
-		"อ.",
-		"พ.",
-		"พฤ.",
-		"ศ.",
-		"ส."
-	],
 	"dateFormatItem-MMM": "LLL",
+	"days-standAlone-narrow": [
+		"อา",
+		"จ",
+		"อ",
+		"พ",
+		"พฤ",
+		"ศ",
+		"ส"
+	],
+	"field-tue-relative+0": "อังคารนี้",
+	"field-tue-relative+1": "อังคารหน้า",
 	"dayPeriods-format-wide-am": "ก่อนเที่ยง",
 	"dateFormatItem-MMMMEd": "E d MMMM",
+	"field-mon-relative+0": "จันทร์นี้",
+	"field-mon-relative+1": "จันทร์หน้า",
 	"dateFormat-short": "d/M/yy",
 	"field-second": "วินาที",
+	"field-sat-relative+-1": "เสาร์ที่แล้ว",
+	"field-sun-relative+-1": "อาทิตย์ที่แล้ว",
 	"field-month-relative+0": "เดือนนี้",
 	"field-month-relative+1": "เดือนหน้า",
 	"dateFormatItem-Ed": "E d",
@@ -253,12 +256,11 @@ define(
 	"dateFormatItem-yyyyM": "M/y",
 	"field-year-relative+1": "ปีหน้า",
 	"dateFormatItem-mmss": "mm:ss",
-	"dayPeriods-format-narrow-pm": "หลังเที่ยง",
 	"dateFormatItem-yyyyQQQQ": "QQQQ y",
-	"dateTimeFormat-short": "{1}, {0}",
 	"dateFormatItem-Hms": "HH:mm:ss",
 	"dateFormatItem-hms": "h:mm:ss a",
 	"dateFormatItem-GyMMM": "MMM G y",
+	"field-mon-relative+-1": "จันทร์ที่แล้ว",
 	"dateFormatItem-yyyy": "G y",
 	"field-week-relative+0": "สัปดาห์นี้",
 	"field-week-relative+1": "สัปดาห์หน้า"

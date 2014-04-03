@@ -25,10 +25,14 @@ define(
 		"A",
 		"E"
 	],
+	"field-second-relative+0": "nyt",
 	"field-weekday": "viikonpäivä",
 	"months-standAlone-narrow-leap": "A",
+	"field-wed-relative+0": "tänä keskiviikkona",
+	"field-wed-relative+1": "ensi keskiviikkona",
 	"dateFormatItem-GyMMMEd": "E d. MMM y G",
 	"dateFormatItem-MMMEd": "ccc d. MMM",
+	"field-tue-relative+-1": "viime tiistaina",
 	"days-format-short": [
 		"su",
 		"ma",
@@ -39,6 +43,8 @@ define(
 		"la"
 	],
 	"dateFormat-long": "d. MMMM y G",
+	"field-fri-relative+-1": "viime perjantaina",
+	"field-wed-relative+-1": "viime keskiviikkona",
 	"months-format-wide": [
 		"tišríkuuta",
 		"hešvánkuuta",
@@ -58,6 +64,7 @@ define(
 	"dayPeriods-format-wide-pm": "ip.",
 	"dateFormat-full": "cccc d. MMMM y G",
 	"dateFormatItem-yyyyMEd": "E d.M.y G",
+	"field-thu-relative+-1": "viime torstaina",
 	"dateFormatItem-Md": "d.M.",
 	"dayPeriods-format-abbr-am": "ap.",
 	"field-era": "aikakausi",
@@ -101,9 +108,13 @@ define(
 		"abkuuta",
 		"elúlkuuta"
 	],
+	"field-sat-relative+0": "tänä lauantaina",
+	"field-sat-relative+1": "ensi lauantaina",
 	"timeFormat-full": "H.mm.ss zzzz",
 	"field-day-relative+0": "tänään",
+	"field-thu-relative+0": "tänä torstaina",
 	"field-day-relative+1": "huomenna",
+	"field-thu-relative+1": "ensi torstaina",
 	"dateFormatItem-GyMMMd": "d. MMM y G",
 	"field-day-relative+2": "ylihuomenna",
 	"dateFormatItem-H": "H",
@@ -149,7 +160,9 @@ define(
 	"dateFormatItem-yyyyMMMd": "d. MMM y G",
 	"months-standAlone-wide-leap": "adárkuu II",
 	"timeFormat-medium": "H.mm.ss",
+	"field-sun-relative+0": "tänä sunnuntaina",
 	"dateFormatItem-Hm": "H.mm",
+	"field-sun-relative+1": "ensi sunnuntaina",
 	"quarters-standAlone-abbr": [
 		"1. nelj.",
 		"2. nelj.",
@@ -173,6 +186,8 @@ define(
 	"field-day-relative+-2": "toissapäivänä",
 	"dateFormatItem-MMMd": "d. MMM",
 	"dateFormatItem-MEd": "E d.M.",
+	"field-fri-relative+0": "tänä perjantaina",
+	"field-fri-relative+1": "ensi perjantaina",
 	"field-day": "päivä",
 	"days-format-wide": [
 		"sunnuntaina",
@@ -234,9 +249,15 @@ define(
 		"P",
 		"L"
 	],
+	"field-tue-relative+0": "tänä tiistaina",
+	"field-tue-relative+1": "ensi tiistaina",
 	"dayPeriods-format-wide-am": "ap.",
+	"field-mon-relative+0": "tänä maanantaina",
+	"field-mon-relative+1": "ensi maanantaina",
 	"dateFormat-short": "d.M.y GGGGG",
 	"field-second": "sekunti",
+	"field-sat-relative+-1": "viime lauantaina",
+	"field-sun-relative+-1": "viime sunnuntaina",
 	"field-month-relative+0": "tässä kuussa",
 	"field-month-relative+1": "ensi kuussa",
 	"dateFormatItem-Ed": "E d.",
@@ -252,6 +273,7 @@ define(
 	"dateFormatItem-hms": "h.mm.ss a",
 	"months-format-wide-leap": "adárkuuta II",
 	"dateFormatItem-GyMMM": "LLL y G",
+	"field-mon-relative+-1": "viime maanantaina",
 	"dateFormatItem-yyyy": "y G",
 	"field-week-relative+0": "tällä viikolla",
 	"field-week-relative+1": "ensi viikolla"

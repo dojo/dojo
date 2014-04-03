@@ -10,12 +10,16 @@ define(
 		"周五",
 		"周六"
 	],
+	"field-second-relative+0": "现在",
 	"field-weekday": "星期",
+	"field-wed-relative+0": "本周三",
+	"field-wed-relative+1": "下周三",
 	"dateFormatItem-GyMMMEd": "Gy年M月d日E",
 	"dateFormatItem-MMMEd": "M月d日E",
 	"eraNarrow": [
 		"佛历"
 	],
+	"field-tue-relative+-1": "上周二",
 	"days-format-short": [
 		"周日",
 		"周一",
@@ -26,6 +30,8 @@ define(
 		"周六"
 	],
 	"dateFormat-long": "Gy年M月d日",
+	"field-fri-relative+-1": "上周五",
+	"field-wed-relative+-1": "上周三",
 	"months-format-wide": [
 		"一月",
 		"二月",
@@ -44,8 +50,10 @@ define(
 	"dayPeriods-format-wide-pm": "下午",
 	"dateFormat-full": "Gy年M月d日EEEE",
 	"dateFormatItem-yyyyMEd": "Gy-M-d（E）",
+	"field-thu-relative+-1": "上周四",
 	"dateFormatItem-Md": "M-d",
-	"field-era": "时期",
+	"dayPeriods-format-wide-noon": "中午",
+	"field-era": "纪元",
 	"months-standAlone-wide": [
 		"一月",
 		"二月",
@@ -69,6 +77,7 @@ define(
 	],
 	"timeFormat-long": "zah:mm:ss",
 	"field-year": "年",
+	"dateFormatItem-yyyyMMMM": "Gy年M月",
 	"field-hour": "小时",
 	"months-format-abbr": [
 		"1月",
@@ -84,9 +93,13 @@ define(
 		"11月",
 		"12月"
 	],
+	"field-sat-relative+0": "本周六",
+	"field-sat-relative+1": "下周六",
 	"timeFormat-full": "zzzzah:mm:ss",
 	"field-day-relative+0": "今天",
+	"field-thu-relative+0": "本周四",
 	"field-day-relative+1": "明天",
+	"field-thu-relative+1": "下周四",
 	"dateFormatItem-GyMMMd": "Gy年M月d日",
 	"field-day-relative+2": "后天",
 	"dateFormatItem-H": "H时",
@@ -131,6 +144,8 @@ define(
 	"dateFormatItem-yyyyMMM": "Gy年M月",
 	"dateFormatItem-yyyyMMMd": "Gy年M月d日",
 	"timeFormat-medium": "ah:mm:ss",
+	"field-sun-relative+0": "本周日",
+	"field-sun-relative+1": "下周日",
 	"quarters-standAlone-abbr": [
 		"1季度",
 		"2季度",
@@ -154,12 +169,12 @@ define(
 	"dateFormatItem-d": "d日",
 	"field-day-relative+-1": "昨天",
 	"dateFormatItem-h": "ah时",
-	"dateTimeFormat-long": "{1}{0}",
 	"dayPeriods-format-narrow-am": "上午",
 	"field-day-relative+-2": "前天",
 	"dateFormatItem-MMMd": "M月d日",
 	"dateFormatItem-MEd": "M-dE",
-	"dateTimeFormat-full": "{1}{0}",
+	"field-fri-relative+0": "本周五",
+	"field-fri-relative+1": "下周五",
 	"field-day": "日",
 	"days-format-wide": [
 		"星期日",
@@ -198,6 +213,7 @@ define(
 	],
 	"dateFormatItem-yyyyMd": "Gy-M-d",
 	"field-month": "月",
+	"dateFormatItem-MMM": "LLL",
 	"days-standAlone-narrow": [
 		"日",
 		"一",
@@ -207,9 +223,16 @@ define(
 		"五",
 		"六"
 	],
+	"field-tue-relative+0": "本周二",
+	"field-tue-relative+1": "下周二",
 	"dayPeriods-format-wide-am": "上午",
+	"field-mon-relative+0": "本周一",
+	"field-mon-relative+1": "下周一",
 	"dateFormat-short": "Gy-M-d",
+	"dayPeriods-format-narrow-noon": "中午",
 	"field-second": "秒钟",
+	"field-sat-relative+-1": "上周六",
+	"field-sun-relative+-1": "上周日",
 	"field-month-relative+0": "本月",
 	"field-month-relative+1": "下个月",
 	"dateFormatItem-Ed": "d日E",
@@ -222,6 +245,7 @@ define(
 	"dayPeriods-format-narrow-pm": "下午",
 	"dateFormatItem-yyyyQQQQ": "Gy年QQQQ",
 	"dateFormatItem-hms": "ah:mm:ss",
+	"field-mon-relative+-1": "上周一",
 	"dateFormatItem-GyMMM": "Gy年M月",
 	"dateFormatItem-yyyy": "Gy年",
 	"field-week-relative+0": "本周",

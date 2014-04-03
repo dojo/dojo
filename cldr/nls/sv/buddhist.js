@@ -24,9 +24,13 @@ define(
 		"N",
 		"D"
 	],
-	"field-weekday": "veckodag",
+	"field-second-relative+0": "nu",
+	"field-weekday": "Veckodag",
+	"field-wed-relative+0": "onsdag denna vecka",
+	"field-wed-relative+1": "onsdag nästa vecka",
 	"dateFormatItem-GyMMMEd": "E d MMM y G",
 	"dateFormatItem-MMMEd": "E d MMM",
+	"field-tue-relative+-1": "tisdag förra veckan",
 	"days-format-short": [
 		"sö",
 		"må",
@@ -37,6 +41,8 @@ define(
 		"lö"
 	],
 	"dateFormat-long": "d MMMM y G",
+	"field-fri-relative+-1": "fredag förra veckan",
+	"field-wed-relative+-1": "onsdag förra veckan",
 	"months-format-wide": [
 		"januari",
 		"februari",
@@ -54,9 +60,10 @@ define(
 	"dayPeriods-format-wide-pm": "em",
 	"dateFormat-full": "EEEE d MMMM y G",
 	"dateFormatItem-yyyyMEd": "E, y-MM-dd G",
+	"field-thu-relative+-1": "torsdag förra veckan",
 	"dateFormatItem-Md": "d/M",
 	"dayPeriods-format-abbr-am": "FM",
-	"field-era": "era",
+	"field-era": "Era",
 	"months-standAlone-wide": [
 		"Januari",
 		"Februari",
@@ -77,7 +84,7 @@ define(
 		"3:e kvartalet",
 		"4:e kvartalet"
 	],
-	"field-year": "år",
+	"field-year": "År",
 	"field-hour": "timme",
 	"months-format-abbr": [
 		"jan",
@@ -93,9 +100,13 @@ define(
 		"nov",
 		"dec"
 	],
+	"field-sat-relative+0": "lördag denna vecka",
+	"field-sat-relative+1": "lördag nästa vecka",
 	"timeFormat-full": "'kl'. HH:mm:ss zzzz",
 	"field-day-relative+0": "i dag",
+	"field-thu-relative+0": "torsdag denna vecka",
 	"field-day-relative+1": "i morgon",
+	"field-thu-relative+1": "torsdag nästa vecka",
 	"dateFormatItem-GyMMMd": "d MMM y G",
 	"field-day-relative+2": "i övermorgon",
 	"months-standAlone-abbr": [
@@ -137,6 +148,8 @@ define(
 	],
 	"dateFormatItem-yyyyMMM": "MMM y G",
 	"dateFormatItem-yyyyMMMd": "d MMM y G",
+	"field-sun-relative+0": "söndag denna vecka",
+	"field-sun-relative+1": "söndag nästa vecka",
 	"quarters-standAlone-abbr": [
 		"K1",
 		"K2",
@@ -146,7 +159,7 @@ define(
 	"eraAbbr": [
 		"BE"
 	],
-	"field-minute": "minut",
+	"field-minute": "Minut",
 	"field-dayperiod": "fm/em",
 	"days-standAlone-abbr": [
 		"Sön",
@@ -162,7 +175,9 @@ define(
 	"field-day-relative+-2": "i förrgår",
 	"dateFormatItem-MMMd": "d MMM",
 	"dateFormatItem-MEd": "E d/M",
-	"field-day": "dag",
+	"field-fri-relative+0": "fredag denna vecka",
+	"field-fri-relative+1": "fredag nästa vecka",
+	"field-day": "Dag",
 	"days-format-wide": [
 		"söndag",
 		"måndag",
@@ -172,7 +187,7 @@ define(
 		"fredag",
 		"lördag"
 	],
-	"field-zone": "tidszon",
+	"field-zone": "Tidszon",
 	"dateFormatItem-y": "y G",
 	"months-standAlone-narrow": [
 		"J",
@@ -210,7 +225,7 @@ define(
 		"L"
 	],
 	"dateFormatItem-yyyyMd": "G y-MM-dd",
-	"field-month": "månad",
+	"field-month": "Månad",
 	"days-standAlone-narrow": [
 		"S",
 		"M",
@@ -220,13 +235,19 @@ define(
 		"F",
 		"L"
 	],
+	"field-tue-relative+0": "tisdag denna vecka",
+	"field-tue-relative+1": "tisdag nästa vecka",
 	"dayPeriods-format-wide-am": "fm",
+	"field-mon-relative+0": "måndag denna vecka",
+	"field-mon-relative+1": "måndag nästa vecka",
 	"dateFormat-short": "G y-MM-dd",
-	"field-second": "sekund",
+	"field-second": "Sekund",
+	"field-sat-relative+-1": "lördag förra veckan",
+	"field-sun-relative+-1": "söndag förra veckan",
 	"field-month-relative+0": "denna månad",
 	"field-month-relative+1": "nästa månad",
 	"dateFormatItem-Ed": "E d",
-	"field-week": "vecka",
+	"field-week": "Vecka",
 	"dateFormat-medium": "d MMM y G",
 	"field-year-relative+0": "i år",
 	"field-week-relative+-1": "förra veckan",
@@ -234,6 +255,7 @@ define(
 	"field-year-relative+1": "nästa år",
 	"dayPeriods-format-narrow-pm": "e",
 	"dateFormatItem-GyMMM": "MMM y G",
+	"field-mon-relative+-1": "måndag förra veckan",
 	"dateFormatItem-yyyy": "y G",
 	"field-week-relative+0": "denna vecka",
 	"field-week-relative+1": "nästa vecka"

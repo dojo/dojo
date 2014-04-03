@@ -8,13 +8,14 @@ define(
 	"percentFormat": "#,##0%",
 	"list": ";",
 	"infinity": "∞",
-	"minusSign": "-",
+	"minusSign": "‎-",
 	"decimal": ".",
+	"superscriptingExponent": "×",
 	"nan": "NaN",
 	"perMille": "‰",
 	"decimalFormat": "#,##0.###",
 	"currencyFormat": "#,##0.00 ¤",
-	"plusSign": "+",
+	"plusSign": "‎+",
 	"decimalFormat-long": "‏000 טריליון",
 	"decimalFormat-short": "000T"
 }

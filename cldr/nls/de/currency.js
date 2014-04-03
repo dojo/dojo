@@ -9,7 +9,7 @@ define(
 	"CNY_displayName": "Renminbi Yuan",
 	"USD_symbol": "$",
 	"AUD_displayName": "Australischer Dollar",
-	"JPY_displayName": "Japanische Yen",
+	"JPY_displayName": "Japanischer Yen",
 	"CAD_symbol": "CA$",
 	"USD_displayName": "US-Dollar",
 	"EUR_symbol": "€",

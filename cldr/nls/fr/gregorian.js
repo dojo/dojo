@@ -1,6 +1,7 @@
 define(
 //begin v1.x content
 {
+	"dateFormatItem-Ehm": "E h:mm a",
 	"days-standAlone-short": [
 		"dim.",
 		"lun.",
@@ -24,6 +25,7 @@ define(
 		"N",
 		"D"
 	],
+	"field-second-relative+0": "maintenant",
 	"quarters-standAlone-narrow": [
 		"1",
 		"2",
@@ -33,12 +35,17 @@ define(
 	"field-weekday": "jour de la semaine",
 	"dateFormatItem-yQQQ": "QQQ y",
 	"dateFormatItem-yMEd": "E d/M/y",
+	"field-wed-relative+0": "ce mercredi",
+	"field-wed-relative+1": "mercredi prochain",
 	"dateFormatItem-GyMMMEd": "E d MMM y G",
 	"dateFormatItem-MMMEd": "E d MMM",
 	"eraNarrow": [
 		"av. J.-C.",
-		"ap. J.-C."
+		"ap. J.-C.",
+		"ap. J.-C.",
+		"EC"
 	],
+	"field-tue-relative+-1": "mardi dernier",
 	"dayPeriods-format-wide-morning": "matin",
 	"days-format-short": [
 		"di",
@@ -50,6 +57,8 @@ define(
 		"sa"
 	],
 	"dateFormat-long": "d MMMM y",
+	"field-fri-relative+-1": "vendredi dernier",
+	"field-wed-relative+-1": "mercredi dernier",
 	"months-format-wide": [
 		"janvier",
 		"février",
@@ -67,6 +76,7 @@ define(
 	"dateTimeFormat-medium": "{1} {0}",
 	"dayPeriods-format-wide-pm": "PM",
 	"dateFormat-full": "EEEE d MMMM y",
+	"field-thu-relative+-1": "jeudi dernier",
 	"dateFormatItem-Md": "d/M",
 	"dayPeriods-format-abbr-am": "AM",
 	"dayPeriods-format-wide-noon": "midi",
@@ -113,13 +123,17 @@ define(
 		"nov.",
 		"déc."
 	],
+	"field-sat-relative+0": "ce samedi",
+	"field-sat-relative+1": "samedi prochain",
 	"timeFormat-full": "HH:mm:ss zzzz",
 	"dayPeriods-format-narrow-morning": "matin",
 	"field-day-relative+0": "aujourd’hui",
+	"field-thu-relative+0": "ce jeudi",
 	"field-day-relative+1": "demain",
+	"field-thu-relative+1": "jeudi prochain",
 	"dateFormatItem-GyMMMd": "d MMM y G",
 	"field-day-relative+2": "après-demain",
-	"dateFormatItem-H": "HH",
+	"dateFormatItem-H": "HH 'h'",
 	"months-standAlone-abbr": [
 		"janv.",
 		"févr.",
@@ -158,7 +172,9 @@ define(
 		"samedi"
 	],
 	"timeFormat-medium": "HH:mm:ss",
+	"field-sun-relative+0": "ce dimanche",
 	"dateFormatItem-Hm": "HH:mm",
+	"field-sun-relative+1": "dimanche prochain",
 	"quarters-standAlone-abbr": [
 		"T1",
 		"T2",
@@ -167,7 +183,9 @@ define(
 	],
 	"eraAbbr": [
 		"av. J.-C.",
-		"ap. J.-C."
+		"AEC",
+		"ap. J.-C.",
+		"EC"
 	],
 	"field-minute": "minute",
 	"field-dayperiod": "cadran",
@@ -196,7 +214,9 @@ define(
 	"dateFormatItem-MMMd": "d MMM",
 	"dateFormatItem-MEd": "E d/M",
 	"dateTimeFormat-full": "{1} {0}",
+	"field-fri-relative+0": "ce vendredi",
 	"dateFormatItem-yMMMM": "MMMM y",
+	"field-fri-relative+1": "vendredi prochain",
 	"field-day": "jour",
 	"days-format-wide": [
 		"dimanche",
@@ -237,11 +257,13 @@ define(
 		"ven.",
 		"sam."
 	],
-	"dateFormatItem-yMMMd": "d MMM y",
 	"eraNames": [
 		"avant Jésus-Christ",
-		"après Jésus-Christ"
+		"après Jésus-Christ",
+		"ap. J.-C.",
+		"EC"
 	],
+	"dateFormatItem-yMMMd": "d MMM y",
 	"days-format-narrow": [
 		"D",
 		"L",
@@ -262,15 +284,25 @@ define(
 	],
 	"dateFormatItem-MMM": "LLL",
 	"field-month": "mois",
+	"field-tue-relative+0": "ce mardi",
+	"field-tue-relative+1": "mardi prochain",
 	"dayPeriods-format-wide-am": "AM",
+	"dateFormatItem-EHm": "E HH:mm",
+	"field-mon-relative+0": "ce lundi",
+	"field-mon-relative+1": "lundi prochain",
 	"dateFormat-short": "dd/MM/y",
 	"dayPeriods-format-wide-afternoon": "après-midi",
+	"dateFormatItem-EHms": "E HH:mm:ss",
+	"dateFormatItem-Ehms": "E h:mm:ss a",
 	"dayPeriods-format-narrow-noon": "midi",
 	"field-second": "seconde",
+	"field-sat-relative+-1": "samedi dernier",
 	"dateFormatItem-yMMMEd": "E d MMM y",
+	"field-sun-relative+-1": "dimanche dernier",
 	"field-month-relative+0": "ce mois-ci",
 	"field-month-relative+1": "le mois prochain",
 	"dateFormatItem-Ed": "E d",
+	"dateTimeFormats-appendItem-Timezone": "{0} {1}",
 	"field-week": "semaine",
 	"dateFormat-medium": "d MMM y",
 	"field-year-relative+0": "cette année",
@@ -281,6 +313,7 @@ define(
 	"dateFormatItem-Hms": "HH:mm:ss",
 	"dateFormatItem-hms": "h:mm:ss a",
 	"dateFormatItem-GyMMM": "MMM y G",
+	"field-mon-relative+-1": "lundi dernier",
 	"field-week-relative+0": "cette semaine",
 	"field-week-relative+1": "la semaine prochaine"
 }

@@ -1,6 +1,7 @@
 define(
 //begin v1.x content
 {
+	"dateFormatItem-Ehm": "Eah:mm",
 	"days-standAlone-short": [
 		"周日",
 		"周一",
@@ -24,6 +25,7 @@ define(
 		"11",
 		"12"
 	],
+	"field-second-relative+0": "现在",
 	"quarters-standAlone-narrow": [
 		"1",
 		"2",
@@ -33,14 +35,17 @@ define(
 	"field-weekday": "星期",
 	"dateFormatItem-yQQQ": "y年第Q季度",
 	"dateFormatItem-yMEd": "y/M/dE",
+	"field-wed-relative+0": "本周三",
 	"dateFormatItem-GyMMMEd": "Gy年M月d日E",
 	"dateFormatItem-MMMEd": "M月d日E",
+	"field-wed-relative+1": "下周三",
 	"eraNarrow": [
 		"公元前",
 		"公元"
 	],
 	"dateFormatItem-yMM": "y年M月",
 	"dayPeriods-format-wide-earlyMorning": "清晨",
+	"field-tue-relative+-1": "上周二",
 	"dayPeriods-format-wide-morning": "上午",
 	"days-format-short": [
 		"周日",
@@ -52,6 +57,8 @@ define(
 		"周六"
 	],
 	"dateFormat-long": "y年M月d日",
+	"field-fri-relative+-1": "上周五",
+	"field-wed-relative+-1": "上周三",
 	"months-format-wide": [
 		"一月",
 		"二月",
@@ -69,12 +76,13 @@ define(
 	"dateTimeFormat-medium": "{1} {0}",
 	"dayPeriods-format-wide-pm": "下午",
 	"dateFormat-full": "y年M月d日EEEE",
+	"field-thu-relative+-1": "上周四",
 	"dateFormatItem-Md": "M/d",
 	"dayPeriods-format-narrow-midDay": "中午",
 	"dayPeriods-format-wide-noon": "中午",
 	"dateFormatItem-yMd": "y/M/d",
 	"dateFormatItem-yM": "y/M",
-	"field-era": "时期",
+	"field-era": "纪元",
 	"months-standAlone-wide": [
 		"一月",
 		"二月",
@@ -98,7 +106,7 @@ define(
 	],
 	"timeFormat-long": "zah:mm:ss",
 	"dateFormatItem-yMMM": "y年M月",
-	"dateFormatItem-yQQQQ": "y年QQQQ",
+	"dateFormatItem-yQQQQ": "y年第Q季度",
 	"field-year": "年",
 	"dateFormatItem-MMdd": "MM/dd",
 	"field-hour": "小时",
@@ -116,12 +124,16 @@ define(
 		"11月",
 		"12月"
 	],
+	"field-sat-relative+0": "本周六",
+	"field-sat-relative+1": "下周六",
 	"timeFormat-full": "zzzzah:mm:ss",
 	"dayPeriods-format-narrow-morning": "上午",
 	"field-day-relative+0": "今天",
 	"field-day-relative+1": "明天",
+	"field-thu-relative+0": "本周四",
 	"dateFormatItem-GyMMMd": "Gy年M月d日",
 	"field-day-relative+2": "后天",
+	"field-thu-relative+1": "下周四",
 	"dateFormatItem-H": "H时",
 	"months-standAlone-abbr": [
 		"1月",
@@ -161,6 +173,7 @@ define(
 		"星期六"
 	],
 	"timeFormat-medium": "ah:mm:ss",
+	"field-sun-relative+0": "本周日",
 	"dateFormatItem-Hm": "HH:mm",
 	"quarters-standAlone-abbr": [
 		"1季度",
@@ -168,6 +181,7 @@ define(
 		"3季度",
 		"4季度"
 	],
+	"field-sun-relative+1": "下周日",
 	"eraAbbr": [
 		"公元前",
 		"公元"
@@ -194,14 +208,16 @@ define(
 	],
 	"field-day-relative+-1": "昨天",
 	"dateFormatItem-h": "ah时",
-	"dateTimeFormat-long": "{1}{0}",
+	"dateTimeFormat-long": "{1} {0}",
 	"dayPeriods-format-narrow-am": "上午",
 	"field-day-relative+-2": "前天",
 	"dateFormatItem-MMMd": "M月d日",
 	"dayPeriods-format-wide-midDay": "中午",
 	"dateFormatItem-MEd": "M/dE",
-	"dateTimeFormat-full": "{1}{0}",
+	"dateTimeFormat-full": "{1} {0}",
+	"field-fri-relative+0": "本周五",
 	"dateFormatItem-yMMMM": "y年M月",
+	"field-fri-relative+1": "下周五",
 	"field-day": "日",
 	"days-format-wide": [
 		"星期日",
@@ -268,18 +284,28 @@ define(
 	],
 	"dateFormatItem-MMM": "LLL",
 	"field-month": "月",
+	"field-tue-relative+0": "本周二",
+	"field-tue-relative+1": "下周二",
 	"dayPeriods-format-wide-am": "上午",
+	"dateFormatItem-EHm": "EHH:mm",
 	"dayPeriods-format-wide-weeHours": "凌晨",
 	"dateFormatItem-MMMMdd": "M月dd日",
-	"dateFormat-short": "yy-M-d",
+	"field-mon-relative+0": "本周一",
+	"field-mon-relative+1": "下周一",
+	"dateFormat-short": "yy/M/d",
 	"dayPeriods-format-wide-afternoon": "下午",
+	"dateFormatItem-EHms": "EHH:mm:ss",
+	"dateFormatItem-Ehms": "Eah:mm:ss",
 	"dayPeriods-format-narrow-afternoon": "下午",
 	"dayPeriods-format-narrow-noon": "中午",
 	"field-second": "秒钟",
+	"field-sat-relative+-1": "上周六",
 	"dateFormatItem-yMMMEd": "y年M月d日E",
+	"field-sun-relative+-1": "上周日",
 	"field-month-relative+0": "本月",
 	"field-month-relative+1": "下个月",
 	"dateFormatItem-Ed": "d日E",
+	"dateTimeFormats-appendItem-Timezone": "{1}{0}",
 	"field-week": "周",
 	"dateFormat-medium": "y年M月d日",
 	"field-year-relative+0": "今年",
@@ -290,6 +316,7 @@ define(
 	"dateFormatItem-Hms": "HH:mm:ss",
 	"dateFormatItem-hms": "ah:mm:ss",
 	"dateFormatItem-GyMMM": "Gy年M月",
+	"field-mon-relative+-1": "上周一",
 	"field-week-relative+0": "本周",
 	"field-week-relative+1": "下周"
 }

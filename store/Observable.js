@@ -150,6 +150,10 @@ var Observable = function(/*Store*/ store){
 		var original = store[method];
 		if(original){
 			store[method] = function(value){
+				var originalId;
+				if(method === 'put'){
+					originalId = store.getIdentity(value);
+				}
 				if(inMethod){
 					// if one method calls another (like add() calling put()) we don't want two events
 					return original.apply(this, arguments);
@@ -158,7 +162,7 @@ var Observable = function(/*Store*/ store){
 				try{
 					var results = original.apply(this, arguments);
 					when(results, function(results){
-						action((typeof results == "object" && results) || value);
+						action((typeof results == "object" && results) || value, originalId);
 					});
 					return results;
 				}finally{
@@ -168,8 +172,8 @@ var Observable = function(/*Store*/ store){
 		}
 	}
 	// monitor for updates by listening to these methods
-	whenFinished("put", function(object){
-		store.notify(object, store.getIdentity(object));
+	whenFinished("put", function(object, originalId){
+		store.notify(object, originalId);
 	});
 	whenFinished("add", function(object){
 		store.notify(object);

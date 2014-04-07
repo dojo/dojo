@@ -330,7 +330,7 @@ define(["./kernel", "../has", "../sniff"], function(dojo, has){
 
 		hitch: function(scope, method){
 			// summary:
-			//		Returns a function that will only ever execute in the a given scope.
+			//		Returns a function that will only ever execute in the given scope.
 			//		This allows for easy use of object member functions
 			//		in callbacks and other places in which the "this" keyword may
 			//		otherwise not reference the expected scope.

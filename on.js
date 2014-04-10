@@ -94,11 +94,16 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 		if(type.indexOf(",") > -1){
 			// we allow comma delimited event names, so you can register for multiple events at once
 			var events = type.split(/\s*,\s*/);
+		}else if(type instanceof Array){
+			// allow an array of event names (or event handler functions)
+			events = type;
+		} 
+		if(events){
 			var handles = [];
 			var i = 0;
 			var eventName;
 			while(eventName = events[i++]){
-				handles.push(addListener(target, eventName, listener, dontFix, matchesTarget));
+				handles.push(on.parse(target, eventName, listener, addListener, dontFix, matchesTarget));
 			}
 			handles.remove = function(){
 				for(var i = 0; i < handles.length; i++){

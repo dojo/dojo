@@ -44,6 +44,23 @@ define([
 			});
 			t.is(order, [0,0,3,0,3,3,3,3,6,0,3,7,4]);
 		},
+		function multipleHandlers(t){
+			var div = document.body.appendChild(document.createElement("div"));
+			var order = [];
+			var customEvent = function(target, listener){
+				return on(target, "custom", listener);
+			};
+			on(div, "a,b", function(event){
+				order.push(1 + event.type);
+			});
+			on(div, ["a",customEvent], function(event){
+				order.push(2 + event.type);
+			});
+			on.emit(div, "a", {});
+			on.emit(div, "b", {});
+			on.emit(div, "custom", {});
+			t.is(order, ["1a", "2a", "1b", "2custom"]);
+		},
 		function once(t){
 			var order = [];
 			var obj = new Evented();

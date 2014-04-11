@@ -85,6 +85,12 @@ doh.register("tests.string",
 			t.is("abababab", string.rep("ab", 4));
 			t.is("", string.rep("ab", 0));
 			t.is("", string.rep("", 3));
+		},
+
+		function test_string_escape(t){
+			t.is("astoria", string.escape("astoria"));
+			t.is("&amp;&lt;&gt;&#x27;&#x2F;", string.escape("&<>'/"));
+			t.is('oh&quot;oh&quot;oh', string.escape('oh"oh"oh'));
 		}
 	]
 );

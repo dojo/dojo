@@ -168,6 +168,36 @@
 		rhinoDojoConfig(defaultConfig, baseUrl, rhinoArgs);
 	}
 
+	has.add("host-webworker", ((typeof WorkerGlobalScope !== 'undefined') && (self instanceof WorkerGlobalScope)));
+	if(has("host-webworker")){
+		mix(defaultConfig.hasCache, {
+			"host-browser": 0,
+			"dom": 0,
+			"dojo-dom-ready-api": 0,
+			"dojo-sniff": 0,
+			"dojo-inject-api": 1,
+			"host-webworker": 1
+		});
+
+		defaultConfig.loaderPatch = {
+			injectUrl: function(url, callback){
+				// TODO:
+				//		This is not async, nor can it be in Webworkers.  It could be made better by passing
+				//		the entire require array into importScripts at.  This way the scripts are loaded in
+				//		async mode; even if the callbacks are ran in sync.  It is not a major issue as webworkers
+				//		tend to be long running where initial startup is not a major factor.
+
+				try{
+					importScripts(url);
+					callback();
+				}catch(e){
+					console.info("failed to load resource (" + url + ")");
+					console.error(e);
+				}
+			}
+		};
+	}
+
 	// userConfig has tests override defaultConfig has tests; do this after the environment detection because
 	// the environment detection usually sets some has feature values in the hasCache.
 	for(var p in userConfig.has){
@@ -237,7 +267,7 @@
 			};
 		};
 
-		if(has("dom")){
+		if(has("dom") || has("host-webworker")){
 			// in legacy sync mode, the loader needs a minimal XHR library
 
 			var locationProtocol = location.protocol,
@@ -1606,7 +1636,7 @@
 		startTimer = function(){
 			clearTimer();
 			if(req.waitms){
-				timerId = window.setTimeout(function(){
+				timerId = global.setTimeout(function(){
 					clearTimer();
 					signal(error, makeError("timeout", waiting));
 				}, req.waitms);

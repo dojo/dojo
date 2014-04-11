@@ -609,7 +609,7 @@
 
 				// for each packagePath found in any packagePaths config item, augment the packageConfig
 				// packagePaths is deprecated; remove in 2.0
-				for(baseUrl in config.packagePaths){
+				for(var baseUrl in config.packagePaths){
 					forEach(config.packagePaths[baseUrl], function(packageInfo){
 						var location = baseUrl + "/" + packageInfo;
 						if(isString(packageInfo)){

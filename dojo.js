@@ -548,7 +548,7 @@
 				forEach(config.packages, fixupPackageInfo);
 
 				// for each packagePath found in any packagePaths config item, augment the packs map owned by the loader
-				for(baseUrl in config.packagePaths){
+				for(var baseUrl in config.packagePaths){
 					forEach(config.packagePaths[baseUrl], function(packageInfo){
 						fixupPackageInfo(packageInfo, baseUrl + "/");
 					});

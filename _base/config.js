@@ -185,7 +185,10 @@ return {
 
 	if(!result.locale && typeof navigator != "undefined"){
 		// Default locale for browsers.
-		result.locale = (navigator.language || navigator.userLanguage).toLowerCase();
+		var language = (navigator.language || navigator.userLanguage);
+		if(language){
+			result.locale = language.toLowerCase();
+		}
 	}
 
 	return result;

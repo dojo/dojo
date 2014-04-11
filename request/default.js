@@ -6,7 +6,7 @@ define([
 	var defId = has('config-requestProvider'),
 		platformId;
 
-	if(has('host-browser')){
+	if(has('host-browser') || has('host-webworker')){
 		platformId = './xhr';
 	}else if(has('host-node')){
 		platformId = './node';

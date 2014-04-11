@@ -5,12 +5,31 @@ define([
 
 // module:
 //		dojo/string
-
+var ESCAPE_REGEXP = /[&<>'"\/]/g;
+var ESCAPE_MAP = {
+	'&': '&amp;',
+	'<': '&lt;',
+	'>': '&gt;',
+	'"': '&quot;',
+	"'": '&#x27;',
+	'/': '&#x2F;'
+};
 var string = {
 	// summary:
 	//		String utilities for Dojo
 };
 lang.setObject("dojo.string", string);
+
+string.escape = function(/*String*/str){
+	// summary:
+	//		Efficiently escape a string for insertion into HTML (innerHTML or attributes), replacing &, <, >, ", ', and / characters.
+	// str:
+	//		the string to escape
+	if(!str){ return ""; }
+	return str.replace(ESCAPE_REGEXP, function(c) {
+		return ESCAPE_MAP[c];
+	});
+};
 
 string.rep = function(/*String*/str, /*Integer*/num){
 	// summary:

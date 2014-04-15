@@ -155,6 +155,9 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 						);
 						setTimeout(function(){
 							on.emit(target, "click", clickEvt);
+
+							// refresh clickTime in case app-defined click handler took a long time to run
+							clickTime = (new Date()).getTime();
 						}, 0);
 					}
 				}, true);

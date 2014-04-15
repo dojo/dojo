@@ -5,13 +5,13 @@
 		"lib": "."
 	},
 	"devDependencies": {
-		"intern-geezer": "~1.6.0",
-		"grunt": "~0.4.2",
-		"http-proxy": "~0.10.3",
-		"glob": "~3.2.7",
-		"jsgi-node": "~0.3.1",
-		"formidable": "~1.0.14",
-		"when": "~2.7.0"
+		"intern-geezer": "1.6.2",
+		"grunt": "0.4.2",
+		"http-proxy": "0.10.3",
+		"glob": "3.2.7",
+		"jsgi-node": "0.3.1",
+		"formidable": "1.0.14",
+		"when": "2.7.0"
 	},
 	"main": "main",
 	"scripts": {

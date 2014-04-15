@@ -4,11 +4,10 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 	// module:
 	//		dojo/touch
 
-	var hasTouch = has("touch");
-
 	var ios4 = has("ios") < 5;
-	
-	var msPointer = navigator.pointerEnabled || navigator.msPointerEnabled,
+
+	// Detect if platform supports Pointer Events, and if so, the names of the events (pointerdown vs. MSPointerDown).
+	var hasPointer = navigator.pointerEnabled || navigator.msPointerEnabled,
 		pointer = (function () {
 			var pointer = {};
 			for (var type in { down: 1, move: 1, up: 1, cancel: 1, over: 1, out: 1 }) {
@@ -19,20 +18,20 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 			return pointer;
 		})();
 
+	// Detect if platform supports either Pointer Events or the webkit touchstart/touchend/... events
+	var hasTouch = has("touch");
+
 	// Click generation variables
 	var clicksInited, clickTracker, clickTarget, clickX, clickY, clickDx, clickDy, clickTime;
 
-	// Time of most recent touchstart, touchmove, or touchend event
-	var lastTouch;
-
-	function dualEvent(mouseType, touchType, msPointerType){
+	function dualEvent(mouseType, touchType, pointerType){
 		// Returns synthetic event that listens for both the specified mouse event and specified touch event.
 		// But ignore fake mouse events that were generated due to the user touching the screen.
-		if(msPointer && msPointerType){
+		if(hasPointer && pointerType){
 			// IE10+: MSPointer* events are designed to handle both mouse and touch in a uniform way,
 			// so just use that regardless of hasTouch.
 			return function(node, listener){
-				return on(node, msPointerType, listener);
+				return on(node, pointerType, listener);
 			}
 		}else if(hasTouch){
 			return function(node, listener){
@@ -171,7 +170,7 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 						// sent shortly after ours, similar to what is done in dualEvent.
 						// The INPUT.dijitOffScreen test is for offscreen inputs used in dijit/form/Button, on which
 						// we call click() explicitly, we don't want to stop this event.
-						if(!e._dojo_click &&
+							if(!e._dojo_click &&
 								(new Date()).getTime() <= clickTime + 1000 &&
 								!(e.target.tagName == "INPUT" && domClass.contains(e.target, "dijitOffScreen"))){
 							e.stopPropagation();
@@ -199,109 +198,107 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 
 	var hoveredNode;
 
-	if(hasTouch){
-		if(msPointer){
-			 // MSPointer (IE10+) already has support for over and out, so we just need to init click support
-			domReady(function(){
-				win.doc.addEventListener(pointer.down, function(evt){
-					doClicks(evt, pointer.move, pointer.up);
-				}, true);
-			});		
-		}else{
-			domReady(function(){
-				// Keep track of currently hovered node
-				hoveredNode = win.body();	// currently hovered node
+	if(hasPointer){
+		 // MSPointer (IE10+) already has support for over and out, so we just need to init click support
+		domReady(function(){
+			win.doc.addEventListener(pointer.down, function(evt){
+				doClicks(evt, pointer.move, pointer.up);
+			}, true);
+		});
+	}else if(hasTouch){
+		domReady(function(){
+			// Keep track of currently hovered node
+			hoveredNode = win.body();	// currently hovered node
 
-				win.doc.addEventListener("touchstart", function(evt){
+			win.doc.addEventListener("touchstart", function(evt){
 					lastTouch = (new Date()).getTime();
 
-					// Precede touchstart event with touch.over event.  DnD depends on this.
-					// Use addEventListener(cb, true) to run cb before any touchstart handlers on node run,
-					// and to ensure this code runs even if the listener on the node does event.stop().
-					var oldNode = hoveredNode;
-					hoveredNode = evt.target;
-					on.emit(oldNode, "dojotouchout", {
-						relatedTarget: hoveredNode,
-						bubbles: true
-					});
-					on.emit(hoveredNode, "dojotouchover", {
-						relatedTarget: oldNode,
-						bubbles: true
-					});
-				
-					doClicks(evt, "touchmove", "touchend"); // init click generation
-				}, true);
+				// Precede touchstart event with touch.over event.  DnD depends on this.
+				// Use addEventListener(cb, true) to run cb before any touchstart handlers on node run,
+				// and to ensure this code runs even if the listener on the node does event.stop().
+				var oldNode = hoveredNode;
+				hoveredNode = evt.target;
+				on.emit(oldNode, "dojotouchout", {
+					relatedTarget: hoveredNode,
+					bubbles: true
+				});
+				on.emit(hoveredNode, "dojotouchover", {
+					relatedTarget: oldNode,
+					bubbles: true
+				});
 
-				function copyEventProps(evt){
-					// Make copy of event object and also set bubbles:true.  Used when calling on.emit().
-					var props = lang.delegate(evt, {
-						bubbles: true
-					});
+				doClicks(evt, "touchmove", "touchend"); // init click generation
+			}, true);
 
-					if(has("ios") >= 6){
-						// On iOS6 "touches" became a non-enumerable property, which 
-						// is not hit by for...in.  Ditto for the other properties below.
-						props.touches = evt.touches;
-						props.altKey = evt.altKey;
-						props.changedTouches = evt.changedTouches;
-						props.ctrlKey = evt.ctrlKey;
-						props.metaKey = evt.metaKey;
-						props.shiftKey = evt.shiftKey;
-						props.targetTouches = evt.targetTouches;
-					}
+			function copyEventProps(evt){
+				// Make copy of event object and also set bubbles:true.  Used when calling on.emit().
+				var props = lang.delegate(evt, {
+					bubbles: true
+				});
 
-					return props;
+				if(has("ios") >= 6){
+					// On iOS6 "touches" became a non-enumerable property, which
+					// is not hit by for...in.  Ditto for the other properties below.
+					props.touches = evt.touches;
+					props.altKey = evt.altKey;
+					props.changedTouches = evt.changedTouches;
+					props.ctrlKey = evt.ctrlKey;
+					props.metaKey = evt.metaKey;
+					props.shiftKey = evt.shiftKey;
+					props.targetTouches = evt.targetTouches;
 				}
-				
-				on(win.doc, "touchmove", function(evt){
-					lastTouch = (new Date()).getTime();
 
-					var newNode = win.doc.elementFromPoint(
-						evt.pageX - (ios4 ? 0 : win.global.pageXOffset), // iOS 4 expects page coords
-						evt.pageY - (ios4 ? 0 : win.global.pageYOffset)
-					);
+				return props;
+			}
 
-					if(newNode){
-						// Fire synthetic touchover and touchout events on nodes since the browser won't do it natively.
-						if(hoveredNode !== newNode){
-							// touch out on the old node
-							on.emit(hoveredNode, "dojotouchout", {
-								relatedTarget: newNode,
-								bubbles: true
-							});
+			on(win.doc, "touchmove", function(evt){
+				lastTouch = (new Date()).getTime();
 
-							// touchover on the new node
-							on.emit(newNode, "dojotouchover", {
-								relatedTarget: hoveredNode,
-								bubbles: true
-							});
+				var newNode = win.doc.elementFromPoint(
+					evt.pageX - (ios4 ? 0 : win.global.pageXOffset), // iOS 4 expects page coords
+					evt.pageY - (ios4 ? 0 : win.global.pageYOffset)
+				);
 
-							hoveredNode = newNode;
-						}
+				if(newNode){
+					// Fire synthetic touchover and touchout events on nodes since the browser won't do it natively.
+					if(hoveredNode !== newNode){
+						// touch out on the old node
+						on.emit(hoveredNode, "dojotouchout", {
+							relatedTarget: newNode,
+							bubbles: true
+						});
 
-						// Unlike a listener on "touchmove", on(node, "dojotouchmove", listener) fires when the finger
-						// drags over the specified node, regardless of which node the touch started on.
-						if(!on.emit(newNode, "dojotouchmove", copyEventProps(evt))){
-							// emit returns false when synthetic event "dojotouchmove" is cancelled, so we prevent the
-							// default behavior of the underlying native event "touchmove".
-							evt.preventDefault();
-						}
+						// touchover on the new node
+						on.emit(newNode, "dojotouchover", {
+							relatedTarget: hoveredNode,
+							bubbles: true
+						});
+
+						hoveredNode = newNode;
 					}
-				});
 
-				// Fire a dojotouchend event on the node where the finger was before it was removed from the screen.
-				// This is different than the native touchend, which fires on the node where the drag started.
-				on(win.doc, "touchend", function(evt){
-					lastTouch = (new Date()).getTime();
-					var node = win.doc.elementFromPoint(
-						evt.pageX - (ios4 ? 0 : win.global.pageXOffset), // iOS 4 expects page coords
-						evt.pageY - (ios4 ? 0 : win.global.pageYOffset)
-					) || win.body(); // if out of the screen
-
-					on.emit(node, "dojotouchend", copyEventProps(evt));
-				});
+					// Unlike a listener on "touchmove", on(node, "dojotouchmove", listener) fires when the finger
+					// drags over the specified node, regardless of which node the touch started on.
+					if(!on.emit(newNode, "dojotouchmove", copyEventProps(evt))){
+						// emit returns false when synthetic event "dojotouchmove" is cancelled, so we prevent the
+						// default behavior of the underlying native event "touchmove".
+						evt.preventDefault();
+					}
+				}
 			});
-		}
+
+			// Fire a dojotouchend event on the node where the finger was before it was removed from the screen.
+			// This is different than the native touchend, which fires on the node where the drag started.
+			on(win.doc, "touchend", function(evt){
+					lastTouch = (new Date()).getTime();
+				var node = win.doc.elementFromPoint(
+					evt.pageX - (ios4 ? 0 : win.global.pageXOffset), // iOS 4 expects page coords
+					evt.pageY - (ios4 ? 0 : win.global.pageYOffset)
+				) || win.body(); // if out of the screen
+
+				on.emit(node, "dojotouchend", copyEventProps(evt));
+			});
+		});
 	}
 
 	//device neutral events - touch.press|move|release|cancel/over/out

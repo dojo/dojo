@@ -25,6 +25,9 @@ define(["doh", "dojo/store/DataStore", "dojo/data/ItemFileReadStore", "dojo/data
 				t.t(store.get(5).prime);
 				t.is(store.get(5).children[1].name, "two");
 			},
+			function testGetNonExistent(t){
+				t.is(store.get(10), undefined);
+			},
 			function testQuery1(t){
 				var d = new doh.Deferred();
 				store.query({prime: true}).then(d.getTestCallback(function(results){
@@ -59,6 +62,45 @@ define(["doh", "dojo/store/DataStore", "dojo/data/ItemFileReadStore", "dojo/data
 					perfect: true
 				});
 				t.t(store.get(6).perfect);
+			},
+			function testAdd(t){
+				store.add({
+					id: 7,
+					name: "seven"
+				});
+				t.is(store.get(7).name, "seven");
+			},
+			function testAddExisting(t){
+				return store.add({
+					id: 7,
+					name: "seven"
+				}).then(function(){
+					t.error("Add existing did not fail");
+				}, function(){
+					console.log("Add existing failed, as expected");
+				});
+			},
+			function testOverwriteNew(t){
+				return store.put({
+					id: 8,
+					name: "eight"
+				}, {
+					overwrite: true
+				}).then(function(){
+					t.error("Updating new did not fail");
+				}, function(){
+					console.log("Updating new failed, as expected");
+				});
+			},
+			function testRemove(t){
+				return store.remove(7).then(function(result){
+					t.t(result);
+				}).then(function(result){
+					// second time should return false
+					return store.remove(7);
+				}).then(function(result){
+					t.f(result);
+				});
 			},
 			function testNoWriteFeature(t){
 				var readOnlyStore = new DataStore({store:new ItemFileReadStore({})});

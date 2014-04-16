@@ -42,7 +42,7 @@ var unload = {
 				//		addOnWindowUnload for more info.
 			}));
 		}
-		on(win, "unload", lang.hitch(obj, functionName));
+		return on(win, "unload", lang.hitch(obj, functionName));
 	},
 
 	addOnUnload: function(/*Object?|Function?*/ obj, /*String|Function?*/ functionName){
@@ -74,7 +74,7 @@ var unload = {
 		//	|		unload.addOnUnload(foo, function(){console.log("", this.data);});
 		//	|	});
 
-		on(win, "beforeunload", lang.hitch(obj, functionName));
+		return on(win, "beforeunload", lang.hitch(obj, functionName));
 	}
 };
 

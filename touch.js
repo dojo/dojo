@@ -24,6 +24,9 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 	// Click generation variables
 	var clicksInited, clickTracker, clickTarget, clickX, clickY, clickDx, clickDy, clickTime;
 
+	// Time of most recent touchstart, touchmove, or touchend event
+	var lastTouch;
+
 	function dualEvent(mouseType, touchType, pointerType){
 		// Returns synthetic event that listens for both the specified mouse event and specified touch event.
 		// But ignore fake mouse events that were generated due to the user touching the screen.

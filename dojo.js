@@ -1294,11 +1294,9 @@
 			has.add("dojo-loader-eval-hint-url", 1);
 		}
 
-		var fixupUrl= function(url){
+		var fixupUrl= typeof userConfig.fixupUrl == "function" ? userConfig.fixupUrl : function(url){
 				url += ""; // make sure url is a Javascript string (some paths may be a Java string)
-				return userConfig.fixupUrl
-					? userConfig.fixupUrl(url, cacheBust)
-					: url + (cacheBust ? ((/\?/.test(url) ? "&" : "?") + cacheBust) : "");
+				return url + (cacheBust ? ((/\?/.test(url) ? "&" : "?") + cacheBust) : "");
 			},
 
 			injectPlugin = function(

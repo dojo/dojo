@@ -177,22 +177,26 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 		}
 		throw new Error("Target must be an event emitter");
 	}
-	on.matchesSelector = function(node, selector, context, children, matchesTarget) {
+	on.matches = function(node, selector, context, children, matchesTarget) {
 		// summary:
 		//		Check if a node match the current selector within the constraint of a context
-		// node:
+		// node: DOMNode
 		//		The node that originate the event
-		// selector:
+		// selector: String
 		//		The selector to check against
-		// context:
-		//		the context to search in.
-		// children:
+		// context: DOMNode
+		//		The context to search in.
+		// children: Boolean
 		//		Indicates if children elements of the selector should be allowed. This defaults to
 		//		true
-		// matchesTarget:
-		//		internal, not for end user
-		// return:
-		//		the matching node, if any. Else you get false
+		// matchesTarget: Object|dojo/query?
+		//		An object with a property "matches" as a function. Default is dojo/query.
+		//		Matching DOMNodes will be done against this function
+		//		The function must return a Boolean.
+		//		It will have 3 arguments: "node", "selector" and "context"
+		//		True is expected if "node" is matching the current "selector" in the passed "context"
+		// returns: DOMNode?
+		//		The matching node, if any. Else you get false
 
 		// see if we have a valid matchesTarget or default to dojo/query
 		matchesTarget = matchesTarget && matchesTarget.matches ? matchesTarget : dojo.query;
@@ -231,7 +235,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 			var matchesTarget = typeof selector == "function" ? {matches: selector} : this,
 				bubble = eventType.bubble;
 			function select(eventTarget){
-				return on.matchesSelector(eventTarget, selector, target, children, matchesTarget);
+				return on.matches(eventTarget, selector, target, children, matchesTarget);
 			}
 			if(bubble){
 				// the event type doesn't naturally bubble, but has a bubbling form, use that, and give it the selector so it can perform the select itself

@@ -1,6 +1,6 @@
 define(['dojo/throttle', 'dojo/on/_delayedEventFactory'], function(throttle, _delayedEventFactory){
 	// summary:
-	//		This module provide an event throttler for dojo/on
+	//		This module provides an event throttler for dojo/on
 	// module:
 	//		dojo/on/throttle
 

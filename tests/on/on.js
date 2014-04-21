@@ -9,17 +9,17 @@ define([
 				eSpan = eDiv2.appendChild(document.createElement("span")),
 				matchResult = [];
 				handle = on(eDiv, "click", function(e){
-					matchResult.push(!!on.matchesSelector(e.target, 'span:click', this));
-					matchResult.push(!!on.matchesSelector(e.target, 'div:click', this));
-					matchResult.push(!!on.matchesSelector(e.target, 'div:click', this, false));
-					matchResult.push(!!on.matchesSelector(e.target, 'body:click', this));
+					matchResult.push(!!on.matches(e.target, 'span:click', this));
+					matchResult.push(!!on.matches(e.target, 'div:click', this));
+					matchResult.push(!!on.matches(e.target, 'div:click', this, false));
+					matchResult.push(!!on.matches(e.target, 'body:click', this));
 				});
 
 			eSpan.click();
 			handle.remove();
 			handle = on(eDiv, "click", function(e){
-				matchResult.push(!!on.matchesSelector(e.target, 'span:click', this));
-				matchResult.push(!!on.matchesSelector(e.target, 'div:click', this));
+				matchResult.push(!!on.matches(e.target, 'span:click', this));
+				matchResult.push(!!on.matches(e.target, 'div:click', this));
 			});
 			eDiv2.click();
 			doh.is([true, true, false, false, false, true], matchResult);

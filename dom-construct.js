@@ -302,7 +302,7 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 	};
 
 	function _empty(/*DomNode*/ node){
-		if(node.canHaveChildren){
+		if("innerHTML" in node){
 			try{
 				// fast path
 				node.innerHTML = "";
@@ -312,9 +312,10 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 				// Fall through (saves bytes)
 			}
 		}
-		// SVG/strict elements don't support innerHTML/canHaveChildren, and OBJECT/APPLET elements in quirks node have canHaveChildren=false
+
+		// SVG/strict elements don't support innerHTML
 		for(var c; c = node.lastChild;){ // intentional assignment
-			_destroy(c, node); // destroy is better than removeChild so TABLE subelements are removed in proper order
+			node.removeChild(c);
 		}
 	}
 

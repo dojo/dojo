@@ -24,6 +24,7 @@ define([
 	"dojo/tests/DeferredList",
 	"dojo/tests/Stateful",
 	"dojo/tests/errors",
+	"dojo/tests/text",
 	"dojo/has!host-node?dojo/tests/node",
 	"dojo/has!host-browser?dojo/tests/router",
 	"dojo/has!host-browser?dojo/tests/request",

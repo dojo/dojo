@@ -5,7 +5,7 @@ define(["./_base/kernel", "require", "./has", "./has!host-browser?./request"], f
 	var getText;
 	if(has("host-browser")){
 		getText= function(url, sync, load){
-			request(url, {sync:!!sync}).then(load);
+			request(url, {sync:!!sync, headers: { 'X-Requested-With': null } }).then(load);
 		};
 	}else{
 		// Path for node.js and rhino, to load from local file system.

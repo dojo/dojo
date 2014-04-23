@@ -8,11 +8,13 @@ var win = window;
 var unload = {
 	// summary:
 	//		This module contains the document and window unload detection API.
+	//		This module is deprecated.  Use on(window, "unload", func)
+	//		and on(window, "beforeunload", func) instead.
 
 	addOnWindowUnload: function(/*Object|Function?*/ obj, /*String|Function?*/ functionName){
 		// summary:
-		//		registers a function to be triggered when window.onunload
-		//		fires.
+		//		Registers a function to be triggered when window.onunload fires.
+		//		Deprecated, use on(window, "unload", lang.hitch(obj, functionName)) instead.
 		// description:
 		//		The first time that addOnWindowUnload is called Dojo
 		//		will register a page listener to trigger your unload
@@ -52,7 +54,8 @@ var unload = {
 
 	addOnUnload: function(/*Object?|Function?*/ obj, /*String|Function?*/ functionName){
 		// summary:
-		//		registers a function to be triggered when the page unloads.
+		//		Registers a function to be triggered when the page unloads.
+		//		Deprecated, use on(window, "beforeunload", lang.hitch(obj, functionName)) instead.
 		// description:
 		//		The first time that addOnUnload is called Dojo will
 		//		register a page listener to trigger your unload handler

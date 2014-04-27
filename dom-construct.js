@@ -302,6 +302,10 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 	};
 
 	function _empty(/*DomNode*/ node){
+		// TODO: remove this if() block in 2.0 when we no longer have to worry about IE memory leaks,
+		// and then uncomment the emptyGrandchildren() test case from html.html.
+		// Note that besides fixing #16957, using removeChild() is actually faster than setting node.innerHTML,
+		// see http://jsperf.com/clear-dom-node.
 		if("innerHTML" in node){
 			try{
 				// fast path

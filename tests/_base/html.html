@@ -665,6 +665,19 @@
 							dojo.destroy(p);
 							doh.t(true, "no exception thrown");
 						}
+/*
+						// Make sure empty() doesn't disconnect grandchildren from children.
+						// Uncomment when http://bugs.dojotoolkit.org/ticket/16957 is fixed.
+						function emptyGrandchildren(){
+							var parent = dojo.byId("emptyParent"),
+								child = dojo.byId("emptyChild");
+
+							dojo.empty("emptyParent");
+
+							doh.f(!!parent.firstChild, "parent's children removed");
+							doh.t(!!child.firstChild, "child's children remain");
+						}
+*/
 					]
 				);
 
@@ -914,6 +927,13 @@
 		<object width="500" height="500" id="objectToEmpty" data="data:application/x-silverlight," type="application/x-silverlight"
 			><param name="background" value="transparent"
 		/></object>
+
+		<!-- Test that empty doesn't disconnect grandchildren from children -->
+		<div id="emptyParent">
+			<div id="emptyChild">
+				<div id="emptyGrandchild">hello world</div>
+			</div>
+		</div>
 
 		<!-- IFRAME element to test destroy -->
 		<iframe id="iframeToDestroy" src="about:blank"

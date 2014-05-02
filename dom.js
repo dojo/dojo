@@ -124,12 +124,17 @@ define(["./sniff", "./_base/window"],
 
 	// Add feature test for user-select CSS property
 	// (currently known to work in all but IE < 10 and Opera)
+	// TODO: The user-select CSS property as of May 2014 is no longer part of
+	// any CSS specification. In IE, -ms-user-select does not do the same thing
+	// as the unselectable attribute on elements; namely, dijit Editor buttons
+	// do not properly prevent the content of the editable content frame from
+	// unblurring. As a result, the -ms- prefixed version is omitted here.
 	has.add("css-user-select", function(global, doc, element){
 		// Avoid exception when dom.js is loaded in non-browser environments
 		if(!element){ return false; }
 		
 		var style = element.style;
-		var prefixes = ["Khtml", "O", "ms", "Moz", "Webkit"],
+		var prefixes = ["Khtml", "O", "Moz", "Webkit"],
 			i = prefixes.length,
 			name = "userSelect",
 			prefix;

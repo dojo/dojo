@@ -57,18 +57,14 @@
 						name: "destroy",
 						timeout: timeout,
 						runTest: function(){
-							var opacity = domStyle.get('foo', 'opacity');
-							doh.is(1, opacity);
 							var anim = baseFx.fadeOut({ node: 'foo', duration: duration });
 							var d = new doh.Deferred();
-							setTimeout(function() {
-								anim.destroy();
-								d.getTestCallback(function(){
-									var opacity = domStyle.get('foo', 'opacity');
-									doh.t(opacity > 0);
-								})();
-							}, duration);
-							anim.play();
+							aspect.after(anim, "stop", d.getTestCallback(function(){
+								//stop as fired by destroy
+								//otherwise the test will have a timeout error
+								doh.t(true);
+							}));
+							anim.destroy();
 							return d;
 						}
 					},

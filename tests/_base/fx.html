@@ -58,14 +58,12 @@
 						timeout: timeout,
 						runTest: function(){
 							var anim = baseFx.fadeOut({ node: 'foo', duration: duration });
-							var d = new doh.Deferred();
-							aspect.after(anim, "stop", d.getTestCallback(function(){
-								//stop as fired by destroy
-								//otherwise the test will have a timeout error
-								doh.t(true);
-							}));
+							var stopCalled = false;
+							aspect.after(anim, "stop", function () {
+								stopCalled = true;
+							});
 							anim.destroy();
-							return d;
+							doh.t(stopCalled);
 						}
 					},
 					{

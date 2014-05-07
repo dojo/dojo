@@ -91,12 +91,12 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 			return type.call(matchesTarget, target, listener);
 		}
 
-		if(type.indexOf(",") > -1){
-			// we allow comma delimited event names, so you can register for multiple events at once
-			var events = type.split(/\s*,\s*/);
-		}else if(type instanceof Array){
+		if(type instanceof Array){
 			// allow an array of event names (or event handler functions)
 			events = type;
+		}else if(type.indexOf(",") > -1){
+			// we allow comma delimited event names, so you can register for multiple events at once
+			var events = type.split(/\s*,\s*/);
 		} 
 		if(events){
 			var handles = [];

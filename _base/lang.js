@@ -23,15 +23,30 @@ define(["./kernel", "../has", "../sniff"], function(dojo, has){
 				if(!parts.length){
 					return dojoGlobal;
 				}else{
-					p = parts[i++];
+					p = parts[0];
 					try{
-						context = dojo.scopeMap[p] && dojo.scopeMap[p][1];
+						if(dojo.scopeMap[p] && dojo.scopeMap[p][1]){ 
+							context = dojo.scopeMap[p] && dojo.scopeMap[p][1]; 
+							parts.shift(); 
+						} 
 					}catch(e){}
-					context = context || (p in dojoGlobal ? dojoGlobal[p] : (create ? dojoGlobal[p] = {} : undefined));
+					context = context || dojoGlobal;
 				}
 			}
 			while(context && (p = parts[i++])){
-				context = (p in context ? context[p] : (create ? context[p] = {} : undefined));
+				if(i === parts.length){
+					// on the last part
+					if(create && !(p in context)){
+						// add the property to the context
+						context[p] = {};
+					}
+				}else{
+					// not on the last part
+					if(typeof context[p] !== "object"){
+						context[p] = create ? {} : undefined;
+					}
+				}
+				context = context[p];
 			}
 			return context; // mixed
 		},
@@ -187,7 +202,14 @@ define(["./kernel", "../has", "../sniff"], function(dojo, has){
 			//		whereas with `lang.setObject`, we can shorten that to:
 			//	| lang.setObject("parent.child.prop", "some value", obj);
 
-			var parts = name.split("."), p = parts.pop(), obj = getProp(parts, true, context);
+			var parts, p, obj;
+			parts = name.split(".");
+			// create all the intermediate objects - if needed 
+			obj = getProp(parts, true, context); 
+			// obj now points to the old/'newly created' prop  
+			// need a second call to getProp one level higher up to return the parent object so it's value can be set 
+			p = parts.pop(); 
+			obj = getProp(parts, false, context); 
 			return obj && p ? (obj[p] = value) : undefined; // Object
 		},
 

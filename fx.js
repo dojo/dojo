@@ -107,17 +107,20 @@ define([
 			this.pause();
 			var offset = this.duration * percent;
 			this._current = null;
-			arrayUtil.some(this._animations, function(a){
-				if(a.duration <= offset){
+
+			arrayUtil.some(this._animations, function(a, index){
+				if(offset <= a.duration){
 					this._current = a;
+					this._index = index;
 					return true;
 				}
 				offset -= a.duration;
 				return false;
-			});
+			}, this);
 			if(this._current){
-				this._current.gotoPercent(offset / this._current.duration, andPlay);
+				this._current.gotoPercent(offset / this._current.duration);
 			}
+			if (andPlay) { this.play(); }
 			return this;
 		},
 		stop: function(/*boolean?*/ gotoEnd){

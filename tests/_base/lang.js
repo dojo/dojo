@@ -1,6 +1,62 @@
-define(["doh/main", "dojo/_base/array", "dojo/_base/lang"], function(doh, array, lang){
+define(["doh/main", "dojo/_base/array", "dojo/_base/lang", "dojo/_base/kernel"
+], function(doh, array, lang, kernel){
 
   doh.register("tests._base.lang", [
+		function exists(t){
+			var test = {
+				foo : 0
+			};
+			t.assertTrue(lang.exists("foo", test), 'lang.exists("foo", test)');
+			t.assertFalse(lang.exists("foo.bar", test), 'lang.exists("foo.bar", test)');
+
+			// global tests
+			t.assertFalse(lang.exists("foo"), 'lang.exists("foo") #1');
+			kernel.global.foo = false;
+			t.assertTrue(lang.exists("foo"), 'lang.exists("foo") #2');
+			t.assertFalse(lang.exists("foo.bar"), 'lang.exists("foo.bar")');
+			delete kernel.global.foo;
+			t.assertFalse(lang.exists("foo"), 'lang.exists("foo") #3');
+
+			// scopeMap tests
+			t.assertTrue(lang.exists("dojo.dijit"), 'lang.exists("dojo.dijit")');
+			t.assertFalse(lang.exists("dojo.foo"), 'lang.exists("dojo.foo")');
+		},
+
+		function getObject(t){
+			var test = {
+				foo : {}
+			};
+			t.assertEqual(test.foo, lang.getObject("foo", false, test), 'lang.getObject("foo", false, test)');
+			t.assertEqual("undefined", typeof lang.getObject("foo.bar", false, test), // don't create
+				'typeof lang.getObject("foo.bar", false, test)');
+			t.assertEqual({}, lang.getObject("foo.bar", true, test),  // do create
+				'lang.getObject("foo.bar", true, test)');
+			test.foo.bar.baz = "test";
+			t.assertEqual(test.foo.bar, lang.getObject("foo.bar", false, test),
+				'lang.getObject("foo.bar", false, test)');
+			
+			// global tests
+			t.assertEqual("undefined", typeof lang.getObject("foo.bar", false),	// don't create
+				'typeof lang.getObject("foo.bar", false)');
+			kernel.global.foo = {};
+			t.assertEqual(kernel.global.foo, lang.getObject("foo", false), // don't create
+				'lang.getObject("foo", false)');
+			t.assertEqual({}, lang.getObject("foo.bar", true), 'lang.getObject("foo.bar", true)'); // do create
+			
+			delete kernel.global.foo;
+
+			// strangely, parser does this
+			t.assertEqual("undefined", typeof lang.getObject("./TestWidget"), 'typeof lang.getObject("./TestWidget")');
+		},
+
+		function setObject(t){
+			var test = {
+				foo : 0
+			};
+			t.assertTrue(lang.setObject("foo", {bar : "test"}, test));
+			t.assertEqual({bar : "test"}, lang.getObject("foo", false, test));
+		},
+
 		function mixin(t){
 			t.assertEqual("object", typeof lang.mixin());
 			t.assertEqual("object", typeof lang.mixin(undefined));

@@ -10,12 +10,10 @@ define(["doh/main", "dojo/_base/array", "dojo/_base/lang", "dojo/_base/kernel"
 			t.assertFalse(lang.exists("foo.bar", test), 'lang.exists("foo.bar", test)');
 
 			// global tests
-			t.assertFalse(lang.exists("foo"), 'lang.exists("foo") #1');
-			kernel.global.foo = false;
-			t.assertTrue(lang.exists("foo"), 'lang.exists("foo") #2');
-			t.assertFalse(lang.exists("foo.bar"), 'lang.exists("foo.bar")');
-			delete kernel.global.foo;
-			t.assertFalse(lang.exists("foo"), 'lang.exists("foo") #3');
+			t.assertFalse(lang.exists("_existsTest"), 'lang.exists("_existsTest") #1');
+			kernel.global._existsTest = false;
+			t.assertTrue(lang.exists("_existsTest"), 'lang.exists("_existsTest") #2');
+			t.assertFalse(lang.exists("_existsTest.bar"), 'lang.exists("_existsTest.bar")');
 
 			// scopeMap tests
 			t.assertTrue(lang.exists("dojo.dijit"), 'lang.exists("dojo.dijit")');
@@ -36,14 +34,12 @@ define(["doh/main", "dojo/_base/array", "dojo/_base/lang", "dojo/_base/kernel"
 				'lang.getObject("foo.bar", false, test)');
 			
 			// global tests
-			t.assertEqual("undefined", typeof lang.getObject("foo.bar", false),	// don't create
-				'typeof lang.getObject("foo.bar", false)');
-			kernel.global.foo = {};
-			t.assertEqual(kernel.global.foo, lang.getObject("foo", false), // don't create
-				'lang.getObject("foo", false)');
-			t.assertEqual({}, lang.getObject("foo.bar", true), 'lang.getObject("foo.bar", true)'); // do create
-			
-			delete kernel.global.foo;
+			t.assertEqual("undefined", typeof lang.getObject("_getObjectTest.bar", false),	// don't create
+				'typeof lang.getObject("_getObjectTest.bar", false)');
+			kernel.global._getObjectTest = {};
+			t.assertEqual(kernel.global._getObjectTest, lang.getObject("_getObjectTest", false), // don't create
+				'lang.getObject("_getObjectTest", false)');
+			t.assertEqual({}, lang.getObject("_getObjectTest.bar", true), 'lang.getObject("_getObjectTest.bar", true)'); // do create
 
 			// strangely, parser does this
 			t.assertEqual("undefined", typeof lang.getObject("./TestWidget"), 'typeof lang.getObject("./TestWidget")');

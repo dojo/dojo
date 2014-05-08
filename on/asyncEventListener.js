@@ -1,17 +1,33 @@
-define(['dojo/on', 'dojo/has'], function(on, has){
+define(['dojo/on', 'dojo/_base/window', 'dojo/dom-construct', 'dojo/domReady!'], function(on, baseWin, domConstruct){
 	// summary:
 	//		This sub module provide an event factory for delayed events (like debounce or throttle)
 	// module:
 	//		dojo/on/asyncEventListener
 
-	has.add("DOMLevel2", document.implementation.hasFeature("HTML", "2.0"));
+
+	//Testing is the browser support async event access
+	//If not we need to clone the event, otherwise accessing the event properties
+	//will trigger a JS error (invalid member)
+	var testNode = domConstruct.create('div', null, baseWin.body()),
+		testEvent,
+		requiresClone;
+	on.once(testNode, 'click', function(e){
+		testEvent = e;
+	});
+	testNode.click();
+	try{
+		requiresClone = testEvent.clientX === undefined;
+	}catch(e){
+		requiresClone = true;
+	}finally{
+		domConstruct.destroy(testNode);
+	}
 
 	function clone(arg){
 		// summary:
 		//		clone the event
 		// description:
-		//		ie loose the event (comming from a node) when it is passed to a timeouted function
-		//		Therefore, we need to clone it
+		//		Used if the browser provides a corrupted event (comming from a node) when passed to an async function
 		var argCopy = {},
 			i;
 		for(i in arg){
@@ -19,14 +35,14 @@ define(['dojo/on', 'dojo/has'], function(on, has){
 		}
 		return argCopy;
 	}
-	
-	return function(listener) {
-		if(!has("DOMLevel2")){
+
+	return function(listener){
+		if(requiresClone){
 			return function(e){
 				//lang.clone fail to clone events, so we use a custom function
 				listener.call(this, clone(e));
 			};
 		}
 		return listener;
-	}
+	};
 });

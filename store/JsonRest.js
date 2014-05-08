@@ -92,7 +92,7 @@ return declare("dojo.store.JsonRest", base, {
 		options = options || {};
 		var headers = lang.mixin({ Accept: this.accepts }, this.headers, options.headers || options);
 		return xhr("GET", {
-			url: this._getTarget(id, options),
+			url: this._getTarget(id),
 			handleAs: "json",
 			headers: headers
 		});
@@ -125,7 +125,7 @@ return declare("dojo.store.JsonRest", base, {
 		var id = ("id" in options) ? options.id : this.getIdentity(object);
 		var hasId = typeof id != "undefined";
 		return xhr(hasId && !options.incremental ? "PUT" : "POST", {
-				url: this._getTarget(id, options),
+				url: this._getTarget(id),
 				postData: JSON.stringify(object),
 				handleAs: "json",
 				headers: lang.mixin({
@@ -160,7 +160,7 @@ return declare("dojo.store.JsonRest", base, {
 		//		HTTP headers.
 		options = options || {};
 		return xhr("DELETE", {
-			url: this._getTarget(id, options),
+			url: this._getTarget(id),
 			headers: lang.mixin({}, this.headers, options.headers)
 		});
 	},

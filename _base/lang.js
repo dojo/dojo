@@ -18,22 +18,33 @@ define(["./kernel", "../has", "../sniff"], function(dojo, has){
 		_extraLen = _extraNames.length,
 
 		getProp = function(/*Array*/parts, /*Boolean*/create, /*Object*/context){
-			var p, i = 0, dojoGlobal = dojo.global;
 			if(!context){
-				if(!parts.length){
-					return dojoGlobal;
+				if(parts[0] && dojo.scopeMap[parts[0]]) {
+					// Voodoo code from the old days where "dojo" or "dijit" maps to some special object
+					// rather than just window.dojo
+					context = dojo.scopeMap[parts.shift()][1];
 				}else{
-					p = parts[i++];
-					try{
-						context = dojo.scopeMap[p] && dojo.scopeMap[p][1];
-					}catch(e){}
-					context = context || (p in dojoGlobal ? dojoGlobal[p] : (create ? dojoGlobal[p] = {} : undefined));
+					context = dojo.global;
 				}
 			}
-			while(context && (p = parts[i++])){
-				context = (p in context ? context[p] : (create ? context[p] = {} : undefined));
+
+			try{
+				for(var i = 0; i < parts.length; i++){
+					var p = parts[i];
+					if(!(p in context)){
+						if(create){
+							context[p] = {};
+						}else{
+							return;		// return undefined
+						}
+					}
+					context = context[p];
+				}
+				return context; // mixed
+			}catch(e){
+				// "p in context" throws an exception when context is a number, boolean, etc. rather than an object,
+				// so in that corner case just return undefined (by having no return statement)
 			}
-			return context; // mixed
 		},
 
 		opts = Object.prototype.toString,

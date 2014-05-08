@@ -294,8 +294,7 @@
 							var d = new doh.Deferred();
 							xhr.post("xhrDummyMethod.php", {
 								data: t.formData,
-								handleAs: "json",
-								headers: { "Content-Type": false }
+								handleAs: "json"
 							}).then(d.getTestCallback(function(data){
 								t.is({ foo: "bar", baz: "blah" }, data.post);
 							}), function(error){

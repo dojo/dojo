@@ -181,7 +181,7 @@ define([
 			}
 
 			var headers = options.headers,
-				contentType = (isFormData) ? false : 'application/x-www-form-urlencoded';
+				contentType = isFormData ? false : 'application/x-www-form-urlencoded';
 			if(headers){
 				for(var hdr in headers){
 					if(hdr.toLowerCase() === 'content-type'){

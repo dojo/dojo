@@ -130,10 +130,11 @@ define([
 			method: 'GET'
 		};
 	function xhr(url, options, returnDeferred){
+		var isFormData = has('native-formdata') && options && options.data && options.data instanceof FormData;
 		var response = util.parseArgs(
 			url,
 			util.deepCreate(defaultOptions, options),
-			has('native-formdata') && options && options.data && options.data instanceof FormData
+			isFormData
 		);
 		url = response.url;
 		options = response.options;
@@ -180,7 +181,7 @@ define([
 			}
 
 			var headers = options.headers,
-				contentType = 'application/x-www-form-urlencoded';
+				contentType = isFormData ? false : 'application/x-www-form-urlencoded';
 			if(headers){
 				for(var hdr in headers){
 					if(hdr.toLowerCase() === 'content-type'){

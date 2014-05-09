@@ -7,11 +7,11 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 	var ios4 = has("ios") < 5;
 
 	// Detect if platform supports Pointer Events, and if so, the names of the events (pointerdown vs. MSPointerDown).
-	var hasPointer = navigator.pointerEnabled || navigator.msPointerEnabled,
+	var hasPointer = has("pointer-events") || has("MSPointer"),
 		pointer = (function () {
 			var pointer = {};
 			for (var type in { down: 1, move: 1, up: 1, cancel: 1, over: 1, out: 1 }) {
-				pointer[type] = !navigator.pointerEnabled ?
+				pointer[type] = has("MSPointer") ?
 					"MSPointer" + type.charAt(0).toUpperCase() + type.slice(1) :
 					"pointer" + type;
 			}

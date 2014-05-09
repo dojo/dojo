@@ -100,7 +100,15 @@ define(["require", "module"], function(require, module){
 	if(has("host-browser")){
 		// Common application level tests
 		has.add("dom-addeventlistener", !!document.addEventListener);
-		has.add("touch", "ontouchstart" in document || window.navigator.msMaxTouchPoints > 0);
+
+		// Does the browser exposes specific events when user interacts with a touch capable hardware?
+		has.add("touch", "ontouchstart" in document || navigator.maxTouchPoints || window.navigator.msMaxTouchPoints);
+		// Touch events support
+		has.add("touch-events", "ontouchstart" in document);
+		// Pointer Events support
+		has.add("pointer-events", navigator.maxTouchPoints);
+		has.add("MSPointer", navigator.msMaxTouchPoints); //IE10 (+IE11 preview)
+
 		// I don't know if any of these tests are really correct, just a rough guess
 		has.add("device-width", screen.availWidth || innerWidth);
 

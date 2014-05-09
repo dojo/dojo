@@ -27,10 +27,23 @@ define([
 		return typeof FormData !== 'undefined';
 	});
 
+	has.add('native-response-type', function(){
+		return has('native-xhr') && typeof new XMLHttpRequest().responseType !== 'undefined';
+	});
+
+	// Google Chrome doesn't support "json" response type
+	// up to version 30, so it's intentionally not included here
+	var nativeResponseTypes = {'blob': 1, 'document': 1, 'arraybuffer': 1};
+
 	function handleResponse(response, error){
 		var _xhr = response.xhr;
 		response.status = response.xhr.status;
-		response.text = _xhr.responseText;
+
+		try {
+			// Firefox throws an error when trying to access
+			// xhr.responseText if response isn't text
+			response.text = _xhr.responseText;
+		} catch (e) {}
 
 		if(response.options.handleAs === 'xml'){
 			response.data = _xhr.responseXML;
@@ -181,6 +194,10 @@ define([
 
 			if(options.withCredentials){
 				_xhr.withCredentials = options.withCredentials;
+			}
+
+			if(has('native-response-type') && options.handleAs in nativeResponseTypes) {
+				_xhr.responseType = options.handleAs;
 			}
 
 			var headers = options.headers,

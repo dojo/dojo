@@ -308,6 +308,98 @@
 					});
 				}
 
+				if(has('native-response-type')) {
+					tests.push({
+						name: 'response Blob',
+						runTest: function(t){
+							var d = new doh.Deferred();
+							xhr.get("blob.gif", {
+								handleAs: "blob"
+							}).then(d.getTestCallback(function(response){
+								t.is(Blob, response.constructor);
+							}), function(error){
+								d.errback(error);
+							});
+							return d;
+						}
+					});
+
+					tests.push({
+						name: 'response Blob (post)',
+						runTest: function(t){
+							var d = new doh.Deferred();
+							xhr.post("blob.gif", {
+								handleAs: "blob"
+							}).then(d.getTestCallback(function(response){
+								t.is(Blob, response.constructor);
+							}), function(error){
+								d.errback(error);
+							});
+							return d;
+						}
+					});
+
+					tests.push({
+						name: 'response ArrayBuffer',
+						runTest: function(t){
+							var d = new doh.Deferred();
+							xhr.get("blob.gif", {
+								handleAs: "arraybuffer"
+							}).then(d.getTestCallback(function(response){
+								t.is(ArrayBuffer, response.constructor);
+							}), function(error){
+								d.errback(error);
+							});
+							return d;
+						}
+					});
+
+					tests.push({
+						name: 'response ArrayBuffer (post)',
+						runTest: function(t){
+							var d = new doh.Deferred();
+							xhr.post("blob.gif", {
+								handleAs: "arraybuffer"
+							}).then(d.getTestCallback(function(response){
+								t.is(ArrayBuffer, response.constructor);
+							}), function(error){
+								d.errback(error);
+							});
+							return d;
+						}
+					});
+
+					tests.push({
+						name: 'response document',
+						runTest: function(t){
+							var d = new doh.Deferred();
+							xhr.get("document.html", {
+								handleAs: "document"
+							}).then(d.getTestCallback(function(response){
+								t.is(document.constructor, response.constructor);
+							}), function(error){
+								d.errback(error);
+							});
+							return d;
+						}
+					});
+
+					tests.push({
+						name: 'response document (post)',
+						runTest: function(t){
+							var d = new doh.Deferred();
+							xhr.post("document.html", {
+								handleAs: "document"
+							}).then(d.getTestCallback(function(response){
+								t.is(document.constructor, response.constructor);
+							}), function(error){
+								d.errback(error);
+							});
+							return d;
+						}
+					});
+				}
+
 				doh.register("dojo/request/xhr", tests);
 				doh.run();
 			});

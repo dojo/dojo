@@ -496,16 +496,21 @@ define([
 			// No arguments at all provided
 			var D4 = A.createSubclass();
 
+			// Single Mixin
+			var D5 = A.createSubclass(C);
+
 			var d1 = new D1();
 			var d2 = new D2();
 			var d3 = new D3();
 			var d4 = new D4();
+			var d5 = new D5();
 			t.is("blah", d1.foo);
 			t.is("thonk", d2.foo);
 			t.is("thonk", d1.bar);
 			t.is("thonk", d2.bar);
 			t.is("blah", d3.foo);
 			t.is("thonk", d4.foo);
+			t.is("thonk", d5.bar);
 		}
 
 		// FIXME: there are still some permutations to test like:

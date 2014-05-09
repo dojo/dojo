@@ -328,7 +328,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 
     function createSubclass(mixins, props){
         // crack parameters
-        if(!(mixins instanceof Array)){
+        if(!(mixins instanceof Array || typeof mixins == 'function')){
             props = mixins;
             mixins = undefined;
         }

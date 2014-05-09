@@ -30,6 +30,11 @@
 								doh.t(false);
 							}
 						}
+					},
+					function getWidth(){
+						// see http://bugs.dojotoolkit.org/ticket/17962
+						var rowWidth = domStyle.get(dom.byId("trow"), "width");
+						doh.t(rowWidth > 0, "width: " + rowWidth);
 					}
 				]);
 
@@ -39,5 +44,6 @@
 	</head>
 	<body>
 	<div id="node" style="padding: 1px 2px 3px 4px;"></div>
+	<table><tbody><tr id="trow"><td>Col A</td><td>Col B</td></tr></tbody></table>
 	</body>
 </html>

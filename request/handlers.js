@@ -61,6 +61,10 @@ define([
 		};
 	}
 
+	var handleNativeResponse = function(response) {
+		return response.xhr.response;
+	}
+
 	var handlers = {
 		'javascript': function(response){
 			return kernel.eval(response.text || '');
@@ -68,7 +72,10 @@ define([
 		'json': function(response){
 			return JSON.parse(response.text || null);
 		},
-		'xml': handleXML
+		'xml': handleXML,
+		'blob': handleNativeResponse,
+		'arraybuffer': handleNativeResponse,
+		'document': handleNativeResponse
 	};
 
 	function handle(response){

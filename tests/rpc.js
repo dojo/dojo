@@ -106,40 +106,6 @@ doh.register("tests.rpc",
 					return new Error("Error loading and/or parsing an smd file");
 				}
 			}
-		},
-
-		{
-			name: "JsonP_test",
-			timeout: 10000,
-			setUp: function(){
-				this.svc = new dojo.rpc.JsonpService(dojo.moduleUrl("dojo.tests.resources","yahoo_smd_v1.smd"), {appid: "foo"});
-			},
-			runTest: function(){
-				var d = new doh.Deferred();
-
-				if (window.location.protocol=="file:") {
-					var err= new Error("This Test requires a webserver and will fail intentionally if loaded from file://");
-					d.errback(err);
-					return d;
-				}
-
-				var td = this.svc.webSearch({query:"dojotoolkit"});
-
-				td.addCallbacks(function(result){
-					return true;
-					if (result["ResultSet"]["Result"][0]["DisplayUrl"]=="dojotoolkit.org/") {
-						return true;
-					}else{
-						return new Error("JsonRpc_SMD_Loading_Test failed, resultant content didn't match");
-					}
-				}, function(result){
-					return new Error(result);
-				});
-
-				td.addBoth(d, "callback");
-
-				return d;
-			}
 		}
 	]
 );

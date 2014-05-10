@@ -1,8 +1,99 @@
 define([
 	"doh", "require",
-	"dojo/_base/declare",  "dojo/Evented", "dojo/has", "dojo/on", "dojo/query", "dojo/topic", "dojo/dom-construct"
-], function(doh, require, declare, Evented, has, on, query, topic, domConstruct){
+	"dojo/_base/declare",  "dojo/Evented", "dojo/has", "dojo/on", "dojo/query", "dojo/topic", "dojo/dom-construct", "dojo/on/debounce", "dojo/on/throttle"
+], function(doh, require, declare, Evented, has, on, query, topic, domConstruct, dojoDebounce, dojoThrottle){
+	doh.register("tests.on.delegate", [
+		function matches(){
+			var eDiv = document.body.appendChild(document.createElement("div")),
+				eDiv2 = eDiv.appendChild(document.createElement("div")),
+				eSpan = eDiv2.appendChild(document.createElement("span")),
+				matchResult = [];
+				handle = on(eDiv, "click", function(e){
+					matchResult.push(!!on.matches(e.target, 'span:click', this));
+					matchResult.push(!!on.matches(e.target, 'div:click', this));
+					matchResult.push(!!on.matches(e.target, 'div:click', this, false));
+					matchResult.push(!!on.matches(e.target, 'body:click', this));
+				});
 
+			eSpan.click();
+			handle.remove();
+			handle = on(eDiv, "click", function(e){
+				matchResult.push(!!on.matches(e.target, 'span:click', this));
+				matchResult.push(!!on.matches(e.target, 'div:click', this));
+			});
+			eDiv2.click();
+			doh.is([true, true, false, false, false, true], matchResult);
+		},
+		function debounce(){
+			var eDiv = document.body.appendChild(document.createElement("div")),
+				eDiv2 = eDiv.appendChild(document.createElement("div")),
+				eA = eDiv2.appendChild(document.createElement("a")),
+				eButton = eA.appendChild(document.createElement("button")),
+				debouncedCount = 0,
+				debouncedCount2 = 0,
+				debouncedCount3 = 0,
+				eventTargetAvailable = false;
+				clickCount = 0;
+
+			on(eDiv, dojoDebounce("a:click", 100), function(e){
+				debouncedCount++;
+				eventTargetAvailable = e && e.target && e.target.nodeType === 1;
+			});
+			on(eDiv2, dojoDebounce("click", 100), function(){
+				debouncedCount2++;
+			});
+			on(eDiv, dojoDebounce("click,a:click", 100), function(){
+				debouncedCount3++;
+			});
+			on(eDiv, "a:click", function(){
+				clickCount++;
+			});
+			eButton.click();
+			eButton.click();
+			eButton.click();
+			eButton.click();
+			
+			var deferred = new doh.Deferred();
+			setTimeout(deferred.getTestCallback(function(){
+				doh.is(true, eventTargetAvailable);
+				doh.is(1, debouncedCount);
+				doh.is(1, debouncedCount2);
+				doh.is(1, debouncedCount3);
+				doh.is(4, clickCount);
+			}), 110);
+			return deferred;
+
+		},
+		function throttle(){
+			var eDiv = document.body.appendChild(document.createElement("div")),
+				eDiv2 = eDiv.appendChild(document.createElement("div")),
+				eA = eDiv2.appendChild(document.createElement("a")),
+				eButton = eA.appendChild(document.createElement("button")),
+				throttleCount = 0,
+				clickCount = 0;
+
+			on(eDiv, dojoThrottle("a:click", 100), function(){
+				throttleCount++
+			});
+			on(eDiv, "a:click", function(){
+				clickCount++
+			});
+			var interv = setInterval(function() {
+				eButton.click();
+				if(clickCount === 4) {
+					clearInterval(interv);
+				}
+			}, 45);
+			
+			var deferred = new doh.Deferred();
+			setTimeout(deferred.getTestCallback(function(){
+				doh.is(4, clickCount);
+				doh.is(2, throttleCount);
+			}), 300);
+			return deferred;
+
+		}
+	]);
 	doh.register("tests.on", [
 		function object(t){
 			var order = [];
@@ -201,6 +292,7 @@ define([
 				});
 				on(document, "button:click", function(){
 				}); // just make sure this doesn't throw an error
+				
 			}else{//just pass then
 				order.push(8, 9);
 			}

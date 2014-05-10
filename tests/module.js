@@ -9,6 +9,8 @@ define([
 	"dojo/tests/date",
 	"dojo/tests/date/locale",
 	"dojo/tests/date/stamp",
+	"dojo/tests/debounce",
+	"dojo/tests/throttle",
 	"dojo/tests/on",
 	"dojo/tests/mouse",
 	"dojo/tests/json",

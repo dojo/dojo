@@ -163,7 +163,42 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 		}
 		throw new Error("Target must be an event emitter");
 	}
+	on.matches = function(node, selector, context, children, matchesTarget) {
+		// summary:
+		//		Check if a node match the current selector within the constraint of a context
+		// node: DOMNode
+		//		The node that originate the event
+		// selector: String
+		//		The selector to check against
+		// context: DOMNode
+		//		The context to search in.
+		// children: Boolean
+		//		Indicates if children elements of the selector should be allowed. This defaults to
+		//		true
+		// matchesTarget: Object|dojo/query?
+		//		An object with a property "matches" as a function. Default is dojo/query.
+		//		Matching DOMNodes will be done against this function
+		//		The function must return a Boolean.
+		//		It will have 3 arguments: "node", "selector" and "context"
+		//		True is expected if "node" is matching the current "selector" in the passed "context"
+		// returns: DOMNode?
+		//		The matching node, if any. Else you get false
 
+		// see if we have a valid matchesTarget or default to dojo/query
+		matchesTarget = matchesTarget && matchesTarget.matches ? matchesTarget : dojo.query;
+		children = children !== false;
+		// there is a selector, so make sure it matches
+		if(node.nodeType != 1){
+			// text node will fail in native match selector
+			node = node.parentNode;
+		}
+		while(!matchesTarget.matches(node, selector, context)){
+			if(node == context || children === false || !(node = node.parentNode) || node.nodeType != 1){ // intentional assignment
+				return false;
+			}
+		}
+		return node;
+	}
 	on.selector = function(selector, eventType, children){
 		// summary:
 		//		Creates a new extension event with event delegation. This is based on
@@ -186,19 +221,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 			var matchesTarget = typeof selector == "function" ? {matches: selector} : this,
 				bubble = eventType.bubble;
 			function select(eventTarget){
-				// see if we have a valid matchesTarget or default to dojo/query
-				matchesTarget = matchesTarget && matchesTarget.matches ? matchesTarget : dojo.query;
-				// there is a selector, so make sure it matches
-				if(eventTarget.nodeType != 1){
-					// text node will fail in native match selector
-					eventTarget = eventTarget.parentNode;
-				}
-				while(!matchesTarget.matches(eventTarget, selector, target)){
-					if(eventTarget == target || children === false || !(eventTarget = eventTarget.parentNode) || eventTarget.nodeType != 1){ // intentional assignment
-						return;
-					}
-				}
-				return eventTarget;
+				return on.matches(eventTarget, selector, target, children, matchesTarget);
 			}
 			if(bubble){
 				// the event type doesn't naturally bubble, but has a bubbling form, use that, and give it the selector so it can perform the select itself

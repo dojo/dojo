@@ -18,8 +18,8 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 			return pointer;
 		})();
 
-	// Detect if platform supports either Pointer Events or the webkit touchstart/touchend/... events
-	var hasTouch = has("touch");
+	// Detect if platform supports the webkit touchstart/touchend/... events
+	var hasTouch = has("touch-events");
 
 	// Click generation variables
 	var clicksInited, clickTracker, clickTarget, clickX, clickY, clickDx, clickDy, clickTime;
@@ -309,7 +309,7 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 		press: dualEvent("mousedown", "touchstart", pointer.down),
 		move: dualEvent("mousemove", "dojotouchmove", pointer.move),
 		release: dualEvent("mouseup", "dojotouchend", pointer.up),
-		cancel: dualEvent(mouse.leave, "touchcancel", hasTouch ? pointer.cancel : null),
+		cancel: dualEvent(mouse.leave, "touchcancel", hasPointer ? pointer.cancel : null),
 		over: dualEvent("mouseover", "dojotouchover", pointer.over),
 		out: dualEvent("mouseout", "dojotouchout", pointer.out),
 		enter: mouse._eventHandler(dualEvent("mouseover","dojotouchover", pointer.over)),

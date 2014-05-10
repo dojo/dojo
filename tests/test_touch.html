@@ -140,7 +140,7 @@
 				dom.byId("test3").dojoClick = true;
 				on(dom.byId("test3"), "click", function(e){
 					logClickEvent(e);
-					if(has("touch") || navigator.maxTouchPoints){
+					if(has("touch")){
 						// click should be a synthetic click
 						dom.byId("log").innerHTML = (e._dojo_click ? "Synthetic click received in test3" : "ERROR: native click received in test3") + "<br/>" + dom.byId("log").innerHTML;
 					}else{
@@ -325,19 +325,17 @@
 					}
 
 					// Setup tests relevant for this platform
-					if(navigator.pointerEnabled){
-						register('Pointer events', 'pointerdown', 'pointermove', 'pointerup',
-								has('touch') ? 'pointercancel' : 'mouseout');
-					}else if(navigator.msPointerEnabled){
-						register('MSPointer events', 'MSPointerDown', 'MSPointerMove', 'MSPointerUp',
-								has('touch') ? 'MSPointerCancel' : 'mouseout');
+					if(has("pointer-events")){
+						register('Pointer events', 'pointerdown', 'pointermove', 'pointerup', 'pointercancel');
+					}else if(has("MSPointer")){
+						register('MSPointer events', 'MSPointerDown', 'MSPointerMove', 'MSPointerUp', 'MSPointerCancel');
 					}else{
 						// Mouse is always supported, even on devices with touch capability.
 						// Test mouse first because once we start emitting touch events, dojo/touch ignores mouse events
 						// for 1000ms.
 						register('mouse events', 'mousedown', 'mousemove', 'mouseup', 'mouseout');
 
-						if(has("touch")){
+						if(has("touch-events")){
 							register('touch events', 'touchstart', 'touchmove', 'touchend', 'touchcancel');
 
 							var domEltWithDisabledSyntheticClick = dom.byId("innertest3");

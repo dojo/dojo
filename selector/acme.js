@@ -1399,8 +1399,8 @@ define([
 		// returns: Array
 		// example:
 		//		search the entire document for elements with the class "foo":
-		//	|	require(["dojo/query", "dojo/_base/array"], function(query, array) {
-		//	|	    array.forEach(query(".foo"), function(q){console.log(q);});
+		//	|	require(["dojo/query"], function(query) {
+		//	|	    query(".foo").forEach(function(q) { console.log(q); });
 		//	|	});
 		//		these elements will match:
 		//	|	<span class="foo"></span>
@@ -1408,8 +1408,8 @@ define([
 		//	|	<p class="thud foo"></p>
 		// example:
 		//		search the entire document for elements with the classes "foo" *and* "bar":
-		//	|	require(["dojo/query", "dojo/_base/array"], function(query, array) {
-		//	|	    array.forEach(query(".foo.bar"), function(q){console.log(q);});
+		//	|	require(["dojo/query"], function(query) {
+		//	|	    query(".foo.bar").forEach(function(q) { console.log(q); });
 		//	|	});
 		
 		//		these elements will match:
@@ -1420,8 +1420,8 @@ define([
 		// example:
 		//		find `<span>` elements which are descendants of paragraphs and
 		//		which have a "highlighted" class:
-		//	|	require(["dojo/query", "dojo/_base/array"], function(query, array) {
-    		//	|	    array.forEach(query("p span.highlighted"), function(q){console.log(q);});
+		//	|	require(["dojo/query"], function(query) {
+		//	|	    query("p span.highlighted").forEach(function(q) { console.log(q); });
 		//	|	});
 		//		the innermost span in this fragment matches:
 		//	|	<p class="foo">
@@ -1433,43 +1433,31 @@ define([
 		//		set an "odd" class on all odd table rows inside of the table
 		//		`#tabular_data`, using the `>` (direct child) selector to avoid
 		//		affecting any nested tables:
-		//	|	require(["dojo/query", "dojo/_base/array", "dojo/dom-class"], 
-		//	|	        function(query, array, domClass) {    
-		//	|	            array.forEach(query("#tabular_data > tbody > tr:nth-child(odd)"), 
-		//	|	                function(q){ domClass.add(q, "odd");}
-		//	|	            );
-		//	|	        }
+		//	|	require(["dojo/query"], function(query) {    
+		//	|	    query("#tabular_data > tbody > tr:nth-child(odd)").addClass("odd");
 		//	|	);
 		// example:
 		//		remove all elements with the class "error" from the document:
-		//	|	require(["dojo/query", "dojo/_base/array", "dojo/dom-construct"], 
-		//	|	        function(query, array, domConstruct) {
-		//	|	            array.forEach(query(".error"), function(q){
-		//	|	                domConstruct.destroy(q);
-		//	|	            });
-		//	|	        }
+		//	|	require(["dojo/query"], function(query) {
+		//	|	    query(".error").orphan();
 		//	|	);
 		// example:
 		//		add an onclick handler to every submit button in the document
 		//		which causes the form to be sent via Ajax instead:
-		//	|	require(["dojo/query", "dojo/_base/array", "dojo/on", "dojo/request",
-		//	|	         "dojo/dom-construct", "dojo/dom-style"],
-		//	|	        function (query, array, on, request, domConstruct, domStyle) {
-		//	|	            array.forEach(query("input[type='submit']"), function (q) {
-		//	|	                on(q, "click", function (e) {
-		//	|	                    e.stopPropagation();
-		//	|	                    e.preventDefault();
-		//	|	                    var btn = e.target;
-		//	|	                    request.post("", { data: btn.form, timeout: 2000 })
-		//	|	                    .then(function (data) {
-		//	|	                        // replace the form with the response
-		//	|	                        domConstruct.create("div", { innerHTML: data }, btn.form, "after");
-		//	|	                        domStyle.set(btn.form, "display", "none");
-		//	|	                    });
-		//	|	                });
-		//	|	            });
-		//	|	        }
-		//	|	);
+		//	|	require(["dojo/query", "dojo/request", "dojo/dom-construct", "dojo/dom-style"
+		//	|	], function (query, request, domConstruct, domStyle) {
+		//	|	    query("input[type='submit']").on("click", function (e) {
+		//	|	        e.stopPropagation();
+		//	|	        e.preventDefault();
+		//	|	        var btn = e.target;
+		//	|	        request.post("", { data: btn.form, timeout: 2000 })
+		//	|	        .then(function (data) {
+		//	|	            // replace the form with the response
+		//	|	            domConstruct.create("div", { innerHTML: data }, btn.form, "after");
+		//	|	            domStyle.set(btn.form, "display", "none");
+		//	|	        });
+		//	|	    });
+		//	|	});
 
 
 		root = root || getDoc();

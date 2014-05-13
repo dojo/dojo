@@ -79,7 +79,7 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 	dojo.isAsync = !has("dojo-loader") || require.async;
 	dojo.locale = config.locale;
 
-	var rev = "$Rev$".match(/[0-9a-f]{7,}/);
+	var rev = "$Rev: f73dd45 $".match(/[0-9a-f]{7,}/);
 	dojo.version = {
 		// summary:
 		//		Version number of the Dojo Toolkit
@@ -92,7 +92,7 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 		//		- flag: String: Descriptor flag. If total version is "1.2.0beta1", will be "beta1"
 		//		- revision: Number: The Git rev from which dojo was pulled
 
-		major: 1, minor: 10, patch: 0, flag: "-pre",
+		major: 1, minor: 10, patch: 0, flag: "-beta1",
 		revision: rev ? rev[0] : NaN,
 		toString: function(){
 			var v = dojo.version;

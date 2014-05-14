@@ -929,15 +929,21 @@ define([
 				retFunc = function(root, arr){
 					var te = dom.byId(query.id, (root.ownerDocument||root));
 
-					// We can't look for ID inside a document fragment.
+					// We can't look for ID inside a detached dom.
 					// loop over all elements searching for specified id.
 					if(root.ownerDocument && !root.ownerDocument.contains(root)) {
-						var elems = _childElements(function (node) {
-							return node.id === query.id;
-						}, true)(root, []);
 
-						if(elems.length) {
-							te = elems[0];
+						// document-fragment or regular HTMLElement
+						var roots = root.nodeType === 11? root.children: [root];
+
+						for(var i = 0, len = roots.length; i < len; i++) {
+							var elems = _childElements(function (node) {
+								return node.id === query.id;
+							}, true)(roots[i], []);
+							if(elems.length) {
+								te = elems[0];
+								break;
+							}
 						}
 					}
 

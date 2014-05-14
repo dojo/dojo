@@ -816,11 +816,11 @@ define([
 	};
 
 	// get an array of child *elements*, skipping text and comment nodes
-	var _childElements = function(filterFunc){
+	var _childElements = function(filterFunc, recursive){
 		filterFunc = filterFunc||yesman;
 		return function(root, ret, bag){
 			// get an array of child elements, skipping text and comment nodes
-			var te, x = 0, tret = root.children || root.childNodes;
+			var te, x = 0, tret = (recursive)? root.getElementsByTagName("*"): root.children || root.childNodes;
 			while(te = tret[x++]){
 				if(
 					_simpleNodeTest(te) &&
@@ -928,6 +928,19 @@ define([
 
 				retFunc = function(root, arr){
 					var te = dom.byId(query.id, (root.ownerDocument||root));
+
+					// We can't look for ID inside a document fragment.
+					// loop over all elements searching for specified id.
+					if(root.ownerDocument && !root.ownerDocument.contains(root)) {
+						var elems = _childElements(function (node) {
+							return node.id === query.id;
+						}, true)(root, []);
+
+						if(elems.length) {
+							te = elems[0];
+						}
+					}
+
 					if(!te || !filterFunc(te)){ return; }
 					if(9 == root.nodeType){ // if root's a doc, we just return directly
 						return getArr(te, arr);

@@ -817,10 +817,21 @@ define([
 
 	// get an array of child *elements*, skipping text and comment nodes
 	var _childElements = function(filterFunc, recursive){
+		var _slice = Array.prototype.slice;
 		filterFunc = filterFunc||yesman;
 		return function(root, ret, bag){
 			// get an array of child elements, skipping text and comment nodes
-			var te, x = 0, tret = (recursive)? root.getElementsByTagName("*"): root.children || root.childNodes;
+			var te, x = 0, tret = _slice.call(root.children || root.childNodes);
+
+			if(recursive) {
+				array.forEach(tret, function (node) {
+					if(node.nodeType === 1) {
+						var allChildren = _slice.call(node.getElementsByTagName("*"));
+						tret = tret.concat(allChildren);
+					}
+				});
+			}
+
 			while(te = tret[x++]){
 				if(
 					_simpleNodeTest(te) &&
@@ -931,10 +942,10 @@ define([
 
 					// We can't look for ID inside a detached dom.
 					// loop over all elements searching for specified id.
-					if(root.ownerDocument && !root.ownerDocument.contains(root)) {
+					if(root.ownerDocument && !_isDescendant(root, root.ownerDocument)) {
 
 						// document-fragment or regular HTMLElement
-						var roots = root.nodeType === 11? root.children: [root];
+						var roots = root.nodeType === 11? root.childNodes: [root];
 
 						for(var i = 0, len = roots.length; i < len; i++) {
 							var elems = _childElements(function (node) {

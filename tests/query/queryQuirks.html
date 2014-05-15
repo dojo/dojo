@@ -221,10 +221,17 @@
 						i.sort(function(a,b){ return 1; })
 					},
 					function document_fragment() {
-						var detachedDom = domConstruct.toDom("<i><u><a></a><b id='b'></b><u></i>");
-						var documentFragment = domConstruct.toDom("<i></i>    <u><a></a><b id='b'></b><u>");
+						var detachedDom = domConstruct.toDom("<i><u><a></a><b id='b'></b></u></i>");
+						var documentFragment = domConstruct.toDom("<i></i>    <u><a></a><b id='b'></b></u>");
+
 						doh.is(1, query("#b", detachedDom).length);
 						doh.is(1, query("#b", documentFragment).length);
+
+						var detachedDom2 = domConstruct.toDom("<i><u><a></a><b></b></u></i>");
+						var documentFragment2 = domConstruct.toDom("<i></i>    <u><a></a><b></b></u>");
+
+						doh.is(0, query("#b", detachedDom2).length);
+						doh.is(0, query("#b", documentFragment2).length);
 					}
 				]);
 

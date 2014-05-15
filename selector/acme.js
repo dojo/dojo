@@ -947,15 +947,16 @@ define([
 						// document-fragment or regular HTMLElement
 						var roots = root.nodeType === 11? root.childNodes: [root];
 
-						for(var i = 0, len = roots.length; i < len; i++) {
+						array.some(roots, function (currentRoot) {
 							var elems = _childElements(function (node) {
 								return node.id === query.id;
-							}, true)(roots[i], []);
+							}, true)(currentRoot, []);
+
 							if(elems.length) {
 								te = elems[0];
-								break;
+								return false;
 							}
-						}
+						});
 					}
 
 					if(!te || !filterFunc(te)){ return; }

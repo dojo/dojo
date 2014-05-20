@@ -216,7 +216,7 @@ define(["./kernel", "../has", "../sniff"], function(dojo, has){
 			// context: Object?
 			//		Optional. Object to use as root of path. Defaults to
 			//		'dojo.global'. Null may be passed.
-			return getProp(name.split("."), create, context); // Object
+			return getProp(name ? name.split(".") : [], create, context); // Object
 		},
 
 		exists: function(name, obj){

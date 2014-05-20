@@ -11,7 +11,9 @@ define(["./kernel", "../has", "../sniff"], function(dojo, has){
 	});
 
 	// Helper methods
-	var _extraNames =
+	var EMPTY_ARRAY = [],
+
+		_extraNames =
 			has("bug-for-in-skips-shadowed") ?
 				"hasOwnProperty.valueOf.isPrototypeOf.propertyIsEnumerable.toLocaleString.toString.constructor".split(".") : [],
 
@@ -216,7 +218,7 @@ define(["./kernel", "../has", "../sniff"], function(dojo, has){
 			// context: Object?
 			//		Optional. Object to use as root of path. Defaults to
 			//		'dojo.global'. Null may be passed.
-			return getProp(name.split("."), create, context); // Object
+			return getProp(name ? name.split(".") : EMPTY_ARRAY, create, context); // Object
 		},
 
 		exists: function(name, obj){

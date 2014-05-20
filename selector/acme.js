@@ -1399,14 +1399,19 @@ define([
 		// returns: Array
 		// example:
 		//		search the entire document for elements with the class "foo":
-		//	|	dojo.query(".foo");
+		//	|	require(["dojo/query"], function(query) {
+		//	|	    query(".foo").forEach(function(q) { console.log(q); });
+		//	|	});
 		//		these elements will match:
 		//	|	<span class="foo"></span>
 		//	|	<span class="foo bar"></span>
 		//	|	<p class="thud foo"></p>
 		// example:
 		//		search the entire document for elements with the classes "foo" *and* "bar":
-		//	|	dojo.query(".foo.bar");
+		//	|	require(["dojo/query"], function(query) {
+		//	|	    query(".foo.bar").forEach(function(q) { console.log(q); });
+		//	|	});
+		
 		//		these elements will match:
 		//	|	<span class="foo bar"></span>
 		//		while these will not:
@@ -1415,7 +1420,9 @@ define([
 		// example:
 		//		find `<span>` elements which are descendants of paragraphs and
 		//		which have a "highlighted" class:
-		//	|	dojo.query("p span.highlighted");
+		//	|	require(["dojo/query"], function(query) {
+		//	|	    query("p span.highlighted").forEach(function(q) { console.log(q); });
+		//	|	});
 		//		the innermost span in this fragment matches:
 		//	|	<p class="foo">
 		//	|		<span>...
@@ -1426,28 +1433,32 @@ define([
 		//		set an "odd" class on all odd table rows inside of the table
 		//		`#tabular_data`, using the `>` (direct child) selector to avoid
 		//		affecting any nested tables:
-		//	|	dojo.query("#tabular_data > tbody > tr:nth-child(odd)").addClass("odd");
+		//	|	require(["dojo/query"], function(query) {    
+		//	|	    query("#tabular_data > tbody > tr:nth-child(odd)").addClass("odd");
+		//	|	);
 		// example:
-		//		remove all elements with the class "error" from the document
-		//		and store them in a list:
-		//	|	var errors = dojo.query(".error").orphan();
+		//		remove all elements with the class "error" from the document:
+		//	|	require(["dojo/query"], function(query) {
+		//	|	    query(".error").orphan();
+		//	|	);
 		// example:
 		//		add an onclick handler to every submit button in the document
 		//		which causes the form to be sent via Ajax instead:
-		//	|	dojo.query("input[type='submit']").onclick(function(e){
-		//	|		dojo.stopEvent(e); // prevent sending the form
-		//	|		var btn = e.target;
-		//	|		dojo.xhrPost({
-		//	|			form: btn.form,
-		//	|			load: function(data){
-		//	|				// replace the form with the response
-		//	|				var div = dojo.doc.createElement("div");
-		//	|				dojo.place(div, btn.form, "after");
-		//	|				div.innerHTML = data;
-		//	|				dojo.style(btn.form, "display", "none");
-		//	|			}
-		//	|		});
+		//	|	require(["dojo/query", "dojo/request", "dojo/dom-construct", "dojo/dom-style"
+		//	|	], function (query, request, domConstruct, domStyle) {
+		//	|	    query("input[type='submit']").on("click", function (e) {
+		//	|	        e.stopPropagation();
+		//	|	        e.preventDefault();
+		//	|	        var btn = e.target;
+		//	|	        request.post("", { data: btn.form, timeout: 2000 })
+		//	|	        .then(function (data) {
+		//	|	            // replace the form with the response
+		//	|	            domConstruct.create("div", { innerHTML: data }, btn.form, "after");
+		//	|	            domStyle.set(btn.form, "display", "none");
+		//	|	        });
+		//	|	    });
 		//	|	});
+
 
 		root = root || getDoc();
 

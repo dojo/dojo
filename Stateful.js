@@ -2,6 +2,16 @@ define(["./_base/declare", "./_base/lang", "./_base/array", "./when"], function(
 	// module:
 	//		dojo/Stateful
 
+function equals(/*Anything*/ dst, /*Anything*/ src){
+	// summary:
+	//		Returns if the given two values are equal.
+
+	return dst === src
+		       || typeof dst == "number" && isNaN(dst) && typeof src == "number" && isNaN(src)
+		       || lang.isFunction((dst || {}).getTime) && lang.isFunction((src || {}).getTime) && dst.getTime() == src.getTime()
+		|| (lang.isFunction((dst || {}).equals) ? dst.equals(src) : lang.isFunction((src || {}).equals) ? src.equals(dst) : false);
+}
+
 return declare("dojo.Stateful", null, {
 	// summary:
 	//		Base class for objects that provide named properties with optional getter/setter
@@ -123,13 +133,14 @@ return declare("dojo.Stateful", null, {
 			// no setter so set attribute directly
 			this[name] = value;
 		}
-		if(this._watchCallbacks){
-			var self = this;
-			// If setter returned a promise, wait for it to complete, otherwise call watches immediatly
-			when(result, function(){
-				self._watchCallbacks(name, oldValue, value);
-			});
-		}
+		var self = this;
+		// If setter returned a promise, wait for it to complete, otherwise call watches immediatly
+		when(result, function(){
+			var newValue = self.get(name);
+			if(self._watchCallbacks && !equals(oldValue, newValue)){
+				self._watchCallbacks(name, oldValue, newValue);
+			}
+		});
 		return this; // dojo/Stateful
 	},
 	_changeAttrValue: function(name, value){
@@ -149,8 +160,9 @@ return declare("dojo.Stateful", null, {
 
 		var oldValue = this.get(name);
 		this[name] = value;
-		if(this._watchCallbacks){
-			this._watchCallbacks(name, oldValue, value);
+		var newValue = this.get(name);
+		if(this._watchCallbacks && !equals(oldValue, newValue)){
+			this._watchCallbacks(name, oldValue, newValue);
 		}
 		return this; // dojo/Stateful
 	},

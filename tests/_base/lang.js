@@ -43,6 +43,10 @@ define(["doh/main", "dojo/_base/array", "dojo/_base/lang", "dojo/_base/kernel"
 
 			// strangely, parser does this
 			t.assertEqual("undefined", typeof lang.getObject("./TestWidget"), 'typeof lang.getObject("./TestWidget")');
+
+			// empty path should return the same object
+			t.assertEqual(test, lang.getObject("", false, test));
+			t.assertEqual(kernel.global, lang.getObject(""));
 		},
 
 		function setObject(t){

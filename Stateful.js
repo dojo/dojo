@@ -125,7 +125,7 @@ return declare("dojo.Stateful", null, {
 		}
 		if(this._watchCallbacks){
 			var self = this;
-			// If setter returned a promise, wait for it to complete, otherwise call watches immediatly
+			// If setter returned a promise, wait for it to complete, otherwise call watches immediately
 			when(result, function(){
 				self._watchCallbacks(name, oldValue, value);
 			});

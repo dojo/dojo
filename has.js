@@ -102,7 +102,9 @@ define(["require", "module"], function(require, module){
 		has.add("dom-addeventlistener", !!document.addEventListener);
 
 		// Do the device and browser have touch capability?
-		has.add("touch", "ontouchstart" in document || navigator.maxTouchPoints || window.navigator.msMaxTouchPoints);
+		has.add("touch", "ontouchstart" in document
+			|| ("onpointerdown" in document && navigator.maxTouchPoints > 0)
+			|| window.navigator.msMaxTouchPoints);
 
 		// Touch events support
 		has.add("touch-events", "ontouchstart" in document);

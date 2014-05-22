@@ -108,7 +108,7 @@ define(["require", "module"], function(require, module){
 		has.add("touch-events", "ontouchstart" in document);
 
 		// Pointer Events support
-		has.add("pointer-events", "maxTouchPoints" in navigator);
+		has.add("pointer-events", "onpointerdown" in document);
 		has.add("MSPointer", "msMaxTouchPoints" in navigator); //IE10 (+IE11 preview)
 
 		// I don't know if any of these tests are really correct, just a rough guess

@@ -99,7 +99,7 @@ define([
 					response.loaded = evt.loaded;
 					response.total = evt.total;
 					dfd.progress(response);
-				} else if(response.xhr.getResponseHeader('Transfer-Encoding') === 'chunked' && response.xhr.readyState === 3){
+				} else if(response.xhr.readyState === 3){
 					response.loaded = evt.position;
 					dfd.progress(response);
 				}

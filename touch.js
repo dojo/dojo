@@ -22,7 +22,7 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 	var hasTouch = has("touch-events");
 
 	// Click generation variables
-	var clicksInited, clickTracker, clickTarget, clickX, clickY, clickDx, clickDy, clickTime;
+	var clicksInited, clickTracker, useTarget = false, clickTarget, clickX, clickY, clickDx, clickDy, clickTime;
 
 	// Time of most recent touchstart, touchmove, or touchend event
 	var lastTouch;
@@ -86,15 +86,15 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 		var markedNode = marked(e.target);
 		clickTracker  = !e.target.disabled && markedNode && markedNode.dojoClick; // click threshold = true, number, x/y object, or "useTarget"
 		if(clickTracker){
-			var useTarget = (clickTracker == "useTarget");
+			useTarget = (clickTracker == "useTarget");
 			clickTarget = (useTarget?markedNode:e.target);
 			if(useTarget){
 				// We expect a click, so prevent any other 
 				// default action on "touchpress"
 				e.preventDefault();
 			}
-			clickX = e.changedTouches ? e.changedTouches[0].pageX : e.clientX;
-			clickY = e.changedTouches ? e.changedTouches[0].pageY : e.clientY;
+			clickX = e.changedTouches ? e.changedTouches[0].pageX - win.global.pageXOffset : e.clientX;
+			clickY = e.changedTouches ? e.changedTouches[0].pageY - win.global.pageYOffset : e.clientY;
 			clickDx = (typeof clickTracker == "object" ? clickTracker.x : (typeof clickTracker == "number" ? clickTracker : 0)) || 4;
 			clickDy = (typeof clickTracker == "object" ? clickTracker.y : (typeof clickTracker == "number" ? clickTracker : 0)) || 4;
 
@@ -105,12 +105,16 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 
 				function updateClickTracker(e){
 					if(useTarget){
-						clickTracker = dom.isDescendant(win.doc.elementFromPoint((e.changedTouches ? e.changedTouches[0].pageX : e.clientX),(e.changedTouches ? e.changedTouches[0].pageY : e.clientY)),clickTarget);
+						clickTracker = dom.isDescendant(
+							win.doc.elementFromPoint(
+								(e.changedTouches ? e.changedTouches[0].pageX - win.global.pageXOffset : e.clientX),
+								(e.changedTouches ? e.changedTouches[0].pageY - win.global.pageYOffset : e.clientY)),
+							clickTarget);
 					}else{
 						clickTracker = clickTracker &&
 							(e.changedTouches ? e.changedTouches[0].target : e.target) == clickTarget &&
-							Math.abs((e.changedTouches ? e.changedTouches[0].pageX : e.clientX) - clickX) <= clickDx &&
-							Math.abs((e.changedTouches ? e.changedTouches[0].pageY : e.clientY) - clickY) <= clickDy;
+							Math.abs((e.changedTouches ? e.changedTouches[0].pageX - win.global.pageXOffset : e.clientX) - clickX) <= clickDx &&
+							Math.abs((e.changedTouches ? e.changedTouches[0].pageY - win.global.pageYOffset : e.clientY) - clickY) <= clickDy;
 					}
 				}
 

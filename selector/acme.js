@@ -817,17 +817,32 @@ define([
 
 	// get an array of child *elements*, skipping text and comment nodes
 	var _childElements = function(filterFunc, recursive){
-		var _slice = Array.prototype.slice;
+
+		var _toArray = function (iterable) {
+			var result = [];
+
+			try {
+				result = Array.prototype.slice.call(iterable);
+			} catch(e) {
+				// IE8- throws an error when we try convert HTMLCollection
+				// to array using Array.prototype.slice.call
+				for(var i = 0, len = iterable.length; i < len; i++) {
+					result.push(iterable[i]);
+				}
+			}
+
+			return result;
+		};
+
 		filterFunc = filterFunc||yesman;
 		return function(root, ret, bag){
 			// get an array of child elements, skipping text and comment nodes
-			var te, x = 0, tret = _slice.call(root.children || root.childNodes);
+			var te, x = 0, tret = []; tret = _toArray(root.children || root.childNodes);
 
 			if(recursive) {
 				array.forEach(tret, function (node) {
 					if(node.nodeType === 1) {
-						var allChildren = _slice.call(node.getElementsByTagName("*"));
-						tret = tret.concat(allChildren);
+						tret = tret.concat(_toArray(node.getElementsByTagName("*")));
 					}
 				});
 			}

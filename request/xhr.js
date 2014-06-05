@@ -24,7 +24,7 @@ define([
 
 	has.add('native-formdata', function(){
 		// if true, the environment has a native FormData implementation
-		return typeof FormData === 'function';
+		return typeof FormData !== 'undefined';
 	});
 
 	function handleResponse(response, error){

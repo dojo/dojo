@@ -57,13 +57,14 @@ define([
 			}
 		}
 
-		if(error){
-			this.reject(error);
-		}else if(util.checkStatus(_xhr.status)){
-			this.resolve(response);
+		if(util.checkStatus(_xhr.status)){
+			if(error){
+				this.reject(error);
+			}else{
+				this.resolve(response);
+			}
 		}else{
 			error = new RequestError('Unable to load ' + response.url + ' status: ' + _xhr.status, response);
-
 			this.reject(error);
 		}
 	}

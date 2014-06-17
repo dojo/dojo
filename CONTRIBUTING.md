@@ -79,7 +79,7 @@ It is important that you clone recursively for ``dojox``, ``demos`` or ``util``b
 submodules.  You won't be able to submit your changes to the repositories that way though.  If you are working on any of
 these sub-projects, you should contact those project leads to see if their workflow differs.
 
-You should also setup the `upstream` repository.  This will allow you to take changes from the "master" repository
+You should also set up the `upstream` repository.  This will allow you to take changes from the "master" repository
 and merge them into your local clone and then push them to your GitHub fork:
 
 ```bash

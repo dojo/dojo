@@ -7,6 +7,9 @@ define([
 	'./string',
 	'./regexp',
 	'./when',
+	'./on',
+	'./Evented',
+	'./topic',
 
 	// host-specific tests
 	'intern/dojo/has!host-browser?./dom-form',

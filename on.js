@@ -323,6 +323,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 		//	|		});
 		//	|	});
 		var args = slice.call(arguments, 2);
+		var originallyCancelable = event && event.cancelable;
 		var method = "on" + type;
 		if("parentNode" in target){
 			// node (or node-like), create event controller methods
@@ -341,7 +342,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 			target[method] && target[method].apply(target, args);
 			// and then continue up the parent node chain if it is still bubbling (if started as bubbles and stopPropagation hasn't been called)
 		}while(event && event.bubbles && (target = target.parentNode));
-		return event && event.cancelable && event; // if it is still true (was cancelable and was cancelled), return the event to indicate default action should happen
+		return event && (!originallyCancelable || event.cancelable) && event; // if it is still true (was cancelable and was not cancelled), return the event to indicate default action should happen
 	};
 	var captures = has("event-focusin") ? {} : {focusin: "focus", focusout: "blur"};
 	if(!has("event-stopimmediatepropagation")){

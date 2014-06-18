@@ -1,3 +1,4 @@
 define([
-	'./behavior'
+	'./behavior',
+	'./on'
 ], function(){});

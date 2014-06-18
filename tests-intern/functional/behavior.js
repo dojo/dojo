@@ -3,14 +3,17 @@ define([
 	'intern!object',
 	'intern/chai!assert'
 ], function (require, registerSuite, assert) {
-	/* global behavior, behaviorObject, applyCount, topicCount */
+	/* global behavior, behaviorObject, applyCount, topicCount, initialize */
 	registerSuite({
 		name: 'dojo/behavior',
 
 		before: function () {
 			return this.get('remote')
+				.setAsyncScriptTimeout(5000)
 				.get(require.toUrl('./behavior.html'))
-				.waitForCondition('ready', 5000);
+				.executeAsync(function (done) {
+					initialize(done);
+				});
 		},
 
 		'.add': function () {
@@ -104,6 +107,7 @@ define([
 				.elementById('blah')
 					.click()
 				.end()
+				.wait(500)
 				.execute(function () {
 					return topicCount;
 				})
@@ -113,9 +117,11 @@ define([
 				.elementById('another')
 					.click()
 				.end()
+				.wait(500)
 				.elementById('blah')
 					.click()
 				.end()
+				.wait(500)
 				.execute(function () {
 					return topicCount;
 				})

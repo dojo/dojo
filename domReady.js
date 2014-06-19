@@ -39,7 +39,7 @@ define(['./has'], function(has){
 			try{
 				(readyQ.shift())(doc);
 			}catch(err){
-				console.log("Error on domReady callback: " + err);
+				console.error(err, "in domReady callback", err.stack);
 			}
 		}
 

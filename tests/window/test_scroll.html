@@ -239,7 +239,7 @@
 					doh.f(domAttr.has(body,'_parent'));
 				}
 			]);
-                        array.forEach([	'8249',
+			array.forEach([	'8249',
 					'8284',
 					'absContent',
 					'fixedNode',
@@ -253,7 +253,12 @@
 					'tooBig',
 					'htmlPadding' ],
 				function(test){
-                        		array.forEach([	"_strict", "_quirks", "_loose_rtl", "_quirks_rtl" ],
+					// IE9+ don't support quirks (or loose?) mode <iframe>'s inside a strict document (or vice-versa).
+					// The <iframe> loads but it's actually running in strict mode.
+					// Therefore, it's pointless to run those tests
+					var modes = (has("ie") >= 9 || has("trident")) ? ["_strict"] :
+							["_strict", "_quirks", "_loose_rtl", "_quirks_rtl" ];
+					array.forEach(modes,
 						function(mode){
 							var	id = test+mode,
 								n, maxWidth, maxHeight, nodeWidth, nodeHeight, rAfterScroll, vAfterScroll, rBeforeScroll, vBeforeScroll;

@@ -171,9 +171,9 @@ window.scrollIntoView = function(/*DomNode*/ node, /*Object?*/ pos){
 
 			if(el == scrollRoot){
 				elPos.w = rootWidth; elPos.h = rootHeight;
-				if(scrollRoot == html && isIE && rtl){ elPos.x += scrollRoot.offsetWidth-elPos.w; } // IE workaround where scrollbar causes negative x
-				if(elPos.x < 0 || !isIE || isIE >= 9){ elPos.x = 0; } // older IE can have values > 0
-				if(elPos.y < 0 || !isIE || isIE >= 9){ elPos.y = 0; }
+				if(scrollRoot == html && (isIE || has("trident")) && rtl){ elPos.x += scrollRoot.offsetWidth-elPos.w; } // IE workaround where scrollbar causes negative x
+				if(elPos.x < 0 || !isIE || isIE >= 9 || has("trident")){ elPos.x = 0; } // older IE can have values > 0
+				if(elPos.y < 0 || !isIE || isIE >= 9 || has("trident")){ elPos.y = 0; }
 			}else{
 				var pb = geom.getPadBorderExtents(el);
 				elPos.w -= pb.w; elPos.h -= pb.h; elPos.x += pb.l; elPos.y += pb.t;
@@ -214,7 +214,7 @@ window.scrollIntoView = function(/*DomNode*/ node, /*Object?*/ pos){
 			var s, old;
 			if(r * l > 0 && (!!el.scrollLeft || el == scrollRoot || el.scrollWidth > el.offsetHeight)){
 				s = Math[l < 0? "max" : "min"](l, r);
-				if(rtl && ((isIE == 8 && !backCompat) || isIE >= 9)){ s = -s; }
+				if(rtl && ((isIE == 8 && !backCompat) || isIE >= 9 || has("trident"))){ s = -s; }
 				old = el.scrollLeft;
 				scrollElementBy(el, s, 0);
 				s = el.scrollLeft - old;

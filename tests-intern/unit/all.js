@@ -1,6 +1,7 @@
 define([
 	'./_base',
 	'./AdapterRegistry',
+	'./colors',
 	'./io-query',
 	'./request',
 	'./store/Memory',
@@ -19,4 +20,4 @@ define([
 	'intern/dojo/has!host-node?./node',
 	'intern/dojo/has!host-browser?./require/require',
 	'intern/dojo/has!host-browser?./router'
-], function(){});
+], function () {});

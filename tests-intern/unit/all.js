@@ -12,6 +12,8 @@ define([
 	'./Evented',
 	'./topic',
 	'./json',
+	'./date',
+	'./date/locale',
 	'./date/stamp',
 
 	// host-specific tests

@@ -3,6 +3,7 @@ define([
 	'./AdapterRegistry',
 	'./colors',
 	'./io-query',
+	'./mouse',
 	'./request',
 	'./store/Memory',
 	'./string',
@@ -17,7 +18,7 @@ define([
 	'./date/locale',
 	'./date/stamp',
 
-	// host-specific tests
+	 //host-specific tests
 	'intern/dojo/has!host-browser?./dom-form',
 	'intern/dojo/has!host-browser?./hash',
 	'intern/dojo/has!host-browser?./io/iframe',

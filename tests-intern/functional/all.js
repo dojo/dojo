@@ -1,4 +1,5 @@
 define([
 	'./behavior',
-	'./on'
-], function(){});
+	'./on',
+	'./_base/eventMouse'
+], function () {});

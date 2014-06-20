@@ -12,6 +12,7 @@ define([
 	'./Evented',
 	'./topic',
 	'./json',
+	'./currency',
 	'./date',
 	'./date/locale',
 	'./date/stamp',

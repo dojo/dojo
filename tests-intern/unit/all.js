@@ -17,5 +17,6 @@ define([
 	'intern/dojo/has!host-browser?./hash',
 	'intern/dojo/has!host-browser?./io/iframe',
 	'intern/dojo/has!host-node?./node',
+	'intern/dojo/has!host-browser?./require/require',
 	'intern/dojo/has!host-browser?./router'
 ], function(){});

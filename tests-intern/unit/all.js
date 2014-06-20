@@ -11,6 +11,7 @@ define([
 	'./on',
 	'./Evented',
 	'./topic',
+	'./json',
 	'./date/stamp',
 
 	// host-specific tests

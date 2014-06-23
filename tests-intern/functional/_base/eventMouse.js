@@ -4,7 +4,7 @@ define([
 	'intern/chai!assert'
 ], function (require, registerSuite, assert) {
 	/*jshint -W020 */
-	/* global moveEvents, downEvents, initialize */
+	/* global moveEvents, downEvents */
 	registerSuite({
 		name: 'mouseenter/mouseleave',
 
@@ -12,9 +12,7 @@ define([
 			return this.get('remote')
 				.setAsyncScriptTimeout(5000)
 				.get(require.toUrl('./eventMouse.html'))
-				.executeAsync(function (done) {
-					initialize(done);
-				})
+				.waitForConditionInBrowser('ready')
 				.elementById('header')
 					.moveTo(1, 1)
 				.end()

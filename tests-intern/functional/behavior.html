@@ -19,7 +19,8 @@
 
 	<script src="../../dojo.js" data-dojo-config="async: true, isDebug: true"></script>
 	<script>
-		var applyCount = 0,
+		var ready = false,
+			applyCount = 0,
 			topicCount = 0,
 			behaviorObject = {
 				'.bar':function(elem){
@@ -34,23 +35,21 @@
 			behavior,
 			domStyle;
 
-		function initialize(done) {
-			require([
-				'dojo/behavior',
-				'dojo/dom-style',
-				'dojo/topic',
-				'dojo/domReady!'
-			], function (_behavior, _domStyle, topic) {
-				behavior = _behavior;
-				domStyle = _domStyle;
+		require([
+			'dojo/behavior',
+			'dojo/dom-style',
+			'dojo/topic',
+			'dojo/domReady!'
+		], function (_behavior, _domStyle, topic) {
+			behavior = _behavior;
+			domStyle = _domStyle;
 
-				topic.subscribe('/foo', function () {
-					topicCount++;
-				});
-
-				done();
+			topic.subscribe('/foo', function () {
+				topicCount++;
 			});
-		}
+
+			ready = true;
+		});
 	</script>
 </body>
 </html>

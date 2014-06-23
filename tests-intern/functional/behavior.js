@@ -11,9 +11,7 @@ define([
 			return this.get('remote')
 				.setAsyncScriptTimeout(5000)
 				.get(require.toUrl('./behavior.html'))
-				.executeAsync(function (done) {
-					initialize(done);
-				});
+				.waitForConditionInBrowser('ready');
 		},
 
 		'.add': function () {

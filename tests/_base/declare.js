@@ -511,6 +511,29 @@ define([
 			t.is("blah", d3.foo);
 			t.is("thonk", d4.foo);
 			t.is("thonk", d5.bar);
+		},
+
+		function safeMixin(t){
+			var fooCalled;
+			var subFooCalled;
+			var C = declare(null, {
+				foo: function(){
+					fooCalled = true;
+				}
+			});
+			var c = new C();
+			// make sure we can mixin foo
+			declare.safeMixin(c, {
+				foo: function(){
+					subFooCalled = true;
+					this.inherited(arguments);
+				}
+			});
+			// make sure this doesn't throw an error
+			declare.safeMixin(c);
+			c.foo();
+			t.t(fooCalled);
+			t.t(subFooCalled);
 		}
 
 		// FIXME: there are still some permutations to test like:

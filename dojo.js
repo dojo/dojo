@@ -1161,7 +1161,7 @@
 				var prid = resolvePluginResourceId(plugin, pseudoPluginResource.prid, pseudoPluginResource.req.module),
 					mid = plugin.dynamic ? pseudoPluginResource.mid.replace(/waitingForPlugin$/, prid) : (plugin.mid + "!" + prid),
 					pluginResource = mix(mix({}, pseudoPluginResource), {mid:mid, prid:prid, injected:0});
-				if(!modules[mid]){
+				if(!modules[mid] || !modules[mid].injected /*for require.undef*/){
 					// create a new (the real) plugin resource and inject it normally now that the plugin is on board
 					injectPlugin(modules[mid] = pluginResource);
 				} // else this was a duplicate request for the same (plugin, rid) for a nondynamic plugin
@@ -1315,7 +1315,7 @@
 			// This is useful for testing frameworks (at least).
 			var module = getModule(moduleId, referenceModule);
 			setArrived(module);
-			mix(module, {def:0, executed:0, injected:0, node:0});
+			mix(module, {def:0, executed:0, injected:0, node:0, load:0});
 		};
 	}
 

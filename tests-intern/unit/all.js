@@ -9,6 +9,7 @@ define([
 	'./string',
 	'./regexp',
 	'./when',
+	'./fx/easing',
 	'./on',
 	'./Evented',
 	'./topic',

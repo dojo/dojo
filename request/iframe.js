@@ -179,7 +179,7 @@ define([
 					var parentNode = formNode;
 					do{
 						parentNode = parentNode.parentNode;
-					}while(parentNode !== win.doc.documentElement);
+					}while(parentNode && parentNode !== win.doc.documentElement);
 
 					// Append the form node or some browsers won't work
 					if(!parentNode){

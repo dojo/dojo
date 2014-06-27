@@ -50,7 +50,10 @@ define({
 	// can be used here
 	loader: {
 		// Packages that should be registered with the loader in each testing environment
-		packages: [ { name: 'dojo-testing', location: '.' } ],
+		packages: [
+			{ name: 'dojo-testing', location: '.' },
+			{ name: 'sinon', location: 'node_modules/sinon/pkg', main: 'sinon'}
+		],
 		map: {
 			'dojo-testing': {
 				'dojo': 'dojo-testing',

@@ -3,99 +3,95 @@ define([
 	'intern/chai!assert',
 	'dojo/store/DataStore',
 	'dojo/data/ItemFileReadStore',
-	'dojo/data/ItemFileWriteStore'
-], function (registerSuite, assert, DataStore, ItemFileReadStore, ItemFileWriteStore) {
-	var two,
-		four,
-		items,
-		dataStore,
-		store,
-		readOnlyStore;
+	'dojo/data/ItemFileWriteStore',
+	'intern/dojo/_base/lang'
+], function (registerSuite, assert, DataStore, ItemFileReadStore, ItemFileWriteStore, lang) {
+	var data, dataStore, store;
 
 	registerSuite({
 		name: 'dojo/store/DataStore',
 
-		setup: function () {
-			two = { id: 2, name: 'two', even: true, prime: true };
-			four = { id: 4, name: 'four', even: true, prime: false };
-		},
+		'beforeEach': function () {
+			data = {
+				items: [
+					{id: 1, name: 'one', prime: false},
+					{id: 2, name: 'two', even: true, prime: true},
+					{id: 3, name: 'three', prime: true},
+					{id: 4, name: 'four', even: true, prime: false},
+					{id: 5, name: 'five', prime: true, children: [
+						{ _reference: 1 },
+						{ _reference: 2 },
+						{ _reference: 3 }
+					] }
+				],
+				identifier: 'id'
+			};
 
-		beforeEach: function () {
-			items = [
-				{ id: 1, name: 'one', prime: false },
-				{ id: 2, name: 'two', even: true, prime: true },
-				{ id: 3, name: 'three', prime: true },
-				{ id: 4, name: 'four', even: true, prime: false },
-				{ id: 5, name: 'five', prime: true, children: [
-					{ _reference: 1 },
-					{ _reference: 2 },
-					{ _reference: 3 }
-				]}
-			];
-
-			dataStore = new ItemFileWriteStore({
-				data: {
-					items: items,
-					identifier: 'id'
-				}
-			});
-
+			dataStore = new ItemFileWriteStore({ data: lang.clone(data) });
 			dataStore.fetchItemByIdentity({ identity: null });
 			store = new DataStore({ store: dataStore });
-
-			readOnlyStore = new DataStore({
-				store: new ItemFileReadStore({})
-			});
 		},
 
-		'.get': [
-			function () {
-				assert.strictEqual(store.get(1).name, 'one');
-				assert.strictEqual(store.get(4).name, 'four');
-				assert.ok(store.get(5).prime);
-				assert.strictEqual(store.get(5).children[1].name, 'two');
+		'construction': {
+			'when using a read-only store then write methods unavailable': function () {
+				var readOnlyStore = new DataStore({ store: new ItemFileReadStore({}) });
+				assert.isNotFunction(readOnlyStore.put);
+				assert.isNotFunction(readOnlyStore.add);
 			}
-		],
-		'.remove (async)': [
-			function () {
-				store.remove(4);
-				return store.query({ even: true }).then(function (results) {
-					assert.strictEqual(results.length, 1);
-				});
-			}
-		],
-		'.query (async)': [
-			function () {
-				return store.query({ prime: true }).then(function (results) {
-					assert.strictEqual(results.length, 3);
-					assert.strictEqual(results[2].children[2].name, 'three');
-				});
+		},
+
+		'.get': function () {
+			assert.equal(store.get(1).name, 'one');
+			assert.equal(store.get(4).name, 'four');
+			assert.isTrue(store.get(5).prime);
+			assert.equal(store.get(5).children[1].name, 'two');
+		},
+
+		'.query': {
+			'basic query returns expected data': function () {
+				var dfd = this.async(500);
+				var query = { even: true };
+				var result = store.query(query);
+
+				result.map(dfd.callback(function (record) {
+					var expected = data.items[record.id - 1];
+					for (var key in record) {
+						if (record.hasOwnProperty(key)) {
+							assert.propertyVal(expected, key, record[key]);
+						}
+					}
+				}), dfd.reject.bind(dfd));
 			},
-			function () {
-				return store.query({ even: true }).then(function (results) {
-					assert.deepEqual(results[0], two);
-					assert.deepEqual(results[1], four);
-					assert.strictEqual('four', results[1].name);
-				});
+
+			'provides children': function () {
+				var dfd = this.async(500);
+				var query = { prime: true };
+
+				store.query(query).then(dfd.callback(
+					function (results) {
+						assert.lengthOf(results, 3);
+						assert.equal(results[2].children[2].name, 'three');
+					}
+				), dfd.reject.bind(dfd));
 			}
-		],
+		},
+
 		'.put': {
-			'new': function () {
-				store.put({
-					id: 6,
-					perfect: true
-				});
+			'update a record': function () {
+				var record = store.get(4);
+
+				assert.notOk(record.square);
+				record.square = true;
+				store.put(record);
+				record = store.get(4);
+				assert.isTrue(record.square);
+			},
+
+			'add a new record': function () {
+				var data = { id: 6, perfect: true };
+
+				store.put(data);
 				assert.isTrue(store.get(6).perfect);
-			},
-			'update': function () {
-				var four = store.get(4);
-				four.square = true;
-				store.put(four);
-				four = store.get(4);
-				assert.isTrue(four.square);
-			},
-			'read only': function () {
-				assert.notOk(readOnlyStore.put);
 			}
 		}
 	});

@@ -7,8 +7,7 @@ define([
 	'intern/dojo/_base/array',
 	'dojo/store/Memory',
 	'sinon'
-], function (registerSuite, assert, Observable, declare, lang, array, Memory) {
-	/* global sinon */
+], function (registerSuite, assert, Observable, declare, lang, array, Memory, sinon) {
 	function createMyStore() {
 		var MyStore = declare([ Memory ], {
 			get: function () {

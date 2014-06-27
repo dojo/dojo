@@ -1,3 +1,5 @@
-define(['sinon'], function() {
+define([
+	'sinon'
+], function (sinon) {
 	return sinon.stub();
 });

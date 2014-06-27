@@ -17,8 +17,7 @@ require({
 		'intern/dojo/_base/array',
 		'tests-intern/unit/store/support/xhrStub',
 		'sinon'
-	], function (registerSuite, assert, JsonRest, Deferred, lang, array, xhrStub) {
-		/* globals sinon */
+	], function (registerSuite, assert, JsonRest, Deferred, lang, array, xhrStub, sinon) {
 		var globalHeaders = {
 			'test-global-header-a': true,
 			'test-global-header-b': 'yes'

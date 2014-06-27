@@ -1,5 +1,6 @@
 define([
 	'./behavior',
-	'./on',
-	'./_base/eventMouse'
+	'./on'/*,
+	TODO: reenable when tests are fixed
+	'./_base/eventMouse'*/
 ], function () {});

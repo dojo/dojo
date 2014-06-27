@@ -30,17 +30,22 @@ define([
 	var activeTimeout = false;
 	var unhandledWait = 1000;
 	function trackUnhandledRejections(error, handled, rejection, deferred){
-		if(handled){
-			arrayUtil.some(errors, function(obj, ix){
-				if(obj.error === error){
-					errors.splice(ix, 1);
-					return true;
+		// try to find the existing tracking object
+		if(!arrayUtil.some(errors, function(obj){
+			if(obj.error === error){
+				// found the tracking object for this error
+				if(handled){
+					// if handled, update the state
+					obj.handled = true;
 				}
-			});
-		}else if(!arrayUtil.some(errors, function(obj){ return obj.error === error; })){
+				return true;
+			}
+		})){
+			// no tracking object has been setup, create one
 			errors.push({
 				error: error,
 				rejection: rejection,
+				handled: handled,
 				deferred: deferred,
 				timestamp: new Date().getTime()
 			});
@@ -55,8 +60,12 @@ define([
 		var now = new Date().getTime();
 		var reportBefore = now - unhandledWait;
 		errors = arrayUtil.filter(errors, function(obj){
+			// only report the error if we have waited long enough and
+			// it hasn't been handled
 			if(obj.timestamp < reportBefore){
-				logError(obj.error, obj.rejection, obj.deferred);
+				if(!obj.handled){
+					logError(obj.error, obj.rejection, obj.deferred);
+				}
 				return false;
 			}
 			return true;

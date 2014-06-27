@@ -14,11 +14,11 @@ define([
 		'beforeEach': function () {
 			data = {
 				items: [
-					{id: 1, name: 'one', prime: false},
-					{id: 2, name: 'two', even: true, prime: true},
-					{id: 3, name: 'three', prime: true},
-					{id: 4, name: 'four', even: true, prime: false},
-					{id: 5, name: 'five', prime: true, children: [
+					{ id: 1, name: 'one', prime: false },
+					{ id: 2, name: 'two', even: true, prime: true },
+					{ id: 3, name: 'three', prime: true },
+					{ id: 4, name: 'four', even: true, prime: false },
+					{ id: 5, name: 'five', prime: true, children: [
 						{ _reference: 1 },
 						{ _reference: 2 },
 						{ _reference: 3 }
@@ -60,7 +60,7 @@ define([
 							assert.propertyVal(expected, key, record[key]);
 						}
 					}
-				}), dfd.reject.bind(dfd));
+				}), lang.hitch(dfd, 'reject'));
 			},
 
 			'provides children': function () {
@@ -72,7 +72,7 @@ define([
 						assert.lengthOf(results, 3);
 						assert.equal(results[2].children[2].name, 'three');
 					}
-				), dfd.reject.bind(dfd));
+				), lang.hitch(dfd, 'reject'));
 			}
 		},
 

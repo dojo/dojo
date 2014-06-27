@@ -3,36 +3,38 @@ define([
 	'intern/chai!assert',
 	'dojo/store/Observable',
 	'dojo/_base/declare',
-	'dojo/_base/lang',
+	'intern/dojo/_base/lang',
+	'intern/dojo/_base/array',
 	'dojo/store/Memory',
 	'sinon'
-], function (registerSuite, assert, Observable, declare, lang, Memory) {
+], function (registerSuite, assert, Observable, declare, lang, array, Memory) {
+	/* global sinon */
 	function createMyStore() {
-		var MyStore = declare([Memory], {
-			get: function(){
+		var MyStore = declare([ Memory ], {
+			get: function () {
 				// need to make sure that this.inherited still works with Observable
 				return this.inherited(arguments);
 			}
 		});
 		var storeData = [
-			{id: 0, name: 'zero', even: true, prime: false},
-			{id: 1, name: 'one', prime: false},
-			{id: 2, name: 'two', even: true, prime: true},
-			{id: 3, name: 'three', prime: true},
-			{id: 4, name: 'four', even: true, prime: false},
-			{id: 5, name: 'five', prime: true}
+			{ id: 0, name: 'zero', even: true, prime: false },
+			{ id: 1, name: 'one', prime: false },
+			{ id: 2, name: 'two', even: true, prime: true },
+			{ id: 3, name: 'three', prime: true },
+			{ id: 4, name: 'four', even: true, prime: false },
+			{ id: 5, name: 'five', prime: true }
 		];
 		return new Observable(new MyStore({ data: storeData }));
 	}
 
 	function createBigStore() {
 		var data = [], i;
-		for(i = 1; i <= 100; i++){
-			data.push({id: i, name: 'item ' + i, order: i});
+		for (i = 1; i <= 100; i++) {
+			data.push({ id: i, name: 'item ' + i, order: i });
 		}
 
 		/* jshint newcap:false */
-		return Observable(new Memory({data:data}));
+		return Observable(new Memory({ data: data }));
 	}
 
 	registerSuite({
@@ -53,7 +55,7 @@ define([
 			}
 		},
 
-		'.observe': (function() {
+		'.observe': (function () {
 			var store, handlerStub, results, observer;
 
 			return {
@@ -178,18 +180,18 @@ define([
 		},
 
 		'paging tests': function () {
-			var options = { count: 25, sort: [ {attribute: 'order'} ] };
+			var options = { count: 25, sort: [{ attribute: 'order' }] };
 			var bigStore = createBigStore();
 			var results = [
-				bigStore.query({}, lang.delegate(options, {start: 0})),
-				bigStore.query({}, lang.delegate(options, {start: 25})),
-				bigStore.query({}, lang.delegate(options, {start: 50})),
-				bigStore.query({}, lang.delegate(options, {start: 75}))
+				bigStore.query({}, lang.delegate(options, { start: 0 })),
+				bigStore.query({}, lang.delegate(options, { start: 25 })),
+				bigStore.query({}, lang.delegate(options, { start: 50 })),
+				bigStore.query({}, lang.delegate(options, { start: 75 }))
 			];
 			var observeHandler = sinon.stub();
 
-			results.forEach(function(result) {
-			    result.observe(observeHandler, true);
+			array.forEach(results, function (result) {
+				result.observe(observeHandler, true);
 			});
 
 			bigStore.add({ id: 101, name: 'one oh one', order: 2.5 });

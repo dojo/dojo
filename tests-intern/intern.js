@@ -15,7 +15,10 @@ define({
 	// Note that the `build` capability will be filled in with the current commit ID from the Travis CI environment
 	// automatically
 	capabilities: {
-		'selenium-version': '2.41.0'
+		'selenium-version': '2.41.0',
+		'record-screenshots': false,
+		'sauce-advisor': false,
+		'video-upload-on-pass': false
 	},
 
 	// Browsers to run integration testing against. Note that version numbers must be strings if used with Sauce
@@ -25,7 +28,7 @@ define({
 		{ browserName: 'internet explorer', version: '11', platform: 'Windows 8.1', 'prerun': 'http://localhost:9001/tests-intern/support/prerun.bat' },
 		{ browserName: 'internet explorer', version: '10', platform: 'Windows 8', 'prerun': 'http://localhost:9001/tests-intern/support/prerun.bat' },
 		{ browserName: 'internet explorer', version: [ '8', '9', '10' ], platform: 'Windows 7', 'prerun': 'http://localhost:9001/tests-intern/support/prerun.bat' },
-		{ browserName: 'internet explorer', version: [ '6', '7', '8' ], platform: 'Windows XP', 'prerun': 'http://localhost:9001/tests-intern/support/prerun.bat' },
+		// { browserName: 'internet explorer', version: [ '6', '7', '8' ], platform: 'Windows XP', 'iedriver-version': '2.41.0', 'prerun': 'http://localhost:9001/tests-intern/support/prerun.bat' },
 		{ browserName: 'firefox', version: '', platform: [ 'OS X 10.9', 'Windows 7', 'Windows XP', 'Linux' ] },
 		{ browserName: 'chrome', version: '', platform: [ 'Linux', 'OS X 10.8', /* TODO: SauceLabs is giving an Unknown command 'WaitForAllTabsToStopLoading' on 'OS X 10.9',*/ 'Windows XP', 'Windows 7', 'Windows 8', 'Windows 8.1' ] },
 		{ browserName: 'safari', version: '6', platform: 'OS X 10.8' }/*,
@@ -34,17 +37,7 @@ define({
 
 	// Maximum number of simultaneous integration tests that should be executed on the remote WebDriver service
 	maxConcurrency: 3,
-
-	// Whether or not to start Sauce Connect before running tests
-	useSauceConnect: true,
-
-	// Connection information for the remote WebDriver service. If using Sauce Labs, keep your username and password
-	// in the SAUCE_USERNAME and SAUCE_ACCESS_KEY environment variables unless you are sure you will NEVER be
-	// publishing this configuration file somewhere
-	webdriver: {
-		host: 'localhost',
-		port: 4444
-	},
+	tunnel: 'SauceLabsTunnel',
 
 	// Configuration options for the module loader; any AMD configuration options supported by the specified AMD loader
 	// can be used here

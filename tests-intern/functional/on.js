@@ -9,7 +9,7 @@ define([
 		'focus normalization': function () {
 			return this.get('remote')
 				.get(require.toUrl('./on.html'))
-				.setAsyncScriptTimeout(10000)
+				.setExecuteAsyncTimeout(10000)
 				.executeAsync(function (send) {
 					require([ 'dojo/on', 'dojo/query' ], function (on) {
 						var div = document.body.appendChild(document.createElement('div'));

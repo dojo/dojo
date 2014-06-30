@@ -1,17 +1,15 @@
 define([
 	'require',
 	'intern!object',
-	'intern/chai!assert'
-], function (require, registerSuite, assert) {
-	/* global behavior, behaviorObject, applyCount, topicCount, initialize */
+	'intern/chai!assert',
+	'../support/ready'
+], function (require, registerSuite, assert, ready) {
+	/* global behavior, behaviorObject, applyCount, topicCount */
 	registerSuite({
 		name: 'dojo/behavior',
 
 		before: function () {
-			return this.get('remote')
-				.setAsyncScriptTimeout(5000)
-				.get(require.toUrl('./behavior.html'))
-				.waitForConditionInBrowser('ready');
+			return ready(this.get('remote'), require.toUrl('./behavior.html'));
 		},
 
 		'.add': function () {
@@ -87,7 +85,7 @@ define([
 				.then(function (topicCount) {
 					assert.strictEqual(topicCount, 2);
 				})
-				.elementById('another')
+				.findById('another')
 					.click()
 				.end()
 				.execute(function () {
@@ -102,24 +100,24 @@ define([
 				.then(function (topicCount) {
 					assert.strictEqual(topicCount, 2);
 				})
-				.elementById('blah')
+				.findById('blah')
 					.click()
 				.end()
-				.wait(500)
+				.sleep(500)
 				.execute(function () {
 					return topicCount;
 				})
 				.then(function (topicCount) {
 					assert.strictEqual(topicCount, 3);
 				})
-				.elementById('another')
+				.findById('another')
 					.click()
 				.end()
-				.wait(500)
-				.elementById('blah')
+				.sleep(500)
+				.findById('blah')
 					.click()
 				.end()
-				.wait(500)
+				.sleep(500)
 				.execute(function () {
 					return topicCount;
 				})

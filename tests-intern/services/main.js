@@ -55,7 +55,7 @@ define([
 
 	exports.start = function (port) {
 		return nodefn.call(glob, '**/*.service.js', {
-			cwd: './tests-intern/services',
+			cwd: './tests-intern/services'
 		}).then(function (files) {
 			return when.map(files, function (filename) {
 				return require('./' + filename.slice(0, -3)).then(function (module) {
@@ -94,9 +94,12 @@ define([
 						return {
 							status: 500,
 							headers: {
-								'Content-Type': 'text/plain'
+								'Content-Type': 'text/html;charset=utf-8'
 							},
-							body: [ 'No services' ]
+							body: [
+								'<!DOCTYPE html><html><head><title>No services</title></head>' +
+								'<body>No services</body></html>'
+							]
 						};
 					}
 					return response;

@@ -18,7 +18,8 @@ define({
 		'selenium-version': '2.41.0',
 		'record-screenshots': false,
 		'sauce-advisor': false,
-		'video-upload-on-pass': false
+		'video-upload-on-pass': false,
+		'max-duration': 300
 	},
 
 	// Browsers to run integration testing against. Note that version numbers must be strings if used with Sauce

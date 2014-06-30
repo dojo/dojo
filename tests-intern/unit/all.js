@@ -15,8 +15,8 @@ define([
 	'./json',
 	'./currency',
 	'./date',
-	'./date/locale',
-	'./date/stamp',
+	// './date/locale',
+	// './date/stamp',
 
 	 // host-specific tests
 	'intern/dojo/has!host-browser?./dom-form',

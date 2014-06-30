@@ -4,4 +4,4 @@ define([
 	'./_base/declare',
 	'./_base/lang',
 	'intern/dojo/has!host-browser?./_base/xhr'
-], function(){});
+], function () {});

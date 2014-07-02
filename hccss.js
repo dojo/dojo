@@ -29,7 +29,9 @@ define([
 		win.body().appendChild(div);
 
 		var cs = domStyle.getComputedStyle(div), bkImg, hc;
-		if(cs) bkImg = cs.backgroundImage;
+		if(cs){
+			bkImg = cs.backgroundImage;
+		}
 		hc = cs && (cs.borderTopColor == cs.borderRightColor) ||
 			(bkImg && (bkImg == "none" || bkImg == "url(invalid-url:)" ));
 

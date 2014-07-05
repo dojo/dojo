@@ -515,14 +515,14 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 						// deleting properties doesn't work (older iOS), have to use delegation
 						if(has('mozilla')){
 							// Firefox doesn't like delegated properties, so we have to copy
-							var event = {};
+							event = {};
 							for(var name in originalEvent){
 								event[name] = originalEvent[name];
 							}
 						}else{
 							// old iOS branch
 							Event.prototype = originalEvent;
-							var event = new Event;
+							event = new Event;
 						}
 						// have to delegate methods to make them work
 						event.preventDefault = function(){

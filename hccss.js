@@ -28,10 +28,12 @@ define([
 			"background-image: url(\"" + (config.blankGif || require.toUrl("./resources/blank.gif")) + "\");";
 		win.body().appendChild(div);
 
-		var cs = domStyle.getComputedStyle(div),
-			bkImg = cs.backgroundImage,
-			hc = (cs.borderTopColor == cs.borderRightColor) ||
-				(bkImg && (bkImg == "none" || bkImg == "url(invalid-url:)" ));
+		var cs = domStyle.getComputedStyle(div), bkImg, hc;
+		if(cs){
+			bkImg = cs.backgroundImage;
+		}
+		hc = cs && (cs.borderTopColor == cs.borderRightColor) ||
+			(bkImg && (bkImg == "none" || bkImg == "url(invalid-url:)" ));
 
 		if(has("ie") <= 8){
 			div.outerHTML = "";		// prevent mixed-content warning, see http://support.microsoft.com/kb/925014

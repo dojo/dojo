@@ -5,7 +5,7 @@
 		"lib": "."
 	},
 	"devDependencies": {
-		"intern-geezer": "2.0.0",
+		"intern-geezer": "2.0.1",
 		"grunt": "0.4.2",
 		"http-proxy": "0.10.3",
 		"glob": "3.2.7",

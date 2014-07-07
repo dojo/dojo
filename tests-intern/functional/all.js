@@ -4,7 +4,8 @@ define([
 	'./cookie',
 	'./fx',
 	'./fx/Toggler',
-	'./on'/*,
-	TODO: reenable when tests are fixed
-	'./_base/eventMouse'*/
+	'./on',
+	//TODO: reenable when tests are fixed
+	//'./_base/eventMouse'
+	'./window'
 ], function () {});

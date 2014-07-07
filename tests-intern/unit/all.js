@@ -14,6 +14,7 @@ define([
 	'./Evented',
 	'./topic',
 	'./json',
+	'./Stateful',
 	'./currency',
 	'./date',
 	// './date/locale',

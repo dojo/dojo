@@ -20,6 +20,7 @@ define([
 	'./string',
 	'./topic',
 	'./when',
+	'./cldr/monetary',
 	'./cldr/supplemental',
 
 	// host-specific tests

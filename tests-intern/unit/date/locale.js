@@ -1,7 +1,7 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo/date/locale',
+	'dojo-testing/date/locale',
 	'dojo/_base/kernel',
 	'dojo/_base/array',
 	'dojo/i18n',
@@ -18,7 +18,7 @@ define([
 	registerSuite({
 		name: 'dojo/date/locale',
 
-		'before': (function () {
+		setup: (function () {
 			function loadAsync(partLocaleList) {
 				var dfd = new Deferred();
 				var deps = array.map(partLocaleList, function (locale) {

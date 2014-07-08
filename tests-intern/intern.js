@@ -43,24 +43,30 @@ define({
 	// Configuration options for the module loader; any AMD configuration options supported by the specified AMD loader
 	// can be used here
 	loader: {
-		// Packages that should be registered with the loader in each testing environment
 		packages: [
+			// Placeholder for the base directory -- we need something different from the dojo-under-test package name
+			// to use for loading tests
+			{ name: 'base', location: '.' },
+			// The dojo-under-test
 			{ name: 'dojo-testing', location: '.' },
+			// The dojo used for writing tests
+			{ name: 'dojo', location: 'node_modules/dojo' },
 			{ name: 'sinon', location: 'node_modules/sinon/lib', main: 'sinon'}
 		],
 		map: {
+			// Any dojo modules loaded by dojo-under-test modules should come from the dojo-under-test, not the dojo
+			// used for writing tests
 			'dojo-testing': {
-				'dojo': 'dojo-testing',
-				'intern/dojo': 'intern/node_modules/dojo'
+				'dojo': 'dojo-testing'
 			}
 		}
 	},
 
 	// Non-functional test suite(s) to run in each browser
-	suites: [ 'dojo-testing/tests-intern/unit/all' ],
+	suites: [ 'base/tests-intern/unit/all' ],
 
 	// Functional test suite(s) to run in each browser once non-functional tests are completed
-	functionalSuites: [ 'dojo-testing/tests-intern/functional/all' ],
+	functionalSuites: [ 'base/tests-intern/functional/all' ],
 
 	// A regular expression matching URLs to files that should not be included in code coverage analysis
 	excludeInstrumentation: /^(?:node_modules|tests-intern|tests)\//

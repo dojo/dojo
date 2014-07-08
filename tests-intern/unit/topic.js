@@ -1,8 +1,8 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'intern/dojo/aspect',
-	'dojo/topic'
+	'dojo/aspect',
+	'dojo-testing/topic'
 ], function (registerSuite, assert, aspect, topic) {
 	var aspectHandle,
 		subscriptionHandles = [];
@@ -10,14 +10,14 @@ define([
 	registerSuite({
 		name: 'dojo/topic',
 
-		before: function () {
+		setup: function () {
 			aspectHandle = aspect.after(topic, 'subscribe', function (handle) {
 				subscriptionHandles.push(handle);
 				return handle;
 			});
 		},
 
-		after: function () {
+		teardown: function () {
 			aspectHandle.remove();
 		},
 
@@ -30,6 +30,7 @@ define([
 		'.subscribe and .publish': function () {
 			var listenerCallCount = 0,
 				expectedArgument;
+
 			topic.subscribe('/test/foo', function (event) {
 				assert.strictEqual(event, expectedArgument);
 				listenerCallCount++;

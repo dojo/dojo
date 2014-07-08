@@ -1,7 +1,7 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo/date'
+	'dojo-testing/date'
 ], function (registerSuite, assert, date) {
 	function assertDateEqual(date1, date2) {
 		assert.instanceOf(date1, Date);
@@ -73,7 +73,7 @@ define([
 			}
 
 			return {
-				'before': function () {
+				setup: function () {
 					dt = new FakeDate();
 				},
 

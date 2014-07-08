@@ -1,10 +1,10 @@
 define([
 	'require',
-	'intern/dojo/Deferred',
+	'dojo/Deferred',
 	'intern!object',
 	'intern/chai!assert',
 	'intern/dojo/node!leadfoot/helpers/pollUntil',
-	'tests-intern/functional/window/iframe_content/scrollDocuments'
+	'./window/iframe_content/scrollDocuments'
 ], function (
 	require,
 	Deferred,

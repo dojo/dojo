@@ -1,16 +1,16 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo/store/Cache',
-	'dojo/store/Memory',
-	'intern/dojo/_base/array'
+	'dojo-testing/store/Cache',
+	'dojo-testing/store/Memory',
+	'dojo/_base/array'
 ], function (registerSuite, assert, Cache, Memory, array) {
 	var data, masterStore, cachingStore, store, options;
 
 	registerSuite({
 		name: 'dojo/store/Cache',
 
-		'beforeEach': function () {
+		beforeEach: function () {
 			data = [
 				{id: 1, name: 'one', prime: false},
 				{id: 2, name: 'two', even: true, prime: true},

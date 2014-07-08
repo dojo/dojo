@@ -1,8 +1,8 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo/_base/Color',
-	'dojo/colors'
+	'dojo-testing/_base/Color',
+	'dojo-testing/colors'
 ], function (registerSuite, assert, Color, colors) {
 
 	/**

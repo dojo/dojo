@@ -1,10 +1,10 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo/request/iframe',
-	'intern/dojo/dom-construct',
-	'intern/dojo/dom',
-	'intern/dojo/domReady!'
+	'dojo-testing/request/iframe',
+	'dojo/dom-construct',
+	'dojo/dom',
+	'dojo/domReady!'
 ], function (registerSuite, assert, iframe, domConstruct, dom) {
 	var form;
 	registerSuite({
@@ -34,6 +34,7 @@ define([
 				def.reject
 			);
 		},
+
 		'.post json': function () {
 			var def = this.async();
 
@@ -202,7 +203,7 @@ define([
 			);
 		},
 
-		'queue': function () {
+		queue: function () {
 			var def = this.async();
 
 			iframe.get('/__services/request/iframe', {

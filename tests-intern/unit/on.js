@@ -1,17 +1,17 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo/on',
-	'dojo/Evented',
-	'dojo/_base/lang',	// Using in-test version of dojo because intern's version doesn't include lang or array utils
+	'dojo-testing/on',
+	'dojo-testing/Evented',
+	'dojo/_base/lang',
 	'dojo/_base/array',
-	'intern/dojo/has',
-	'intern/dojo/has!host-browser?intern/dojo/dom-construct',
-	'intern/dojo/has!host-browser?intern/dojo/mouse',
-	'intern/dojo/has!host-browser?dojo/query',	// included to test on.selector. using in-test version of dojo
-												// because dojo/on relies on a global dojo.query not in intern's version
-	'intern/dojo/has!host-browser?intern/dojo/domReady!'
-], function (registerSuite, assert, on, Evented, lang, arrayUtil, has, domConstruct, mouse) {
+	'dojo/has',
+	'dojo/has!host-browser?dojo/dom-construct',
+
+	// Included to test on.selector
+	'dojo/has!host-browser?dojo-testing/query',
+	'dojo/has!host-browser?intern/dojo/domReady!'
+], function (registerSuite, assert, on, Evented, lang, arrayUtil, has, domConstruct) {
 
 	var handles = [];
 

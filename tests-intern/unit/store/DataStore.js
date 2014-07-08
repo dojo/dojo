@@ -1,17 +1,17 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo/store/DataStore',
-	'dojo/data/ItemFileReadStore',
-	'dojo/data/ItemFileWriteStore',
-	'intern/dojo/_base/lang'
+	'dojo-testing/store/DataStore',
+	'dojo-testing/data/ItemFileReadStore',
+	'dojo-testing/data/ItemFileWriteStore',
+	'dojo/_base/lang'
 ], function (registerSuite, assert, DataStore, ItemFileReadStore, ItemFileWriteStore, lang) {
 	var data, dataStore, store;
 
 	registerSuite({
 		name: 'dojo/store/DataStore',
 
-		'beforeEach': function () {
+		beforeEach: function () {
 			data = {
 				items: [
 					{ id: 1, name: 'one', prime: false },
@@ -32,7 +32,7 @@ define([
 			store = new DataStore({ store: dataStore });
 		},
 
-		'construction': {
+		construction: {
 			'when using a read-only store then write methods unavailable': function () {
 				var readOnlyStore = new DataStore({ store: new ItemFileReadStore({}) });
 				assert.isNotFunction(readOnlyStore.put);

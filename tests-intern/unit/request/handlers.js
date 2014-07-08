@@ -1,13 +1,13 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo/request/handlers',
-	'intern/dojo/has',
-	'intern/dojo/json',
-	'intern/dojo/has!host-browser?intern/dojo/domReady!:'
+	'dojo-testing/request/handlers',
+	'dojo/has',
+	'dojo/json',
+	'dojo/has!host-browser?dojo/domReady!'
 ], function (registerSuite, assert, handlers, has, JSON) {
-	var global = this,
-		handle;
+	var global = this;
+
 	registerSuite({
 		name: 'dojo/request/handlers',
 
@@ -19,6 +19,7 @@ define([
 
 			assert.strictEqual(response.data, 'foo bar baz ');
 		},
+
 		'json': function () {
 			var object = {
 				foo: 'bar',
@@ -37,6 +38,7 @@ define([
 
 			assert.deepEqual(response.data, object);
 		},
+
 		'javascript': function () {
 			var object = {
 				foo: 'bar',
@@ -82,6 +84,7 @@ define([
 					handleAs: 'xml'
 				}
 			};
+
 			if ('DOMParser' in global) {
 				var parser = new DOMParser();
 				response.data = parser.parseFromString(response.text, 'text/xml');
@@ -93,7 +96,7 @@ define([
 
 		'register': {
 			'custom handler': function () {
-				handlers.register('custom', function (response) {
+				handlers.register('custom', function () {
 					return 'custom response';
 				});
 

@@ -3,10 +3,10 @@
 	define([
 		'intern!object',
 		'intern/chai!assert',
-		'intern/dojo/aspect',
-		'intern/dojo/_base/lang',
-		'intern/dojo/_base/kernel',
-		'dojo/_base/declare'
+		'dojo/aspect',
+		'dojo/_base/lang',
+		'dojo/_base/kernel',
+		'dojo-testing/_base/declare'
 	], function (
 		registerSuite,
 		assert,
@@ -18,17 +18,15 @@
 		registerSuite({
 			name: 'dojo/_base/declare',
 
-			/*
-			* There is a bug in lang.setObject() which prevents declare from extending a
-			* global which has been set to undefined. To work around this problem we
-			* are setting global.tests to an empty object before each test and once all
-			* the tests have completed we set it to undefined.
-			*/
+			// There is a bug in lang.setObject() which prevents declare from extending a
+			// global which has been set to undefined. To work around this problem we
+			// are setting global.tests to an empty object before each test and once all
+			// the tests have completed we set it to undefined.
 			beforeEach: function () {
 				global.tests = {};
 			},
 
-			after: function () {
+			teardown: function () {
 				global.tests = undefined;
 			},
 
@@ -70,59 +68,72 @@
 					},
 					foo: 'thonk'
 				});
+
 				test = new global.tests._base.declare.fooBar();
 				assert.equal(test.foo, 'blah');
 			},
 
 			'smoke test compact args': function () {
 				var test;
+
 				declare('tests._base.declare.fooBar2', null, {
 					foo: 'thonk'
 				});
+
 				test = new global.tests._base.declare.fooBar2();
 				assert.equal(test.foo, 'thonk');
 			},
 
 			'subclass': function () {
 				var test;
+
 				declare('tests._base.declare.tmp3', null, {
 					foo: 'thonk'
 				});
+
 				declare('tests._base.declare.tmp4', global.tests._base.declare.tmp3);
+
 				test = new global.tests._base.declare.tmp4();
 				assert.equal(test.foo, 'thonk');
 			},
 
 			'subclass with Ctor': function () {
 				var test;
+
 				declare('tests._base.declare.tmp5', null, {
 					constructor: function () {
 						this.foo = 'blah';
 					},
 					foo: 'thonk'
 				});
+
 				declare('tests._base.declare.tmp6', global.tests._base.declare.tmp5);
+
 				test = new global.tests._base.declare.tmp6();
 				assert.instanceOf(test, global.tests._base.declare.tmp5);
 			},
 
 			'mixin subclass': function () {
 				var test;
+
 				declare('tests._base.declare.tmp7', null, {
 					foo: 'thonk'
 				});
+
 				declare('tests._base.declare.tmp8', null, {
 					constructor: function () {
 						this.foo = 'blah';
 					}
 				});
+
 				test = new global.tests._base.declare.tmp8();
 				assert.equal(test.foo, 'blah');
-				declare('tests._base.declare.tmp9',
-					[
-						global.tests._base.declare.tmp7, // prototypal
-						global.tests._base.declare.tmp8  // mixin
-					]);
+
+				declare('tests._base.declare.tmp9', [
+					global.tests._base.declare.tmp7, // prototypal
+					global.tests._base.declare.tmp8  // mixin
+				]);
+
 				test = new global.tests._base.declare.tmp9();
 				assert.equal(test.foo, 'blah');
 				assert.instanceOf(test, global.tests._base.declare.tmp7);
@@ -130,14 +141,17 @@
 
 			'super class ref': function () {
 				var test;
+
 				declare('tests._base.declare.tmp10', null, {
 					foo: 'thonk'
 				});
+
 				declare('tests._base.declare.tmp11', global.tests._base.declare.tmp10, {
 					constructor: function () {
 						this.foo = 'blah';
 					}
 				});
+
 				test = new global.tests._base.declare.tmp11();
 				assert.equal(test.foo, 'blah');
 				assert.equal(global.tests._base.declare.tmp11.superclass.foo, 'thonk');
@@ -146,6 +160,7 @@
 			'inherited call': function () {
 				var foo = 'xyzzy';
 				var test;
+
 				declare('tests._base.declare.tmp12', null, {
 					foo: 'thonk',
 					bar: function (arg1, arg2) {
@@ -157,17 +172,21 @@
 						}
 					}
 				});
+
 				declare('tests._base.declare.tmp13', global.tests._base.declare.tmp12, {
 					constructor: function () {
 						this.foo = 'blah';
 					}
 				});
+
 				test = new global.tests._base.declare.tmp13();
 				assert.equal(test.foo, 'blah');
 				assert.equal(foo, 'xyzzy');
+
 				test.bar('zot');
 				assert.equal(test.foo, 'zot');
 				assert.equal(foo, 'xyzzy');
+
 				test.bar('trousers', 'squiggle');
 				assert.equal(test.foo, 'trousers');
 				assert.equal(foo, 'squiggle');
@@ -176,6 +195,7 @@
 			'inherited explicit call': function () {
 				var foo = 'xyzzy';
 				var test;
+
 				declare('tests._base.declare.tmp14', null, {
 					foo: 'thonk',
 					bar: function (arg1, arg2) {
@@ -187,6 +207,7 @@
 						}
 					}
 				});
+
 				declare('tests._base.declare.tmp15', global.tests._base.declare.tmp14, {
 					constructor: function () {
 						this.foo = 'blah';
@@ -198,12 +219,15 @@
 						global.tests._base.declare.tmp15.superclass.bar.apply(this, arguments);
 					}
 				});
+
 				test = new global.tests._base.declare.tmp15();
 				assert.equal(test.foo, 'blah');
 				assert.equal(foo, 'xyzzy');
+
 				test.baz('zot');
 				assert.equal(test.foo, 'zot');
 				assert.equal(foo, 'xyzzy');
+
 				test.bar('trousers', 'squiggle');
 				assert.equal(test.foo, 'squiggle');
 				assert.equal(foo, 'trousers');
@@ -211,24 +235,28 @@
 
 			'inherited with mixin calls': function () {
 				var test;
+
 				declare('tests._base.declare.tmp16', null, {
 					foo: '',
 					bar: function () {
 						this.foo += 'tmp16';
 					}
 				});
+
 				declare('tests._base.declare.mixin16', null, {
 					bar: function () {
 						this.inherited(arguments);
 						this.foo += '.mixin16';
 					}
 				});
+
 				declare('tests._base.declare.mixin17', global.tests._base.declare.mixin16, {
 					bar: function () {
 						this.inherited(arguments);
 						this.foo += '.mixin17';
 					}
 				});
+
 				declare('tests._base.declare.tmp17', [
 					global.tests._base.declare.tmp16,
 					global.tests._base.declare.mixin17
@@ -238,6 +266,7 @@
 						this.foo += '.tmp17';
 					}
 				});
+
 				test = new global.tests._base.declare.tmp17();
 				test.bar();
 				assert.equal(test.foo, 'tmp16.mixin16.mixin17.tmp17');
@@ -287,19 +316,25 @@
 					bar: function () { ++this.flag; },
 					baz: function () { ++this.flag; }
 				});
+
 				declare('tests._base.declare.tmp19', global.tests._base.declare.tmp18, {
 					foo: function () { ++this.flag; this.inherited(arguments); },
 					bar: function () { ++this.flag; this.inherited(arguments); },
 					baz: function () { ++this.flag; this.inherited(arguments); }
 				});
+
 				var x = new global.tests._base.declare.tmp19();
 				// smoke tests
 				assert.equal(x.flag, 0);
+
 				x.foo();
 				assert.equal(x.flag, 2);
+
 				x.clear();
 				assert.equal(x.flag, 0);
+
 				var a = 0;
+
 				// aspect.after() on a prototype method
 				aspect.after(global.tests._base.declare.tmp19.prototype, 'foo', function () { a = 1; });
 				x.foo();
@@ -307,6 +342,7 @@
 				assert.equal(a, 1);
 				x.clear();
 				a = 0;
+
 				// extra chaining
 				var old = global.tests._base.declare.tmp19.prototype.bar;
 				global.tests._base.declare.tmp19.prototype.bar = function () {
@@ -314,17 +350,20 @@
 					++this.flag;
 					old.call(this);
 				};
+
 				x.bar();
 				assert.equal(x.flag, 3);
 				assert.equal(a, 1);
 				x.clear();
 				a = 0;
+
 				// replacement
 				global.tests._base.declare.tmp19.prototype.baz = function () {
 					a = 1;
 					++this.flag;
 					this.inherited('baz', arguments);
 				};
+
 				x.baz();
 				assert.equal(x.flag, 2);
 				assert.equal(a, 1);
@@ -332,21 +371,25 @@
 
 			'modified instance': function () {
 				var stack;
+
 				declare('tests._base.declare.tmp20', null, {
 					foo: function () { stack.push(20); }
 				});
+
 				declare('tests._base.declare.tmp21', null, {
 					foo: function () {
 						this.inherited(arguments);
 						stack.push(21);
 					}
 				});
+
 				declare('tests._base.declare.tmp22', global.tests._base.declare.tmp20, {
 					foo: function () {
 						this.inherited(arguments);
 						stack.push(22);
 					}
 				});
+
 				declare('tests._base.declare.tmp23', [
 					global.tests._base.declare.tmp20,
 					global.tests._base.declare.tmp21
@@ -356,6 +399,7 @@
 						stack.push(22);
 					}
 				});
+
 				var a = new global.tests._base.declare.tmp22();
 				var b = new global.tests._base.declare.tmp23();
 				var c = {
@@ -364,6 +408,7 @@
 						stack.push('INSIDE C');
 					}
 				};
+
 				stack = [];
 				a.foo();
 				assert.deepEqual(stack, [20, 22]);
@@ -397,9 +442,11 @@
 						stack.push(2);
 					}
 				});
+
 				stack = [];
 				tmp = new A();
 				assert.deepEqual(stack, [1]);
+
 				stack = [];
 				tmp = new B();
 				assert.deepEqual(stack, [1, 2]);
@@ -428,9 +475,11 @@
 						stack.push(4);
 					}
 				});
+
 				stack = [];
 				tmp = new C();
 				assert.deepEqual(stack, [1, 2, 3]);
+
 				stack = [];
 				tmp = new D();
 				assert.deepEqual(stack, [1, 2, 4]);
@@ -449,9 +498,11 @@
 						stack.push(2);
 					}
 				});
+
 				stack = [];
 				tmp = new A();
 				assert.deepEqual(stack, [1]);
+
 				stack = [];
 				tmp = new B();
 				assert.deepEqual(stack, [1, 2]);
@@ -553,6 +604,7 @@
 				var D2 = A.createSubclass([B, C]);
 				var d1 = new D1();
 				var d2 = new D2();
+
 				assert.equal(d1.foo, 'blah');
 				assert.equal(d2.foo, 'thonk');
 				assert.equal(d1.bar, 'thonk');

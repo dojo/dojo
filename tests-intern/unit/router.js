@@ -1,26 +1,26 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'intern/dojo/_base/array',
-	'intern/dojo/hash',
-	'dojo/router/RouterBase'
+	'dojo/_base/array',
+	'dojo/hash',
+	'dojo-testing/router/RouterBase'
 ], function (registerSuite, assert, arrayUtil, hash, RouterBase) {
 
 	// This test uses RouterBase so that we can test a few different
 	// behaviors of the router which require re-initializing a new router
 	var count = 0, a, b, testObject, test,
 		prevented = false, goResult, routeHit,
-		router, handle, foo;
+		router, handle;
 
 	// Simple helper to make tearDown simpler
 	function removeAll(handles) {
-		arrayUtil.forEach(handles, function(handle){
+		arrayUtil.forEach(handles, function (handle) {
 			handle.remove();
 		});
 	}
 
 	function registerRoute(route) {
-		return router.register(route, function(){
+		return router.register(route, function () {
 			count++;
 		});
 	}
@@ -94,7 +94,7 @@ define([
 				handle.push(registerRoute('/foo'));
 				router.startup('/foo');
 				var dfd = this.async();
-				handle.push(router.register('/bar', dfd.callback(function (value) {
+				handle.push(router.register('/bar', dfd.callback(function () {
 					count++;
 					assert.strictEqual(count, 2, 'Count should have been 2, was ' + count);
 				})));
@@ -139,7 +139,7 @@ define([
 			},
 			'structure': function () {
 				var oldPath, newPath, params, stopImmediatePropagation, preventDefault;
-				handle = router.register('/checkEventObject/:foo', function(event){
+				handle = router.register('/checkEventObject/:foo', function (event) {
 					oldPath = event.oldPath;
 					newPath = event.newPath;
 					params = event.params;
@@ -171,7 +171,7 @@ define([
 			},
 			'string route': function () {
 				a = b = null;
-				handle = router.register('/stringtest/:applied/:arg', function(event, applied, arg){
+				handle = router.register('/stringtest/:applied/:arg', function (event, applied, arg) {
 					a = applied;
 					b = arg;
 				});
@@ -182,7 +182,7 @@ define([
 			},
 			'regex route': function () {
 				a = b = null;
-				handle = router.register(/\/regextest\/(\w+)\/(\w+)/, function(event, applied, arg){
+				handle = router.register(/\/regextest\/(\w+)\/(\w+)/, function (event, applied, arg) {
 					a = applied;
 					b = arg;
 				});
@@ -193,7 +193,7 @@ define([
 			},
 			'string route, long with placeholders': function () {
 				testObject = null;
-				handle = router.register('/path/:to/:some/:long/*thing', function(event, applied, arg){
+				handle = router.register('/path/:to/:some/:long/*thing', function (event) {
 					testObject = event.params;
 				});
 				router.go('/path/to/some/long/thing/this/is/in/splat');
@@ -206,7 +206,7 @@ define([
 			},
 			'string route, numerical with placeholders': function () {
 				testObject = null;
-				handle = router.register('/path/:to/:some/:long/*thing', function(event, applied, arg){
+				handle = router.register('/path/:to/:some/:long/*thing', function (event) {
 					testObject = event.params;
 				});
 				router.go('/path/1/2/3/4/5/6');
@@ -224,7 +224,7 @@ define([
 				hash('');
 				router = new RouterBase();
 				router.startup('');
-				handle = router.register(/^\/path\/(\w+)\/(\d+)$/, function(event){
+				handle = router.register(/^\/path\/(\w+)\/(\d+)$/, function (event) {
 					testObject = event.params;
 				});
 			},
@@ -350,7 +350,7 @@ define([
 			},
 			'default path': function () {
 				routeHit = false;
-				handle = router.register('/default', function (event) {
+				handle = router.register('/default', function () {
 					routeHit = true;
 				});
 				router.startup('/default');

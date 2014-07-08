@@ -1,11 +1,11 @@
 define([
 	'./NodeList-fx',
+	//TODO: reenable when tests are fixed
+	//'./_base/eventMouse'
 	'./behavior',
 	'./cookie',
 	'./fx',
 	'./fx/Toggler',
 	'./on',
-	//TODO: reenable when tests are fixed
-	//'./_base/eventMouse'
 	'./window'
 ], function () {});

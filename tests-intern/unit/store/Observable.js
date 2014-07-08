@@ -1,11 +1,11 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo/store/Observable',
-	'dojo/_base/declare',
-	'intern/dojo/_base/lang',
-	'intern/dojo/_base/array',
-	'dojo/store/Memory',
+	'dojo-testing/store/Observable',
+	'dojo-testing/_base/declare',
+	'dojo/_base/lang',
+	'dojo/_base/array',
+	'dojo-testing/store/Memory',
 	'sinon'
 ], function (registerSuite, assert, Observable, declare, lang, array, Memory, sinon) {
 	function createMyStore() {
@@ -15,6 +15,7 @@ define([
 				return this.inherited(arguments);
 			}
 		});
+
 		var storeData = [
 			{ id: 0, name: 'zero', even: true, prime: false },
 			{ id: 1, name: 'one', prime: false },
@@ -23,6 +24,7 @@ define([
 			{ id: 4, name: 'four', even: true, prime: false },
 			{ id: 5, name: 'five', prime: true }
 		];
+
 		return new Observable(new MyStore({ data: storeData }));
 	}
 
@@ -58,7 +60,7 @@ define([
 			var store, handlerStub, results, observer;
 
 			return {
-				'beforeEach': function () {
+				beforeEach: function () {
 					store = createMyStore();
 					handlerStub = sinon.stub();
 					results = store.query({ prime: true });
@@ -115,8 +117,8 @@ define([
 						assert.lengthOf(results, 4);
 					},
 
-					'includeObjectUpdates': {
-						'beforeEach': function () {
+					includeObjectUpdates: {
+						beforeEach: function () {
 							observer.cancel();
 						},
 

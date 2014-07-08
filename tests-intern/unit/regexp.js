@@ -1,7 +1,7 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo/regexp'
+	'dojo-testing/regexp'
 ], function (registerSuite, assert, regexp) {
 	var regexpString = '\f\b\n\t\r+.$?*|{}()[]\\/^';
 

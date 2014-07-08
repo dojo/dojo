@@ -1,15 +1,14 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo/Deferred',
-	'dojo/promise/tracer'
+	'dojo-testing/Deferred',
+	'dojo-testing/promise/tracer'
 ], function (
 	registerSuite,
 	assert,
 	Deferred,
 	tracer
 ) {
-
 	var handle;
 	var expectedResult = { a: 1, b: 'two' };
 	var testDeferred;

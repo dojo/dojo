@@ -1,39 +1,40 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo/io/iframe',
-	'dojo/_base/kernel',
-	'dojo/topic',
-	'intern/dojo/dom',
-	'intern/dojo/dom-construct',
-	'intern/dojo/domReady!'
+	'dojo-testing/io/iframe',
+	'dojo-testing/_base/kernel',
+	'dojo-testing/topic',
+	'dojo/dom',
+	'dojo/dom-construct',
+	'dojo/domReady!'
 ], function (registerSuite, assert, iframe, kernel, topic, dom, domConstruct) {
 	function form(method, test) {
 		return {
-			before: function () {
+			setup: function () {
 				domConstruct.place('<form id="postTest" method="' + method + '" enctype="multipart/form-data"></form>', document.body);
 			},
 
 			test: test,
 
-			after: function () {
+			teardown: function () {
 				domConstruct.destroy('postTest');
 			}
 		};
 	}
+
 	registerSuite({
 		name: 'dojo/io/iframe',
 
-		'GET': {
-			'text': function () {
+		GET: {
+			text: function () {
 				var dfd = this.async(),
 					fdfd = iframe.send({
 						url: '/__services/request/iframe?type=text',
 						method: 'GET',
 						timeout: 5000,
 						preventCache: true,
-						handle: dfd.callback(function (res, ioArgs) {
-							assert.strictEqual(res, 'iframe succeeded');
+						handle: dfd.callback(function (response) {
+							assert.strictEqual(response, 'iframe succeeded');
 						})
 					});
 
@@ -53,9 +54,9 @@ define([
 						timeout: 5000,
 						preventCache: true,
 						handleAs: 'json',
-						handle: dfd.callback(function (res, ioArgs) {
-							assert.strictEqual(res.query.color, 'blue');
-							assert.strictEqual(res.query.size, '42');
+						handle: dfd.callback(function (response) {
+							assert.strictEqual(response.query.color, 'blue');
+							assert.strictEqual(response.query.size, '42');
 						})
 					});
 
@@ -74,9 +75,9 @@ define([
 						timeout: 5000,
 						preventCache: true,
 						handleAs: 'json',
-						handle: dfd.callback(function (res, ioArgs) {
-							assert.strictEqual(res.query.color, 'blue');
-							assert.strictEqual(res.query.size, '42');
+						handle: dfd.callback(function (response) {
+							assert.strictEqual(response.query.color, 'blue');
+							assert.strictEqual(response.query.size, '42');
 						})
 					});
 
@@ -96,10 +97,10 @@ define([
 						timeout: 5000,
 						preventCache: true,
 						handleAs: 'json',
-						handle: dfd.callback(function (res, ioArgs) {
-							assert.strictEqual(res.method, 'GET');
-							assert.strictEqual(res.query.color, 'blue');
-							assert.strictEqual(res.query.size, '42');
+						handle: dfd.callback(function (response) {
+							assert.strictEqual(response.method, 'GET');
+							assert.strictEqual(response.query.color, 'blue');
+							assert.strictEqual(response.query.size, '42');
 						})
 					});
 
@@ -116,7 +117,7 @@ define([
 						timeout: 5000,
 						preventCache: true,
 						handleAs: 'javascript',
-						handle: dfd.callback(function (res, ioArgs) {
+						handle: dfd.callback(function () {
 							assert.strictEqual(window.iframeTestingFunction(), 42);
 						})
 					});
@@ -134,8 +135,8 @@ define([
 						timeout: 5000,
 						preventCache: true,
 						handleAs: 'html',
-						handle: dfd.callback(function (res, ioArgs) {
-							assert.strictEqual(res.getElementsByTagName('h1')[0].innerHTML, 'SUCCESSFUL HTML response');
+						handle: dfd.callback(function (response) {
+							assert.strictEqual(response.getElementsByTagName('h1')[0].innerHTML, 'SUCCESSFUL HTML response');
 						})
 					});
 
@@ -151,8 +152,8 @@ define([
 						timeout: 5000,
 						preventCache: true,
 						handleAs: 'xml',
-						handle: dfd.callback(function (res, ioArgs) {
-							assert.strictEqual(res.documentElement.getElementsByTagName('child').length, 4);
+						handle: dfd.callback(function (response) {
+							assert.strictEqual(response.documentElement.getElementsByTagName('child').length, 4);
 						})
 					});
 
@@ -168,8 +169,8 @@ define([
 						},
 						timeout: 5000,
 						preventCache: true,
-						handle: dfd.callback(function (res, ioArgs) {
-							assert.notInstanceOf(res, Error);
+						handle: dfd.callback(function (response) {
+							assert.notInstanceOf(response, Error);
 						})
 					});
 
@@ -177,7 +178,7 @@ define([
 			}
 		},
 
-		'POST': form('POST', function () {
+		POST: form('POST', function () {
 			var dfd = this.async(),
 				fdfd = iframe.send({
 					url: '/__services/request/iframe?type=json',
@@ -190,10 +191,10 @@ define([
 					timeout: 5000,
 					preventCache: true,
 					handleAs: 'json',
-					handle: dfd.callback(function (res, ioArgs) {
-						assert.strictEqual(res.method, 'POST');
-						assert.strictEqual(res.payload.color, 'blue');
-						assert.strictEqual(res.payload.size, '42');
+					handle: dfd.callback(function (response) {
+						assert.strictEqual(response.method, 'POST');
+						assert.strictEqual(response.payload.color, 'blue');
+						assert.strictEqual(response.payload.size, '42');
 					})
 				});
 
@@ -225,11 +226,10 @@ define([
 
 			test: function () {
 				var dfd = this.async();
-
 				var self = this;
-				var handle = topic.subscribe('/dojo/io/stop', dfd.callback(function () {
-					self.parent._testTopicCount++;
 
+				topic.subscribe('/dojo/io/stop', dfd.callback(function () {
+					self.parent._testTopicCount++;
 					assert.strictEqual(self.parent._testTopicCount, 5);
 				}));
 

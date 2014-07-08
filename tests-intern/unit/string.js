@@ -1,7 +1,7 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo/string'
+	'dojo-testing/string'
 ], function (registerSuite, assert, string) {
 	registerSuite({
 		name: 'dojo/string',
@@ -13,7 +13,7 @@ define([
 		},
 
 		'.substitute': {
-			'normal': function () {
+			normal: function () {
 				assert.strictEqual(
 					string.substitute(
 						'File "${0}" is not found in directory "${1}".',
@@ -21,6 +21,7 @@ define([
 					),
 					'File "foo.html" is not found in directory "/temp".'
 				);
+
 				assert.strictEqual(
 					string.substitute(
 						'File "${name}" is not found in directory "${info.dir}".',
@@ -31,12 +32,13 @@ define([
 					),
 					'File "foo.html" is not found in directory "/temp".'
 				);
+
 				assert.throws(function () {
 					string.substitute('${x}', { y: 1 });
 				});
 			},
 
-			'transform': function () {
+			transform: function () {
 				function getPrefix(str) {
 					// try to figure out the type
 					var prefix = (str.charAt(0) === '/') ? 'directory': 'file';
@@ -70,11 +72,11 @@ define([
 				);
 			},
 
-			'formatter': function () {
+			formatter: function () {
 				assert.strictEqual(
 					string.substitute(
 						'${0:postfix}', ['thinger'], null, {
-							postfix: function(value, key){
+							postfix: function(value){
 								return value + ' -- howdy';
 							}
 						}

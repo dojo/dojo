@@ -8,7 +8,7 @@ define([
 	registerSuite({
 		name: 'mouseenter/mouseleave',
 
-		'before': function () {
+		setup: function () {
 			return this.get('remote')
 				.setAsyncScriptTimeout(5000)
 				.get(require.toUrl('./eventMouse.html'))

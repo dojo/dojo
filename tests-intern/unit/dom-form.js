@@ -1,10 +1,10 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo/dom-form',
-	'intern/dojo/dom',
-	'intern/dojo/dom-construct',
-	'intern/dojo/json'
+	'dojo-testing/dom-form',
+	'dojo/dom',
+	'dojo/dom-construct',
+	'dojo/json'
 ], function (registerSuite, assert, domForm, dom, domConstruct, JSON) {
 	var formContainer;
 

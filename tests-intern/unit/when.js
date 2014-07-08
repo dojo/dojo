@@ -1,9 +1,9 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo/Deferred',
-	'dojo/promise/Promise',
-	'dojo/when'
+	'dojo-testing/Deferred',
+	'dojo-testing/promise/Promise',
+	'dojo-testing/when'
 ], function (registerSuite, assert, Deferred, Promise, when) {
 	var emptyObject = {};
 	var dfd;

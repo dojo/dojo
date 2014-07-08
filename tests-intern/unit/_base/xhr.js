@@ -1,17 +1,17 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo/_base/kernel',
-	'dojo/_base/xhr',
-	'dojo/_base/Deferred',
-	'dojo/topic',
-	'intern/dojo/_base/array',
-	'intern/dojo/query',
-	'intern/dojo/json',
-	'intern/dojo/dom-construct',
-	'intern/dojo/Deferred',
-	'intern/dojo/promise/all',
-	'intern/dojo/domReady!'
+	'dojo-testing/_base/kernel',
+	'dojo-testing/_base/xhr',
+	'dojo-testing/_base/Deferred',
+	'dojo-testing/topic',
+	'dojo/_base/array',
+	'dojo/query',
+	'dojo/json',
+	'dojo/dom-construct',
+	'dojo/Deferred',
+	'dojo/promise/all',
+	'dojo/domReady!'
 ], function (registerSuite, assert, dojo, xhr, baseDeferred, topic,
 			 array, query, JSON, domConstruct, Deferred, all) {
 	var form, topicCount, remover;
@@ -113,7 +113,7 @@ define([
 		},
 
 		'.get': {
-			'success': function () {
+			success: function () {
 				var dfd = this.async(30000, 2),
 					xdfd = xhr.get({
 						url: '/__services/request/xhr',
@@ -147,7 +147,7 @@ define([
 				xdfd.addErrback(dfd.resolve);
 			},
 
-			'content': function () {
+			content: function () {
 				var dfd = this.async(),
 					xdfd = xhr.get({
 						url: '/__services/request/xhr?color=blue',
@@ -158,7 +158,7 @@ define([
 						}
 					});
 
-				xdfd.addCallback(dfd.callback(function (text) {
+				xdfd.addCallback(dfd.callback(function () {
 					assert.strictEqual(
 						xdfd.ioArgs.url,
 						'/__services/request/xhr?color=blue&foo=bar&foo=baz&thud=thonk&xyzzy=3'
@@ -166,12 +166,12 @@ define([
 				}));
 			},
 
-			'form': {
-				before: function () {
+			form: {
+				setup: function () {
 					form = domConstruct.place('<form id="f3" style="border: 1px solid black;"><input id="f3_spaces" type="hidden" name="spaces" value="string with spaces"></form>', document.body);
 				},
 
-				after: function () {
+				teardown: function () {
 					domConstruct.destroy(form);
 					form = null;
 				},
@@ -183,7 +183,7 @@ define([
 							form: 'f3'
 						});
 
-					xdfd.addCallback(dfd.callback(function (text) {
+					xdfd.addCallback(dfd.callback(function () {
 						assert.strictEqual(
 							xdfd.ioArgs.url,
 							'/__services/request/xhr?spaces=string%20with%20spaces'
@@ -199,7 +199,7 @@ define([
 							content: { spaces: 'blah' }
 						});
 
-					xdfd.addCallback(dfd.callback(function (text) {
+					xdfd.addCallback(dfd.callback(function () {
 						assert.strictEqual(
 							xdfd.ioArgs.url,
 							'/__services/request/xhr?spaces=blah'
@@ -210,14 +210,14 @@ define([
 		},
 
 		'.post': {
-			'success': function () {
+			success: function () {
 				var dfd = this.async();
 
 				xhr.post({
 					url: '/__services/request/xhr?foo=bar',
 					content: { color: 'blue' },
 					handleAs: 'json',
-					handle: dfd.callback(function (data, ioArgs) {
+					handle: dfd.callback(function (data) {
 						assert.strictEqual(data.method, 'POST');
 						assert.deepEqual(data.query, { foo: 'bar' });
 						assert.deepEqual(data.payload, { color: 'blue' });
@@ -236,18 +236,18 @@ define([
 						}
 					});
 
-				xdfd.addCallback(dfd.callback(function (text) {
+				xdfd.addCallback(dfd.callback(function () {
 					assert.strictEqual(xdfd.ioArgs.query, 'foo=bar&foo=baz&thud=thonk&xyzzy=3');
 				}));
 				xdfd.addErrback(dfd.reject);
 			},
 
-			'form': {
-				before: function () {
+			form: {
+				setup: function () {
 					form = domConstruct.place('<form id="f4" style="border: 1px solid black;" action="/__services/request/xhr"><input id="f4_action" type="hidden" name="action" value="Form with input named action"></form>', document.body);
 				},
 
-				after: function () {
+				teardown: function () {
 					domConstruct.destroy(form);
 					form = null;
 				},
@@ -263,7 +263,7 @@ define([
 				}
 			},
 
-			'raw': function () {
+			raw: function () {
 				var dfd = this.async(),
 					xdfd = xhr.post({
 						url: '/__services/request/xhr',
@@ -312,7 +312,7 @@ define([
 			xdfd.addErrback(dfd.reject);
 		},
 
-		'cancel': function () {
+		cancel: function () {
 			var dfd = this.async(),
 				xdfd = xhr.post({
 					url: '/__services/request/xhr?delay=3000'
@@ -341,8 +341,8 @@ define([
 			xdfd.addErrback(dfd.reject);
 		},
 
-		'ioPublish': {
-			before: function () {
+		ioPublish: {
+			setup: function () {
 				dojo.config.ioPublish = true;
 				topicCount = {};
 
@@ -367,12 +367,12 @@ define([
 				);
 			},
 
-			after: function () {
+			teardown: function () {
 				dojo.config.ioPublish = false;
 				remover();
 			},
 
-			'counts': function () {
+			counts: function () {
 				var dfd = this.async(),
 					dfd1 = new Deferred(),
 					xdfd1 = xhr.get({ url: '/__services/request/xhr?delay=1000' }),

@@ -1,10 +1,10 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'intern/dojo/promise/all',
-	'dojo/request/xhr',
-	'dojo/request/notify',
-	'dojo/errors/CancelError'
+	'dojo/promise/all',
+	'dojo-testing/request/xhr',
+	'dojo-testing/request/notify',
+	'dojo-testing/errors/CancelError'
 ], function (registerSuite, assert, all, xhr, notify, CancelError) {
 	function remover() {
 		var args = arguments;
@@ -16,7 +16,9 @@ define([
 			return null;
 		};
 	}
+
 	var handle;
+
 	registerSuite({
 		name: 'dojo/request/notify',
 
@@ -32,10 +34,10 @@ define([
 				sendCount = 0;
 
 			handle = remover(
-				notify('start', function (data) {
+				notify('start', function () {
 					startCount++;
 				}),
-				notify('send', function (data) {
+				notify('send', function () {
 					sendCount++;
 				})
 			);
@@ -52,12 +54,12 @@ define([
 			);
 		},
 
-		'load': function () {
+		load: function () {
 			var dfd = this.async();
 
 			var doneFired = false;
 			handle = remover(
-				notify('done', function (response) {
+				notify('done', function () {
 					doneFired = true;
 				}),
 				notify('load', dfd.rejectOnError(function (response) {
@@ -72,20 +74,20 @@ define([
 			xhr.get('/__services/request/xhr?foo=bar', { handleAs: 'json' });
 		},
 
-		'error': function () {
+		error: function () {
 			var dfd = this.async();
 
 			var doneFired = false;
 			handle = remover(
-				notify('done', dfd.rejectOnError(function(data){
+				notify('done', dfd.rejectOnError(function (data) {
 					doneFired = true;
 					assert.instanceOf(data, Error);
 				})),
-				notify('error', dfd.rejectOnError(function(data){
+				notify('error', dfd.rejectOnError(function (data) {
 					assert.instanceOf(data, Error);
 					assert.ok(!doneFired);
 				})),
-				notify('stop', dfd.callback(function(){
+				notify('stop', dfd.callback(function () {
 					assert.ok(doneFired);
 				}))
 			);
@@ -100,11 +102,11 @@ define([
 				stopCalledAfterDone = false;
 
 			handle = remover(
-				notify('done', function(data){
+				notify('done', function () {
 					doneCount++;
 					stopCalledAfterDone = stopCount === 0;
 				}),
-				notify('stop', function(data){
+				notify('stop', function () {
 					stopCount++;
 				})
 			);
@@ -122,7 +124,7 @@ define([
 			);
 		},
 
-		'cancel': function () {
+		cancel: function () {
 			var dfd = this.async();
 
 			handle = remover(

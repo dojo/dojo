@@ -1,7 +1,7 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo/currency',
+	'dojo-testing/currency',
 	'dojo/i18n'
 ], function (registerSuite, assert, currency) {
 	registerSuite({

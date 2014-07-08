@@ -1,7 +1,7 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo/json'
+	'dojo-testing/json'
 ], function (registerSuite, assert, json) {
 	registerSuite({
 		name: 'dojo/json',

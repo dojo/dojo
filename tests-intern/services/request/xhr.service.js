@@ -1,7 +1,7 @@
 define([
 	'when',
 	'when/delay',
-	'intern/dojo/node!querystring'
+	'dojo/node!querystring'
 ], function (when, delay, qs) {
 	function xml(request) {
 		return {

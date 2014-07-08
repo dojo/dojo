@@ -1,7 +1,7 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo/store/Memory',
+	'dojo-testing/store/Memory',
 	'dojo/store/util/QueryResults'
 ], function (registerSuite, assert, MemoryStore, QueryResults) {
 	var data = [
@@ -105,7 +105,7 @@ define([
 		},
 
 		'.put': {
-			'update': function () {
+			update: function () {
 				var four = store.get(4);
 				four.square = true;
 				store.put(four);
@@ -123,7 +123,7 @@ define([
 		},
 
 		'.add': {
-			'duplicate': function () {
+			duplicate: function () {
 				var threw;
 
 				try {
@@ -170,7 +170,7 @@ define([
 			}
 		},
 
-		'misc': {
+		misc: {
 			'IFRS style data': function () {
 				var anotherStore = new MemoryStore({
 					data: {

@@ -1,16 +1,16 @@
+/* global scriptLoad, myTasks */
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo/request/script',
-	'dojo/errors/RequestTimeoutError',
-	'dojo/errors/CancelError',
-	'intern/dojo/domReady!'
+	'dojo-testing/request/script',
+	'dojo-testing/errors/RequestTimeoutError',
+	'dojo-testing/errors/CancelError',
+	'dojo/domReady!'
 ], function (registerSuite, assert, script, RequestTimeoutError, CancelError) {
-	/* global scriptLoad, myTasks */
 	registerSuite({
 		name: 'dojo/request/script',
 
-		'load': function () {
+		load: function () {
 			var def = this.async();
 
 			script.get('/__services/request/script', {
@@ -26,7 +26,7 @@ define([
 			);
 		},
 
-		'checkString': function () {
+		checkString: function () {
 			var def = this.async();
 
 			script.get('/__services/request/script', {
@@ -46,7 +46,7 @@ define([
 			);
 		},
 
-		'jsonp': function () {
+		jsonp: function () {
 			var def = this.async();
 
 			script.get('/__services/request/script', {

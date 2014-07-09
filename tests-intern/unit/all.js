@@ -20,6 +20,7 @@ define([
 	'./string',
 	'./topic',
 	'./when',
+	'./cldr/supplemental',
 
 	// host-specific tests
 	'dojo/has!host-browser?./dom-form',

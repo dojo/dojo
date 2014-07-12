@@ -16,6 +16,7 @@ define([
 	'./promise',
 	'./regexp',
 	'./request',
+	'./rpc',
 	'./store',
 	'./string',
 	'./topic',

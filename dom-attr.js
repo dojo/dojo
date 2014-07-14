@@ -34,7 +34,7 @@ define(["exports", "./sniff", "./_base/lang", "./dom", "./dom-style", "./dom-pro
 
 	function _hasAttr(node, name){
 		var attr = node.getAttributeNode && node.getAttributeNode(name);
-		return attr && attr.specified; // Boolean
+		return !!attr && attr.specified; // Boolean
 	}
 	
 	// There is a difference in the presence of certain properties and their default values

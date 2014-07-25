@@ -9,6 +9,24 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 		has.add("event-focusin", function(global, doc, element){
 			return 'onfocusin' in element;
 		});
+		
+		if(has("touch")){
+			var useEventDelegation = true;
+			// deleting properties doesn't work for instance in older iOS, so have to
+			// use delegation, except for browsers that do not allow to modify properties
+			// of the delegated event:
+			var Event = function(){};
+			var evt = document.createEvent("MouseEvents");
+			Event.prototype = evt;
+			evt = new Event;
+			try{
+				evt.target = null;
+			}catch(e){
+				useEventDelegation = false;
+			}
+			// Whether event delegation should be used on touch-enabled devices
+			has.add("touch-use-event-delegation", useEventDelegation);
+		}
 	}
 	var on = function(target, type, listener, dontFix){
 		// summary:
@@ -509,20 +527,19 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 				if(!event){
 					var type = originalEvent.type;
 					try{
-						delete originalEvent.type; // on some JS engines (android), deleting properties make them mutable
+						delete originalEvent.type; // on some JS engines (android), deleting properties makes them mutable
 					}catch(e){} 
 					if(originalEvent.type){
-						// deleting properties doesn't work (older iOS), have to use delegation
-						if(has('mozilla')){
-							// Firefox doesn't like delegated properties, so we have to copy
+						if(has("touch-use-event-delegation")){
+							// In some browsers, such as older iOS, deleting properties doesn't work, have to use delegation
+							Event.prototype = originalEvent;
+							event = new Event;
+						}else{
+							// Other browsers, such as mobile Firefox, do not like delegated properties, so we have to copy
 							event = {};
 							for(var name in originalEvent){
 								event[name] = originalEvent[name];
 							}
-						}else{
-							// old iOS branch
-							Event.prototype = originalEvent;
-							event = new Event;
 						}
 						// have to delegate methods to make them work
 						event.preventDefault = function(){

@@ -11,21 +11,22 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 		});
 		
 		if(has("touch")){
-			var useEventDelegation = true;
-			// deleting properties doesn't work for instance in older iOS, so have to
-			// use delegation, except for browsers that do not allow to modify properties
-			// of the delegated event:
-			var Event = function(){};
-			var evt = document.createEvent("MouseEvents");
-			Event.prototype = evt;
-			evt = new Event;
-			try{
-				evt.target = null;
-			}catch(e){
-				useEventDelegation = false;
-			}
 			// Whether event delegation should be used on touch-enabled devices
-			has.add("touch-use-event-delegation", useEventDelegation);
+			has.add("touch-use-event-delegation", function(){
+				// deleting properties doesn't work for instance in older iOS, so have to
+				// use delegation, except for browsers that do not allow to modify properties
+				// of the delegated event:
+				var Event = function(){};
+				var evt = document.createEvent("MouseEvents");
+				Event.prototype = evt;
+				evt = new Event;
+				try{
+					evt.target = null;
+					return true;
+				}catch(e){
+					return false;
+				}
+			});
 		}
 	}
 	var on = function(target, type, listener, dontFix){

@@ -11,20 +11,20 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 		});
 		
 		if(has("touch")){
-			// Whether event delegation should be used on touch-enabled devices
-			has.add("touch-use-event-delegation", function(){
-				// deleting properties doesn't work for instance in older iOS, so have to
-				// use delegation, except for browsers that do not allow to modify properties
-				// of the delegated event:
-				var Event = function(){};
-				var evt = document.createEvent("MouseEvents");
-				Event.prototype = evt;
-				evt = new Event;
+			has.add("touch-can-modify-event-delegate", function(){
+				// This feature test checks whether deleting a property of an event delegate works
+				// for a touch-enabled device. If it works, event delegation can be used as fallback
+				// for browsers such as Safari in older iOS where deleting properties of the original
+				// event does not work.
+				var EventDelegate = function(){};
+				EventDelegate.prototype =
+					document.createEvent("MouseEvents"); // original event
 				try{
-					evt.target = null;
-					return true;
+					// Attempt to modify a property of an event delegate:
+					(new EventDelegate).target = null;
+					return true; // can use event delegation
 				}catch(e){
-					return false;
+					return false; // cannot use event delegation
 				}
 			});
 		}
@@ -514,7 +514,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 		};
 	}
 	if(has("touch")){ 
-		var Event = function(){};
+		var EventDelegate = function(){};
 		var windowOrientation = window.orientation; 
 		var fixTouchListener = function(listener){ 
 			return function(originalEvent){ 
@@ -531,12 +531,15 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 						delete originalEvent.type; // on some JS engines (android), deleting properties makes them mutable
 					}catch(e){} 
 					if(originalEvent.type){
-						if(has("touch-use-event-delegation")){
-							// In some browsers, such as older iOS, deleting properties doesn't work, have to use delegation
-							Event.prototype = originalEvent;
-							event = new Event;
+						// Deleting the property of the original event did not work (this is the case of
+						// browsers such as older Safari iOS), hence fallback:
+						if(has("touch-can-modify-event-delegate")){
+							// If deleting properties of delegated event works, use event delegation:
+							EventDelegate.prototype = originalEvent;
+							event = new EventDelegate;
 						}else{
-							// Other browsers, such as mobile Firefox, do not like delegated properties, so we have to copy
+							// Otherwise last fallback: other browsers, such as mobile Firefox, do not like
+							// delegated properties, so we have to copy
 							event = {};
 							for(var name in originalEvent){
 								event[name] = originalEvent[name];

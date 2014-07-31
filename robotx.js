@@ -1,139 +1,156 @@
-define(["dojo", "dojo/robot"], function(dojo) {
+define([
+	"require",
+	"doh/main",
+	"./aspect",
+	"./dom-construct",
+	"./dom-style",
+	"./_base/kernel",
+	"./_base/lang",
+	"./on",
+	"./robot",
+	"./_base/sniff",
+	"./_base/window"
+], function(require, doh, aspect, construct, style, kernel, lang, on, robot, has, win){
 
-dojo.experimental("dojo.robotx");
+kernel.experimental("dojo.robotx");
 
-// loads an external app into an iframe and points dojo.doc to the iframe document, allowing the robot to control it
-// to use: set robotURL in djConfig to the URL you want to load
-// dojo.require this file
+// module:
+//		dojo.robotx
+// description:
+//		loads an external app into an iframe and points dojo.doc to the iframe document, allowing the robot to control it
+//		to use: set robotURL in djConfig to the URL you want to load
+//		dojo.require this file
 
+// The iframe containing the external app
 var iframe = null;
 
-var groupStarted=dojo.connect(doh, '_groupStarted', function(){
-	dojo.disconnect(groupStarted);
-	iframe.style.visibility="visible";
-});
+// On IE6/7, a firebug console will appear.   Scrunch it a bit to leave room for the external test file.
+kernel.config.debugHeight = kernel.config.debugHeight || 200;
 
-var attachIframe = function(){
-	dojo.addOnLoad(function(){
+
+// urlLoaded is a Deferred that will be resolved whenever the iframe passed to initRobot() finishes loading, or reloads
+var urlLoaded;
+
+function attachIframe(url){
+	// summary:
+	//		Create iframe to load external app at specified url.   Iframe gets onload handler to  call onIframeLoad()
+	//		when specified URL finishes loading, and also if the iframe loads a different URL in the future.
+	// returns:
+	//		A Deferred that fires when everything has finished initializing
+
+	require(["./domReady!"], function(){
 		var emptyStyle = {
-			overflow: dojo.isWebKit? 'hidden' : 'visible',
-			margin: '0px',
-			borderWidth: '0px',
-			height: '100%',
-			width: '100%'
+			overflow: dojo.isWebKit ? 'hidden' : 'visible',
+			margin: "0px",
+			borderWidth: "0px",
+			height: "100%",
+			width: "100%"
 		};
-		dojo.style(document.documentElement, emptyStyle);
-		dojo.style(document.body, emptyStyle);
-		document.body.appendChild(iframe);
-		var base=document.createElement('base');
-		base.href=iframe.src;
-		document.getElementsByTagName("head")[0].appendChild(base);
-	});
-};
+		style.set(document.documentElement, emptyStyle);
+		style.set(document.body, emptyStyle);
 
-// Prevent race conditions between iframe loading and robot init.
-// If iframe is allowed to load while the robot is typing, sync XHRs can prevent the robot from completing its initialization.
-var robotReady=false;
-var robotFrame=null;
-var _run=doh.robot._run;
-doh.robot._run = function(frame){
-	// Called from robot when the robot completed its initialization.
-	robotReady = true;
-	robotFrame = frame;
-	doh.robot._run = _run;
-	// If initRobot was already called, then attach the iframe.
-	if(iframe.src){
-		attachIframe();
-	}
-};
-
-var onIframeLoad=function(){
-	// initial load handler: update the document and start the tests
-	doh.robot._updateDocument();
-	onIframeLoad = null;
-	var scrollRoot = (document.compatMode == 'BackCompat')? document.body : document.documentElement;
-	var consoleHeight = document.getElementById('robotconsole').offsetHeight;
-	if(consoleHeight){
-		iframe.style.height = (scrollRoot.clientHeight - consoleHeight)+"px";
-	}
-	// If dojo is present in the test case, then at least make a best effort to wait for it to load.
-	// The test must handle other race conditions like initial data queries by itself.
-	if(iframe.contentWindow.dojo){
-		iframe.contentWindow.dojo.addOnLoad(function(){
-			doh.robot._run(robotFrame);
+		// Create the iframe for the external document.   Put it above the firebug-lite div (if such a div exists).
+		// console.log("creating iframe for external document");
+		iframe = document.createElement("iframe");
+		iframe.setAttribute("ALLOWTRANSPARENCY","true");
+		iframe.scrolling = dojo.isIE? "yes" : "auto";
+		var scrollRoot = document.compatMode == "BackCompat" ? document.body : document.documentElement;
+		var consoleHeight = (document.getElementById("firebug") || {}).offsetHeight || 0;
+		style.set(iframe, {
+			border: "0px none",
+			padding: "0px",
+			margin: "0px",
+			width: "100%",
+			height: consoleHeight ? (scrollRoot.clientHeight - consoleHeight)+"px" : "100%"
 		});
-	}else{
-		doh.robot._run(robotFrame);
-	}
-};
+		iframe.src = url;
 
-var iframeLoad=function(){
-	if(onIframeLoad){
-		onIframeLoad();
-	}
-	var unloadConnect = dojo.connect(dojo.body(), 'onunload', function(){
-		dojo.global = window;
-		dojo.doc = document;
-		dojo.disconnect(unloadConnect);
-	});
-};
-
-// write the firebug console to a place it will fit
-dojo.config.debugContainerId = "robotconsole";
-dojo.config.debugHeight = dojo.config.debugHeight || 200;
-document.write('<div id="robotconsole" style="position:absolute;left:0px;bottom:0px;width:100%;"></div>');
-
-// write the iframe
-//document.writeln('<iframe id="robotapplication" style="visibility:hidden; border:0px none; padding:0px; margin:0px; position:absolute; left:0px; top:0px; width:100%; height:100%; z-index: 1;" src="'+dojo.config.robotURL+'" onload="iframeLoad();" ></iframe>');
-iframe = document.createElement('iframe');
-iframe.setAttribute("ALLOWTRANSPARENCY","true");
-iframe.scrolling = dojo.isIE? "yes" : "auto";
-dojo.style(iframe,{visibility:'hidden', border:'0px none', padding:'0px', margin:'0px', position:'absolute', left:'0px', top:'0px', width:'100%', height:'100%'});
-if(iframe['attachEvent'] !== undefined){
-	iframe.attachEvent('onload', iframeLoad);
-}else{
-	dojo.connect(iframe, 'onload', iframeLoad);
-}
-
-dojo.mixin(doh.robot,{
-	_updateDocument: function(){
-		dojo.setContext(iframe.contentWindow, iframe.contentWindow.document);
-		var win = dojo.global;
-		if(win.dojo){
-			// allow the tests to subscribe to topics published by the iframe
-			dojo.publish = win.dojo.publish;
-			dojo.subscribe = win.dojo.subscribe;
-			dojo.connectPublisher = win.dojo.connectPublisher;  
+		// Code to handle load event on iframe.  Seems like this should happen before setting iframe src on line above?
+		// Also, can't we use on() in all cases, even for old IE?
+		if(iframe.attachEvent !== undefined){
+			iframe.attachEvent("onload", onIframeLoad);
+		}else{
+			on(iframe, "load", onIframeLoad);
 		}
 
+		construct.place(iframe, win.body(), "first");
+	});
+}
+
+function onIframeLoad(){
+	// summary:
+	//		Load handler when iframe specified to initRobot() finishes loading, or when it reloads.
+	//		It resolves the urlLoaded Deferred to make the rests of the tests runs.
+
+	robot._updateDocument();
+
+	// If dojo is present in the test case, then at least make a best effort to wait for it to load.
+	// The test must handle other race conditions like initial data queries or asynchronous parses by itself.
+	if(iframe.contentWindow.require){
+		iframe.contentWindow.require(["dojo/ready"], function(ready){
+			ready(Infinity, function(){
+				setTimeout(function(){
+					urlLoaded.resolve(true);
+				}, 500);	// 500ms fudge factor; otherwise focus doesn't work on IE8, see ValidationTextBox.js, TimeTextBox.js, etc.
+			});
+		});
+	}else{
+		urlLoaded.resolve(true);
+	}
+}
+
+lang.mixin(robot, {
+	_updateDocument: function(){
+		// summary:
+		//		Called every time a new page is loaded into the iframe, to setup variables
+		//		Point dojo.global, dojo.publish, etc. to refer to iframe.
+		//		Remove for 2.0?
+
+		kernel.setContext(iframe.contentWindow, iframe.contentWindow.document);
+
+		// Also set pointers inside robot, for easy access via AMD (where there is no dojo variable)
+		robot.window = iframe.contentWindow;
+		robot.doc = iframe.contentWindow.document;
+
+		// TODO: shouldn't this wait until dojo has finished loading in the iframe?  See require code in onIframeLoad().
+		var win = kernel.global;
+		if(win.dojo){
+			// allow the tests to subscribe to topics published by the iframe
+			kernel.publish = win.dojo.publish;
+			kernel.subscribe = win.dojo.subscribe;
+			kernel.connectPublisher = win.dojo.connectPublisher;
+		}
 	},
 
 	initRobot: function(/*String*/ url){
 		// summary:
-		//		Opens the application at the specified URL for testing, redirecting dojo to point to the application environment instead of the test environment.
-		//
+		//		Opens the application at the specified URL for testing, redirecting dojo to point to the application
+		//		environment instead of the test environment.
 		// url:
-		//		URL to open. Any of the test's dojo.doc calls (e.g. dojo.byId()), and any dijit.registry calls (e.g. dijit.byId()) will point to elements and widgets inside this application.
-		//
+		//		URL to open. Any of the test's dojo.doc calls (e.g. dojo.byId()), and any dijit.registry calls
+		//		(e.g. dijit.byId()) will point to elements and widgets inside this application.
 
-		iframe.src=url;
-		// see above note about race conditions
-		if(robotReady){
-			attachIframe();
+		doh.registerGroup("initialize robot", {
+			name: "load " + url,
+			timeout: 100000,	// could take more than 10s so setting to 100s
+			runTest: function(){
+				// Setup module level urlLoaded Deferred that will be resolved by onIframeLoad(), after the iframe
+				// has finished loading
+				urlLoaded = new doh.Deferred();
+				attachIframe(url);
 
-		}
+				return urlLoaded;
+			}
+		});
 	},
 
 	waitForPageToLoad: function(/*Function*/ submitActions){
 		// summary:
-		// 		Notifies DOH that the doh.robot is about to make a page change in the application it is driving,
+		//		Notifies DOH that the doh.robot is about to make a page change in the application it is driving,
 		//		returning a doh.Deferred object the user should return in their runTest function as part of a DOH test.
 		//
-		// description:
-		// 		Notifies DOH that the doh.robot is about to make a page change in the application it is driving,
-		//		returning a doh.Deferred object the user should return in their runTest function as part of a DOH test.
 		//		Example:
-		//			runTest:function(){
+		//			runTest: function(){
 		//				return waitForPageLoad(function(){ doh.robot.keyPress(dojo.keys.ENTER, 500); });
 		//			}
 		//
@@ -143,19 +160,15 @@ dojo.mixin(doh.robot,{
 		//		After these actions execute and the resulting page loads, the next test will start.
 		//
 
-		var d = new doh.Deferred();
-		// create iframe event handler to track submit progress
-		onIframeLoad = function(){
-			onIframeLoad = null;
-			// set dojo.doc on every page change to point to the iframe doc so the robot works
-			doh.robot._updateDocument();
-			d.callback(true);
-		};
+		// Setup a new Deferred that onIframeLoad() will resolve when the iframe finishes loading
+		urlLoaded = new doh.Deferred();
+
 		submitActions();
-		return d;
+
+		return urlLoaded;
 	}
 
 });
 
-return doh.robot;
+return robot;
 });

@@ -118,6 +118,7 @@ define(["./kernel", "../has"], function(dojo, has){
 	isIos = /iPhone|iPod|iPad/.test(dua);
 	isAndroid = parseFloat(dua.split("Android ")[1]) || undefined;
 	isWii = typeof opera != "undefined" && opera.wiiremote;
+	isTrident = parseFloat(dav.split("Trident/")[1]) || undefined;
 
 	// safari detection derived from:
 	//		http://developer.apple.com/internet/safari/faq.html#anchor2
@@ -143,15 +144,15 @@ define(["./kernel", "../has"], function(dojo, has){
 			}
 		}
 
-		isIE = 0;
-		if(document.all && !has("opera")){
-			// IE < 11
-			isIE = parseFloat(dav.split("MSIE ")[1]) || undefined;
-		}else if(dav.indexOf("Trident")){
-			// IE >= 9
-			isIE = parseFloat(dav.split("rv:")[1]) || undefined;
+		if(dua.indexOf("Gecko") >= 0 && !isKhtml && !isWebKit && !isTrident){
+			isMozilla = isMoz = tv;
+		}
+		if(isMoz){
+			//We really need to get away from this. Consider a sane isGecko approach for the future.
+			isFF = parseFloat(dua.split("Firefox/")[1] || dua.split("Minefield/")[1]) || undefined;
 		}
 		if(document.all && !isOpera){
+			isIE = parseFloat(dav.split("MSIE ")[1]) || undefined;
 			//In cases where the page has an HTTP header or META tag with
 			//X-UA-Compatible, then it is in emulation mode.
 			//Make sure isIE reflects the desired version.
@@ -162,15 +163,6 @@ define(["./kernel", "../has"], function(dojo, has){
 			if(mode && mode != 5 && Math.floor(isIE) != mode){
 				isIE = mode;
 			}
-		}
-		
-		// Mozilla and firefox
-		if(!isIE && dua.indexOf("Gecko") >= 0 && !isKhtml && !isWebKit){
-			isMozilla = isMoz = tv;
-		}
-		if(isMoz){
-			//We really need to get away from this. Consider a sane isGecko approach for the future.
-			isFF = parseFloat(dua.split("Firefox/")[1] || dua.split("Minefield/")[1]) || undefined;
 		}
 	}
 
@@ -189,6 +181,7 @@ define(["./kernel", "../has"], function(dojo, has){
 	hasAdd("quirks", dojo.isQuirks = isQuirks);
 	hasAdd("ios", dojo.isIos = isIos);
 	hasAdd("android", dojo.isAndroid = isAndroid);
+	hasAdd("trident", dojo.isTrident = isTrident);
 
 	dojo.locale = dojo.locale || (isIE ? n.userLanguage : n.language).toLowerCase();
 

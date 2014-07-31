@@ -103,17 +103,27 @@ define(["./_base/kernel", "./on", "./has", "./dom", "./_base/window"], function(
 	};
 =====*/
 
-	function eventHandler(type, mustBubble){
+	function eventHandler(type, selectHandler){
 		// emulation of mouseenter/leave with mouseover/out using descendant checking
 		var handler = function(node, listener){
 			return on(node, type, function(evt){
-				if(!dom.isDescendant(evt.relatedTarget, mustBubble ? evt.target : node)){
+				if(selectHandler){
+					return selectHandler(evt, listener);
+				}
+				if(!dom.isDescendant(evt.relatedTarget, node)){
 					return listener.call(this, evt);
 				}
 			});
 		};
-		if(!mustBubble){
-			handler.bubble = eventHandler(type, true);
+		handler.bubble = function(select){
+			return eventHandler(type, function(evt, listener){
+				// using a selector, use the select function to determine if the mouse moved inside the selector and was previously outside the selector
+				var target = select(evt.target);
+				var relatedTarget = evt.relatedTarget;
+				if(target && (target != (relatedTarget && relatedTarget.nodeType == 1 && select(relatedTarget)))){
+					return listener.call(target, evt);
+				} 
+			});
 		}
 		return handler;
 	}

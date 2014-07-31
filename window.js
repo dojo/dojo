@@ -104,7 +104,7 @@ window.get = function(doc){
 	// reference to the real window object (maybe a copy), so we must fix it as well
 	// We use IE specific execScript to attach the real window reference to
 	// document._parentWindow for later use
-	if(has("ie") < 9 && window !== document.parentWindow){
+	if(has("ie") && window !== document.parentWindow){
 		/*
 		In IE 6, only the variable "window" can be used to connect events (others
 		may be only copies).
@@ -138,7 +138,7 @@ window.scrollIntoView = function(/*DomNode*/ node, /*Object?*/ pos){
 			isWK = has("webkit");
 		// if an untested browser, then use the native method
 		if(node == body || node == html){ return; }
-		if(!(has("mozilla") || isIE || isWK || has("opera")) && ("scrollIntoView" in node)){
+			if(!(has("mozilla") || isIE || isWK || has("opera") || has("trident")) && ("scrollIntoView" in node)){
 			node.scrollIntoView(false); // short-circuit to native if possible
 			return;
 		}

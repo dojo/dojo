@@ -15,6 +15,7 @@ doh.register("tests.string",
 					["foo.html","/temp"]
 				)
 			);
+			t.is("Escaped $", string.substitute("Escaped ${}"));
 			t.is("File 'foo.html' is not found in directory '/temp'.",
 				string.substitute(
 					"File '${name}' is not found in directory '${info.dir}'.",

@@ -118,6 +118,11 @@ define(["doh/main", "dojo/_base/array", "dojo/_base/lang", "dojo/_base/kernel"
 			t.assertTrue(lang.isArrayLike(new Array()));
 			t.assertFalse(lang.isArrayLike({}));
 			t.assertTrue(lang.isArrayLike(arguments));
+			t.assertFalse(lang.isArrayLike(""));
+			t.assertFalse(lang.isArrayLike(false));
+			t.assertFalse(lang.isArrayLike(NaN));
+			t.assertFalse(lang.isArrayLike(undefined));
+			t.assertFalse(lang.isArrayLike(null));
 		},
 
 		function isString(t){

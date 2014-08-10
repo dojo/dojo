@@ -111,6 +111,19 @@ define(["doh/main", "dojo/_base/array", "dojo/_base/lang", "dojo/_base/kernel"
 			t.assertTrue(lang.isArray([]));
 			t.assertTrue(lang.isArray(new Array()));
 			t.assertFalse(lang.isArray({}));
+			t.assertFalse(lang.isArray(''));
+			t.assertFalse(lang.isArray(0));
+			t.assertFalse(lang.isArray(NaN));
+			t.assertFalse(lang.isArray(null));
+			t.assertFalse(lang.isArray(undefined));
+			if(typeof window != "undefined"){
+				t.assertFalse(lang.isArray(window));
+			}
+			t.assertFalse(lang.isArray(Function));
+
+			function Tricky() {}
+			Tricky.prototype = [];
+			t.assertFalse(lang.isArray(new Tricky));
 		},
 
 		function isArrayLike(t){
@@ -118,6 +131,20 @@ define(["doh/main", "dojo/_base/array", "dojo/_base/lang", "dojo/_base/kernel"
 			t.assertTrue(lang.isArrayLike(new Array()));
 			t.assertFalse(lang.isArrayLike({}));
 			t.assertTrue(lang.isArrayLike(arguments));
+			t.assertFalse(lang.isArrayLike(""));
+			t.assertFalse(lang.isArrayLike(false));
+			t.assertFalse(lang.isArrayLike(NaN));
+			t.assertFalse(lang.isArrayLike(undefined));
+			t.assertFalse(lang.isArrayLike(null));
+			if(typeof window != "undefined"){
+				t.assertTrue(lang.isArrayLike(window));
+			}
+			t.assertFalse(lang.isArrayLike(Function));
+
+			t.assertTrue(lang.isArrayLike({0: 1, 1: 2, length: 2}));
+			function Tricky() {}
+			Tricky.prototype = [];
+			t.assertTrue(lang.isArrayLike(new Tricky));
 		},
 
 		function isString(t){

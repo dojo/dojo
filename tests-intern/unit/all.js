@@ -16,7 +16,6 @@ define([
 	'./promise',
 	'./regexp',
 	'./request',
-	'./rpc',
 	'./store',
 	'./string',
 	'./topic',
@@ -29,6 +28,7 @@ define([
 	'dojo/has!host-browser?./hash',
 	'dojo/has!host-browser?./io/iframe',
 	'dojo/has!host-browser?./mouse',
+	'dojo/has!host-browser?./rpc',
 	'dojo/has!host-node?./node',
 	'dojo/has!host-browser?./require/require',
 	'dojo/has!host-browser?./router'

@@ -46,9 +46,23 @@ define([
 		},
 
 		'JsonpService': function () {
-			var svc = new JsonpService(require.toUrl('./rpc/support/yahoo_smd_v1.smd'), { appid: 'foo' });
-			return svc.webSearch({ query: 'dojotoolkit' }).then(function (result) {
-				// assert.strictEqual(result.ResultSet.Result[0].DisplayUrl, 'dojotoolkit.org/');
+			// FIXME: This test fails because JsonpService uses dojo/io/script,
+			// which fails to account for unfriendly characters like the - in dojo-testing.
+			// Perhaps we should rename to dojo_testing?
+			var testSmd = {
+				methods: [{
+					name: 'jsonp',
+					serviceURL: '/__services/rpc/jsonp',
+					parameters: [{
+						name: 'query',
+						type: 'STRING'
+					}]
+				}]
+			};
+
+			var svc = new JsonpService(testSmd);
+			return svc.jsonp({ query: 'dojotoolkit' }).then(function (result) {
+				assert.strictEqual(result.url, 'dojotoolkit.org/');
 			});
 		}
 	});

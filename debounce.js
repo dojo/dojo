@@ -24,7 +24,7 @@ define([], function(){
 			var a = arguments;
 			timer = setTimeout(function(){
 				cb.apply(this, a);
-			}, wait);
+			}.bind(this), wait);
 		};
 	};
 });

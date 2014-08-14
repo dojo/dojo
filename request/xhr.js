@@ -31,9 +31,24 @@ define([
 		return has('native-xhr') && typeof new XMLHttpRequest().responseType !== 'undefined';
 	});
 
+	has.add('native-xhr2-blob', function(){
+		if(!has('native-response-type')){ return; }
+		var x = new XMLHttpRequest();
+		x.open('GET', '/', true);
+		x.responseType = 'blob';
+		// will not be set if unsupported
+		var responseType = x.responseType;
+		x.abort();
+		return responseType === 'blob';
+	});
+
 	// Google Chrome doesn't support "json" response type
 	// up to version 30, so it's intentionally not included here
-	var nativeResponseTypes = {'blob': 1, 'document': 1, 'arraybuffer': 1};
+	var nativeResponseTypes = {
+		'blob': has('native-xhr2-blob') ? 'blob' : 'arraybuffer',
+		'document': 'document',
+		'arraybuffer': 'arraybuffer'
+	};
 
 	function handleResponse(response, error){
 		var _xhr = response.xhr;
@@ -197,7 +212,7 @@ define([
 			}
 
 			if(has('native-response-type') && options.handleAs in nativeResponseTypes) {
-				_xhr.responseType = options.handleAs;
+				_xhr.responseType = nativeResponseTypes[options.handleAs];
 			}
 
 			var headers = options.headers,

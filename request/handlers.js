@@ -62,6 +62,10 @@ define([
 	}
 
 	var handleNativeResponse = function(response) {
+		if(!has('native-xhr2-blob') && response.options.handleAs === 'blob' && typeof Blob !== 'undefined'){
+			return new Blob([ response.xhr.response ], { type: response.xhr.getResponseHeader('Content-Type') });
+		}
+
 		return response.xhr.response;
 	}
 

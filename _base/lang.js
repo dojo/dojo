@@ -256,13 +256,12 @@ define(["./kernel", "../has", "../sniff"], function(dojo, has){
 			return (typeof it == "string" || it instanceof String); // Boolean
 		},
 
-		isArray: function(it){
+		isArray: Array.isArray || function(it){
 			// summary:
 			//		Return true if it is an Array.
-			//		Does not work on Arrays created in other windows.
 			// it: anything
 			//		Item to test.
-			return it && (it instanceof Array || typeof it == "array"); // Boolean
+			return opts.call(it) == "[object Array]"; // Boolean
 		},
 
 		isFunction: function(it){
@@ -613,4 +612,3 @@ define(["./kernel", "../has", "../sniff"], function(dojo, has){
 
 	return lang;
 });
-

@@ -234,7 +234,7 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 		//		Attributes are set by passing the optional object through `dojo/dom-attr.set`.
 		//		See `dojo/dom-attr.set` for noted caveats and nuances, and API if applicable.
 		//
-		//		Placement is done via `dojo/domConstruct.place`, assuming the new node to be
+		//		Placement is done via `dojo/dom-construct.place`, assuming the new node to be
 		//		the action node, passing along the optional reference node and position.
 		// tag: DOMNode|String
 		//		A string of the element to create (eg: "div", "a", "p", "li", "script", "br"),
@@ -267,7 +267,7 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 		// example:
 		//		Place a new DIV in the BODY, with no attributes set
 		//	|	require(["dojo/dom-construct", "dojo/_base/window"], function(domConstruct, win){
-		//	|		var n = domConstruct.create("div", null, win.doc.body());
+		//	|		var n = domConstruct.create("div", null, win.body());
 		//	|	});
 		//
 		// example:
@@ -285,7 +285,7 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 		// example:
 		//		Create an anchor, with an href. Place in BODY:
 		//	|	require(["dojo/dom-construct", "dojo/_base/window"], function(domConstruct, win){
-		//	|		domConstruct.create("a", { href:"foo.html", title:"Goto FOO!" }, win.doc.body());
+		//	|		domConstruct.create("a", { href:"foo.html", title:"Goto FOO!" }, win.body());
 		//	|	});
 
 		var doc = win.doc;

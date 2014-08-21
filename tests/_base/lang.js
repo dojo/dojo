@@ -116,8 +116,10 @@ define(["doh/main", "dojo/_base/array", "dojo/_base/lang", "dojo/_base/kernel"
 			t.assertFalse(lang.isArray(NaN));
 			t.assertFalse(lang.isArray(null));
 			t.assertFalse(lang.isArray(undefined));
-			t.assertFalse(window);
-			t.assertFalse(Function);
+			if(window){
+				t.assertFalse(lang.isArray(window));
+			}
+			t.assertFalse(lang.isArray(Function));
 
 			function Tricky() {}
 			Tricky.prototype = [];
@@ -134,8 +136,10 @@ define(["doh/main", "dojo/_base/array", "dojo/_base/lang", "dojo/_base/kernel"
 			t.assertFalse(lang.isArrayLike(NaN));
 			t.assertFalse(lang.isArrayLike(undefined));
 			t.assertFalse(lang.isArrayLike(null));
-			t.assertFalse(window);
-			t.assertFalse(Function);
+			if(window){
+				t.assertTrue(lang.isArrayLike(window));
+			}
+			t.assertFalse(lang.isArrayLike(Function));
 
 			t.assertTrue(lang.isArrayLike({0: 1, 1: 2, length: 2}));
 			function Tricky() {}

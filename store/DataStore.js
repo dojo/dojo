@@ -129,10 +129,10 @@ return declare("dojo.store.DataStore", base, {
 		var idProperty = this.idProperty;
 		var deferred = new Deferred();
 		if(typeof id == "undefined"){
-			store.newItem(object);
+			var item = store.newItem(object);
 			store.save({
 				onComplete: function(){
-					deferred.resolve(object);
+					deferred.resolve(item);
 				},
 				onError: function(error){
 					deferred.reject(error);
@@ -157,11 +157,11 @@ return declare("dojo.store.DataStore", base, {
 						if(options.overwrite === true){
 							return deferred.reject(new Error("Creating new object not allowed"));
 						}
-						store.newItem(object);
+						var item = store.newItem(object);
 					}
 					store.save({
 						onComplete: function(){
-							deferred.resolve(object);
+							deferred.resolve(item);
 						},
 						onError: function(error){
 							deferred.reject(error);

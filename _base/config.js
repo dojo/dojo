@@ -40,6 +40,7 @@ define(["../has", "require"], function(has, require){
 			result[p] = src[p];
 		}
 	}else{
+		var global = (function () { return this; })();
 		var adviseHas = function(featureSet, prefix, booting){
 			for(p in featureSet){
 				p!="has" && has.add(prefix + p, featureSet[p], 0, booting);
@@ -49,7 +50,7 @@ define(["../has", "require"], function(has, require){
 			// must be a built version of the dojo loader; all config stuffed in require.rawConfig
 			require.rawConfig :
 			// a foreign loader
-			this.dojoConfig || this.djConfig || {};
+			global.dojoConfig || global.djConfig || {};
 		adviseHas(result, "config", 1);
 		adviseHas(result.has, "", 1);
 	}

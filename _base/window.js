@@ -17,7 +17,7 @@ dojo.doc = {
 	//	|	n.appendChild(dojo.doc.createElement('div'));
 }
 =====*/
-dojo.doc = this["document"] || null;
+dojo.doc = dojo.global["document"] || null;
 
 dojo.body = function(){
 	// summary:

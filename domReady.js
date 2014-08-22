@@ -1,5 +1,5 @@
 define(['./has'], function(has){
-	var global = this,
+	var global = (function () { return this; })(),
 		doc = document,
 		readyStates = { 'loaded': 1, 'complete': 1 },
 		fixReadyState = typeof doc.readyState != "string",

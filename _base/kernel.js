@@ -10,6 +10,7 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 
 		// create dojo, dijit, and dojox
 		// FIXME: in 2.0 remove dijit, dojox being created by dojo
+		global = (function () { return this; })(),
 		dijit = {},
 		dojox = {},
 		dojo = {
@@ -18,7 +19,7 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 
 			// notice dojo takes ownership of the value of the config module
 			config:config,
-			global:this,
+			global:global,
 			dijit:dijit,
 			dojox:dojox
 		};
@@ -67,7 +68,7 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 		item = scopeMap[p];
 		item[1]._scopeName = item[0];
 		if(!config.noGlobals){
-			this[item[0]] = item[1];
+			global[item[0]] = item[1];
 		}
 	}
 	dojo.scopeMap = scopeMap;

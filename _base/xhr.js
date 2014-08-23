@@ -861,8 +861,10 @@ dojo.require("dojo._base.query");
 		xhr.open(method, ioArgs.url, args.sync !== true, args.user || undefined, args.password || undefined);
 		if(args.headers){
 			for(var hdr in args.headers){
-				if(hdr.toLowerCase() === "content-type" && !args.contentType){
-					args.contentType = args.headers[hdr];
+				if(hdr.toLowerCase() === "content-type"){
+					if(!args.contentType){
+						args.contentType = args.headers[hdr];
+					}
 				}else if(args.headers[hdr]){
 					//Only add header if it has a value. This allows for instnace, skipping
 					//insertion of X-Requested-With by specifying empty value.

@@ -19,10 +19,15 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 				var EventDelegate = function(){};
 				EventDelegate.prototype =
 					document.createEvent("MouseEvents"); // original event
+				// Attempt to modify a property of an event delegate and check if
+				// it succeeds. Depending on browsers and on whether dojo/on's
+				// strict mode is stripped in a Dojo build, there are 3 known behaviors:
+				// it may either succeed, or raise an error, or fail to set the property
+				// without raising an error.
 				try{
-					// Attempt to modify a property of an event delegate:
-					(new EventDelegate).target = null;
-					return true; // can use event delegation
+					var eventDelegate = new EventDelegate;
+					eventDelegate.target = null;
+					return eventDelegate.target === null;
 				}catch(e){
 					return false; // cannot use event delegation
 				}

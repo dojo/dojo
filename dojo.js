@@ -316,7 +316,7 @@
 
 	req.eval =
 		function(text, hint){
-			return eval_(text + "\r\n////@ sourceURL=" + hint);
+			return eval_(text + "\r\n//# sourceURL=" + hint);
 		};
 
 	//

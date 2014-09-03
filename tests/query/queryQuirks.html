@@ -10,8 +10,8 @@
 			var specified = window.location.search.substr(1).match(/selector=(.*)/);
 			var selector = specified ? specified[0].split("=")[1] : "acme";
 
-			require(["dojo", "doh", "dojo/query!"+selector, "dojo/sniff", "dojo/io/iframe", "dojo/domReady!"],
-					function(dojo, doh, dq, has){
+			require(["dojo", "doh", "dojo/query!"+selector, "dojo/sniff", "dojo/dom-construct", "dojo/io/iframe", "dojo/domReady!"],
+					function(dojo, doh, dq, has, domConstruct){
 				query = dq; // make a global
 
 				function createDocument(xml){
@@ -219,6 +219,27 @@
 						var i = query("div");
 						// smoke test
 						i.sort(function(a,b){ return 1; })
+					},
+					function document_fragment() {
+						var detachedDom = domConstruct.toDom("<i><u><a></a><b id='b'></b></u></i>");
+						var documentFragment = domConstruct.toDom("<i></i>    <u><a></a><b id='b'></b></u>");
+
+						doh.is(1, query("#b", detachedDom).length);
+						doh.is(1, query("#b", detachedDom.firstChild).length);
+						doh.is(1, query("#b", documentFragment).length);
+
+						// In IE8 in quirks mode there is no text node on the document fragment
+						if(has('ie') === 8) {
+							doh.is(1, query("#b", documentFragment.childNodes[1]).length);
+						} else {
+							doh.is(1, query("#b", documentFragment.childNodes[2]).length);
+						}
+
+						var detachedDom2 = domConstruct.toDom("<i><u><a></a><b></b></u></i>");
+						var documentFragment2 = domConstruct.toDom("<i></i>    <u><a></a><b></b></u>");
+
+						doh.is(0, query("#b", detachedDom2).length);
+						doh.is(0, query("#b", documentFragment2).length);
 					}
 				]);
 

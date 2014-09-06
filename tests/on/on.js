@@ -417,6 +417,15 @@ define([
 			});
 			button.click();
 			t.is(testValue, 3);
+		},
+		function delegatePreventDefault(t){
+			var div = document.createElement("div");
+			div.innerHTML = '<input type="checkbox">';
+			var cb = div.childNodes[0];
+			document.body.appendChild(div);
+			on(div, '.matchesNothing:click', function () {});
+			cb.click();
+			t.t(cb.checked);
 		}
 	]);
 

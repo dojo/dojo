@@ -222,7 +222,9 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 				// call select to see if we match
 				var eventTarget = select(event.target);
 				// if it matches we call the listener
-				return eventTarget && listener.call(eventTarget, event);
+				if (eventTarget) {
+					return listener.call(eventTarget, event);
+				}
 			});
 		};
 	};

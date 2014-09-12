@@ -1,7 +1,4 @@
 define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], function(aspect, dojo, has){
-		has.add("event-focusin", function(global, doc, element){
-			return 'onfocusin' in element;
-		});
 	// summary:
 	//		The export of this module is a function that provides core event listening functionality. With this function
 	//		you can provide a target, event type, and listener to be notified of
@@ -38,6 +35,9 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./has"], func
 		var major = window.ScriptEngineMajorVersion;
 		has.add("jscript", major && (major() + ScriptEngineMinorVersion() / 10));
 		has.add("event-orientationchange", has("touch") && !has("android")); // TODO: how do we detect this?
+		has.add("event-focusin", function(global, doc, element){
+			return 'onfocusin' in element;
+		});
 	}
 	var on = function(target, type, listener, dontFix){
 		if(typeof target.on == "function" && typeof type != "function" && !target.nodeType){

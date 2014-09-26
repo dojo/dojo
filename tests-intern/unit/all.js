@@ -27,6 +27,7 @@ define([
 	'./aspect',
 	'./loadInit',
 	'./keys',
+	'./i18n',
 
 	// host-specific tests
 	'dojo/has!host-browser?./html',

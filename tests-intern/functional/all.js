@@ -8,5 +8,6 @@ define([
 	'./fx/Toggler',
 	'./on',
 	'./window',
-	'./io/script'
+	'./io/script',
+	'./touch'
 ], function () {});

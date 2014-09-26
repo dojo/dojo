@@ -1,7 +1,7 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo-testing'
+	'testing'
 ], function (
 	registerSuite,
 	assert,

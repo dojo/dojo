@@ -1,7 +1,7 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo-testing/cldr/monetary'
+	'../../../cldr/monetary'
 ], function (registerSuite, assert, monetary) {
 	registerSuite({
 		name: 'dojo/cldr/monetary',

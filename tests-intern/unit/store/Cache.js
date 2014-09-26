@@ -1,8 +1,8 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo-testing/store/Cache',
-	'dojo-testing/store/Memory',
+	'../../../store/Cache',
+	'../../../store/Memory',
 	'dojo/_base/array'
 ], function (registerSuite, assert, Cache, Memory, array) {
 	var data, masterStore, cachingStore, store, options;

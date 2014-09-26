@@ -1,7 +1,7 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo-testing/date/stamp'
+	'../../../date/stamp'
 ], function (registerSuite, assert, stamp) {
 	registerSuite({
 		name: 'dojo/date/stamp',

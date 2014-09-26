@@ -1,9 +1,9 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo-testing/store/DataStore',
-	'dojo-testing/data/ItemFileReadStore',
-	'dojo-testing/data/ItemFileWriteStore',
+	'../../../store/DataStore',
+	'../../../data/ItemFileReadStore',
+	'../../../data/ItemFileWriteStore',
 	'dojo/_base/lang'
 ], function (registerSuite, assert, DataStore, ItemFileReadStore, ItemFileWriteStore, lang) {
 	var data, dataStore, store;

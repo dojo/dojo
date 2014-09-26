@@ -1,7 +1,7 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo-testing/Deferred'
+	'../../../Deferred'
 ], function (registerSuite, assert, Deferred) {
 	// NOTE: At the time of this writing, Dojo promises can call resolve and reject handlers
 	// on the same turn `then` is called, but these tests are written as if the handlers

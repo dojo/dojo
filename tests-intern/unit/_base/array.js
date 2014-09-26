@@ -1,7 +1,7 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo-testing/_base/array'
+	'../../../_base/array'
 ], function (registerSuite, assert, array) {
 	registerSuite({
 		name: 'dojo/_base/array',

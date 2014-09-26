@@ -2,7 +2,7 @@ define([
 	'intern!object',
 	'intern/chai!assert',
 	'dojo/_base/array',
-	'dojo-testing/_base/Color',
+	'../../../_base/Color',
 	'dojo/has!host-browser?dojo/domReady!'
 ], function (registerSuite, assert, array, Color) {
 	var white  = Color.fromString('white').toRgba();

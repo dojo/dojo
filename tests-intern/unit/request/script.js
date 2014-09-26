@@ -2,9 +2,9 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo-testing/request/script',
-	'dojo-testing/errors/RequestTimeoutError',
-	'dojo-testing/errors/CancelError',
+	'../../../request/script',
+	'../../../errors/RequestTimeoutError',
+	'../../../errors/CancelError',
 	'dojo/domReady!'
 ], function (registerSuite, assert, script, RequestTimeoutError, CancelError) {
 	registerSuite({

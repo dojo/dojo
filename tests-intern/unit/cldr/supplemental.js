@@ -1,7 +1,7 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo-testing/cldr/supplemental'
+	'../../../cldr/supplemental'
 ], function (registerSuite, assert, supplemental) {
 	registerSuite({
 		name: 'dojo/cldr/supplemental',

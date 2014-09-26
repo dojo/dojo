@@ -6,7 +6,7 @@
 		'dojo/aspect',
 		'dojo/_base/lang',
 		'dojo/_base/kernel',
-		'dojo-testing/_base/declare'
+		'../../../_base/declare'
 	], function (
 		registerSuite,
 		assert,

@@ -1,7 +1,7 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo-testing/date'
+	'../../date'
 ], function (registerSuite, assert, date) {
 	function assertDateEqual(date1, date2) {
 		assert.instanceOf(date1, Date);

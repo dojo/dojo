@@ -1,16 +1,16 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo-testing/on',
-	'dojo-testing/Evented',
+	'../../on',
+	'../../Evented',
 	'dojo/_base/lang',
 	'dojo/_base/array',
 	'dojo/has',
 	'dojo/has!host-browser?dojo/dom-construct',
 
 	// Included to test on.selector
-	'dojo/has!host-browser?dojo-testing/query',
-	'dojo/has!host-browser?intern/dojo/domReady!'
+	'dojo/has!host-browser?../../query',
+	'dojo/has!host-browser?dojo/domReady!'
 ], function (registerSuite, assert, on, Evented, lang, arrayUtil, has, domConstruct) {
 
 	var handles = [];

@@ -2,7 +2,7 @@ define([
 	'intern!object',
 	'intern/chai!assert',
 	'dojo/Deferred',
-	'dojo-testing/promise/all'
+	'../../../promise/all'
 ], function (registerSuite, assert, Deferred, all) {
 	registerSuite({
 		name: 'dojo/promise/all',

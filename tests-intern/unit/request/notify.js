@@ -2,9 +2,9 @@ define([
 	'intern!object',
 	'intern/chai!assert',
 	'dojo/promise/all',
-	'dojo-testing/request/xhr',
-	'dojo-testing/request/notify',
-	'dojo-testing/errors/CancelError'
+	'../../../request/xhr',
+	'../../../request/notify',
+	'../../../errors/CancelError'
 ], function (registerSuite, assert, all, xhr, notify, CancelError) {
 	function remover() {
 		var args = arguments;

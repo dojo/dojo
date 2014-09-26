@@ -1,9 +1,9 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo-testing/mouse', 
-	'dojo-testing/on',
-	'dojo-testing/query'
+	'../../mouse',
+	'../../on',
+	'../../query'
 ], function (registerSuite, assert, mouse, on) {
 	var order,
 		div,

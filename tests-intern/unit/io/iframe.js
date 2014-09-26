@@ -1,9 +1,9 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo-testing/io/iframe',
-	'dojo-testing/_base/kernel',
-	'dojo-testing/topic',
+	'../../../io/iframe',
+	'../../../_base/kernel',
+	'../../../topic',
 	'dojo/dom',
 	'dojo/dom-construct',
 	'dojo/domReady!'

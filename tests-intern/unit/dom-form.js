@@ -1,7 +1,7 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo-testing/dom-form',
+	'../../dom-form',
 	'dojo/dom',
 	'dojo/dom-construct',
 	'dojo/json'

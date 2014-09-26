@@ -1,7 +1,7 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo-testing/fx/easing'
+	'../../../fx/easing'
 ], function (registerSuite, assert, easing) {
 	registerSuite({
 		name: 'dojo/fx/easing',

@@ -2,7 +2,7 @@ define([
 	'intern!object',
 	'intern/chai!assert',
 	'dojo/_base/array',
-	'dojo-testing/_base/lang',
+	'../../../_base/lang',
 	'dojo/has',
 	'dojo/has!host-browser?dojo/domReady!'
 ], function (registerSuite, assert, array, lang, has) {

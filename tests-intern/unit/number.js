@@ -1,8 +1,8 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo-testing/number',
-	'dojo-testing/i18n'
+	'../../number',
+	'../../i18n'
 ], function (registerSuite, assert, number) {
 
 	var defaultLocale = 'en-us';

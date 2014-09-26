@@ -44,29 +44,41 @@ define({
 	// can be used here
 	loader: {
 		packages: [
-			// Placeholder for the base directory -- we need something different from the dojo-under-test package name
-			// to use for loading tests
-			{ name: 'base', location: '.' },
 			// The dojo-under-test
-			{ name: 'dojo-testing', location: '.' },
+			{ name: 'testing', location: '.' },
 			// The dojo used for writing tests
 			{ name: 'dojo', location: 'node_modules/dojo' },
 			{ name: 'sinon', location: 'node_modules/sinon/lib', main: 'sinon'}
 		],
 		map: {
+			intern: {
+				dojo: 'intern/node_modules/dojo',
+				chai: 'intern/node_modules/chai/chai'
+			},
+
+			// Tests should use dojo in node_modules
+			'testing/tests-intern': {
+				dojo: 'dojo',
+				// Once this section matches, the star section will not, so intern/dojo needs to be
+				// defined here as well
+				'intern/dojo': 'intern/node_modules/dojo'
+			},
 			// Any dojo modules loaded by dojo-under-test modules should come from the dojo-under-test, not the dojo
 			// used for writing tests
-			'dojo-testing': {
-				'dojo': 'dojo-testing'
+			testing: {
+				dojo: 'testing'
+			},
+			'*': {
+				'intern/dojo': 'intern/node_modules/dojo'
 			}
 		}
 	},
 
 	// Non-functional test suite(s) to run in each browser
-	suites: [ 'base/tests-intern/unit/all' ],
+	suites: [ 'testing/tests-intern/unit/all' ],
 
 	// Functional test suite(s) to run in each browser once non-functional tests are completed
-	functionalSuites: [ 'base/tests-intern/functional/all' ],
+	functionalSuites: [ 'testing/tests-intern/functional/all' ],
 
 	// A regular expression matching URLs to files that should not be included in code coverage analysis
 	excludeInstrumentation: /^(?:node_modules|tests-intern|tests)\//

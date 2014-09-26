@@ -5,14 +5,14 @@
 		"lib": "."
 	},
 	"devDependencies": {
-		"intern-geezer": "2.0.1",
+		"intern-geezer": "2.1.1",
 		"grunt": "0.4.2",
 		"http-proxy": "0.10.3",
 		"glob": "3.2.7",
 		"jsgi-node": "0.3.1",
 		"formidable": "1.0.14",
 		"when": "2.7.0",
-		"sinon": "1.10.2",
+		"sinon": "git://github.com/cjohansen/Sinon.JS.git#a0f39ebd584080447fdf473fe4b47e89c00aecf7",
 		"dojo": "1.10.0"
 	},
 	"main": "main",

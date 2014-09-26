@@ -1,7 +1,7 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo-testing/date/locale',
+	'../../../date/locale',
 	'dojo/_base/kernel',
 	'dojo/_base/array',
 	'dojo/i18n',

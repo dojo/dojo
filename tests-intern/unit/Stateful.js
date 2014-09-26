@@ -1,7 +1,7 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo-testing/Stateful',
+	'../../Stateful',
 	'sinon',
 	'dojo/_base/declare'
 ], function (registerSuite, assert, Stateful, sinon, declare) {

@@ -1,7 +1,7 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo-testing/store/Memory',
+	'../../../store/Memory',
 	'dojo/store/util/QueryResults'
 ], function (registerSuite, assert, MemoryStore, QueryResults) {
 	var data = [

@@ -3,7 +3,7 @@ define([
 	'intern/chai!assert',
 	'dojo/_base/array',
 	'dojo/hash',
-	'dojo-testing/router/RouterBase'
+	'../../router/RouterBase'
 ], function (registerSuite, assert, arrayUtil, hash, RouterBase) {
 
 	// This test uses RouterBase so that we can test a few different

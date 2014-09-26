@@ -1,7 +1,7 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo-testing/request/iframe',
+	'../../../request/iframe',
 	'dojo/dom-construct',
 	'dojo/dom',
 	'dojo/domReady!'

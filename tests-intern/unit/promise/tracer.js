@@ -1,8 +1,8 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo-testing/Deferred',
-	'dojo-testing/promise/tracer'
+	'../../../Deferred',
+	'../../../promise/tracer'
 ], function (
 	registerSuite,
 	assert,

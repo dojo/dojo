@@ -1,11 +1,11 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo-testing/store/Observable',
-	'dojo-testing/_base/declare',
+	'../../../store/Observable',
+	'../../../_base/declare',
 	'dojo/_base/lang',
 	'dojo/_base/array',
-	'dojo-testing/store/Memory',
+	'../../../store/Memory',
 	'sinon'
 ], function (registerSuite, assert, Observable, declare, lang, array, Memory, sinon) {
 	function createMyStore() {

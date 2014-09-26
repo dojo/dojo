@@ -2,7 +2,7 @@ define([
 	'intern!object',
 	'intern/chai!assert',
 	'dojo/Deferred',
-	'dojo-testing/promise/first'
+	'../../../promise/first'
 ], function (
 	registerSuite,
 	assert,

@@ -2,7 +2,7 @@ define([
 	'intern!object',
 	'intern/chai!assert',
 	'dojo/aspect',
-	'dojo-testing/topic'
+	'../../topic'
 ], function (registerSuite, assert, aspect, topic) {
 	var aspectHandle,
 		subscriptionHandles = [];

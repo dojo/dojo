@@ -43,11 +43,11 @@ define([
 
 			require({
 				map: {
-					'dojo-testing/store/JsonRest': {
-						'dojo-testing/_base/xhr': require.toAbsMid('./support/xhrStub')
+					'testing/store/JsonRest': {
+						'testing/_base/xhr': require.toAbsMid('./support/xhrStub')
 					}
 				}
-			}, [ 'dojo-testing/store/JsonRest' ], function (_JsonRest) {
+			}, [ 'testing/store/JsonRest' ], function (_JsonRest) {
 				JsonRest = _JsonRest;
 				dfd.resolve();
 			});

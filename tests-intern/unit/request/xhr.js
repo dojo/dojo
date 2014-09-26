@@ -1,9 +1,9 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo-testing/request/xhr',
-	'dojo-testing/errors/RequestTimeoutError',
-	'dojo-testing/errors/CancelError',
+	'../../../request/xhr',
+	'../../../errors/RequestTimeoutError',
+	'../../../errors/CancelError',
 	'dojo/promise/all',
 	'dojo/query',
 	'require'

@@ -24,6 +24,7 @@ define([
 	'./cldr/supplemental',
 	'./cache',
 	'./Deferred',
+	'./aspect',
 
 	// host-specific tests
 	'dojo/has!host-browser?./back',

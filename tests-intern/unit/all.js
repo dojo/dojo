@@ -29,6 +29,8 @@ define([
 	'./keys',
 
 	// host-specific tests
+	'dojo/has!host-browser?./html',
+	'dojo/has!host-browser?./NodeList-html',
 	'dojo/has!host-browser?./back',
 	'dojo/has!host-browser?./dom-form',
 	'dojo/has!host-browser?./hash',

@@ -2,7 +2,7 @@ define([
 	'intern!object',
 	'intern/chai!assert',
 	'dojo/_base/array',
-	'dojo/hash',
+	'../../hash',
 	'../../router/RouterBase'
 ], function (registerSuite, assert, arrayUtil, hash, RouterBase) {
 

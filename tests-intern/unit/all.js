@@ -22,6 +22,7 @@ define([
 	'./when',
 	'./cldr/monetary',
 	'./cldr/supplemental',
+	'./cache',
 
 	// host-specific tests
 	'dojo/has!host-browser?./back',

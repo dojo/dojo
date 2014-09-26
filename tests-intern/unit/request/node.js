@@ -1,7 +1,7 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo/request/node',
+	'../../../request/node',
 	'intern/dojo/node!http',
 	'intern/dojo/node!url',
 	'intern/dojo/Deferred'

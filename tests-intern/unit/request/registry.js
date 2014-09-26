@@ -1,7 +1,7 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo/request/registry',
+	'../../../request/registry',
 	'intern/dojo/has',
 	'intern/dojo/_base/lang',
 	'intern/dojo/has!host-browser?dojo/domReady!'

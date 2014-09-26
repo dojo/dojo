@@ -19,18 +19,17 @@ define([
 
 		'single legacy module': function () {
 			var dfd = this.async();
-			require(['dojo/require!./support/testModA'], dfd.callback(function () {
+			require(['../../../require!./support/testModA'], dfd.callback(function () {
 				assert.isTrue(window.modA, 'module A should be loaded');
 			}));
 		},
 
 		'multiple legacy module': function () {
 			var dfd = this.async();
-			require(['dojo/require!./support/testModB,./support/testModC'], dfd.callback(function () {
+			require(['../../../require!./support/testModB,./support/testModC'], dfd.callback(function () {
 				assert.isTrue(window.modB, 'module B should be loaded');
 				assert.isTrue(window.modC, 'module C should be loaded');
 			}));
 		}
 	});
 });
-

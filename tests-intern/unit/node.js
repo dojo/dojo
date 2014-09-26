@@ -9,20 +9,20 @@ define([
 
 		'!util': function () {
 			dfd = this.async();
-			require(['dojo/node!util'], dfd.callback(function (util) {
+			require(['../../node!util'], dfd.callback(function (util) {
 				assert('puts' in util, 'this is the built in node module');
 			}));
 		},
 
 		'!missing': function () {
 			assert.throws(function () {
-				require(['dojo/node!missing']);
+				require(['../../node!missing']);
 			}, /Cannot find module 'missing'/);
 		},
 
 		'nodemodule': function () {
 			dfd = this.async();
-			require(['dojo/node!./resources/nodemodule'], dfd.callback(function (nodemodule) {
+			require(['../../node!./resources/nodemodule'], dfd.callback(function (nodemodule) {
 				assert('test' in nodemodule, 'module loaded');
 				assert.strictEqual(nodemodule.test, 'value', 'object has expected value');
 			}));
@@ -30,7 +30,7 @@ define([
 
 		'noderequire': function () {
 			dfd = this.async();
-			require(['dojo/node!./resources/noderequire'], dfd.callback(function (noderequire) {
+			require(['../../node!./resources/noderequire'], dfd.callback(function (noderequire) {
 				assert('test' in noderequire, 'module loaded');
 				assert.strictEqual(noderequire.test, 'value', 'object has expected value');
 			}));
@@ -38,7 +38,7 @@ define([
 
 		'nodemod': function () {
 			dfd = this.async();
-			require(['dojo/node!./resources/nodemod'], dfd.callback(function (nodemod) {
+			require(['../../node!./resources/nodemod'], dfd.callback(function (nodemod) {
 				assert('test' in nodemod, 'module loaded');
 				assert.strictEqual(nodemod.test, 'value', 'object has expected value');
 			}));
@@ -46,7 +46,7 @@ define([
 
 		'noderequireamd': function () {
 			dfd = this.async();
-			require(['dojo/node!./resources/noderequireamd'], dfd.callback(function (noderequireamd) {
+			require(['../../node!./resources/noderequireamd'], dfd.callback(function (noderequireamd) {
 				assert.strictEqual(noderequireamd.nodeamd.test, 'foo', 'module loaded');
 			}));
 		}

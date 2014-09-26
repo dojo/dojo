@@ -1,8 +1,8 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'dojo/hash',
-	'dojo/topic'
+	'../../hash',
+	'../../topic'
 ], function (registerSuite, assert, hash, topic) {
 
 	var _subscriber = null;

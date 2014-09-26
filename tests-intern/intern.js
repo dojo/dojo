@@ -1,3 +1,16 @@
+// Supplies useLoader with a dojoConfig enabling require.undef()
+// dojoConfig needs to be defined here, otherwise it's too late to affect the dojo loader api
+/* globals dojoConfig */
+/* jshint -W020 */
+dojoConfig = {
+	async: true,
+	tlmSiblingOfDojo: false,
+	useDeferredInstrumentation: false,
+	has: {
+		'dojo-undef-api': true
+	}
+};
+
 // Learn more about configuring this file at <https://github.com/theintern/intern/wiki/Configuring-Intern>.
 // These default settings work OK for most people. The options that *must* be changed below are the
 // packages, suites, excludeInstrumentation, and (if you want functional tests) functionalSuites.
@@ -33,12 +46,19 @@ define({
 		{ browserName: 'firefox', version: '', platform: [ 'OS X 10.9', 'Windows 7', 'Windows XP', 'Linux' ] },
 		{ browserName: 'chrome', version: '', platform: [ 'Linux', 'OS X 10.8', /* TODO: SauceLabs is giving an Unknown command 'WaitForAllTabsToStopLoading' on 'OS X 10.9',*/ 'Windows XP', 'Windows 7', 'Windows 8', 'Windows 8.1' ] },
 		{ browserName: 'safari', version: '6', platform: 'OS X 10.8' }/*,
-		TODO: SauceLabs is having problems with the proxy { browserName: 'safari', version: '7', platform: 'OS X 10.9' }*/
+		 TODO: SauceLabs is having problems with the proxy { browserName: 'safari', version: '7', platform: 'OS X 10.9' }*/
 	],
 
 	// Maximum number of simultaneous integration tests that should be executed on the remote WebDriver service
 	maxConcurrency: 3,
 	tunnel: 'SauceLabsTunnel',
+
+	// The desired AMD loader to use when running unit tests (client.html/client.js). Omit to use the default Dojo
+	// loader
+	useLoader: {
+		'host-node': '../../../../dojo',  // relative path from the launcher
+		'host-browser': '../dojo.js'
+	},
 
 	// Configuration options for the module loader; any AMD configuration options supported by the specified AMD loader
 	// can be used here

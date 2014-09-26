@@ -26,6 +26,7 @@ define([
 	'./Deferred',
 	'./aspect',
 	'./loadInit',
+	'./keys',
 
 	// host-specific tests
 	'dojo/has!host-browser?./back',

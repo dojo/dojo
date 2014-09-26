@@ -1,5 +1,6 @@
 define([
 	'./_base/array',
+	'./_base/browser',
 	'./_base/Color',
 	'./_base/connect',
 	'./_base/declare',

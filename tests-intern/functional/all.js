@@ -7,5 +7,6 @@ define([
 	'./fx',
 	'./fx/Toggler',
 	'./on',
-	'./window'
+	'./window',
+	'./io/script'
 ], function () {});

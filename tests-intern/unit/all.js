@@ -23,6 +23,7 @@ define([
 	'./cldr/monetary',
 	'./cldr/supplemental',
 	'./cache',
+	'./Deferred',
 
 	// host-specific tests
 	'dojo/has!host-browser?./back',

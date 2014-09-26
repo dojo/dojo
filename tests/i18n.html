@@ -47,11 +47,6 @@
 				});
 			}
 
-
-			if(has("dojo-unit-tests")){
-				array.forEach(i18n.unitTests, function(item){item(doh);});
-			}
-
 			doh.run();
 		});
 		if(!require.async){

@@ -28,6 +28,7 @@ define([
 	"dojo/tests/errors",
 	"dojo/tests/text",
 	"dojo/has!host-node?dojo/tests/node",
+	"dojo/has!host-browser?dojo/tests/dom-attr",
 	"dojo/has!host-browser?dojo/tests/dom-prop",
 	"dojo/has!host-browser?dojo/tests/dom-construct",
 	"dojo/has!host-browser?dojo/tests/router",

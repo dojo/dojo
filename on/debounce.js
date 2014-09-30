@@ -1,4 +1,4 @@
-define(['dojo/debounce', 'dojo/on', 'dojo/on/asyncEventListener'], function(debounce, on, asyncEventListener){
+define(['../debounce', '../on', './asyncEventListener'], function(debounce, on, asyncEventListener){
 	// summary:
 	//		This module provides an event debouncer for dojo/on
 	// module:

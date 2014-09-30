@@ -1,4 +1,4 @@
-define(['dojo/on', 'dojo/_base/window', 'dojo/dom-construct', 'dojo/domReady!'], function(on, baseWin, domConstruct){
+define(['../on', '../_base/window', '../dom-construct', '../domReady!'], function(on, baseWin, domConstruct){
 	// summary:
 	//		This sub module provide an event factory for delayed events (like debounce or throttle)
 	// module:

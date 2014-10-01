@@ -4,7 +4,7 @@ define(['dojo/throttle', 'dojo/on'], function(throttle, on){
 	// module:
 	//		dojo/on/throttle
 
-	return function(selector, delay, contextObject){
+	return function(selector, delay){
 		// summary:
 		//		event parser for custom events
 		// selector: String
@@ -13,7 +13,7 @@ define(['dojo/throttle', 'dojo/on'], function(throttle, on){
 		//		The amount of ms before testing the selector
 
 		return function(node, listenerFnc){
-			return on(node, selector, throttle(listenerFnc, delay, contextObject));
+			return on(node, selector, throttle(listenerFnc, delay));
 		};
 	};
 });

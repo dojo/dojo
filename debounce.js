@@ -4,7 +4,7 @@ define([], function(){
 	// summary:
 	//		This module provide a debouncer
 
-	return function(cb, wait, contextObject){
+	return function(cb, wait){
 		// summary:
 		//		Create a function that will only execute after `wait` milliseconds
 		// description:
@@ -21,9 +21,10 @@ define([], function(){
 			if(timer){
 				clearTimeout(timer);
 			}
+			var self = this;
 			var a = arguments;
 			timer = setTimeout(function(){
-				cb.apply(contextObject, a);
+				cb.apply(self, a);
 			}, wait);
 		};
 	};

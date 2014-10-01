@@ -4,7 +4,7 @@ define(['dojo/debounce', 'dojo/on', 'dojo/on/asyncEventListener'], function(debo
 	// module:
 	//		dojo/on/debounce
 
-	return function(selector, delay, contextObject){
+	return function(selector, delay){
 		// summary:
 		//		event parser for custom events
 		// selector: String
@@ -13,7 +13,7 @@ define(['dojo/debounce', 'dojo/on', 'dojo/on/asyncEventListener'], function(debo
 		//		The amount of ms before testing the selector
 
 		return function(node, listenerFnc){
-			return on(node, selector, asyncEventListener(debounce(listenerFnc, delay, contextObject)));
+			return on(node, selector, asyncEventListener(debounce(listenerFnc, delay)));
 		};
 	};
 });

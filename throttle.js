@@ -4,7 +4,7 @@ define([], function(){
 	// summary:
 	//		This module provide a throttler
 
-	return function(cb, wait){
+	return function(cb, wait, contextObject){
 		// summary:
 		//		Create a function that will only execute once per `wait` periods.
 		// description:
@@ -22,7 +22,7 @@ define([], function(){
 				return;
 			}
 			canrun = false;
-			cb.apply(this, arguments);
+			cb.apply(contextObject, arguments);
 			setTimeout(function(){
 				canrun = true;
 			}, wait);

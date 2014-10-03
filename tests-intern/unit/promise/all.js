@@ -47,13 +47,13 @@ define([
 
 		'without arguments': function () {
 			all().then(this.async().callback(function (result) {
-				assert.isUndefined(result);
+				assert.isTrue(typeof result === 'undefined');
 			}));
 		},
 
 		'with single non-object argument': function () {
 			all(null).then(this.async().callback(function (result) {
-				assert.isUndefined(result);
+				assert.isTrue(typeof result === 'undefined');
 			}));
 		},
 

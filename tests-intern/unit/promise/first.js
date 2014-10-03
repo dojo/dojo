@@ -41,26 +41,26 @@ define([
 		'without arguments': function () {
 			first().then(this.async().callback(function () {
 				assert.equal(arguments.length, 1);
-				assert.typeOf(arguments[0], 'undefined');
+				assert.isTrue(typeof arguments[0] === 'undefined');
 			}));
 		},
 
 		'with single non-object argument': function () {
 			first(null).then(this.async().callback(function () {
 				assert.equal(arguments.length, 1);
-				assert.typeOf(arguments[0], 'undefined');
+				assert.isTrue(typeof arguments[0] === 'undefined');
 			}));
 		},
 
 		'with empty array': function () {
 			first([]).then(this.async().callback(function (received) {
-				assert.typeOf(received, 'undefined');
+				assert.isTrue(typeof received === 'undefined');
 			}));
 		},
 
 		'with empty object': function () {
 			first({}).then(this.async().callback(function (received) {
-				assert.typeOf(received, 'undefined');
+				assert.isTrue(typeof received === 'undefined');
 			}));
 		},
 

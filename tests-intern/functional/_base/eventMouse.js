@@ -1,136 +1,150 @@
 define([
 	'require',
 	'intern!object',
-	'intern/chai!assert'
-], function (require, registerSuite, assert) {
+	'intern/chai!assert',
+	'intern/dojo/node!leadfoot/helpers/pollUntil'
+], function (require, registerSuite, assert, pollUntil) {
+	var remote;
+
 	/*jshint -W020 */
 	/* global moveEvents, downEvents */
 	registerSuite({
-		name: 'mouseenter/mouseleave',
+		name: 'eventMouse',
 
 		setup: function () {
-			return this.get('remote')
-				.setAsyncScriptTimeout(5000)
+			remote = this.get('remote');
+
+			return remote
 				.get(require.toUrl('./eventMouse.html'))
-				.waitForConditionInBrowser('ready')
-				.elementById('header')
-					.moveTo(1, 1)
-				.end()
-				.click();
-		},
-
-		'enter middle': function () {
-			return this.get('remote')
-				.execute(function () {
-					moveEvents = [];
-				})
-				.elementById('outer')
-					.moveTo(1, 1)
-				.end()
-				.wait(1000)
-				.elementById('middleLabel')
-					.moveTo(1, 1)
-				.end()
-				.execute(function () {
-					return moveEvents;
-				})
-				.then(function (moveEvents) {
-					assert.strictEqual(1, moveEvents.length, 'one event');
-					assert.strictEqual('mouseenter', moveEvents[0].event, 'mouse enter event');
-					assert.strictEqual('outer', moveEvents[0].target, 'mouse enter target');
-				});
-		},
-
-		'enter inner1': function () {
-			return this.get('remote')
-				.execute(function () {
-					moveEvents = [];
-				})
-				.elementById('inner1')
-					.moveTo(1, 1)
-				.end()
-				.execute(function () {
-					return moveEvents;
-				})
-				.then(function (moveEvents) {
-					assert.strictEqual(0, moveEvents.length, 'no events');
-				});
-		},
-
-		'after outer': function () {
-			return this.get('remote')
-				.execute(function () {
-					moveEvents = [];
-				})
-				.elementById('outer')
-					.moveTo(1, 1)
-				.end()
-				.wait(1000)
-				.elementById('afterOuter')
-					.moveTo(1, 1)
-				.end()
-				.execute(function () {
-					return moveEvents;
-				})
-				.then(function (moveEvents) {
-					assert.strictEqual(1, moveEvents.length, 'one event');
-					assert.strictEqual('mouseleave', moveEvents[0].event, 'mouse leave event');
-					assert.strictEqual('outer', moveEvents[0].target, 'mouse leave target');
-				});
-		}
-	});
-
-	registerSuite({
-		name: 'mousedown, stopEvent',
-
-		'mousedown inner1 div': function () {
-			return this.get('remote')
-				.execute(function () {
-					downEvents = [];
-				})
-				.elementById('inner1')
-					.moveTo(1, 1)
-				.end()
+				.then(pollUntil('return window.ready;', null, 3000))
+				.findById('header')
+				.moveMouseTo()
 				.click()
-				.execute(function () {
-					return downEvents;
-				})
-				.then(function (downEvents) {
-					assert.strictEqual(2, downEvents.length, 'two mousedown events');
-					assert.strictEqual('mousedown', downEvents[0].event, 'downEvents[0].event');
-					assert.strictEqual('inner1', downEvents[0].target, 'downEvents[0].target');
-					assert.isTrue(downEvents[0].isLeft, 'downEvents[0].isLeft');
-					assert.isFalse(downEvents[0].isRight, 'downEvents[0].isRight');
-					assert.strictEqual('mousedown', downEvents[1].event, 'downEvents[1].event');
-					assert.strictEqual('middle', downEvents[1].currentTarget, 'downEvents[1].currentTarget');
-					assert.strictEqual('inner1', downEvents[1].target, 'downEvents[1].target');
-					assert.isTrue(downEvents[1].isLeft, 'downEvents[1].isLeft');
-					assert.isFalse(downEvents[1].isRight, 'downEvents[1].isRight');
-				});
+				.end();
 		},
 
-		'mousedown outer div': function () {
-			return this.get('remote')
-				.execute(function () {
-					downEvents = [];
-				})
-				.elementById('outerLabel')
-					.moveTo(1, 1)
-				.end()
-				.click()
-				.execute(function () {
-					return downEvents;
-				})
-				.then(function (downEvents) {
-					assert.strictEqual(1, downEvents.length, 'one event');
-					assert.strictEqual('mousedown', downEvents[0].event, 'mousedown event');
-					assert.strictEqual('outerLabel', downEvents[0].target, 'mousedown target');
-					assert.strictEqual('outer', downEvents[0].currentTarget, 'mousedown current target');
+		'mouseenter/mouseleave': {
+			'enter middle': function () {
+				return remote
+					.execute(function () {
+						moveEvents = [];
+					})
+					.findById('outer')
+					.moveMouseTo()
+					.end()
 
-					// TODO: Selenium isn't getting the button number
-					//assert.isFalse(downEvents[0].isLeft, 'downEvents[0].isLeft');
-					//assert.isTrue(downEvents[0].isMiddle, 'downEvents[0].isMiddle');
-				});
+					.sleep(1000)
+
+					.findById('middleLabel')
+					.moveMouseTo()
+					.end()
+
+					.execute(function () {
+						return moveEvents;
+					})
+					.then(function (moveEvents) {
+						assert.strictEqual(1, moveEvents.length, 'one event');
+						assert.strictEqual('mouseenter', moveEvents[0].event, 'mouse enter event');
+						assert.strictEqual('outer', moveEvents[0].target, 'mouse enter target');
+					});
+			},
+
+			'enter inner1': function () {
+				return remote
+					.execute(function () {
+						moveEvents = [];
+					})
+					.findById('inner1')
+					.moveMouseTo()
+					.end()
+
+					.execute(function () {
+						return moveEvents;
+					})
+					.then(function (moveEvents) {
+						assert.strictEqual(0, moveEvents.length, 'no events');
+					});
+			},
+
+			'after outer': function () {
+				return remote
+					.execute(function () {
+						moveEvents = [];
+					})
+					.findById('outer')
+					.moveMouseTo()
+					.end()
+
+					.sleep(1000)
+
+					.findById('afterOuter')
+					.moveMouseTo()
+					.end()
+
+					.execute(function () {
+						return moveEvents;
+					})
+					.then(function (moveEvents) {
+						assert.strictEqual(1, moveEvents.length, 'one event');
+						assert.strictEqual('mouseleave', moveEvents[0].event, 'mouse leave event');
+						assert.strictEqual('outer', moveEvents[0].target, 'mouse leave target');
+					});
+			}
+		},
+
+		'mousedown, stopEvent': {
+			'mousedown inner1 div': function () {
+				return remote
+					.execute(function () {
+						downEvents = [];
+					})
+					.findById('inner1')
+					.moveMouseTo()
+					.click()
+					.end()
+
+					.execute(function () {
+						return downEvents;
+					})
+					.then(function (downEvents) {
+						assert.strictEqual(downEvents.length, 2);
+						assert.strictEqual(downEvents[0].event, 'mousedown');
+						assert.strictEqual(downEvents[0].target, 'inner1');
+						assert.isTrue(downEvents[0].isLeft, 'expected left button');
+						assert.isFalse(downEvents[0].isRight, 'did not expect right button');
+						assert.strictEqual(downEvents[1].event, 'mousedown');
+						assert.strictEqual(downEvents[1].currentTarget, 'middle');
+						assert.strictEqual(downEvents[1].target, 'inner1');
+						assert.isTrue(downEvents[1].isLeft, 'expected left button');
+						assert.isFalse(downEvents[1].isRight, 'did not expect right button');
+					});
+			},
+
+			'mousedown outer div': function () {
+				return remote
+					.execute(function () {
+						downEvents = [];
+					})
+					.findById('outerLabel')
+					.moveMouseTo()
+					// middle mouse button
+					.clickMouseButton(2)
+					.end()
+
+					.execute(function () {
+						return downEvents;
+					})
+					.then(function (downEvents) {
+						assert.strictEqual(downEvents.length, 1);
+						assert.strictEqual(downEvents[0].event, 'mousedown');
+						assert.strictEqual(downEvents[0].target, 'outerLabel');
+						assert.strictEqual(downEvents[0].currentTarget, 'outer');
+
+						// TODO: Selenium isn't getting the button number
+						assert.isFalse(downEvents[0].isLeft, 'did not expect left button');
+						assert.isTrue(downEvents[0].isRight, 'expected right button');
+					});
+			}
 		}
 	});
 });

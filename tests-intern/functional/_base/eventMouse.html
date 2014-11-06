@@ -4,7 +4,7 @@
 <head>
 	<title>mouse events test</title>
 	<style type="text/css">
-		@import "../../resources/dojo.css";
+		@import "../../../resources/dojo.css";
 
 		div {
 			margin: 10px;
@@ -26,69 +26,87 @@
 		}
 	</style>
 	
-	<script type="text/javascript" djConfig="isDebug: true" src="../../../dojo.js"></script>
+	<script type="text/javascript" data-dojo-config="isDebug: true, async: true" src="../../../dojo.js"></script>
+
 	<script type="text/javascript">
-		var ready = false;
-		dojo.addOnLoad(function () {
-			// Log of events, used by automated test harness
-			moveEvents = [];
-			clickEvents = [];
-			downEvents = [];
+		var ready;
 
-			dojo.connect(dojo.byId('outer'), 'onmouseenter', function (evt) {
-				moveEvents.push({target: evt.target.id, event: 'mouseenter'});
-				console.log(dojo.toJson(moveEvents[moveEvents.length-1]));
-			});
-			dojo.connect(dojo.byId('outer'), 'onmouseleave', function (evt) {
-				moveEvents.push({target: evt.target.id, event: 'mouseleave'});
-				console.log(dojo.toJson(moveEvents[moveEvents.length-1]));
+		// Log of events, used by automated test harness
+		var moveEvents = [];
+		var clickEvents = [];
+		var downEvents = [];
+
+		require([
+			'dojo/on',
+			'dojo/dom',
+			'dojo/json',
+			'dojo/_base/array',
+			'dojo/mouse',
+			'dojo/domReady!'
+		], function (on, dom, JSON, array, mouse) {
+			on(dom.byId('outer'), 'mouseenter', function (event) {
+				moveEvents.push({ target: event.target.id, event: 'mouseenter' });
+				console.log(JSON.stringify(moveEvents[moveEvents.length-1]));
 			});
 
-			handles = dojo.map(['outer', 'middle', 'inner1', 'inner2'], function (id) {
-				var node = dojo.byId(id);
+			on(dom.byId('outer'), 'mouseleave', function (event) {
+				moveEvents.push({ target: event.target.id, event: 'mouseleave' });
+				console.log(JSON.stringify(moveEvents[moveEvents.length-1]));
+			});
+
+			handles = array.map(['outer', 'middle', 'inner1', 'inner2'], function (id) {
+				console.log('adding things to ' + id);
+				var node = dom.byId(id);
+
 				return [
-					dojo.connect(node, 'onclick', function(evt){
+					on(node, 'click', function(event) {
 						clickEvents.push({
-							target: evt.target.id,
-							currentTarget: evt.currentTarget.id,
+							target: event.target.id,
+							currentTarget: event.currentTarget.id,
 							event: 'click'
 						});
-						console.log(dojo.toJson(clickEvents[clickEvents.length-1]));
-						if (evt.currentTarget.id == 'middle' || evt.currentTarget.id == 'outer') {
-							dojo.stopEvent(evt);
-						}
-					}),						/*
-
-					dojo.connect(node, "onclick", function(evt){
-						// repeated click event just to make sure that 2 events work
-						clickEvents.push({
-							target: evt.target.id,
-							currentTarget: evt.currentTarget.id,
-							event: "click"
-						});
-						console.log("repeated click event: " + dojo.toJson(clickEvents[clickEvents.length-1]));
-						if(evt.currentTarget.id == "middle" || evt.currentTarget.id == "outer"){
-							dojo.stopEvent(evt);
+						console.log(JSON.stringify(clickEvents[clickEvents.length-1]));
+						if (event.currentTarget.id === 'middle' || event.currentTarget.id === 'outer') {
+							event.stopPropagation();
+							event.preventDefault();
 						}
 					}),
-					*/
-					dojo.connect(node, 'onmousedown', function (evt) {
-						if (evt.type == 'unload') {
-							console.error('onmousedown handler got onunload event');
+					
+					// on(node, "click", function(event){
+					// 	// repeated click event just to make sure that 2 events work
+					// 	clickEvents.push({
+					// 		target: event.target.id,
+					// 		currentTarget: event.currentTarget.id,
+					// 		event: "click"
+					// 	});
+					// 	console.log("repeated click event: " + JSON.stringify(clickEvents[clickEvents.length-1]));
+					// 	if (event.currentTarget.id === "middle" || event.currentTarget.id === "outer") {
+					// 		event.stopPropagation();
+					// 		event.preventDefault();
+					// 	}
+					// }),
+
+					on(node, 'mousedown', function (event) {
+						if (event.type === 'unload') {
+							console.error('onmousedown handler got unload event');
 							debugger;
 							return;
 						}
+
 						downEvents.push({
-							target: evt.target.id,
-							currentTarget: evt.currentTarget.id,
+							target: event.target.id,
+							currentTarget: event.currentTarget.id,
 							event: 'mousedown',
-							isLeft: dojo.mouseButtons.isLeft(evt),
-							isMiddle: dojo.mouseButtons.isMiddle(evt),
-							isRight: dojo.mouseButtons.isRight(evt)
+							isLeft: mouse.isLeft(event),
+							isMiddle: mouse.isMiddle(event),
+							isRight: mouse.isRight(event)
 						});
-						console.log(dojo.toJson(downEvents[downEvents.length-1]));
-						if (evt.currentTarget.id == 'middle' || evt.currentTarget.id == 'outer') {
-							dojo.stopEvent(evt);
+
+						console.log(JSON.stringify(downEvents[downEvents.length-1]));
+
+						if (event.currentTarget.id === 'middle' || event.currentTarget.id === 'outer') {
+							event.stopPropagation();
+							event.preventDefault();
 						}
 					})
 				];

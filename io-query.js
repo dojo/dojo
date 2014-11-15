@@ -1,102 +1,103 @@
 define(["./_base/lang"], function(lang){
+	"use strict";
 
-// module:
-//		dojo/io-query
+	// module:
+	//		dojo/io-query
 
-var backstop = {};
+	var backstop = {};
 
-return {
-// summary:
-//		This module defines query string processing functions.
-
-	objectToQuery: function objectToQuery(/*Object*/ map){
+	return {
 		// summary:
-        //		takes a name/value mapping object and returns a string representing
-        //		a URL-encoded version of that object.
-        // example:
-        //		this object:
-        //
-        //	|	{
-        //	|		blah: "blah",
-        //	|		multi: [
-        //	|			"thud",
-        //	|			"thonk"
-        //	|		]
-        //	|	};
-        //
-        //		yields the following query string:
-        //
-        //	|	"blah=blah&multi=thud&multi=thonk"
+		//		This module defines query string processing functions.
 
-        // FIXME: need to implement encodeAscii!!
-        var enc = encodeURIComponent, pairs = [];
-        for(var name in map){
-            var value = map[name];
-            if(value != backstop[name]){
-                var assign = enc(name) + "=";
-                if(lang.isArray(value)){
-                    for(var i = 0, l = value.length; i < l; ++i){
-                        pairs.push(assign + enc(value[i]));
-                    }
-                }else{
-                    pairs.push(assign + enc(value));
-                }
-            }
-        }
-        return pairs.join("&"); // String
-    },
+		objectToQuery: function objectToQuery(/*Object*/ map){
+			// summary:
+			//		takes a name/value mapping object and returns a string representing
+			//		a URL-encoded version of that object.
+			// example:
+			//		this object:
+			//
+			//	|	{
+			//	|		blah: "blah",
+			//	|		multi: [
+			//	|			"thud",
+			//	|			"thonk"
+			//	|		]
+			//	|	};
+			//
+			//		yields the following query string:
+			//
+			//	|	"blah=blah&multi=thud&multi=thonk"
 
-	queryToObject: function queryToObject(/*String?*/ str){
-        // summary:
-        //		Create an object representing a de-serialized query section of a
-        //		URL. Query keys with multiple values are returned in an array.
-        //  str:
-        //      Query string to convert. If no string is passed, URL is used instead.
-        //
-        // example:
-        //		This string:
-        //
-        //	|		"foo=bar&foo=baz&thinger=%20spaces%20=blah&zonk=blarg&"
-        //
-        //		results in this object structure:
-        //
-        //	|		{
-        //	|			foo: [ "bar", "baz" ],
-        //	|			thinger: " spaces =blah",
-        //	|			zonk: "blarg"
-        //	|		}
-        //
-        //		Note that spaces and other urlencoded entities are correctly
-        //		handled.
+			// FIXME: need to implement encodeAscii!!
+			var enc = encodeURIComponent, pairs = [];
+			for(var name in map){
+				var value = map[name];
+				if(value != backstop[name]){
+					var assign = enc(name) + "=";
+					if(lang.isArray(value)){
+						for(var i = 0, l = value.length; i < l; ++i){
+							pairs.push(assign + enc(value[i]));
+						}
+					}else{
+						pairs.push(assign + enc(value));
+					}
+				}
+			}
+			return pairs.join("&"); // String
+		},
 
-        var dec = decodeURIComponent, qp, ret = {}, name, val;
+		queryToObject: function queryToObject(/*String?*/ str){
+			// summary:
+			//		Create an object representing a de-serialized query section of a
+			//		URL. Query keys with multiple values are returned in an array.
+			//  str:
+			//      Query string to convert. If no string is passed, URL is used instead.
+			//
+			// example:
+			//		This string:
+			//
+			//	|		"foo=bar&foo=baz&thinger=%20spaces%20=blah&zonk=blarg&"
+			//
+			//		results in this object structure:
+			//
+			//	|		{
+			//	|			foo: [ "bar", "baz" ],
+			//	|			thinger: " spaces =blah",
+			//	|			zonk: "blarg"
+			//	|		}
+			//
+			//		Note that spaces and other urlencoded entities are correctly
+			//		handled.
 
-        str = str || window.location.search.slice(1);
-        qp= str.split("&");
+			var dec = decodeURIComponent, qp, ret = {}, name, val;
 
-        for(var i = 0, l = qp.length, item; i < l; ++i){
-            item = qp[i];
-            if(item.length){
-                var s = item.indexOf("=");
-                if(s < 0){
-                    name = dec(item);
-                    val = "";
-                }else{
-                    name = dec(item.slice(0, s));
-                    val  = dec(item.slice(s + 1));
-                }
-                if(typeof ret[name] == "string"){ // inline'd type check
-                    ret[name] = [ret[name]];
-                }
+			str = str || window.location.search.slice(1);
+			qp = str.split("&");
 
-                if(lang.isArray(ret[name])){
-                    ret[name].push(val);
-                }else{
-                    ret[name] = val;
-                }
-            }
-        }
-        return ret; // Object
-    }
-};
+			for(var i = 0, l = qp.length, item; i < l; ++i){
+				item = qp[i];
+				if(item.length){
+					var s = item.indexOf("=");
+					if(s < 0){
+						name = dec(item);
+						val = "";
+					}else{
+						name = dec(item.slice(0, s));
+						val = dec(item.slice(s + 1));
+					}
+					if(typeof ret[name] == "string"){ // inline'd type check
+						ret[name] = [ret[name]];
+					}
+
+					if(lang.isArray(ret[name])){
+						ret[name].push(val);
+					}else{
+						ret[name] = val;
+					}
+				}
+			}
+			return ret; // Object
+		}
+	};
 });

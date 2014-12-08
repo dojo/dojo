@@ -41,9 +41,7 @@ define(
 	"dateFormatItem-MMMEd": "E, d MMM",
 	"eraNarrow": [
 		"π.Χ.",
-		"π.Κ.Χ.",
-		"μ.Χ.",
-		"ΚΧ"
+		"μ.Χ."
 	],
 	"field-tue-relative+-1": "προηγούμενη Τρίτη",
 	"days-format-short": [
@@ -181,9 +179,7 @@ define(
 	],
 	"eraAbbr": [
 		"π.Χ.",
-		"π.Κ.Χ.",
-		"μ.Χ.",
-		"ΚΧ"
+		"μ.Χ."
 	],
 	"field-minute": "Λεπτό",
 	"field-dayperiod": "π.μ./μ.μ.",
@@ -255,9 +251,7 @@ define(
 	"dateFormatItem-yMMMd": "d MMM y",
 	"eraNames": [
 		"π.Χ.",
-		"π.Κ.Χ.",
-		"μ.Χ.",
-		"ΚΧ"
+		"μ.Χ."
 	],
 	"days-format-narrow": [
 		"Κ",

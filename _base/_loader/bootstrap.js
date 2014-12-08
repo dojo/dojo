@@ -228,7 +228,7 @@ dojo.global = {
 =====*/
 	dojo.locale = d.config.locale;
 
-	var rev = "$Rev$".match(/[0-9a-f]{7,}/);
+	var rev = "$Rev: 31ff515 $".match(/[0-9a-f]{7,}/);
 
 /*=====
 	dojo.version = function(){
@@ -252,7 +252,7 @@ dojo.global = {
 	}
 =====*/
 	dojo.version = {
-		major: 1, minor: 6, patch: 3, flag: "-pre",
+		major: 1, minor: 6, patch: 3, flag: "",
 		revision: rev ? rev[0] : NaN,
 		toString: function(){
 			with(d.version){

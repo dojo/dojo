@@ -41,9 +41,7 @@ define(
 	"dateFormatItem-MMMEd": "E, MMM d",
 	"eraNarrow": [
 		"B",
-		"A",
-		"AD",
-		"CE"
+		"A"
 	],
 	"field-tue-relative+-1": "last Tuesday",
 	"days-format-short": [
@@ -177,9 +175,7 @@ define(
 	"field-sun-relative+1": "next Sunday",
 	"eraAbbr": [
 		"BC",
-		"BCE",
-		"AD",
-		"CE"
+		"AD"
 	],
 	"field-minute": "Minute",
 	"field-dayperiod": "AM/PM",
@@ -238,9 +234,7 @@ define(
 	"dateFormatItem-yMMMd": "MMM d, y",
 	"eraNames": [
 		"Before Christ",
-		"Before Common Era",
-		"Anno Domini",
-		"Common Era"
+		"Anno Domini"
 	],
 	"days-standAlone-narrow": [
 		"S",

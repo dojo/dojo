@@ -68,6 +68,8 @@ define(["doh", "dojo/_base/array", "dojo/i18n", "dojo/_base/kernel", "dojo/date"
 
 	t.is("6", locale.format(date, {datePattern:'E', selector:'date'}));
 
+	t.is("Fri, Aug 11, 2006 AD", locale.format(date, {selector: 'date', datePattern: 'EEE, MMM d, yyyy G', locale:'en-us' }));				
+
 	t.is("12:55 AM", locale.format(date, {formatLength:'short',selector:'time', locale:'en-us'}));
 	t.is("12:55:12", locale.format(date, {timePattern:'h:m:s',selector:'time'}));
 	t.is("12:55:12.35", locale.format(date, {timePattern:'h:m:s.SS',selector:'time'}));

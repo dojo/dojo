@@ -36,12 +36,11 @@ define(
 	"dateFormatItem-yQQQ": "QQQ y 'г'.",
 	"dateFormatItem-yMEd": "ccc, d.MM.y 'г'.",
 	"field-wed-relative+0": "в эту среду",
-	"field-wed-relative+1": "в следующую среду",
 	"dateFormatItem-GyMMMEd": "E, d MMM y G",
 	"dateFormatItem-MMMEd": "ccc, d MMM",
+	"field-wed-relative+1": "в следующую среду",
 	"eraNarrow": [
 		"до н.э.",
-		"н.э.",
 		"н.э."
 	],
 	"dateFormatItem-yMM": "MM.y",
@@ -79,8 +78,8 @@ define(
 	"dateFormatItem-Md": "dd.MM",
 	"dayPeriods-format-abbr-am": "AM",
 	"dateFormatItem-yMd": "dd.MM.y",
-	"field-era": "Эра",
 	"dateFormatItem-yM": "MM.y",
+	"field-era": "Эра",
 	"months-standAlone-wide": [
 		"Январь",
 		"Февраль",
@@ -102,12 +101,12 @@ define(
 		"3-й квартал",
 		"4-й квартал"
 	],
-	"dateFormatItem-yQQQQ": "QQQQ y 'г'.",
 	"timeFormat-long": "H:mm:ss z",
-	"field-year": "Год",
 	"dateFormatItem-yMMM": "LLL y",
-	"field-hour": "Час",
+	"dateFormatItem-yQQQQ": "QQQQ y 'г'.",
+	"field-year": "Год",
 	"dateFormatItem-MMdd": "dd.MM",
+	"field-hour": "Час",
 	"months-format-abbr": [
 		"янв.",
 		"февр.",
@@ -127,11 +126,11 @@ define(
 	"timeFormat-full": "H:mm:ss zzzz",
 	"dateFormatItem-E": "ccc",
 	"field-day-relative+0": "сегодня",
-	"field-thu-relative+0": "в этот четверг",
 	"field-day-relative+1": "завтра",
-	"field-thu-relative+1": "в следующий четверг",
+	"field-thu-relative+0": "в этот четверг",
 	"dateFormatItem-GyMMMd": "d MMM y 'г'. G",
 	"field-day-relative+2": "послезавтра",
+	"field-thu-relative+1": "в следующий четверг",
 	"dateFormatItem-H": "H",
 	"months-standAlone-abbr": [
 		"Янв.",
@@ -174,17 +173,16 @@ define(
 	"timeFormat-medium": "H:mm:ss",
 	"field-sun-relative+0": "в это воскресенье",
 	"dateFormatItem-Hm": "H:mm",
-	"field-sun-relative+1": "в следующее воскресенье",
 	"quarters-standAlone-abbr": [
 		"1-й кв.",
 		"2-й кв.",
 		"3-й кв.",
 		"4-й кв."
 	],
+	"field-sun-relative+1": "в следующее воскресенье",
 	"eraAbbr": [
 		"до н. э.",
-		"н. э.",
-		"н.э."
+		"н. э."
 	],
 	"field-minute": "Минута",
 	"field-dayperiod": "ДП/ПП",
@@ -257,7 +255,6 @@ define(
 	],
 	"eraNames": [
 		"до н.э.",
-		"н.э.",
 		"н.э."
 	],
 	"dateFormatItem-yMMMd": "d MMM y 'г'.",

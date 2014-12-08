@@ -41,9 +41,7 @@ define(
 	"dateFormatItem-MMMEd": "E d 'de' MMM",
 	"eraNarrow": [
 		"a. C.",
-		"a. e. c.",
-		"d. C.",
-		"e. c."
+		"d. C."
 	],
 	"dateFormatItem-yMM": "M/y",
 	"field-tue-relative+-1": "el martes pasado",
@@ -183,9 +181,7 @@ define(
 	],
 	"eraAbbr": [
 		"a. C.",
-		"a. e. c.",
-		"d. C.",
-		"e. c."
+		"d. C."
 	],
 	"field-minute": "minuto",
 	"field-dayperiod": "periodo del día",
@@ -257,9 +253,7 @@ define(
 	],
 	"eraNames": [
 		"antes de Cristo",
-		"anno Dómini",
-		"d. C.",
-		"e. c."
+		"anno Dómini"
 	],
 	"dateFormatItem-yMMMd": "d 'de' MMM 'de' y",
 	"days-format-narrow": [

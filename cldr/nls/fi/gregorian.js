@@ -36,14 +36,12 @@ define(
 	"dateFormatItem-yQQQ": "QQQ y",
 	"dateFormatItem-yMEd": "E d.M.y",
 	"field-wed-relative+0": "tänä keskiviikkona",
-	"field-wed-relative+1": "ensi keskiviikkona",
 	"dateFormatItem-GyMMMEd": "E d. MMM y G",
 	"dateFormatItem-MMMEd": "ccc d. MMM",
+	"field-wed-relative+1": "ensi keskiviikkona",
 	"eraNarrow": [
 		"eK",
-		"jK",
-		"jKr.",
-		"jaa."
+		"jK"
 	],
 	"dateFormatItem-yMM": "M.y",
 	"field-tue-relative+-1": "viime tiistaina",
@@ -81,8 +79,8 @@ define(
 	"dayPeriods-standAlone-wide-pm": "ip.",
 	"dayPeriods-format-abbr-am": "ap.",
 	"dateFormatItem-yMd": "d.M.y",
-	"field-era": "aikakausi",
 	"dateFormatItem-yM": "L.y",
+	"field-era": "aikakausi",
 	"months-standAlone-wide": [
 		"tammikuu",
 		"helmikuu",
@@ -104,10 +102,10 @@ define(
 		"3. neljännes",
 		"4. neljännes"
 	],
-	"dateFormatItem-yQQQQ": "QQQQ y",
 	"timeFormat-long": "H.mm.ss z",
-	"field-year": "vuosi",
 	"dateFormatItem-yMMM": "LLL y",
+	"dateFormatItem-yQQQQ": "QQQQ y",
+	"field-year": "vuosi",
 	"field-hour": "tunti",
 	"months-format-abbr": [
 		"tammikuuta",
@@ -127,11 +125,11 @@ define(
 	"field-sat-relative+1": "ensi lauantaina",
 	"timeFormat-full": "H.mm.ss zzzz",
 	"field-day-relative+0": "tänään",
-	"field-thu-relative+0": "tänä torstaina",
 	"field-day-relative+1": "huomenna",
-	"field-thu-relative+1": "ensi torstaina",
+	"field-thu-relative+0": "tänä torstaina",
 	"dateFormatItem-GyMMMd": "d. MMM y G",
 	"field-day-relative+2": "ylihuomenna",
+	"field-thu-relative+1": "ensi torstaina",
 	"dateFormatItem-H": "H",
 	"months-standAlone-abbr": [
 		"tammi",
@@ -173,18 +171,16 @@ define(
 	"timeFormat-medium": "H.mm.ss",
 	"field-sun-relative+0": "tänä sunnuntaina",
 	"dateFormatItem-Hm": "H.mm",
-	"field-sun-relative+1": "ensi sunnuntaina",
 	"quarters-standAlone-abbr": [
 		"1. nelj.",
 		"2. nelj.",
 		"3. nelj.",
 		"4. nelj."
 	],
+	"field-sun-relative+1": "ensi sunnuntaina",
 	"eraAbbr": [
 		"eKr.",
-		"eaa.",
-		"jKr.",
-		"jaa."
+		"jKr."
 	],
 	"field-minute": "minuutti",
 	"field-dayperiod": "vuorokaudenaika",
@@ -258,9 +254,7 @@ define(
 	],
 	"eraNames": [
 		"ennen Kristuksen syntymää",
-		"ennen ajanlaskun alkua",
-		"jälkeen Kristuksen syntymän",
-		"jälkeen ajanlaskun alun"
+		"jälkeen Kristuksen syntymän"
 	],
 	"dateFormatItem-yMMMd": "d. MMM y",
 	"days-format-narrow": [

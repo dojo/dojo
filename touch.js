@@ -123,6 +123,9 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 				}
 
 				win.doc.addEventListener(moveType, function(e){
+					if(mouse.isRight(e)){
+						return;
+					}
 					updateClickTracker(e);
 					if(useTarget){
 						// prevent native scroll event and ensure touchend is
@@ -132,6 +135,9 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 				}, true);
 
 				win.doc.addEventListener(endType, function(e){
+					if(mouse.isRight(e)){
+						return;
+					}
 					updateClickTracker(e);
 					if(clickTracker){
 						clickTime = (new Date()).getTime();

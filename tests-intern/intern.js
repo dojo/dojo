@@ -28,7 +28,7 @@ define({
 	// Note that the `build` capability will be filled in with the current commit ID from the Travis CI environment
 	// automatically
 	capabilities: {
-		'selenium-version': '2.41.0',
+		'selenium-version': '2.43.0',
 		'record-screenshots': false,
 		'sauce-advisor': false,
 		'video-upload-on-pass': false,
@@ -68,12 +68,13 @@ define({
 			{ name: 'testing', location: '.' },
 			// The dojo used for writing tests
 			{ name: 'dojo', location: 'node_modules/dojo' },
-			{ name: 'sinon', location: 'node_modules/sinon/lib', main: 'sinon'}
+			{ name: 'sinon', location: 'node_modules/sinon/pkg', main: 'sinon'}
 		],
 		map: {
 			intern: {
 				dojo: 'intern/node_modules/dojo',
-				chai: 'intern/node_modules/chai/chai'
+				chai: 'intern/node_modules/chai/chai',
+				diff: 'intern/node_modules/diff/diff'
 			},
 
 			// Tests should use dojo in node_modules
@@ -101,5 +102,5 @@ define({
 	functionalSuites: [ 'testing/tests-intern/functional/all' ],
 
 	// A regular expression matching URLs to files that should not be included in code coverage analysis
-	excludeInstrumentation: /^(?:node_modules|tests-intern|tests)\//
+	excludeInstrumentation: /^(?:node_modules|tests-intern|tests|html-report|nls|cldr\/nls)\//
 });

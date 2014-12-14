@@ -26,14 +26,14 @@ module.exports = function (grunt) {
 				options: {
 					runType: 'runner',
 					config: 'tests-intern/intern.local',
-					reporters: ['runner']
+					reporters: ['runner', 'pretty']
 				}
 			},
 			remote: {
 				options: {
 					runType: 'runner',
 					config: 'tests-intern/intern',
-					reporters: ['runner']
+					reporters: ['runner', 'pretty']
 				}
 			},
 			proxy: {
@@ -55,12 +55,14 @@ module.exports = function (grunt) {
 	});
 
 	var servicesServer;
-	grunt.registerTask('proxy', function () {
+	grunt.registerTask('proxy', function (target) {
 		var done = this.async();
 		req(['dojo/tests-intern/services/main'], function (services) {
 			services.start().then(function (server) {
 				servicesServer = server;
-				done(true);
+				if (target) {
+					done(true);
+				}
 			});
 		});
 	});
@@ -90,7 +92,7 @@ module.exports = function (grunt) {
 		}
 
 		if (target !== 'node') {
-			grunt.task.run('proxy');
+			grunt.task.run('proxy:tests');
 		}
 		grunt.task.run('intern:' + target);
 	});

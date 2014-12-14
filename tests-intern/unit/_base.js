@@ -7,4 +7,5 @@ define([
 	'./_base/lang',
 	'dojo/has!host-browser?./_base/browser',
 	'dojo/has!host-browser?./_base/xhr'
-], function () {});
+], function () {
+});

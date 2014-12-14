@@ -52,7 +52,7 @@ define([
 			}
 		}
 
-		doh.register("tests._base.hostenv_webworkers", [{
+		doh.register("testsDOH._base.hostenv_webworkers", [{
 			name: "Loading Dojo core inside worker",
 			setUp: fixtures.deferred,
 			tearDown: tearDowns.killWorker,
@@ -62,7 +62,7 @@ define([
 				//		Test whether dojo can be loaded in the worker
 
 				var self = this;
-				this.worker = new Worker("../../dojo/tests/_base/loader/hostenv_webworkers/worker1.js");
+				this.worker = new Worker("../../dojo/testsDOH/_base/loader/hostenv_webworkers/worker1.js");
 
 				this.worker.addEventListener("message", function (message){
 					if(message.data.type === "testResult"){
@@ -88,7 +88,7 @@ define([
 				//		Test whether require works in the worker.
 
 				var self = this;
-				this.worker = new Worker("../../dojo/tests/_base/loader/hostenv_webworkers/worker2.js");
+				this.worker = new Worker("../../dojo/testsDOH/_base/loader/hostenv_webworkers/worker2.js");
 
 				this.worker.addEventListener("message", function (message){
 					if(message.data.type === "testResult"){
@@ -114,7 +114,7 @@ define([
 				//		Test whether require works in the worker when in async mode.
 
 				var self = this;
-				this.worker = new Worker("../../dojo/tests/_base/loader/hostenv_webworkers/worker3.js");
+				this.worker = new Worker("../../dojo/testsDOH/_base/loader/hostenv_webworkers/worker3.js");
 
 				this.worker.addEventListener("message", function(message){
 					if(message.data.type === "testResult"){
@@ -146,7 +146,7 @@ define([
 				// 		Test issues a warning if subworks not available but passes the test.
 
 				var self = this;
-				this.worker = new Worker("../../dojo/tests/_base/loader/hostenv_webworkers/worker4.js");
+				this.worker = new Worker("../../dojo/testsDOH/_base/loader/hostenv_webworkers/worker4.js");
 
 				this.worker.addEventListener("message", function(message){
 					if(message.data.type === "testResult"){
@@ -205,11 +205,11 @@ define([
 
 						'importScripts(' +
 							'dojoConfig.baseUrl+"dojo/dojo.js",' +
-							'dojoConfig.baseUrl+"dojo/tests/_base/loader/hostenv_webworkers/console.js"' +
+							'dojoConfig.baseUrl+"dojo/testsDOH/_base/loader/hostenv_webworkers/console.js"' +
 						');' +
 
 						'try{' +
-							'require(["dojo/tests/_base/loader/hostenv_webworkers/strings"], function(strings){' +
+							'require(["dojo/testsDOH/_base/loader/hostenv_webworkers/strings"], function(strings){' +
 								'this.postMessage({type:"testResult", "test":"require is working", "value":true});' +
 							'});' +
 						'}catch(e){' +
@@ -269,7 +269,7 @@ define([
 				//		components via require and then using them.
 
 				var self = this;
-				this.worker = new Worker("../../dojo/tests/_base/loader/hostenv_webworkers/worker5.js?v=4");
+				this.worker = new Worker("../../dojo/testsDOH/_base/loader/hostenv_webworkers/worker5.js?v=4");
 
 				this.worker.addEventListener("message", function(message){
 					if(message.data.type === "testResult"){
@@ -300,7 +300,7 @@ define([
 				//		pass for the test if it receives it correctly.
 
 				var self = this;
-				this.worker = new Worker("../../dojo/tests/_base/loader/hostenv_webworkers/worker6.js");
+				this.worker = new Worker("../../dojo/testsDOH/_base/loader/hostenv_webworkers/worker6.js");
 
 				this.worker.addEventListener("message", function (message){
 					if(message.data.type === "testResult"){

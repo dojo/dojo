@@ -2,7 +2,7 @@ define([
 	"doh", "require",
 	"dojo/debounce"
 ], function(doh, require, debounce){
-	doh.register("tests.debounce", [
+	doh.register("testsDOH.debounce", [
 		function debounceTest(){
 			var debouncedCount = {},
 				debounceTest1 = debounce(function() {

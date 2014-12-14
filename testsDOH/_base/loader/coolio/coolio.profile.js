@@ -4,7 +4,7 @@ var profile = (function(){
 		basePath:"../../../../..",
 
 		// relative to base path
-		releaseDir:"dojo/tests/_base/loader",
+		releaseDir:"dojo/testsDOH/_base/loader",
 
 		optimize:0,
 		layerOptimize:0,
@@ -33,7 +33,7 @@ var profile = (function(){
 			location:"./dojox"
 		},{
 			name:"coolio",
-			location:"./dojo/tests/_base/loader/coolio",
+			location:"./dojo/testsDOH/_base/loader/coolio",
 			resourceTags:{
 				amd: function(filename, mid){
 					return /calendar-amd\.js$/.test(filename);

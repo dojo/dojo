@@ -2,7 +2,7 @@
 	"SMDVersion":".1",
 	"objectName":"testClass",
 	"serviceType":"JSON-RPC",
-	"serviceURL":"../../dojo/tests/resources/test_JsonRPCMediator.php",
+	"serviceURL":"../../dojo/testsDOH/resources/test_JsonRPCMediator.php",
 	"methods":[
 		{
 			"name":"myecho",

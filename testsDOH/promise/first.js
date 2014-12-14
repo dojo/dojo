@@ -96,5 +96,5 @@ define([
 		this.deferred = new Deferred;
 	}
 
-	doh.register("tests.promise.first", wrapped);
+	doh.register("testsDOH.promise.first", wrapped);
 });

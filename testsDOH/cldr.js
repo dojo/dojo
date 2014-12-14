@@ -1,5 +1,5 @@
 define(["doh/main", "../cldr/supplemental", "../cldr/monetary"], function(doh, supplemental){
-	doh.register("tests.cldr", [
+	doh.register("testsDOH.cldr", [
 		function test_date_getWeekend(t){
 			t.is(6, supplemental.getWeekend('en-us').start);
 			t.is(0, supplemental.getWeekend('en').end);

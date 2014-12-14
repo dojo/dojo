@@ -7,7 +7,7 @@ define(["doh/main", "../_base/array", "../_base/Color", "../colors"], function(d
 		array.forEach(source.toRgba(), function(n){ t.is("number", typeof(n)); });
 	};
 
-	doh.register("tests.colors", [
+	doh.register("testsDOH.colors", [
 		// all tests below are taken from #4.2 of the CSS3 Color Module
 		function testColorEx01(t){ verifyColor(t, "black", [0, 0, 0]); },
 		function testColorEx02(t){ verifyColor(t, "white", [255, 255, 255]); },

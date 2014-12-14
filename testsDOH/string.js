@@ -1,6 +1,6 @@
 define(["doh/main", "../string"], function(doh, string){
 
-doh.register("tests.string",
+doh.register("testsDOH.string",
 	[
 		function test_string_pad(t){
 			t.is("00001", string.pad("1", 5));

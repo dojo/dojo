@@ -120,6 +120,6 @@ define([
 		"async,ab-cd-ef,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,built,./built-i18n-test/built-with-layers-and-preloads/i18nTest,amd"];
 
 	for(var i = 0; i<testParams.length; i++){
-		doh.register("tests._base.i18nExhaustive" + i, require.toUrl("dojo/main") + "/../../i18n-test/unit.html?" + testParams[i]);
+		doh.register("testsDOH._base.i18nExhaustive" + i, require.toUrl("dojo/main") + "/../../i18n-test/unit.html?" + testParams[i]);
 	}
 });

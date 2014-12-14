@@ -1,4 +1,4 @@
-dojo.provide("dojo.tests._base.Deferred");
+dojo.provide("dojo.testsDOH._base.Deferred");
 
 var delay = function(ms){
 	var d = new dojo.Deferred();
@@ -16,7 +16,7 @@ var delay = function(ms){
 	}
 	return d.promise;
 };
-doh.register("tests._base.Deferred",
+doh.register("testsDOH._base.Deferred",
 	[
 
 		function callback(t){

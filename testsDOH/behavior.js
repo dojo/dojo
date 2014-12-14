@@ -1,5 +1,5 @@
 define(["doh/main", "require"], function(doh, require){
 	if(doh.isBrowser){
-		doh.register("tests.behavior", require.toUrl("./behavior.html"));
+		doh.register("testsDOH.behavior", require.toUrl("./behavior.html"));
 	}
 });

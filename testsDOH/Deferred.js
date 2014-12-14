@@ -473,5 +473,5 @@ define([
 		this.deferred = new Deferred(function(reason){ return self.canceler(reason); });
 	}
 
-	doh.register("tests.Deferred", wrapped);
+	doh.register("testsDOH.Deferred", wrapped);
 });

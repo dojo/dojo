@@ -1,3 +1,3 @@
 define([
-	"dojo/tests/on/on"
+	"dojo/testsDOH/on/on"
 ], 1);

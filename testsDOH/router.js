@@ -17,7 +17,7 @@ define([
 		});
 	}
 
-	doh.register("tests.router", [
+	doh.register("testsDOH.router", [
 		{
 			name: "Router API",
 			setUp: function(t){

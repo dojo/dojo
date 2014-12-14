@@ -16,7 +16,7 @@ define(["doh", "dojo", "dojo/_base/url"], function(doh, dojo){
 		return result.join("/");
 	};
 
-	doh.register("dojo.tests._base._loader.modulesIds", [
+	doh.register("dojo.testsDOH._base._loader.modulesIds", [
 		function compactPath(t){
 			var compactPath = require.compactPath;
 			t.is(compactPath("../../dojo/../../mytests"), "../../../mytests");
@@ -97,13 +97,13 @@ define(["doh", "dojo", "dojo/_base/url"], function(doh, dojo){
 		},
 
 		function moduleUrl(t){
-			var expected = require.toUrl("dojo/tests/myTest.html");
+			var expected = require.toUrl("dojo/testsDOH/myTest.html");
 			t.is(null, dojo.moduleUrl());
 			t.is(null, dojo.moduleUrl(null));
 			t.is(null, dojo.moduleUrl(null, "myTest.html"));
 			// note we expect a trailing slash
-			t.is(expected.substring(0, expected.length - 11), dojo.moduleUrl("dojo.tests"));
-			t.is(expected, dojo.moduleUrl("dojo.tests", "myTest.html"));
+			t.is(expected.substring(0, expected.length - 11), dojo.moduleUrl("dojo.testsDOH"));
+			t.is(expected, dojo.moduleUrl("dojo.testsDOH", "myTest.html"));
 		},
 
 		function modulePaths(t){

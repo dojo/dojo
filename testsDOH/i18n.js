@@ -3,7 +3,7 @@ define(["doh/main", "../has", "../i18n", "require"], function(doh, has, i18n, re
 		getAsyncTest = function(value, locale){
 			return function(){
 				var def = new doh.Deferred();
-				require([i18n.getL10nName("dojo/tests", "salutations", locale)], function(bundle){
+				require([i18n.getL10nName("dojo/testsDOH", "salutations", locale)], function(bundle){
 					doh.assertEqual(value, bundle.hello);
 					def.callback(true);
 				});
@@ -13,7 +13,7 @@ define(["doh/main", "../has", "../i18n", "require"], function(doh, has, i18n, re
 
 		getSyncTest = function(value, locale){
 			return function(){
-				doh.assertEqual(value, i18n.getLocalization("dojo/tests", "salutations", locale).hello);
+				doh.assertEqual(value, i18n.getLocalization("dojo/testsDOH", "salutations", locale).hello);
 			};
 		},
 
@@ -47,9 +47,9 @@ define(["doh/main", "../has", "../i18n", "require"], function(doh, has, i18n, re
 		];
 
 
-	doh.register("tests.i18n", testSet);
+	doh.register("testsDOH.i18n", testSet);
 	if(has("host-browser")){
-		doh.register("tests.i18n.extra.sync", require.toUrl("./i18n.html"), {async:0});
-		doh.register("tests.i18n.extra.async", require.toUrl("./i18n.html"), {async:1});
+		doh.register("testsDOH.i18n.extra.sync", require.toUrl("./i18n.html"), {async:0});
+		doh.register("testsDOH.i18n.extra.async", require.toUrl("./i18n.html"), {async:1});
 	}
 });

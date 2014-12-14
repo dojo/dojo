@@ -1,7 +1,7 @@
 define(["doh", "dojo/date/stamp"], function(doh, stamp){
 
 
-doh.register("tests.date.stamp", [
+doh.register("testsDOH.date.stamp", [
 
 function test_date_iso(t){
 	var rfc  = "2005-06-29T08:05:00-07:00";

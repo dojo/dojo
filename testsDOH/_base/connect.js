@@ -1,4 +1,4 @@
-dojo.provide("dojo.tests._base.connect");
+dojo.provide("dojo.testsDOH._base.connect");
 
 hub = function(){
 };
@@ -78,7 +78,7 @@ markAndSweepSubscribersTest = function(iterations){
 	return failures;
 };
 
-tests.register("tests._base.connect",
+tests.register("testsDOH._base.connect",
 	[
 		function smokeTest(t){
 			// foo sets ok to false

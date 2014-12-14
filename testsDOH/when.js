@@ -97,5 +97,5 @@ define([
 		this.deferred = new Deferred;
 	}
 
-	doh.register("tests.when", wrapped);
+	doh.register("testsDOH.when", wrapped);
 });

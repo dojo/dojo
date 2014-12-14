@@ -1,5 +1,5 @@
 define(["../main", "doh/main", "../DeferredList"], function(dojo, doh){
-	doh.register("tests.DeferredList", [
+	doh.register("testsDOH.DeferredList", [
 		function callback(t){
 			var d1 = new dojo.Deferred();
 			var d2 = new dojo.Deferred();
@@ -96,7 +96,7 @@ define(["../main", "doh/main", "../DeferredList"], function(dojo, doh){
 		}
 	]);
 
-	doh.register("tests.DeferredList", [
+	doh.register("testsDOH.DeferredList", [
 		function callback(t){
 			var d1 = new dojo.Deferred();
 			var d2 = new dojo.Deferred();

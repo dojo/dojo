@@ -1,5 +1,5 @@
-dojoCdnTestLog.push("defining-dojo.tests._base.loader.amdModuleDep");
+dojoCdnTestLog.push("defining-dojo.testsDOH._base.loader.amdModuleDep");
 define([], function(){
-	dojoCdnTestLog.push("factory-dojo.tests._base.loader.amdModuleDep");
+	dojoCdnTestLog.push("factory-dojo.testsDOH._base.loader.amdModuleDep");
 	return {status:"OK"};
 });

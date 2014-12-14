@@ -10,19 +10,19 @@
 	</script>
 	<script type="text/javascript" src="../../../dojo.js"></script>
 	<script type="text/javascript">
-	    dojo.setObject("dojo.tests._base.loader.pub1", "do-not-mess-with-me");
-		dojo.require("dojo.tests._base.loader.pub1");
-		dojo.require("dojo.tests._base.loader.pub2");
+	    dojo.setObject("dojo.testsDOH._base.loader.pub1", "do-not-mess-with-me");
+		dojo.require("dojo.testsDOH._base.loader.pub1");
+		dojo.require("dojo.testsDOH._base.loader.pub2");
 		require(["doh", "dojo/has"], function(doh, has) {
 			doh.register("config-publish-require-result", function(t){
-				t.is(dojo.tests._base.loader.pub1, "do-not-mess-with-me");
+				t.is(dojo.testsDOH._base.loader.pub1, "do-not-mess-with-me");
 				if(publishing){
 				    t.t(has("config-publishRequireResult"));
-					t.is(dojo.tests._base.loader.pub2.status, "ok");
+					t.is(dojo.testsDOH._base.loader.pub2.status, "ok");
 				}else{
 				    t.t(!has("config-publishRequireResult"));
 					t.t(!dojo.config.publishRequireResult);
-					t.is(dojo.tests._base.loader.pub2.status, undefined);
+					t.is(dojo.testsDOH._base.loader.pub2.status, undefined);
 				}
 			});
 			doh.runOnLoad();

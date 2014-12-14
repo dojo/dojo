@@ -1,5 +1,5 @@
 define(["doh"], function(doh){
-	doh.register("dojo.tests._base._loader.internals", [
+	doh.register("dojo.testsDOH._base._loader.internals", [
 		function compactPath(t){
 			var compactPath = require.compactPath;
 			t.is(compactPath("../../dojo/../../mytests"), "../../../mytests");

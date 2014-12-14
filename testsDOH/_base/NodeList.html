@@ -481,7 +481,7 @@
 							});
 
 							//Try a dojo.declared thing.
-							dojo.declare("dojo.tests.Mini", null, {
+							dojo.declare("dojo.testsDOH.Mini", null, {
 								constructor: function(args, node){
 									dojo.mixin(this, args);
 									node.innerHTML = this.name;
@@ -491,7 +491,7 @@
 							});
 
 							templs.addContent({
-								template: '<i dojoType="dojo.tests.Mini" name="cool"></i>',
+								template: '<i dojoType="dojo.testsDOH.Mini" name="cool"></i>',
 								parse: true
 							});
 
@@ -649,7 +649,7 @@
 							dojo.place('<p id="thinger">Hi</p><p id="thinger2">Hi</p>', dojo.body());
 
 							var test = 0;
-							dojo.declare("tests._base.NodeList.some.Thing", null, {
+							dojo.declare("testsDOH._base.NodeList.some.Thing", null, {
 								foo:"baz",
 								constructor: function(props, node){
 									dojo.mixin(this, props);
@@ -657,11 +657,11 @@
 								}
 							});
 
-							query("#thinger").instantiate(tests._base.NodeList.some.Thing, {
+							query("#thinger").instantiate(testsDOH._base.NodeList.some.Thing, {
 								foo:"bar"
 							});
 
-							query("#thinger2").instantiate("tests._base.NodeList.some.Thing", {
+							query("#thinger2").instantiate("testsDOH._base.NodeList.some.Thing", {
 								foo:"bar"
 							});
 

@@ -5,21 +5,21 @@ dojo.loadInit(function(){
 	dojoCdnTest= 1;
 });
 
-dojoCdnTestLog.push("in-dojo.tests._base.loader.cdnTest");
-dojo.provide("dojo.tests._base.loader.cdnTest");
-dojo.provide("dojo.tests._base.loader.cdnTest2");
-dojo.tests._base.loader.cdnTest.status= "OK";
-dojo.tests._base.loader.cdnTest2.status= "OK";
-dojo.require("dojo.tests._base.loader.syncModule");
-dojo.require("dojo.tests._base.loader.amdModule");
-dojo.requireLocalization("dojo.tests._base.loader", "syncBundle", "ab-cd-ef");
-dojo.requireLocalization("dojo.tests._base.loader", "amdBundle", "ab-cd-ef");
+dojoCdnTestLog.push("in-dojo.testsDOH._base.loader.cdnTest");
+dojo.provide("dojo.testsDOH._base.loader.cdnTest");
+dojo.provide("dojo.testsDOH._base.loader.cdnTest2");
+dojo.testsDOH._base.loader.cdnTest.status= "OK";
+dojo.testsDOH._base.loader.cdnTest2.status= "OK";
+dojo.require("dojo.testsDOH._base.loader.syncModule");
+dojo.require("dojo.testsDOH._base.loader.amdModule");
+dojo.requireLocalization("dojo.testsDOH._base.loader", "syncBundle", "ab-cd-ef");
+dojo.requireLocalization("dojo.testsDOH._base.loader", "amdBundle", "ab-cd-ef");
 
 (function(){
-var t1= dojo.i18n.getLocalization("dojo.tests._base.loader", "syncBundle");
-var t2= dojo.i18n.getLocalization("dojo.tests._base.loader", "syncBundle", "ab-cd-ef");
-var t3= dojo.i18n.getLocalization("dojo.tests._base.loader", "amdBundle");
-var t4= dojo.i18n.getLocalization("dojo.tests._base.loader", "amdBundle", "ab-cd-ef");
+var t1= dojo.i18n.getLocalization("dojo.testsDOH._base.loader", "syncBundle");
+var t2= dojo.i18n.getLocalization("dojo.testsDOH._base.loader", "syncBundle", "ab-cd-ef");
+var t3= dojo.i18n.getLocalization("dojo.testsDOH._base.loader", "amdBundle");
+var t4= dojo.i18n.getLocalization("dojo.testsDOH._base.loader", "amdBundle", "ab-cd-ef");
 
 require(["doh"], function(doh){
 	doh.register("test-i18n-inline", function(t){
@@ -32,8 +32,8 @@ require(["doh"], function(doh){
 })();
 
 
-dojo.requireIf(dojoCdnTest==1, "dojo.tests._base.loader.syncModule1");
-dojo.requireAfterIf(dojoCdnTest==1, "dojo.tests._base.loader.amdModule1");
-dojo.requireIf(dojoCdnTest==2, "dojo.tests._base.loader.syncModule2");
-dojo.requireAfterIf(dojoCdnTest==2, "dojo.tests._base.loader.amdModule2");
-dojoCdnTestLog.push("out-dojo.tests._base.loader.cdnTest");
+dojo.requireIf(dojoCdnTest==1, "dojo.testsDOH._base.loader.syncModule1");
+dojo.requireAfterIf(dojoCdnTest==1, "dojo.testsDOH._base.loader.amdModule1");
+dojo.requireIf(dojoCdnTest==2, "dojo.testsDOH._base.loader.syncModule2");
+dojo.requireAfterIf(dojoCdnTest==2, "dojo.testsDOH._base.loader.amdModule2");
+dojoCdnTestLog.push("out-dojo.testsDOH._base.loader.cdnTest");

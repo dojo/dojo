@@ -52,7 +52,7 @@ tests.data.ItemFileWriteStore.getTestData = function(name){
 
 
 // Now run some tests that are specific to the write-access features:
-doh.register("tests.data.ItemFileWriteStore",
+doh.register("testsDOH.data.ItemFileWriteStore",
 	[
 		function test_getFeatures(){
 			// summary:

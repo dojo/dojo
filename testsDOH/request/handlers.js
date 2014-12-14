@@ -83,5 +83,5 @@ define([
 			}
 		);
 	}
-	doh.register("tests.request.handlers", tests);
+	doh.register("testsDOH.request.handlers", tests);
 });

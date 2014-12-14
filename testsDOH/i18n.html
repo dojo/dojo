@@ -18,18 +18,18 @@
 
 		<script type="text/javascript">
 		// the following should load the current locale + 'en-us-hawaii' and 'en-us-new_york-brooklyn
-		require(["doh", "dojo/_base/array", "dojo/has", "dojo/i18n", "dojo/i18n!dojo/tests/nls/salutations", "dojo/domReady!"],
+		require(["doh", "dojo/_base/array", "dojo/has", "dojo/i18n", "dojo/i18n!dojo/testsDOH/nls/salutations", "dojo/domReady!"],
 				function(doh, array, has, i18n){
 			if(dohArgs.async){
 				doh.register(function extraLocalesAsync(t){
 					// the following should load synchronously...at least with the dojo loader
 					var hawaii, ny;
-					require(["dojo/i18n!dojo/tests/nls/en-us-hawaii/salutations"], function(bundle){ hawaii = bundle;});
-					require(["dojo/i18n!dojo/tests/nls/en-us-new_york-brooklyn/salutations"], function(bundle){ ny = bundle;});
+					require(["dojo/i18n!dojo/testsDOH/nls/en-us-hawaii/salutations"], function(bundle){ hawaii = bundle;});
+					require(["dojo/i18n!dojo/testsDOH/nls/en-us-new_york-brooklyn/salutations"], function(bundle){ ny = bundle;});
 					t.is(hawaii.hello, "Aloha");
 					t.is(ny.hello, "Yo");
 					try{
-						var result = require("dojo/i18n!dojo/tests/nls/ar/salutations");
+						var result = require("dojo/i18n!dojo/testsDOH/nls/ar/salutations");
 						t.f(true, "should have thrown");
 					}catch(e){
 						t.t(true);
@@ -37,10 +37,10 @@
 				});
 			}else{
 				doh.register(function extraLocalesSync(t){
-					t.is(i18n.getLocalization("dojo/tests", "salutations", "en-us-hawaii").hello, "Aloha");
-					t.is(i18n.getLocalization("dojo/tests", "salutations", "en-us-new_york-brooklyn").hello, "Yo");
+					t.is(i18n.getLocalization("dojo/testsDOH", "salutations", "en-us-hawaii").hello, "Aloha");
+					t.is(i18n.getLocalization("dojo/testsDOH", "salutations", "en-us-new_york-brooklyn").hello, "Yo");
 					try{
-						t.is(i18n.getLocalization("dojo/tests", "salutations", "en-au").hello, "G'day");
+						t.is(i18n.getLocalization("dojo/testsDOH", "salutations", "en-au").hello, "G'day");
 					}catch(e){
 						t.f("synchronous get should work if not xdomain");
 					}
@@ -50,11 +50,11 @@
 			doh.run();
 		});
 		if(!require.async){
-			dojo.requireLocalization("dojo.tests._base.loader", "syncBundle", "ab-cd-ef");
-			dojo.requireLocalization("dojo.tests._base.loader", "amdBundle", "ab-cd-ef");
+			dojo.requireLocalization("dojo.testsDOH._base.loader", "syncBundle", "ab-cd-ef");
+			dojo.requireLocalization("dojo.testsDOH._base.loader", "amdBundle", "ab-cd-ef");
 			doh.register(function oldAndNewBundleStyles(t){
-				t.is(dojo.i18n.getLocalization("dojo.tests._base.loader", "syncBundle", "ab-cd-ef").syncBundle, "syncBundle-ab-cd-ef");
-				t.is(dojo.i18n.getLocalization("dojo.tests._base.loader", "amdBundle", "ab-cd-ef").amdBundle, "amdBundle-ab-cd-ef");
+				t.is(dojo.i18n.getLocalization("dojo.testsDOH._base.loader", "syncBundle", "ab-cd-ef").syncBundle, "syncBundle-ab-cd-ef");
+				t.is(dojo.i18n.getLocalization("dojo.testsDOH._base.loader", "amdBundle", "ab-cd-ef").amdBundle, "amdBundle-ab-cd-ef");
 			});
 		}
 

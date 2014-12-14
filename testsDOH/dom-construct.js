@@ -5,10 +5,10 @@ define([
 ], function(construct, doh, require){
 
 	if(doh.isBrowser){
-		doh.register("tests.dom-construct-place", require.toUrl("./dom-construct-place.html"), 30000);
+		doh.register("testsDOH.dom-construct-place", require.toUrl("./dom-construct-place.html"), 30000);
 	}
 
-	doh.register("tests.dom-construct", [
+	doh.register("testsDOH.dom-construct", [
 		{
 			name: "Create element with textContent",
 			runTest: function(t){

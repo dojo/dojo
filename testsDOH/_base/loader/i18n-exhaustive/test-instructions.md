@@ -49,7 +49,7 @@ Crossed with
 Test Design and Execution
 -------------------------
 
-The sources required for this test are in dojo/tests/_base/loader/i18n-exhaustive. Copy the two directories there to be
+The sources required for this test are in dojo/testsDOH/_base/loader/i18n-exhaustive. Copy the two directories there to be
 siblings of the dojo tree in a dtk source distribution.
 
 The source modules as described in Input Modules are constructed in the subdirectory i18n-test. The v1.5.2 builder is
@@ -61,4 +61,4 @@ i18n-test/build-test-targets.sh accomplishes this task automatically.
 A unit test html page is constructed at i18n-test/unit.html. Given a query string, it will load a particular loader and
 exercise a particular set of modules.
 
-Finally, the DOH test dojo/tests/_base/i18nExhaustive runs all the various combinations.
+Finally, the DOH test dojo/testsDOH/_base/i18nExhaustive runs all the various combinations.

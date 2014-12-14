@@ -1,14 +1,14 @@
 define(["doh/main", "require", "../rpc/RpcService", "../rpc/JsonService", "../rpc/JsonpService"],
 	function(doh, require, RpcService, JsonService, JsonpService){
 
-	doh.register("tests.rpc", [
+	doh.register("testsDOH.rpc", [
 		{
 			name: "JsonRPC-EchoTest",
 			timeout: 2000,
 			setUp: function(){
 
 				var testSmd = {
-					serviceURL:"../../dojo/tests/resources/test_JsonRPCMediator.php",
+					serviceURL:"../../dojo/testsDOH/resources/test_JsonRPCMediator.php",
 					methods:[
 						{
 							name:"myecho",
@@ -56,7 +56,7 @@ define(["doh/main", "require", "../rpc/RpcService", "../rpc/JsonService", "../rp
 			timeout: 2000,
 			setUp: function(){
 				var testSmd={
-					serviceURL:"../../dojo/tests/resources/test_JsonRPCMediator.php",
+					serviceURL:"../../dojo/testsDOH/resources/test_JsonRPCMediator.php",
 					methods:[ { name:"contentB" } ]
 				};
 
@@ -91,7 +91,7 @@ define(["doh/main", "require", "../rpc/RpcService", "../rpc/JsonService", "../rp
 		{
 			name: "JsonRPC_SMD_Loading_test",
 			setUp: function(){
-				this.svc = new JsonService("../../dojo/tests/resources/testClass.smd");
+				this.svc = new JsonService("../../dojo/testsDOH/resources/testClass.smd");
 			},
 			runTest: function(){
 

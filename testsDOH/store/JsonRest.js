@@ -9,11 +9,11 @@ define(["doh/main", "require", "dojo/_base/lang", "dojo/store/JsonRest"], functi
 			"test-override": "overridden"
 		},
 		store = new JsonRest({
-			target: require.toUrl("dojo/tests/store/x.y").match(/(.+)x\.y$/)[1],
+			target: require.toUrl("dojo/testsDOH/store/x.y").match(/(.+)x\.y$/)[1],
 			headers: lang.mixin({ "test-override": false }, globalHeaders)
 		});
 
-	doh.register("tests.store.JsonRest",
+	doh.register("testsDOH.store.JsonRest",
 		[
 			function testGet(t){
 				var d = new doh.Deferred();

@@ -10,7 +10,7 @@ define(["doh", "dojo/_base/array", "dojo/_base/Color"], function(doh, array, Col
 		});
 	};
 
-	doh.register("tests._base.Color",
+	doh.register("testsDOH._base.Color",
 		[
 			function testColor1(t){ verifyColor(t, "maroon", maroon); },
 			function testColor2(t){ verifyColor(t, "white", white); },

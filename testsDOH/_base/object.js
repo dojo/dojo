@@ -4,7 +4,7 @@ define(["doh", "dojo/_base/lang"], function(doh, lang){
 dojo = dojo || {};
 dojo.zoo = { a:1, c: { d:1 } };
 
-	doh.register("tests._base.object", [
+	doh.register("testsDOH._base.object", [
 
 		function getBasic(t){
 			var x = lang.getObject('dojo.zoo.a');

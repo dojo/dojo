@@ -13,7 +13,7 @@ importScripts("../../../../dojo.js", "console.js");
 
 try{
 	require(["dojo/request"], function(request){
-		request("../../../../tests/_base/loader/hostenv_webworkers/worker5.json", {
+		request("../../../../testsDOH/_base/loader/hostenv_webworkers/worker5.json", {
 			handleAs: "json"
 		}).then(function(data) {
 				if(data.foo && !data.bar){

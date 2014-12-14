@@ -1,6 +1,6 @@
 define(["dojo/main", "doh/main", "dojo/data/util/filter", "dojo/data/util/sorter"], function(dojo, doh){
 
-doh.register("tests.data.utils",
+doh.register("testsDOH.data.utils",
 	[
 		function testWildcardFilter_1(t){
 			var pattern = "ca*";

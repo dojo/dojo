@@ -11,7 +11,7 @@ var dojoConfig = {
 importScripts("../../../../dojo.js", "console.js");
 
 try{
-	require(["dojo/tests/_base/loader/hostenv_webworkers/strings"], function(strings){
+	require(["dojo/testsDOH/_base/loader/hostenv_webworkers/strings"], function(strings){
 		self.postMessage({
 			type: "testResult",
 			test: "require is working",

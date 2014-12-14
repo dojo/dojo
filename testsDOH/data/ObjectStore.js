@@ -1,10 +1,10 @@
-dojo.provide("dojo.tests.data.ObjectStore");
+dojo.provide("dojo.testsDOH.data.ObjectStore");
 dojo.require("dojo.data.ObjectStore");
 dojo.require("dojo.store.JsonRest");
 dojo.require("dojo.store.Memory");
 
 (function(){
-var restStore = new dojo.store.JsonRest({target: dojo.moduleUrl("dojo.tests.store", "/")});
+var restStore = new dojo.store.JsonRest({target: dojo.moduleUrl("dojo.testsDOH.store", "/")});
 var memoryStore = new dojo.store.Memory({
 	data: [
 		{id: 1, name: "one", prime: false},
@@ -17,7 +17,7 @@ var memoryStore = new dojo.store.Memory({
 
 var dataStore = new dojo.data.ObjectStore({objectStore: restStore});
 var memoryDataStore = new dojo.data.ObjectStore({objectStore: memoryStore});
-tests.register("tests.data.ObjectStore",
+tests.register("testsDOH.data.ObjectStore",
 	[
 		function testFetchByIdentity(t){
 			var d = new doh.Deferred();

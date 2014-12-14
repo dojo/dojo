@@ -1,7 +1,7 @@
 define(["doh", "dojo/_base/array", "dojo/i18n", "dojo/_base/kernel", "dojo/date", "dojo/date/locale"],
 	function(doh, array, i18n, kernel, date, locale){
 
-	doh.register("tests.date.locale", [
+	doh.register("testsDOH.date.locale", [
 		{
 			// Test formatting and parsing of dates in various locales pre-built in dojo.cldr
 			// NOTE: we can't set djConfig.extraLocale before bootstrapping unit tests, so directly

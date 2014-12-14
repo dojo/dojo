@@ -1,7 +1,7 @@
 define(["doh/main", "../Stateful", "../_base/declare", "../Deferred", "../json"],
 function(doh, Stateful, declare, Deferred, JSON){
 
-doh.register("tests.Stateful", [
+doh.register("testsDOH.Stateful", [
 	function getSetWatch(t){
 		var s = new Stateful({
 			foo: 3

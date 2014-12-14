@@ -1,5 +1,5 @@
 define(["doh/main", "../back", "dojo/_base/array"], function(doh, back, array){
-	doh.register("tests.back.hash", [
+	doh.register("testsDOH.back.hash", [
 		function getAndSet(t){
 			var cases = [
 				"test",

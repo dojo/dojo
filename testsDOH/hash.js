@@ -11,7 +11,7 @@ define(["doh/main", "../hash", "../topic"], function(doh, hash, topic){
 		return (i >= 0) ? h.substring(i + 1) : "";
 	}
 
-	doh.register("tests.hash", [
+	doh.register("testsDOH.hash", [
 		// hash as an empty string.
 		{
 			name: "Getting an empty hash",

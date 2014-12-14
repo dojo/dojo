@@ -17,7 +17,7 @@ define([
 	var testError = new TestError("hello", "asdf"),
 		otherError = new OtherError("goodbye", "qwerty", "blah");
 
-	doh.register("tests.errors", [
+	doh.register("testsDOH.errors", [
 		{
 			name: "TestError",
 			runTest: function(t){

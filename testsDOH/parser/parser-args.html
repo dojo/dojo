@@ -14,7 +14,7 @@
 				extend = dlang.extend,
 				exists = dlang.exists;
 
-			declare("tests.parser.Class1", null, {
+			declare("testsDOH.parser.Class1", null, {
 				constructor: function(args, node){
 					this.params = args;
 					mixin(this, args);
@@ -48,10 +48,10 @@
 	<body>
 		<h1>Parser args Unit Test</h1>
 
-		<div data-myscope-type="tests.parser.Class1" data-myscope-id="scopeObj"
+		<div data-myscope-type="testsDOH.parser.Class1" data-myscope-id="scopeObj"
 			 data-myscope-props="strProp1:'text'">
 		</div>
-		<div data-dojo-type="tests.parser.Class1" data-dojo-id="normalObj"
+		<div data-dojo-type="testsDOH.parser.Class1" data-dojo-id="normalObj"
 			 data-dojo-props="strProp1:'text'">
 		</div>
 	</body>

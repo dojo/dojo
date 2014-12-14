@@ -8,7 +8,7 @@ define(["doh", "dojo/store/Memory"], function(doh, Memory){
 			{id: 5, name: "five", prime: true, mappedTo: "A", date: new Date(1972, 3, 6, 6, 2) }
 		]
 	});
-	doh.register("dojo.tests.store.Memory",
+	doh.register("dojo.testsDOH.store.Memory",
 		[
 			function testGet(t){
 				t.is(store.get(1).name, "one");

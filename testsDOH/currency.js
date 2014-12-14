@@ -27,7 +27,7 @@ define(["doh/main", "require", "../currency", "../i18n"], function(doh, require,
 
 	if(require.async){
 		require(["../_base/array",  "../i18n"], function(array){
-			doh.register("tests.currency", {
+			doh.register("testsDOH.currency", {
 				name: "currency",
 				timeout: 2000,
 				runTest: function(t){
@@ -44,7 +44,7 @@ define(["doh/main", "require", "../currency", "../i18n"], function(doh, require,
 			});
 		});
 	}else{ // tests for the v1.x loader/i18n machinery
-		doh.register("tests.currency", {
+		doh.register("testsDOH.currency", {
 			// Test formatting and parsing of currencies in various locales pre-built in dojo.cldr
 			// NOTE: we can't set djConfig.extraLocale before bootstrapping unit tests, so directly
 			// load resources here for specific locales:

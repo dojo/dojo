@@ -1,5 +1,5 @@
 define([ "require", "doh/main" ], function(require, doh){
-	doh.register("tests.node", [
+	doh.register("testsDOH.node", [
 		function testRequireBuiltIn(t){
 			var td = new doh.Deferred();
 			require(["dojo/node!util"], td.getTestCallback(function(util){

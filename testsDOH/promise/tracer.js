@@ -102,5 +102,5 @@ define([
 		}
 	}
 
-	doh.register("tests.promise.tracer", wrapped);
+	doh.register("testsDOH.promise.tracer", wrapped);
 });

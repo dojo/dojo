@@ -34,13 +34,13 @@
 			"local1-dep-2",
 			"local1-4",
 			"local1-6",
-			"dojo.tests._base.loader.xdomain.local1-runtimeDependent1-1",
-			"dojo.tests._base.loader.xdomain.local1-runtimeDependent1-2",
+			"dojo.testsDOH._base.loader.xdomain.local1-runtimeDependent1-1",
+			"dojo.testsDOH._base.loader.xdomain.local1-runtimeDependent1-2",
 			"local1-7",
 			"local1-8",
-			"dojo.tests._base.loader.xdomain.local1-browser-1",
-			"dojo.tests._base.loader.xdomain.local1-browser-2",
-			"dojo.tests._base.loader.xdomain.local1-browser-skip-1",
+			"dojo.testsDOH._base.loader.xdomain.local1-browser-1",
+			"dojo.testsDOH._base.loader.xdomain.local1-browser-2",
+			"dojo.testsDOH._base.loader.xdomain.local1-browser-skip-1",
 			"local1-9",
 			"local1-10",
 			"local1-11",
@@ -69,13 +69,13 @@
 			"local1-dep-2",
 			"local1-4",
 			"local1-6",
-			"dojo.tests._base.loader.xdomain.local1-runtimeDependent1-1",
-			"dojo.tests._base.loader.xdomain.local1-runtimeDependent1-2",
+			"dojo.testsDOH._base.loader.xdomain.local1-runtimeDependent1-1",
+			"dojo.testsDOH._base.loader.xdomain.local1-runtimeDependent1-2",
 			"local1-7",
 			"local1-8",
-			"dojo.tests._base.loader.xdomain.local1-browser-1",
-			"dojo.tests._base.loader.xdomain.local1-browser-2",
-			"dojo.tests._base.loader.xdomain.local1-browser-skip-1",
+			"dojo.testsDOH._base.loader.xdomain.local1-browser-1",
+			"dojo.testsDOH._base.loader.xdomain.local1-browser-2",
+			"dojo.testsDOH._base.loader.xdomain.local1-browser-skip-1",
 			"local1-9",
 			"local1-10",
 			"local1-11",
@@ -97,13 +97,13 @@
 			"local1-dep-2",
 			"local1-4",
 			"local1-6",
-			"dojo.tests._base.loader.xdomain.local1-runtimeDependent1-1",
-			"dojo.tests._base.loader.xdomain.local1-runtimeDependent1-2",
+			"dojo.testsDOH._base.loader.xdomain.local1-runtimeDependent1-1",
+			"dojo.testsDOH._base.loader.xdomain.local1-runtimeDependent1-2",
 			"local1-7",
 			"local1-8",
-			"dojo.tests._base.loader.xdomain.local1-browser-1",
-			"dojo.tests._base.loader.xdomain.local1-browser-2",
-			"dojo.tests._base.loader.xdomain.local1-browser-skip-1",
+			"dojo.testsDOH._base.loader.xdomain.local1-browser-1",
+			"dojo.testsDOH._base.loader.xdomain.local1-browser-2",
+			"dojo.testsDOH._base.loader.xdomain.local1-browser-skip-1",
 			"local1-9",
 			"local1-10",
 			"local1-11",
@@ -135,11 +135,11 @@
 			"local1-18",
 			"local1-dep-1",
 			"local1-dep-2",
-			"dojo.tests._base.loader.xdomain.local1-runtimeDependent1-1",
-			"dojo.tests._base.loader.xdomain.local1-runtimeDependent1-2",
-			"dojo.tests._base.loader.xdomain.local1-browser-1",
-			"dojo.tests._base.loader.xdomain.local1-browser-2",
-			"dojo.tests._base.loader.xdomain.local1-browser-skip-1"].join(";");
+			"dojo.testsDOH._base.loader.xdomain.local1-runtimeDependent1-1",
+			"dojo.testsDOH._base.loader.xdomain.local1-runtimeDependent1-2",
+			"dojo.testsDOH._base.loader.xdomain.local1-browser-1",
+			"dojo.testsDOH._base.loader.xdomain.local1-browser-2",
+			"dojo.testsDOH._base.loader.xdomain.local1-browser-skip-1"].join(";");
 	  }
 	</script>
 	<script type="text/javascript" src="../../../../dojo.js"></script>
@@ -161,7 +161,7 @@
 				return;
 		    }
 
-			// pretend that everything except the stuff in dojo/tests/_base/loader/xdomain is xdomain
+			// pretend that everything except the stuff in dojo/testsDOH/_base/loader/xdomain is xdomain
 			require.isXdUrl = function(url){
 				return !/loader\/xdomain/.test(url) && !/syncBundle/.test(url);
 			};
@@ -171,32 +171,32 @@
 			// challenges are in local1; therefore we test when that module causes the xdomain shift and when
 			// the loader is already in xdomain when that module is demanded
 			if(dohArgs.variation==1){
-				dojo.require("dojo.tests._base.loader.xdomain.local1");
+				dojo.require("dojo.testsDOH._base.loader.xdomain.local1");
 				//>>excludeStart("srcVersion", kwArgs.copyTests=="build");
 				if(dohArgs.async==0){
 					// can't stop the local module from completely executing...
-					xdomainLog.push(11, dojo.tests._base.loader.xdomain.local1==="stepOnLocal1");
-					xdomainLog.push(12, dojo.require("dojo.tests._base.loader.xdomain.local1")==="stepOnLocal1");
-					xdomainLog.push(13, require("dojo/tests/_base/loader/xdomain/local1")==="stepOnLocal1");
+					xdomainLog.push(11, dojo.testsDOH._base.loader.xdomain.local1==="stepOnLocal1");
+					xdomainLog.push(12, dojo.require("dojo.testsDOH._base.loader.xdomain.local1")==="stepOnLocal1");
+					xdomainLog.push(13, require("dojo/testsDOH/_base/loader/xdomain/local1")==="stepOnLocal1");
 				}else{
-					xdomainLog.push(11, dojo.getObject("dojo.tests._base.loader.xdomain.local1")===undefined);
+					xdomainLog.push(11, dojo.getObject("dojo.testsDOH._base.loader.xdomain.local1")===undefined);
 				}
 				//>>excludeEnd("srcVersion");
 			}else{
-				dojo.require("dojo.tests._base.loader.xdomain.local2");
+				dojo.require("dojo.testsDOH._base.loader.xdomain.local2");
 				//>>excludeStart("srcVersion", kwArgs.copyTests=="build");
 				if(dohArgs.async==0){
 					// can't stop the local module from completely executing...
-					xdomainLog.push(11, dojo.tests._base.loader.xdomain.local2.status==="local2-loaded");
-					xdomainLog.push(12, dojo.require("dojo.tests._base.loader.xdomain.local2").status==="local2-loaded");
-					xdomainLog.push(13, require("dojo/tests/_base/loader/xdomain/local2").status==="local2-loaded");
+					xdomainLog.push(11, dojo.testsDOH._base.loader.xdomain.local2.status==="local2-loaded");
+					xdomainLog.push(12, dojo.require("dojo.testsDOH._base.loader.xdomain.local2").status==="local2-loaded");
+					xdomainLog.push(13, require("dojo/testsDOH/_base/loader/xdomain/local2").status==="local2-loaded");
 				}else{
-					xdomainLog.push(11, dojo.getObject("dojo.tests._base.loader.xdomain.local2")===undefined);
+					xdomainLog.push(11, dojo.getObject("dojo.testsDOH._base.loader.xdomain.local2")===undefined);
 				}
-				xdomainLog.push(16,	dojo.getObject("dojo.tests._base.loader.xdomain.local1")===undefined);
+				xdomainLog.push(16,	dojo.getObject("dojo.testsDOH._base.loader.xdomain.local1")===undefined);
 				if(dojo.isIE!=6){
 					try{
-						require("dojo/tests/_base/loader/xdomain/local1");
+						require("dojo/testsDOH/_base/loader/xdomain/local1");
 						xdomainLog.push(19, false);
 					}catch(e){
 						xdomainLog.push(19, true);
@@ -210,10 +210,10 @@
 			// (WARNING: ie might look different because of its strange caching behavior)
 			xdomainLog.push(14, (dojo.hash===undefined));
 			xdomainLog.push(15, (dojo.cookie===undefined));
-			xdomainLog.push(17, dojo.getObject("dojo.tests._base.loader.xdomain.local3")===undefined);
+			xdomainLog.push(17, dojo.getObject("dojo.testsDOH._base.loader.xdomain.local3")===undefined);
 			if(dojo.isIE!=6){
 				try{
-					require("dojo/tests/_base/loader/xdomain/local3");
+					require("dojo/testsDOH/_base/loader/xdomain/local3");
 					xdomainLog.push(18, false);
 				}catch(e){
 					xdomainLog.push(18, true);
@@ -228,46 +228,46 @@
 
 				t.is(expectedSequence, xdomainExecSequence.join(";"));
 
-				t.is("stepOnLocal1", dojo.tests._base.loader.xdomain.local1);
-				t.is("stepOnLocal1", dojo.getObject("dojo.tests._base.loader.xdomain.local1"));
-				t.is("stepOnLocal1", dojo.require("dojo.tests._base.loader.xdomain.local1"));
-				t.is("stepOnLocal1", require("dojo/tests/_base/loader/xdomain/local1"));
+				t.is("stepOnLocal1", dojo.testsDOH._base.loader.xdomain.local1);
+				t.is("stepOnLocal1", dojo.getObject("dojo.testsDOH._base.loader.xdomain.local1"));
+				t.is("stepOnLocal1", dojo.require("dojo.testsDOH._base.loader.xdomain.local1"));
+				t.is("stepOnLocal1", require("dojo/testsDOH/_base/loader/xdomain/local1"));
 
-				t.is("stepOn1SteppedOn", dojo.tests._base.loader.xdomain.local1SteppedOn);
-				t.is("stepOn1SteppedOn", dojo.getObject("dojo.tests._base.loader.xdomain.local1SteppedOn"));
-				t.is("stepOn1SteppedOn", dojo.require("dojo.tests._base.loader.xdomain.local1SteppedOn"));
-				t.is("stepOn1SteppedOn", require("dojo/tests/_base/loader/xdomain/local1SteppedOn"));
+				t.is("stepOn1SteppedOn", dojo.testsDOH._base.loader.xdomain.local1SteppedOn);
+				t.is("stepOn1SteppedOn", dojo.getObject("dojo.testsDOH._base.loader.xdomain.local1SteppedOn"));
+				t.is("stepOn1SteppedOn", dojo.require("dojo.testsDOH._base.loader.xdomain.local1SteppedOn"));
+				t.is("stepOn1SteppedOn", require("dojo/testsDOH/_base/loader/xdomain/local1SteppedOn"));
 
-				t.is("local1NotSteppedOn", dojo.tests._base.loader.xdomain.local1NotSteppedOn.status);
-				t.is("local1NotSteppedOn", dojo.getObject("dojo.tests._base.loader.xdomain.local1NotSteppedOn.status"));
-				t.is("local1NotSteppedOn", dojo.require("dojo.tests._base.loader.xdomain.local1NotSteppedOn").status);
-				t.is("local1NotSteppedOn", require("dojo/tests/_base/loader/xdomain/local1NotSteppedOn").status);
+				t.is("local1NotSteppedOn", dojo.testsDOH._base.loader.xdomain.local1NotSteppedOn.status);
+				t.is("local1NotSteppedOn", dojo.getObject("dojo.testsDOH._base.loader.xdomain.local1NotSteppedOn.status"));
+				t.is("local1NotSteppedOn", dojo.require("dojo.testsDOH._base.loader.xdomain.local1NotSteppedOn").status);
+				t.is("local1NotSteppedOn", require("dojo/testsDOH/_base/loader/xdomain/local1NotSteppedOn").status);
 
-				t.is("dojo.tests._base.loader.xdomain.local1-dep-ok", dojo.tests._base.loader.xdomain["local1-dep"].status);
-				t.is("dojo.tests._base.loader.xdomain.local1-dep-ok", dojo.getObject("dojo.tests._base.loader.xdomain.local1-dep.status"));
-				t.is("dojo.tests._base.loader.xdomain.local1-dep-ok", dojo.require("dojo.tests._base.loader.xdomain.local1-dep").status);
-				t.is("dojo.tests._base.loader.xdomain.local1-dep-ok", require("dojo/tests/_base/loader/xdomain/local1-dep").status);
+				t.is("dojo.testsDOH._base.loader.xdomain.local1-dep-ok", dojo.testsDOH._base.loader.xdomain["local1-dep"].status);
+				t.is("dojo.testsDOH._base.loader.xdomain.local1-dep-ok", dojo.getObject("dojo.testsDOH._base.loader.xdomain.local1-dep.status"));
+				t.is("dojo.testsDOH._base.loader.xdomain.local1-dep-ok", dojo.require("dojo.testsDOH._base.loader.xdomain.local1-dep").status);
+				t.is("dojo.testsDOH._base.loader.xdomain.local1-dep-ok", require("dojo/testsDOH/_base/loader/xdomain/local1-dep").status);
 
-				t.is("dojo.tests._base.loader.xdomain.local1-runtimeDependent1-ok", dojo.tests._base.loader.xdomain["local1-runtimeDependent1"].status);
-				t.is("dojo.tests._base.loader.xdomain.local1-runtimeDependent1-ok", dojo.getObject("dojo.tests._base.loader.xdomain.local1-runtimeDependent1.status"));
-				t.is("dojo.tests._base.loader.xdomain.local1-runtimeDependent1-ok", dojo.require("dojo.tests._base.loader.xdomain.local1-runtimeDependent1").status);
-				t.is("dojo.tests._base.loader.xdomain.local1-runtimeDependent1-ok", require("dojo/tests/_base/loader/xdomain/local1-runtimeDependent1").status);
+				t.is("dojo.testsDOH._base.loader.xdomain.local1-runtimeDependent1-ok", dojo.testsDOH._base.loader.xdomain["local1-runtimeDependent1"].status);
+				t.is("dojo.testsDOH._base.loader.xdomain.local1-runtimeDependent1-ok", dojo.getObject("dojo.testsDOH._base.loader.xdomain.local1-runtimeDependent1.status"));
+				t.is("dojo.testsDOH._base.loader.xdomain.local1-runtimeDependent1-ok", dojo.require("dojo.testsDOH._base.loader.xdomain.local1-runtimeDependent1").status);
+				t.is("dojo.testsDOH._base.loader.xdomain.local1-runtimeDependent1-ok", require("dojo/testsDOH/_base/loader/xdomain/local1-runtimeDependent1").status);
 
-				t.is("ok", dojo.getObject("dojo.tests._base.loader.xdomain.local1-runtimeDependent").status);
+				t.is("ok", dojo.getObject("dojo.testsDOH._base.loader.xdomain.local1-runtimeDependent").status);
 
-				t.is(undefined, dojo.tests._base.loader.xdomain["local1-runtimeDependent2"]);
-				t.is(undefined, dojo.getObject("dojo.tests._base.loader.xdomain.local1-runtimeDependent2"));
+				t.is(undefined, dojo.testsDOH._base.loader.xdomain["local1-runtimeDependent2"]);
+				t.is(undefined, dojo.getObject("dojo.testsDOH._base.loader.xdomain.local1-runtimeDependent2"));
 			    try{
-    				require("dojo/tests/_base/loader/xdomain/local1/runtimeDependent2");
+    				require("dojo/testsDOH/_base/loader/xdomain/local1/runtimeDependent2");
 		            t.is(1, 0);
     			}catch(e){
 		            t.is(1, 1);
     			}
 
-				t.is("dojo.tests._base.loader.xdomain.local1-browser-ok", dojo.tests._base.loader.xdomain["local1-browser"].status);
-				t.is("dojo.tests._base.loader.xdomain.local1-browser-ok", dojo.getObject("dojo.tests._base.loader.xdomain.local1-browser.status"));
-				t.is("dojo.tests._base.loader.xdomain.local1-browser-ok", dojo.require("dojo.tests._base.loader.xdomain.local1-browser").status);
-				t.is("dojo.tests._base.loader.xdomain.local1-browser-ok", require("dojo/tests/_base/loader/xdomain/local1-browser").status);
+				t.is("dojo.testsDOH._base.loader.xdomain.local1-browser-ok", dojo.testsDOH._base.loader.xdomain["local1-browser"].status);
+				t.is("dojo.testsDOH._base.loader.xdomain.local1-browser-ok", dojo.getObject("dojo.testsDOH._base.loader.xdomain.local1-browser.status"));
+				t.is("dojo.testsDOH._base.loader.xdomain.local1-browser-ok", dojo.require("dojo.testsDOH._base.loader.xdomain.local1-browser").status);
+				t.is("dojo.testsDOH._base.loader.xdomain.local1-browser-ok", require("dojo/testsDOH/_base/loader/xdomain/local1-browser").status);
 
 				t.isNot(undefined, dojo.cookie);
 				t.is(dojo.cookie, dojo.getObject("dojo.cookie"));

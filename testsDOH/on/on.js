@@ -2,7 +2,7 @@ define([
 	"doh", "require",
 	"dojo/_base/declare",  "dojo/Evented", "dojo/has", "dojo/on", "dojo/query", "dojo/topic", "dojo/dom-construct", "dojo/on/debounce", "dojo/on/throttle"
 ], function(doh, require, declare, Evented, has, on, query, topic, domConstruct, dojoDebounce, dojoThrottle){
-	doh.register("tests.on.delegate", [
+	doh.register("testsDOH.on.delegate", [
 		function matches(){
 			var eDiv = document.body.appendChild(document.createElement("div")),
 				eDiv2 = eDiv.appendChild(document.createElement("div")),
@@ -94,7 +94,7 @@ define([
 
 		}
 	]);
-	doh.register("tests.on", [
+	doh.register("testsDOH.on", [
 		function object(t){
 			var order = [];
 			var obj = new Evented();
@@ -430,6 +430,6 @@ define([
 	]);
 
 	if(has("host-browser")){
-		doh.registerUrl("tests.on.event-focusin", require.toUrl("./event-focusin.html"), 30000);
+		doh.registerUrl("testsDOH.on.event-focusin", require.toUrl("./event-focusin.html"), 30000);
 	}
 });

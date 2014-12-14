@@ -1,4 +1,4 @@
-dojo.provide("dojo.tests._base.loader.syncFromAsyncModule");
-dojo.declare("dojo.tests._base.loader.syncFromAsyncModule", null, {});
-dojo.tests._base.loader.syncFromAsyncModule.status= "OK";
-dojo.require("dojo.tests._base.loader.syncFromAsyncModuleDep");
+dojo.provide("dojo.testsDOH._base.loader.syncFromAsyncModule");
+dojo.declare("dojo.testsDOH._base.loader.syncFromAsyncModule", null, {});
+dojo.testsDOH._base.loader.syncFromAsyncModule.status= "OK";
+dojo.require("dojo.testsDOH._base.loader.syncFromAsyncModuleDep");

@@ -9,7 +9,7 @@ define(["doh/main", "../json", "../has"], function(doh, JSON, has){
 		throw new Error("Invalid JSON " + json + " should have been rejected");
 	};
 
-	doh.register("tests.json", [
+	doh.register("testsDOH.json", [
 		// all tests below are taken from #4.2 of the CSS3 Color Module
 		function simpleString(t){ t.is("bar", JSON.parse('{"foo":"bar"}').foo); },
 		function simpleTrue(t){ t.is(true, JSON.parse('{"foo":true}').foo); },
@@ -53,7 +53,7 @@ define(["doh/main", "../json", "../has"], function(doh, JSON, has){
 	]);
 
 	if(!has("host-rhino")){
-		doh.register("tests.json.circular", [
+		doh.register("testsDOH.json.circular", [
 			function serializeCircular(t){
 				try{
 					var a = {};
@@ -133,7 +133,7 @@ for(i = 0; i < 100; i++){
 }
 var largeJson = JSON.stringify(largeDataSet);
 
-doh.register("tests.json.performance", [
+doh.register("testsDOH.json.performance", [
 		// all tests below are taken from #4.2 of the CSS3 Color Module
 		function small(){
 			var i = 10000;

@@ -126,7 +126,7 @@ tests.number._decimalNumberDiff = function(num1,num2){
 	return false;
 };
 
-doh.register("tests.number",
+doh.register("testsDOH.number",
 	[
 		{
 			// Test formatting and parsing of currencies in various locales pre-built in dojo.cldr

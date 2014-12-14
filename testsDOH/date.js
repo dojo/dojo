@@ -1,5 +1,5 @@
 define(["doh", "../date"], function(doh, date){
-doh.register("tests.date.util", [
+doh.register("testsDOH.date.util", [
 
 /* Informational Functions
  **************************/
@@ -99,7 +99,7 @@ function test_date_getTimezoneName(t){
 	]
 );
 
-doh.register("tests.date.math",
+doh.register("testsDOH.date.math",
 	[
 function test_date_compare(t){
 	var d1=new Date();

@@ -12,7 +12,7 @@ define(["doh", "dojo/store/Memory", "dojo/store/Cache"], function(doh, Memory, C
 	var cachingStore = new Memory();
 	var options = {};
 	var store = Cache(masterStore, cachingStore, options);
-	doh.register("dojo.tests.store.Cache",
+	doh.register("dojo.testsDOH.store.Cache",
 		[
 			function testGet(t){
 				t.is(store.get(1).name, "one");

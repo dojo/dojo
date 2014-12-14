@@ -1,7 +1,7 @@
 define(["doh/main", "dojo/_base/array", "dojo/_base/lang", "dojo/_base/kernel"
 ], function(doh, array, lang, kernel){
 
-  doh.register("tests._base.lang", [
+  doh.register("testsDOH._base.lang", [
 		function exists(t){
 			var test = {
 				foo : 0

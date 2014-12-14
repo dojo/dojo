@@ -17,7 +17,7 @@ define(["doh", "dojo/store/DataStore", "dojo/data/ItemFileReadStore", "dojo/data
 	}});
 	dataStore.fetchItemByIdentity({identity:null});
 	var store = new DataStore({store:dataStore});
-	doh.register("dojo.tests.store.DataStore",
+	doh.register("dojo.testsDOH.store.DataStore",
 		[
 			function testGet(t){
 				t.is(store.get(1).name, "one");

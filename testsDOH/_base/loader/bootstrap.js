@@ -1,5 +1,5 @@
 define(["dojo", "doh", "../../../_base/sniff", "require"], function(dojo, doh, has, require){
-	doh.register("tests._base._loader.bootstrap", [
+	doh.register("testsDOH._base._loader.bootstrap", [
 		function hasConsole(t){
 			t.assertTrue("console" in dojo.global);
 			t.assertTrue("assert" in console);
@@ -8,10 +8,10 @@ define(["dojo", "doh", "../../../_base/sniff", "require"], function(dojo, doh, h
 
 		function getText(t){
 			if(require.getText){
-				var text = require.getText(require.toUrl("dojo/tests/_base/loader/getText.txt")).replace(/\r|\n/g, "");
+				var text = require.getText(require.toUrl("dojo/testsDOH/_base/loader/getText.txt")).replace(/\r|\n/g, "");
 				t.assertEqual("dojo._getText() test data", text);
 				if(dojo._getText){
-					text = dojo._getText(require.toUrl("dojo/tests/_base/loader/getText.txt")).replace(/\r|\n/g, "");
+					text = dojo._getText(require.toUrl("dojo/testsDOH/_base/loader/getText.txt")).replace(/\r|\n/g, "");
 					t.assertEqual("dojo._getText() test data", text);
 				}
 			}

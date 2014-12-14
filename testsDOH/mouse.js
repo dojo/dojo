@@ -1,6 +1,6 @@
 define(["doh", "dojo/mouse", "dojo/on"], function(doh, mouse, on){
 
-	doh.register("tests.on", [
+	doh.register("testsDOH.on", [
 		function mouseenter(t){
 			var order = [];
 			var div = document.body.appendChild(document.createElement("div"));

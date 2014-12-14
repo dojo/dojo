@@ -2,7 +2,7 @@ define([
 	"doh", "require",
 	"dojo/throttle"
 ], function(doh, require, throttle){
-	doh.register("tests.throttle", [
+	doh.register("testsDOH.throttle", [
 		function throttleTest(){
 			var throttledCount = {},
 				throttleTest1 = throttle(function() {

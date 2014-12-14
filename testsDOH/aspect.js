@@ -1,6 +1,6 @@
 define(["dojo/aspect"], function(aspect){
 
-doh.register("tests.aspect",
+doh.register("testsDOH.aspect",
 	[
 		function before(t){
 			var order = [];

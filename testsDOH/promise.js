@@ -1,8 +1,8 @@
 define([
-	"dojo/tests/Deferred",
-	"dojo/tests/promise/Promise",
-	"dojo/tests/when",
-	"dojo/tests/promise/all",
-	"dojo/tests/promise/first",
-	"dojo/tests/promise/tracer"
+	"dojo/testsDOH/Deferred",
+	"dojo/testsDOH/promise/Promise",
+	"dojo/testsDOH/when",
+	"dojo/testsDOH/promise/all",
+	"dojo/testsDOH/promise/first",
+	"dojo/testsDOH/promise/tracer"
 ], 1);

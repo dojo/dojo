@@ -1,6 +1,6 @@
 define(["doh", "dojo/_base/array", "dojo/_base/lang"], function(doh, array, lang){
 
-	doh.register("tests._base.array", [
+	doh.register("testsDOH._base.array", [
 		function testIndexOf(t){
 			var foo = [128, 256, 512];
 			var bar = ["aaa", "bbb", "ccc"];

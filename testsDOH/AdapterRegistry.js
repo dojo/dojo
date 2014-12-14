@@ -1,6 +1,6 @@
 define(["doh/main", "../AdapterRegistry"], function(doh, AdapterRegistry){
 
-doh.register("tests.AdapterRegistry",
+doh.register("testsDOH.AdapterRegistry",
 	[
 		function ctor(t){
 			var taa = new AdapterRegistry();

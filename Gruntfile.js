@@ -26,14 +26,14 @@ module.exports = function (grunt) {
 				options: {
 					runType: 'runner',
 					config: 'tests-intern/intern.local',
-					reporters: ['runner', 'pretty']
+					reporters: ['runner']
 				}
 			},
 			remote: {
 				options: {
 					runType: 'runner',
 					config: 'tests-intern/intern',
-					reporters: ['runner', 'pretty']
+					reporters: ['runner']
 				}
 			},
 			proxy: {
@@ -68,7 +68,7 @@ module.exports = function (grunt) {
 	});
 
 	grunt.registerTask('test', function (target) {
-		if (!target || target === 'coverage') {
+		if (!target || target === 'coverage' || target === 'pretty') {
 			target = 'remote';
 		}
 
@@ -89,6 +89,10 @@ module.exports = function (grunt) {
 
 		if (this.flags.console) {
 			addReporter('console');
+		}
+
+		if (this.flags.pretty) {
+			addReporter('pretty');
 		}
 
 		if (target !== 'node') {

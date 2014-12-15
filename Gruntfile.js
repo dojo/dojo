@@ -1,25 +1,6 @@
 module.exports = function (grunt) {
 	grunt.loadNpmTasks('intern-geezer');
 
-	var req = (function () {
-		this.dojoConfig = {
-			async: true,
-			baseUrl: __dirname,
-			packages: [
-				{ name: 'intern', location: 'node_modules/intern-geezer' },
-				{ name: 'when', location: 'node_modules/when', main: 'when' },
-				{ name: 'dojo', location: '.' }
-			],
-			map: {
-				'*': {
-					'intern/dojo': 'intern/node_modules/dojo'
-				}
-			}
-		};
-		require('intern-geezer/node_modules/dojo/dojo');
-		return this.require;
-	})();
-
 	grunt.initConfig({
 		intern: {
 			local: {
@@ -54,19 +35,6 @@ module.exports = function (grunt) {
 		}
 	});
 
-	var servicesServer;
-	grunt.registerTask('proxy', function (target) {
-		var done = this.async();
-		req(['dojo/tests-intern/services/main'], function (services) {
-			services.start().then(function (server) {
-				servicesServer = server;
-				if (target) {
-					done(true);
-				}
-			});
-		});
-	});
-
 	grunt.registerTask('test', function (target) {
 		if (!target || target === 'coverage' || target === 'pretty') {
 			target = 'remote';
@@ -95,9 +63,6 @@ module.exports = function (grunt) {
 			addReporter('pretty');
 		}
 
-		if (target !== 'node') {
-			grunt.task.run('proxy:tests');
-		}
 		grunt.task.run('intern:' + target);
 	});
 };

@@ -1,6 +1,6 @@
 define([
-	'when',
-	'when/delay'
+	'intern/dojo/node!when',
+	'intern/dojo/node!when/delay'
 ], function (when, delay) {
 	function JSONP(callback, data) {
 		return callback + '(' + JSON.stringify(data) + ');';

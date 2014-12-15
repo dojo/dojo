@@ -13,6 +13,16 @@ dojoConfig = {
 
 define([
 	'intern',
+	'intern/dojo/topic',
+	'intern/dojo/has!host-node?./services/main'
+], function (intern, topic, services) {
+	if (services && intern.mode === 'runner') {
+		services.start().then(function (server) {
+			topic.subscribe('/runner/end', function () {
+				server.close();
+			});
+		});
+	}
 	return {
 		proxyPort: 9000,
 		proxyUrl: 'http://localhost:9001/',

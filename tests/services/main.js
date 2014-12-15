@@ -1,17 +1,17 @@
 define([
 	'require',
 	'exports',
-	'when',
-	'when/callbacks',
-	'when/node/function',
-	'dojo/node!http',
-	'dojo/node!url',
-	'dojo/node!querystring',
-	'dojo/node!glob',
-	'dojo/node!http-proxy',
-	'dojo/node!jsgi-node',
-	'dojo/node!jsgi-node/jsgi/node',
-	'dojo/node!formidable'
+	'intern/dojo/node!when',
+	'intern/dojo/node!when/callbacks',
+	'intern/dojo/node!when/node/function',
+	'intern/dojo/node!http',
+	'intern/dojo/node!url',
+	'intern/dojo/node!querystring',
+	'intern/dojo/node!glob',
+	'intern/dojo/node!http-proxy',
+	'intern/dojo/node!jsgi-node',
+	'intern/dojo/node!jsgi-node/jsgi/node',
+	'intern/dojo/node!formidable'
 ], function (require, exports, when, callbacks, nodefn, http, url, qs, glob, httpProxy, jsgi, node, formidable) {
 	var nodeWrapper = node.Node,
 		proxy = new httpProxy.RoutingProxy();
@@ -55,7 +55,7 @@ define([
 
 	exports.start = function (port) {
 		return nodefn.call(glob, '**/*.service.js', {
-			cwd: './tests-intern/services'
+			cwd: './tests/services'
 		}).then(function (files) {
 			return when.map(files, function (filename) {
 				return require('./' + filename.slice(0, -3)).then(function (module) {

@@ -7,8 +7,8 @@ it can be squashed and committed to the main repository.
 The "tests" directory has the structure:
 ```
 tests/
-    intern.js - SauceLabs configuration
-    intern.local.js - Local Selenium configuration
+    dojo.intern.js - SauceLabs configuration
+    dojo.intern.local.js - Local Selenium configuration
     functional/ - Functional tests
         all.js - Module referencing all functional tests to run
     unit/ - Unit tests
@@ -35,7 +35,7 @@ grunt test
 ```
 
 This command will attempt to open a tunnel to SauceLabs and run the test
-suite in all of the browsers defined in `tests/intern.js`.
+suite in all of the browsers defined in `tests/dojo.intern.js`.
 SauceLabs does require an account (SL offers free accounts), however I'm
 not sure if the foundation or the toolkit has an account already. Once I find out, I'll update this document.
 
@@ -55,14 +55,14 @@ grunt test:proxy
 
 With the proxy running, navigate to the following URL:
 ```
-http://localhost:9001/__intern/client.html?config=tests/intern
+http://localhost:9001/__intern/client.html?config=tests/dojo.intern
 ```
 
 This will run the entire test suite and output the results in the
 console. To only run certain modules, use the "suites" query parameter.
 The following URL will only run the dojo/request/script tests:
 ```
-http://localhost:9001/__intern/client.html?config=tests/intern&suites=tests/request/script
+http://localhost:9001/__intern/client.html?config=tests/dojo.intern&suites=tests/request/script
 ```
 
 One last feature of Intern that I find very useful is code coverage.

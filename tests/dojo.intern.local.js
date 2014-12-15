@@ -1,5 +1,5 @@
 define([
-	'./intern'
+	'./dojo.intern'
 ], function (intern) {
 	intern.tunnel = 'NullTunnel';
 	intern.tunnelOptions = {

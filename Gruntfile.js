@@ -25,14 +25,14 @@ module.exports = function (grunt) {
 			local: {
 				options: {
 					runType: 'runner',
-					config: 'tests/intern.local',
+					config: 'tests/dojo.intern.local',
 					reporters: ['runner']
 				}
 			},
 			remote: {
 				options: {
 					runType: 'runner',
-					config: 'tests/intern',
+					config: 'tests/dojo.intern',
 					reporters: ['runner']
 				}
 			},
@@ -40,14 +40,14 @@ module.exports = function (grunt) {
 				options: {
 					runType: 'runner',
 					proxyOnly: true,
-					config: 'tests/intern.proxy',
+					config: 'tests/dojo.intern.proxy',
 					reporters: ['runner']
 				}
 			},
 			node: {
 				options: {
 					runType: 'client',
-					config: 'tests/intern',
+					config: 'tests/dojo.intern',
 					reporters: ['console']
 				}
 			}

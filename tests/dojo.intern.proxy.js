@@ -1,5 +1,5 @@
 define([
-	'./intern'
+	'./dojo.intern'
 ], function (config) {
 	config.excludeInstrumentation = /^.*/;
 

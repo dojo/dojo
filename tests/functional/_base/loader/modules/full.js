@@ -1,4 +1,4 @@
-define('testing/tests-intern/functional/_base/loader/modules/full', [
+define('testing/tests/functional/_base/loader/modules/full', [
 	'./anon',
 	'../a',
 	'./wrapped',

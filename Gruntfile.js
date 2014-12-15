@@ -25,14 +25,14 @@ module.exports = function (grunt) {
 			local: {
 				options: {
 					runType: 'runner',
-					config: 'tests-intern/intern.local',
+					config: 'tests/intern.local',
 					reporters: ['runner']
 				}
 			},
 			remote: {
 				options: {
 					runType: 'runner',
-					config: 'tests-intern/intern',
+					config: 'tests/intern',
 					reporters: ['runner']
 				}
 			},
@@ -40,14 +40,14 @@ module.exports = function (grunt) {
 				options: {
 					runType: 'runner',
 					proxyOnly: true,
-					config: 'tests-intern/intern.proxy',
+					config: 'tests/intern.proxy',
 					reporters: ['runner']
 				}
 			},
 			node: {
 				options: {
 					runType: 'client',
-					config: 'tests-intern/intern',
+					config: 'tests/intern',
 					reporters: ['console']
 				}
 			}

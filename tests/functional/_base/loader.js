@@ -375,14 +375,14 @@ define([
 				],
 				map: {
 					'*': {
-						'dojo/tests-intern': 'testing/tests-intern/functional'
+						'dojo/tests': 'testing/tests/functional'
 					}
 				}
 			},
 			function (callback) {
 				require([
 					'dojo',
-					'dojo/tests-intern/_base/loader/declareStepsOnProvideAmd'
+					'dojo/tests/_base/loader/declareStepsOnProvideAmd'
 				], function (dojo, DeclareStepsOnProvideAmd) {
 					var data = {};
 					var instance = new DeclareStepsOnProvideAmd();
@@ -391,7 +391,7 @@ define([
 					// requiring declareStepsOnProvideAmd caused
 					// declareStepsOnProvide to load which loaded *two* modules
 					// and dojo.declare stepped on both of them
-					instance = new (require('dojo/tests-intern/_base/loader/declareStepsOnProvide1'))();
+					instance = new (require('dojo/tests/_base/loader/declareStepsOnProvide1'))();
 					data.status2 = instance.status();
 					callback(data);
 				});
@@ -414,22 +414,22 @@ define([
 						],
 						map: {
 							'*': {
-								'dojo/tests-intern': 'testing/tests-intern/functional'
+								'dojo/tests': 'testing/tests/functional'
 							}
 						}
 					},
 					function (callback) {
 						var dojo = window.dojo;
 
-						dojo.setObject('dojo.tests-intern._base.loader.pub1', 'do-not-mess-with-me');
-						dojo.require('dojo.tests-intern._base.loader.pub1');
-						dojo.require('dojo.tests-intern._base.loader.pub2');
+						dojo.setObject('dojo.tests._base.loader.pub1', 'do-not-mess-with-me');
+						dojo.require('dojo.tests._base.loader.pub1');
+						dojo.require('dojo.tests._base.loader.pub2');
 
 						require([ 'dojo/has' ], function (has) {
 							callback({
-								pub1: dojo.getObject('dojo.tests-intern._base.loader.pub1'),
-								pub2Status: dojo.getObject('dojo.tests-intern._base.loader.pub2') &&
-									dojo.getObject('dojo.tests-intern._base.loader.pub2.status'),
+								pub1: dojo.getObject('dojo.tests._base.loader.pub1'),
+								pub2Status: dojo.getObject('dojo.tests._base.loader.pub2') &&
+									dojo.getObject('dojo.tests._base.loader.pub2.status'),
 								dojoConfigPublishRequireResult: !!dojo.config.publishRequireResult,
 								hasPublishRequireResult: !!has('config-publishRequireResult')
 							});
@@ -488,7 +488,7 @@ define([
 						// the extra parenthesized subexprs make this have priority
 						[ /(yourOtherModule\/(common))\/special/, 'myModule2' ]
 					],
-					paths: { myTopLevelModule: './tests-intern/functional/_base/loader/myTopLevelModule' }
+					paths: { myTopLevelModule: './tests/functional/_base/loader/myTopLevelModule' }
 				});
 
 				require([
@@ -525,18 +525,18 @@ define([
 				packages: [
 					{
 						name: 'loader',
-						location: 'tests-intern/functional/_base/loader/config',
+						location: 'tests/functional/_base/loader/config',
 						packageMap: {
 							'pkg': 'pkgMapped'
 						}
 					},
 					{
 						name: 'pkg',
-						location: 'tests-intern/functional/_base/loader/config/pkg'
+						location: 'tests/functional/_base/loader/config/pkg'
 					},
 					{
 						name: 'pkgMapped',
-						location: 'tests-intern/functional/_base/loader/config/pkg',
+						location: 'tests/functional/_base/loader/config/pkg',
 						packageMap: {
 							'pkg': 'pkgMapped'
 						}
@@ -764,21 +764,21 @@ define([
 					'dojo/has',
 					'modules/anon',
 					'modules/wrapped',
-					'testing/tests-intern/functional/_base/loader/modules/full',
+					'testing/tests/functional/_base/loader/modules/full',
 					'modules/data',
 					'modules/factoryArity',
 					'modules/factoryArityExports',
-					'testing/tests-intern/functional/_base/loader/modules/idFactoryArity',
-					'testing/tests-intern/functional/_base/loader/modules/idFactoryArityExports'
+					'testing/tests/functional/_base/loader/modules/idFactoryArity',
+					'testing/tests/functional/_base/loader/modules/idFactoryArityExports'
 				], function (dojo, has, anon, wrapped) {
 					callback([
 						has('dojo-amd-factory-scan'),
 						anon.theAnswer,
 						require('modules/anon').five,
 						wrapped.five,
-						dojo.require('testing.tests-intern.functional._base.loader.modules.wrapped').five,
+						dojo.require('testing.tests.functional._base.loader.modules.wrapped').five,
 						require('modules/wrapped').five,
-						require('testing/tests-intern/functional/_base/loader/modules/full').twiceTheAnswer,
+						require('testing/tests/functional/_base/loader/modules/full').twiceTheAnswer,
 						require('modules/data').five,
 
 						require('modules/factoryArity').module.id,
@@ -789,13 +789,13 @@ define([
 						require('modules/factoryArityExports').id,
 						require('modules/factoryArityExports').impliedDep,
 
-						require('testing/tests-intern/functional/_base/loader/modules/idFactoryArity').module.id,
-						require('testing/tests-intern/functional/_base/loader/modules/idFactoryArity').id,
-						require('testing/tests-intern/functional/_base/loader/modules/idFactoryArity').impliedDep,
+						require('testing/tests/functional/_base/loader/modules/idFactoryArity').module.id,
+						require('testing/tests/functional/_base/loader/modules/idFactoryArity').id,
+						require('testing/tests/functional/_base/loader/modules/idFactoryArity').impliedDep,
 
-						require('testing/tests-intern/functional/_base/loader/modules/idFactoryArityExports').module.id,
-						require('testing/tests-intern/functional/_base/loader/modules/idFactoryArityExports').id,
-						require('testing/tests-intern/functional/_base/loader/modules/idFactoryArityExports').impliedDep
+						require('testing/tests/functional/_base/loader/modules/idFactoryArityExports').module.id,
+						require('testing/tests/functional/_base/loader/modules/idFactoryArityExports').id,
+						require('testing/tests/functional/_base/loader/modules/idFactoryArityExports').impliedDep
 					]);
 				});
 			},
@@ -817,11 +817,11 @@ define([
 				assert.strictEqual(data.shift(), 'factoryArityExports');
 				assert.strictEqual(data.shift(), 'impliedDep2');
 
-				assert.strictEqual(data.shift(), 'testing/tests-intern/functional/_base/loader/modules/idFactoryArity');
+				assert.strictEqual(data.shift(), 'testing/tests/functional/_base/loader/modules/idFactoryArity');
 				assert.strictEqual(data.shift(), 'idFactoryArity');
 				assert.strictEqual(data.shift(), 'impliedDep3');
 
-				assert.strictEqual(data.shift(), 'testing/tests-intern/functional/_base/loader/modules/idFactoryArityExports');
+				assert.strictEqual(data.shift(), 'testing/tests/functional/_base/loader/modules/idFactoryArityExports');
 				assert.strictEqual(data.shift(), 'idFactoryArityExports');
 				assert.strictEqual(data.shift(), 'impliedDep4');
 			}

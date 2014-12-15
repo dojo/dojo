@@ -4,9 +4,9 @@ All of the work is currently in https://github.com/bryanforbes/dojo/tree/intern-
 I'll accept pull requests in this repository. Once the conversion is complete,
 it can be squashed and committed to the main repository.
 
-All Intern tests are currently housed in the "tests-intern" directory with the structure:
+The "tests" directory has the structure:
 ```
-tests-intern/
+tests/
     intern.js - SauceLabs configuration
     intern.local.js - Local Selenium configuration
     functional/ - Functional tests
@@ -17,9 +17,6 @@ tests-intern/
     services/ - Service proxy server plus service modules
 ```
 
-The `tests-intern` directory also contains a runner script to launch an HTTP server,
-pick up test services, proxy the Intern instrumentation server, and start Intern's test runner. 
-
 ## Running the tests
 
 To get started, simply run the following commands in the dojo directory:
@@ -28,7 +25,7 @@ npm install -g grunt-cli		# Grunt must be installed globally
 npm install
 ```
 
-This will install grunt, Intern, and some supporting libraries in `node_modules`. 
+This will install grunt, Intern, and some supporting libraries in `node_modules`.
 
 Once complete, intern tests may be tested via SauceLabs by running the
 following command anywhere in the dojo repository:
@@ -38,7 +35,7 @@ grunt test
 ```
 
 This command will attempt to open a tunnel to SauceLabs and run the test
-suite in all of the browsers defined in `tests-intern/intern.js`.
+suite in all of the browsers defined in `tests/intern.js`.
 SauceLabs does require an account (SL offers free accounts), however I'm
 not sure if the foundation or the toolkit has an account already. Once I find out, I'll update this document.
 
@@ -58,14 +55,14 @@ grunt test:proxy
 
 With the proxy running, navigate to the following URL:
 ```
-http://localhost:9001/__intern/client.html?config=tests-intern/intern
+http://localhost:9001/__intern/client.html?config=tests/intern
 ```
 
 This will run the entire test suite and output the results in the
 console. To only run certain modules, use the "suites" query parameter.
 The following URL will only run the dojo/request/script tests:
 ```
-http://localhost:9001/__intern/client.html?config=tests-intern/intern&suites=tests-intern/request/script
+http://localhost:9001/__intern/client.html?config=tests/intern&suites=tests/request/script
 ```
 
 One last feature of Intern that I find very useful is code coverage.
@@ -91,8 +88,8 @@ the source code with which lines were not covered).
 ## Writing tests
 
 To add a test suite to the suites to automatically run when the runner
-executes, add the module ID of the suite to either tests-intern/suites.js (for unit tests)
-or tests-intern/functional.js (for functional tests).
+executes, add the module ID of the suite to either tests/unit/all.js (for unit tests)
+or tests/functional/all.js (for functional tests).
 
 For information on how to write Intern tests, see
 https://github.com/theintern/intern/wiki/Writing-Tests-with-Intern or
@@ -112,7 +109,7 @@ more information on JSGI and when.js, see the following links:
 * https://github.com/cujojs/when
 * https://github.com/cujojs/when/blob/master/docs/api.md#api
 
-Or look at the dojo/request test services in "tests-intern/request/".
+Or look at the dojo/request test services in "tests/request/".
 
 Once a service is written, it can be accessed from the proxy via the
 following URL pattern:
@@ -120,7 +117,7 @@ following URL pattern:
 http://localhost:9001/__services/path/to/service
 ```
 
-Taking "tests-intern/request/xhr.service.js" as an example, its URL
+Taking "tests/request/xhr.service.js" as an example, its URL
 endpoint would be:
 ```
 http://localhost:9001/__services/request/xhr

@@ -2,14 +2,14 @@ define([
 	'dojo/string',
 	'dojo/_base/array',
 	'dojo/sniff',
-	'dojo/text!tests-intern/functional/window/iframe_content/scrollTemplate.html',
+	'dojo/text!tests/functional/window/iframe_content/scrollTemplate.html',
 	// test document templates
-	'dojo/text!tests-intern/functional/window/iframe_content/htmlPadding.html',
-	'dojo/text!tests-intern/functional/window/iframe_content/absoluteTd.html',
-	'dojo/text!tests-intern/functional/window/iframe_content/innerScrollable.html',
-	'dojo/text!tests-intern/functional/window/iframe_content/table.html',
-	'dojo/text!tests-intern/functional/window/iframe_content/noScroll.html',
-	'dojo/text!tests-intern/functional/window/iframe_content/oversizedContent.html'
+	'dojo/text!tests/functional/window/iframe_content/htmlPadding.html',
+	'dojo/text!tests/functional/window/iframe_content/absoluteTd.html',
+	'dojo/text!tests/functional/window/iframe_content/innerScrollable.html',
+	'dojo/text!tests/functional/window/iframe_content/table.html',
+	'dojo/text!tests/functional/window/iframe_content/noScroll.html',
+	'dojo/text!tests/functional/window/iframe_content/oversizedContent.html'
 ], function (
 	string,
 	arrayUtil,

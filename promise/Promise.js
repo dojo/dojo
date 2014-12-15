@@ -115,7 +115,7 @@ define([
 			return this.then(null, errback);
 		},
 
-		finally: function(callbackOrErrback) {
+		'finally': function(callbackOrErrback) {
 			// summary:
 			//		Add a callback to be invoked when the promise is resolved
 			//		or rejected. Returns a promise which is resolved or rejected
@@ -127,10 +127,10 @@ define([
 			//		the initial promise.
 
 			return this.then(function(success) {
-				callbackOrErrback(success);
+				callbackOrErrback();
 				return success;
 			}, function(error) {
-				callbackOrErrback(error);
+				callbackOrErrback();
 				throw error;
 			});
 		},

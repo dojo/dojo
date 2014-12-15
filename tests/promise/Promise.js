@@ -35,36 +35,36 @@ define([
 		"finally(…) is always called": function(t){
 			var obj = {};
 			var deferred1 = new Deferred();
-			var thenResult, finallyResult;
+			var thenResult, finallyResult = false;
 			deferred1.promise.then(function(result){ thenResult = result; });
-			deferred1.promise.finally(function(result){ finallyResult = result; });
+			deferred1.promise['finally'](function(result){ finallyResult = true; });
 			deferred1.resolve(obj);
-			t.t(finallyResult === obj);
-			t.t(finallyResult === thenResult);
+			t.t(finallyResult);
+			t.t(obj === thenResult);
 
 			var deferred2 = new Deferred();
-			var thenResult2, finallyResult2;
+			var thenResult2, finallyResult2 = false;
 			deferred2.promise.then(null, function(result){ thenResult2 = result; });
-			deferred2.promise.finally(function(result){ finallyResult2 = result; });
+			deferred2.promise['finally'](function(){ finallyResult2 = true; });
 			deferred2.reject(obj);
-			t.t(finallyResult2 === obj);
-			t.t(finallyResult2 === thenResult2);
+			t.t(finallyResult2);
+			t.t(obj === thenResult2);
 		},
 
 		"Promise from finally(…) is resolved or rejected with original resolved or rejected value": function(t){
 			var obj = {};
 			var deferred1 = new Deferred();
-			var finallyResult;
-			var finallyPromise1 = deferred1.promise.finally(function(result){ finallyResult = result; });
+			var finallyResult = false;
+			var finallyPromise1 = deferred1.promise['finally'](function(){ finallyResult = true; });
 			deferred1.resolve(obj);
-			t.t(finallyResult === obj);
+			t.t(finallyResult);
 			t.t(finallyPromise1.isResolved());
 
 			var deferred2 = new Deferred();
-			var finallyResult2;
-			var finallyPromise2 = deferred2.promise.finally(function(result){ finallyResult2 = result; });
+			var finallyResult2 = false;
+			var finallyPromise2 = deferred2.promise['finally'](function(){ finallyResult2 = true; });
 			deferred2.reject(obj);
-			t.t(finallyResult2 === obj);
+			t.t(finallyResult2);
 			t.t(finallyPromise2.isRejected());
 		},
 

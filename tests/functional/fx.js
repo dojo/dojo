@@ -11,7 +11,7 @@ define([
 		return context.get('remote')
 			.setExecuteAsyncTimeout(5000)
 			.get(require.toUrl(url))
-			.then(pollUntil('return ready;'));
+			.then(pollUntil('return ready || null;'));
 	}
 
 	function applyCompressClass(context) {
@@ -165,11 +165,11 @@ define([
 						aspect.after(anim, 'onEnd', function () {
 							done({
 								expected: anim.duration,
-								actual: Date.now() - timer
+								actual: +(new Date()) - timer
 							});
 						}, true);
 
-						timer = Date.now();
+						timer = +(new Date());
 						anim.play();
 					}).then(function (results) {
 						assert.isTrue(results.actual > 100);
@@ -289,11 +289,11 @@ define([
 						aspect.after(anim, 'onEnd', function () {
 							done({
 								expected: anim.duration,
-								actual: Date.now() - timer
+								actual: +(new Date()) - timer
 							});
 						}, true);
 
-						timer = Date.now();
+						timer = +(new Date());
 						anim.play();
 					})
 					.then(function (results) {

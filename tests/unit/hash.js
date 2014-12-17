@@ -135,7 +135,7 @@ define([
 				setHash('');
 			},
 			after: function () {
-				_subscriber.remove();
+				_subscriber && _subscriber.remove();
 				setHash('');
 			},
 			'text': function () {

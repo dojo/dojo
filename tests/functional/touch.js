@@ -35,14 +35,9 @@ define([
 
 			'before': function () {
 				// Not all browsers or drivers support touch events
-				return loadPage(this)
-					.findById('upper-left')
-					.tap().then(function () {
-						tapOrClick = tapElement;
-					}, function () {
-						tapOrClick = clickElement;
-					})
-					.end();
+				tapOrClick = this.get('remote').environmentType.touchEnabled ?
+					tapElement :
+					clickElement;
 			},
 
 			'beforeEach': function () {
@@ -110,7 +105,7 @@ define([
 					})
 					.findById('upper-left')
 					.click()
-					.execute(function() {
+					.execute(function () {
 						return tracker.called;
 					})
 					.then(function (result) {
@@ -133,7 +128,7 @@ define([
 					})
 					.then(moveMouseToElement(session, 'upper-right'))
 					.then(moveMouseToElement(session, 'upper-left'))
-					.execute(function() {
+					.execute(function () {
 						return tracker.called;
 					})
 					.then(function (result) {

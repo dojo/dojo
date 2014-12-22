@@ -13,10 +13,10 @@ define([], function () {
 			return params[0] + params[1];
 		}
 	};
-	
+
 	return function (request) {
 		var input = '';
-		return request.body.forEach(function(string) {
+		return request.body.forEach(function (string) {
 			input += string;
 		}).then(function () {
 			if (!input) {

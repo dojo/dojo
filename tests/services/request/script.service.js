@@ -1,7 +1,6 @@
 define([
-	'intern/dojo/node!when',
-	'intern/dojo/node!when/delay'
-], function (when, delay) {
+	'../util'
+], function (util) {
 	function JSONP(callback, data) {
 		return callback + '(' + JSON.stringify(data) + ');';
 	}
@@ -15,7 +14,7 @@ define([
 	}
 
 	return function (request) {
-		var promise = when.promise(function (resolve, reject) {
+		var promise = new util.Promise(function (resolve) {
 			var data = '';
 
 			if (request.query.callback) {
@@ -42,7 +41,7 @@ define([
 		var milliseconds = request.query.delay;
 		if (milliseconds) {
 			milliseconds = parseInt(milliseconds, 10);
-			promise = delay(milliseconds, promise);
+			promise = util.delay(promise, milliseconds);
 		}
 
 		return promise;

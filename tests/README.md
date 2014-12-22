@@ -1,14 +1,11 @@
-# doh2intern
+# Dojo Tests
 
-All of the work is currently in https://github.com/bryanforbes/dojo/tree/intern-conversion and for now
-I'll accept pull requests in this repository. Once the conversion is complete,
-it can be squashed and committed to the main repository.
-
-The "tests" directory has the structure:
+This directory has the following structure:
 ```
 tests/
     dojo.intern.js - SauceLabs configuration
     dojo.intern.local.js - Local Selenium configuration
+    dojo.intern.proxy.js - Proxy configuration without instrumentation
     functional/ - Functional tests
         all.js - Module referencing all functional tests to run
     unit/ - Unit tests
@@ -21,36 +18,40 @@ tests/
 
 To get started, simply run the following commands in the dojo directory:
 ```
-npm install -g grunt-cli		# Grunt must be installed globally
 npm install
 ```
 
-This will install grunt, Intern, and some supporting libraries in `node_modules`.
+This will install Intern and some supporting libraries in `node_modules`.
 
-Once complete, intern tests may be tested via SauceLabs by running the
-following command anywhere in the dojo repository:
-
+Once complete, intern tests may be tested by several `npm run` scripts issued
+from the root of the repository. To run the unit test suite in Node, run the
+following command:
 ```
-grunt test
+npm run test
+```
+
+To run unit and functional tests via SauceLabs run the following command:
+```
+npm run test-remote
 ```
 
 This command will attempt to open a tunnel to SauceLabs and run the test
-suite in all of the browsers defined in `tests/dojo.intern.js`.
-SauceLabs does require an account (SL offers free accounts), however I'm
-not sure if the foundation or the toolkit has an account already. Once I find out, I'll update this document.
+suite in all of the browsers defined in `tests/dojo.intern.js`. SauceLabs
+requires an account (SL offers free accounts). The Dojo Foundation has an
+account, but please use your own when running your own tests.
 
 If a local Selenium instance is more desirable, install "selenium-standalone-server"
-and the drivers for the browsers to test, launch Selenium on port 4444, and issue the following command:
+and the drivers for the browsers to test, launch Selenium on port 4444, and issue
+the following command:
 ```
-grunt test:local
+npm run test-local
 ```
 
 During development of tests, it is often desirable to run the test suite
 or portions of the test suite in a local browser. To do this, simply run
 the test runner in proxy-only mode:
-
 ```
-grunt test:proxy
+grunt run test-proxy
 ```
 
 With the proxy running, navigate to the following URL:
@@ -58,32 +59,27 @@ With the proxy running, navigate to the following URL:
 http://localhost:9001/__intern/client.html?config=tests/dojo.intern
 ```
 
-This will run the entire test suite and output the results in the
+This will run the entire unit test suite and output the results in the
 console. To only run certain modules, use the "suites" query parameter.
 The following URL will only run the dojo/request/script tests:
 ```
 http://localhost:9001/__intern/client.html?config=tests/dojo.intern&suites=tests/request/script
 ```
 
-One last feature of Intern that I find very useful is code coverage.
-Intern can produce an lcov file which can then be used to generate an
-HTML report to see how much of the code is being covered by tests. You
-will need to download lcov to generate the HTML report. After that is
-done, simply append ":coverage" to the grunt task to generate coverage information.
-
-For instance, to get coverage information for a SauceLabs run:
+Intern can also produce code coverage reports in HTML format. Simply append
+`-coverage` to any of the test run commands:
 ```
-grunt test:coverage
+npm run test-coverage # Coverage for unit tests run in node
+npm run test-remote-coverage # Coverage for unit + functional via SauceLabs
+npm run test-local-coverage # Coverage for unit + functional via local Selenium
 ```
 
-For a local run:
-```
-grunt test:local:coverage
-```
+This will output HTML files to the `html-report` directory which can be
+viewed to see code coverage information for individual files (including a
+view of the source code with which lines were not covered).
 
-This will output HTML files to "dojo/html-report" which can be viewed to
-see code coverage information for individual files (including a view of
-the source code with which lines were not covered).
+More information about running intern tests can be found at
+https://github.com/theintern/intern/wiki/Running-Intern.
 
 ## Writing tests
 
@@ -92,8 +88,8 @@ executes, add the module ID of the suite to either tests/unit/all.js (for unit t
 or tests/functional/all.js (for functional tests).
 
 For information on how to write Intern tests, see
-https://github.com/theintern/intern/wiki/Writing-Tests-with-Intern or
-the tests I have converted for dojo/request.
+https://github.com/theintern/intern/wiki/Writing-Tests-with-Intern. Please
+follow the style of the tests currently written.
 
 If tests are required to communicate with a server (for instance,
 dojo/request), services can be written for the test runner. Simply

@@ -1,9 +1,8 @@
 define([
-	'intern/dojo/node!when',
-	'intern/dojo/node!when/delay',
+	'../util',
 	'intern/dojo/node!querystring'
-], function (when, delay, qs) {
-	function xml(request) {
+], function (util, qs) {
+	function xml() {
 		return {
 			status: 200,
 			headers: {
@@ -17,7 +16,7 @@ define([
 	}
 
 	return function (request) {
-		var promise = when.promise(function (resolve, reject) {
+		var promise = new util.Promise(function (resolve) {
 			function respond(data) {
 				resolve({
 					status: 200,
@@ -68,7 +67,7 @@ define([
 		var milliseconds = request.query.delay;
 		if (milliseconds) {
 			milliseconds = parseInt(milliseconds, 10);
-			promise = delay(milliseconds, promise);
+			promise = util.delay(promise, milliseconds);
 		}
 
 		return promise;

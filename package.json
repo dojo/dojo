@@ -6,18 +6,22 @@
 	},
 	"devDependencies": {
 		"intern-geezer": "2.2.2",
-		"grunt": "0.4.2",
 		"http-proxy": "0.10.3",
 		"glob": "3.2.7",
 		"jsgi-node": "0.3.1",
 		"formidable": "1.0.14",
-		"when": "2.7.0",
 		"sinon": "1.12.2",
 		"dojo": "1.10.0"
 	},
 	"main": "main",
 	"scripts": {
-		"test": "grunt test"
+		"test": "intern-client config=tests/dojo.intern",
+		"test-coverage": "intern-client config=tests/dojo.intern reporters=console reporters=lcovhtml",
+		"test-remote": "intern-runner config=tests/dojo.intern",
+		"test-remote-coverage": "intern-runner config=tests/dojo.intern reporters=runner reporters=lcovhtml",
+		"test-local": "intern-runner config=tests/dojo.intern.local",
+		"test-local-coverage": "intern-runner config=tests/dojo.intern.local reporters=runner reporters=lcovhtml",
+		"test-proxy": "intern-runner config=tests/dojo.intern.proxy proxyOnly=true"
 	},
 	"description": "Dojo core is a powerful, lightweight library that makes common tasks quicker and easier. Animate elements, manipulate the DOM, and query with easy CSS syntax, all without sacrificing performance.",
 	"licenses": [

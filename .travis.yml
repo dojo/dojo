@@ -8,8 +8,6 @@ env:
     - SAUCE_USERNAME: dojo2-ts-ci
     - SAUCE_ACCESS_KEY: e92610e3-834e-4bec-a3b5-6f7b9d874601
   matrix:
-    - TEST_SUITE: node
-    - TEST_SUITE: remote
-before_script:
-  - "npm install -g grunt-cli"
-script: "grunt test:$TEST_SUITE"
+    - NPM_SCRIPT: test-coverage
+	- NPM_SCRIPT: test-remote-coverage
+script: "npm run $NPM_SCRIPT"

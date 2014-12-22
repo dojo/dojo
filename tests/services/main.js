@@ -1,9 +1,8 @@
 define([
 	'require',
 	'exports',
-	'intern/dojo/node!when',
-	'intern/dojo/node!when/callbacks',
-	'intern/dojo/node!when/node/function',
+	'./util',
+	'intern/dojo/errors/CancelError',
 	'intern/dojo/node!http',
 	'intern/dojo/node!url',
 	'intern/dojo/node!querystring',
@@ -12,14 +11,18 @@ define([
 	'intern/dojo/node!jsgi-node',
 	'intern/dojo/node!jsgi-node/jsgi/node',
 	'intern/dojo/node!formidable'
-], function (require, exports, when, callbacks, nodefn, http, url, qs, glob, httpProxy, jsgi, node, formidable) {
+], function (require, exports, util, CancelError, http, url, qs, glob, httpProxy, jsgi, node, formidable) {
 	var nodeWrapper = node.Node,
 		proxy = new httpProxy.RoutingProxy();
 
 	require = (function (require) {
-		return callbacks.lift(function (dep, callback) {
-			require([dep], callback);
-		});
+		return function (dep) {
+			return new util.Promise(function (resolve) {
+				require([ dep ], function (module) {
+					resolve(module);
+				});
+			});
+		};
 	})(require);
 
 	function Multipart(nextApp) {
@@ -33,7 +36,7 @@ define([
 		return function (request) {
 			var headers = request.headers;
 			if (headers['content-type'] && multipartRE.test(headers['content-type'])) {
-				request.data = when.promise(function (resolve, reject) {
+				request.data = new util.Promise(function (resolve, reject) {
 					nodeWrapper(function (nodeRequest) {
 						var parser = new formidable.IncomingForm();
 						parser.parse(nodeRequest, function (err, fields, files) {
@@ -54,10 +57,10 @@ define([
 	}
 
 	exports.start = function (port) {
-		return nodefn.call(glob, '**/*.service.js', {
+		return util.call(glob, '**/*.service.js', {
 			cwd: './tests/services'
 		}).then(function (files) {
-			return when.map(files, function (filename) {
+			return util.map(files, function (filename) {
 				return require('./' + filename.slice(0, -3)).then(function (module) {
 					var name = filename.slice(0, -11);
 					return {
@@ -101,6 +104,19 @@ define([
 								'<body>No services</body></html>'
 							]
 						};
+					}
+					else if (typeof response.then === 'function') {
+						return response.then(function (data) {
+							return data;
+						}, function (error) {
+							if (error instanceof CancelError) {
+								// Handle any canceled promises, like from a canceled request
+								return {
+									body: [ '' ]
+								};
+							}
+							throw error;
+						});
 					}
 					return response;
 				}));

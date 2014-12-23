@@ -422,6 +422,22 @@ define([
 						assert.isTrue(results);
 					});
 			}
+		},
+
+		'.destroy': function () {
+			return getPage(this, FX_URL)
+				.executeAsync(function (done) {
+					var anim = baseFx.fadeOut({ node: 'foo', duration: 5000 });
+					var stopCalled = false;
+					aspect.after(anim, 'stop', function () {
+						stopCalled = true;
+					});
+					anim.destroy();
+					done(stopCalled);
+				})
+				.then(function (stopCalled) {
+					assert.isTrue(stopCalled);
+				});
 		}
 	});
 });

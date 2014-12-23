@@ -5,11 +5,12 @@ define([
 	'./_base/loader',
 	'./behavior',
 	'./cookie',
+	'./dnd',
 	'./fx',
 	'./fx/Toggler',
-	'./on',
-	'./window',
 	'./io/script',
-	'./touch'
+	'./on',
+	'./touch',
+	'./window'
 ], function () {
 });

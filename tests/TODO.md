@@ -11,6 +11,7 @@
 * dom-attr
 * dom-construct
 * dom-prop
+* dom-style
 * [errors](https://github.com/bryanforbes/dojo/pull/56)
 * [query](https://github.com/bryanforbes/dojo/pull/69)
 

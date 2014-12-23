@@ -3,7 +3,7 @@ define([
 	'intern/chai!assert'
 ], function (registerSuite, assert) {
 	registerSuite({
-		name: 'dojo/dom-attr',
+		name: 'dojo/dom-style',
 
 		'TODO: convert tests': function () {
 			assert.fail();

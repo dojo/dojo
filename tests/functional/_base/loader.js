@@ -6,7 +6,8 @@ define([
 	'./loader/support/pageReady',
 	'./loader/requirejs',
 	'./loader/xdomain',
-	'./loader/moduleIds'
+	'./loader/moduleIds',
+	'./loader/hostenv_webworkers'
 ], function (require, registerSuite, assert, loaderTest, pageReady) {
 	registerSuite({
 		name: 'dojo/_base/loader',
@@ -755,7 +756,7 @@ define([
 				baseUrl: './foo',
 				packages: [
 					{ name: 'testing', location: '../../../../../' },
-					{ name: 'dojo', location: '../../../../../node_modules/dojo' },
+					{ name: 'dojo', location: '../../../../../node_modules/dojo' }
 				]
 			},
 			function (callback) {

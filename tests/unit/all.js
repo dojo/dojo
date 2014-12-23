@@ -23,14 +23,12 @@ define([
 	'./loadInit',
 	'./number',
 	'./on',
-	'./on/debounce',
 	'./on/throttle',
 	'./promise',
 	'./regexp',
 	'./request',
 	'./store',
 	'./string',
-	'./text',
 	'./throttle',
 	'./topic',
 	'./when',
@@ -49,10 +47,13 @@ define([
 	'dojo/has!host-browser?./html',
 	'dojo/has!host-browser?./io/iframe',
 	'dojo/has!host-browser?./mouse',
+	// TODO: this should work in node as well, but it uses dom-construct
+	'dojo/has!host-browser?./on/debounce',
 	'dojo/has!host-browser?./parser',
 	'dojo/has!host-browser?./query',
 	'dojo/has!host-browser?./require/require',
 	'dojo/has!host-browser?./router',
 	'dojo/has!host-browser?./rpc',
+	'dojo/has!host-browser?./text',
 	'dojo/has!host-node?./node'
 ], function () {});

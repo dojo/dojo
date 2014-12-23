@@ -5,7 +5,7 @@ define([
 	'../../../on/debounce',
 	'../../../Evented',
 	'sinon',
-	'dojo/dom-construct',
+	'dojo/has!host-browser?dojo/dom-construct',
 	'dojo/has!host-browser?../../../query',
 	'dojo/has!host-browser?dojo/domReady!'
 ], function (registerSuite, assert, on, debounce, Evented, sinon, domConstruct) {
@@ -64,6 +64,9 @@ define([
 
 	suite.DOM = {
 		beforeEach: function () {
+			if (!domConstruct) {
+				return;
+			}
 			containerDiv = domConstruct.create('div', null, document.body);
 			containerDiv2 = domConstruct.create('div', null, containerDiv);
 			anchor = domConstruct.create('a', null, containerDiv2);
@@ -71,6 +74,9 @@ define([
 		},
 
 		bubbling: function () {
+			if (!domConstruct) {
+				this.skip('Not running browser-only tests');
+			}
 			var spy1 = sinon.spy(function (event) {
 				assert.ok(event);
 				assert.ok(event.target);
@@ -103,6 +109,9 @@ define([
 		},
 
 		afterEach: function () {
+			if (!domConstruct) {
+				return;
+			}
 			cleanUpListeners();
 
 			domConstruct.destroy(containerDiv);

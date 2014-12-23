@@ -99,6 +99,12 @@ define([
 			assert.strictEqual(string.rep('ab', 4), 'abababab');
 			assert.strictEqual(string.rep('ab', 0), '');
 			assert.strictEqual(string.rep('', 3), '');
+		},
+
+		'.escape': function () {
+			assert.equal(string.escape('astoria'), 'astoria');
+			assert.equal(string.escape('&<>\'/'), '&amp;&lt;&gt;&#x27;&#x2F;');
+			assert.equal(string.escape('oh"oh"oh'), 'oh&quot;oh&quot;oh');
 		}
 	});
 });

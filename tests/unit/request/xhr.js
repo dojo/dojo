@@ -8,8 +8,10 @@ define([
 	'dojo/query',
 	'require'
 ], function (registerSuite, assert, xhr, RequestTimeoutError, CancelError, all, query, require) {
-	var hasFormData = 'FormData' in this && typeof FormData === 'function',
-		formData;
+	var hasFormData = 'FormData' in this && typeof FormData === 'function';
+	var hasResponseType = typeof XMLHttpRequest !== 'undefined' &&
+		typeof new XMLHttpRequest().responseType !== 'undefined';
+	var formData;
 
 	registerSuite({
 		name: 'dojo/request/xhr',
@@ -309,16 +311,15 @@ define([
 			},
 
 			post: function () {
-				if(!hasFormData) { return; }
+				if(!hasFormData) {
+					this.skip('No FormData to test');
+				}
 
 				var def = this.async();
 
 				xhr.post('/__services/request/xhr/multipart', {
 					data: formData,
-					handleAs: 'json',
-					headers: {
-						'Content-Type': false
-					}
+					handleAs: 'json'
 				}).then(
 					def.callback(function (data) {
 						assert.deepEqual(data, { foo: 'bar', baz: 'blah' });
@@ -329,6 +330,80 @@ define([
 
 			teardown: function () {
 				formData = null;
+			}
+		},
+
+		'response type': {
+			'Blob': function () {
+				if (!hasResponseType) {
+					this.skip('No responseType to test');
+				}
+
+				return xhr.get('/__services/request/xhr/responseTypeGif', {
+					handleAs: 'blob'
+				}).then(function (response) {
+					assert.strictEqual(response.constructor, Blob);
+				});
+			},
+
+			'Blob POST': function () {
+				if (!hasResponseType) {
+					this.skip('No responseType to test');
+				}
+
+				return xhr.post('/__services/request/xhr/responseTypeGif', {
+					handleAs: 'blob'
+				}).then(function (response) {
+					assert.strictEqual(response.constructor, Blob);
+				});
+			},
+
+			'ArrayBuffer': function () {
+				if (!hasResponseType) {
+					this.skip('No responseType to test');
+				}
+
+				return xhr.get('/__services/request/xhr/responseTypeGif', {
+					handleAs: 'arraybuffer'
+				}).then(function (response) {
+					assert.strictEqual(response.constructor, ArrayBuffer);
+				});
+			},
+
+			'ArrayBuffer POST': function () {
+				if (!hasResponseType) {
+					this.skip('No responseType to test');
+				}
+
+				return xhr.post('/__services/request/xhr/responseTypeGif', {
+					handleAs: 'arraybuffer'
+				}).then(function (response) {
+					assert.strictEqual(response.constructor, ArrayBuffer);
+				});
+			},
+
+			'document': function () {
+				if (!hasResponseType) {
+					this.skip('No responseType to test');
+				}
+
+				return xhr.get('/__services/request/xhr/responseTypeDoc', {
+					handleAs: 'document'
+				}).then(function (response) {
+					assert.strictEqual(response.constructor, document.constructor);
+				});
+			},
+
+			'document POST': function () {
+				if (!hasResponseType) {
+					this.skip('No responseType to test');
+				}
+
+				return xhr.post('/__services/request/xhr/responseTypeDoc', {
+					handleAs: 'document'
+				}).then(function (response) {
+					assert.strictEqual(response.constructor, document.constructor);
+				});
 			}
 		}
 	});

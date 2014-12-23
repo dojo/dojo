@@ -13,6 +13,8 @@ define([
 	'./json',
 	'./number',
 	'./on',
+	'./on/debounce',
+	'./on/throttle',
 	'./promise',
 	'./regexp',
 	'./request',

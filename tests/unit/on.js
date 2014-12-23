@@ -108,6 +108,23 @@ define([
 				assert.strictEqual(listenerCallCount, 2);
 			},
 
+			'on - multiple handlers': function () {
+				var order = [];
+				var customEvent = function (target, listener) {
+					return on(target, 'custom', listener);
+				};
+				on(target, 'a, b', function (event) {
+					order.push(1 + event.type);
+				});
+				on(target, [ 'a', customEvent ], function (event) {
+					order.push(2 + event.type);
+				});
+				on.emit(target, 'a', { type: 'a' });
+				on.emit(target, 'b', { type: 'b' });
+				on.emit(target, 'custom', { type: 'custom' });
+				assert.deepEqual(order, [ '1a', '2a', '1b', '2custom' ]);
+			},
+
 			'on - extension events': function () {
 				var listenerCallCount = 0,
 					emittedEvent,
@@ -455,6 +472,15 @@ define([
 						assert.isTrue(listenerCalled);
 						assert.isTrue(bubbleListenerCalled);
 					}
+				},
+
+				'only call listener when matching': function () {
+					containerDiv.innerHTML = '<input type="checkbox">';
+					on(containerDiv, '.matchesNothing:click', function (event) {
+						event.preventDefault();
+					});
+					containerDiv.firstChild.click();
+					assert.isTrue(containerDiv.firstChild.checked);
 				}
 			},
 
@@ -472,6 +498,43 @@ define([
 				assert.strictEqual(testValue, 3);
 			}
 		};
+
+		suite['.matches'] = (function () {
+			var containerDiv2;
+
+			return {
+				beforeEach: function () {
+					containerDiv = domConstruct.create('div', null, document.body);
+					containerDiv2 = domConstruct.create('div', null, containerDiv);
+					childSpan = domConstruct.create('span', null, containerDiv2);
+				},
+
+				afterEach: function () {
+					cleanUpListeners();
+
+					domConstruct.destroy(containerDiv);
+					containerDiv = containerDiv2 = childSpan = null;
+				},
+
+				'inner-most child click': function () {
+					on(containerDiv, 'click', function (event) {
+						assert.ok(on.matches(event.target, 'span:click', this));
+						assert.ok(on.matches(event.target, 'div:click', this));
+						assert.ok(!on.matches(event.target, 'div:click', this, false));
+						assert.ok(!on.matches(event.target, 'body:click', this));
+					});
+					childSpan.click();
+				},
+
+				'inner-most container click': function () {
+					on(containerDiv, 'click', function (event) {
+						assert.ok(!on.matches(event.target, 'span:click', this));
+						assert.ok(on.matches(event.target, 'div:click', this));
+					});
+					containerDiv2.click();
+				}
+			};
+		})();
 
 		// TODO: Add tests to improve touch-related code coverage
 		has('touch') && (suite['DOM-specific']['touch event normalization'] = function () {

@@ -229,6 +229,38 @@ define([
 			}
 		},
 
+		'.gotoPercent + .chain': function () {
+			return getPage(this, FX_URL)
+				.executeAsync(function (done) {
+					var anims = [
+						baseFx.fadeOut({ node: 'baz' }),
+						baseFx.fadeIn({ node: 'baz' }),
+						fx.wipeOut({ node: 'baz' }),
+						fx.wipeIn({ node: 'baz' }),
+						fx.slideTo({ node: 'baz', top: 200, left: 300 })
+					];
+					var chain = fx.chain(anims);
+					var length = anims.length;
+					var percent = 0.34;
+					var totalActive = length - Math.floor(percent * length);
+					var numRun = 0;
+
+					for (var i = 0, anim; (anim = anims[i]); i++) {
+						aspect.before(anim, 'onEnd', function () {
+							numRun++;
+						});
+					}
+
+					aspect.after(chain, 'onEnd', function () {
+						done(totalActive === numRun);
+					});
+
+					chain.gotoPercent(percent, true);
+				})
+				.then(function (result) {
+					assert.isTrue(result);
+				});
+		},
 
 		'.combine': {
 			'test basic functionality': function () {

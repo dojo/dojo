@@ -193,6 +193,16 @@ define([
 			}
 		},
 
+		'._getTarget': {
+			'without slash': function () {
+				store.target = store.target.slice(0, -1);
+				assert.equal(store.target + '/foo', store._getTarget('foo'));
+			},
+			'with slash': function () {
+				assert.equal(store.target + 'foo', store._getTarget('foo'));
+			}
+		},
+
 		teardown: function () {
 			// prevent accidental reuse after test completion
 			xhrStub.throws(new Error('this is a stub function'));

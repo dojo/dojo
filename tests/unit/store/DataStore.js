@@ -45,6 +45,7 @@ define([
 			assert.equal(store.get(4).name, 'four');
 			assert.isTrue(store.get(5).prime);
 			assert.equal(store.get(5).children[1].name, 'two');
+			assert.ok(typeof store.get(10) === 'undefined');
 		},
 
 		'.query': {
@@ -92,6 +93,52 @@ define([
 
 				store.put(data);
 				assert.isTrue(store.get(6).perfect);
+			},
+
+			'overwrite new': function () {
+				return store.put({
+					id: 8,
+					name: 'eight'
+				}, {
+					overwrite: true
+				}).then(function () {
+					assert.fail();
+				}, function () {
+					// do nothing... test passes
+				});
+			}
+		},
+
+		'.add': {
+			'new record': function () {
+				store.add({
+					id: 7,
+					name: 'seven'
+				});
+				assert.equal(store.get(7).name, 'seven');
+			},
+
+			'existing record': function () {
+				return store.add({
+					id: 1,
+					name: 'one'
+				}).then(function () {
+					assert.fail();
+				}, function () {
+					// do nothing... test passes
+				});
+			}
+		},
+
+		'.remove': {
+			'multiple calls': function () {
+				return store.remove(5).then(function (result) {
+					assert.ok(result);
+				}).then(function () {
+					return store.remove(7);
+				}).then(function (result) {
+					assert.ok(!result);
+				});
 			}
 		}
 	});

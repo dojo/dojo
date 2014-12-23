@@ -14,6 +14,7 @@ define([
 
 			assert.match('TEST\f\b\n\t\r+.$?*|{}()[]\\/^TEST', re1);
 			assert.match('TEST\f\b\n\t\r+X$?*|{}()[]\\/^TEST', re2);
+			assert.equal('a\\-z', regexp.escapeString('a-z'));
 		}
 	});
 });

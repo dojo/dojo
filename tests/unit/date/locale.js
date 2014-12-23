@@ -78,6 +78,7 @@ define([
 
 				'time': function () {
 					assert.equal(locale.format(date, {datePattern: 'E', selector: 'date'}), '6');
+					assert.equal(locale.format(date, {selector: 'date', datePattern: 'EEE, MMM d, yyyy G', locale:'en-us' }), 'Fri, Aug 11, 2006 AD');
 					assert.equal(locale.format(date, {formatLength: 'short', selector: 'time', locale: 'en-us'}), '12:55 AM');
 					assert.equal(locale.format(date, {timePattern: 'h:m:s', selector: 'time'}), '12:55:12');
 					assert.equal(locale.format(date, {timePattern: 'h:m:s.SS', selector: 'time'}), '12:55:12.35');

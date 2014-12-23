@@ -6,14 +6,16 @@
 		'dojo/aspect',
 		'dojo/_base/lang',
 		'dojo/_base/kernel',
-		'../../../_base/declare'
+		'../../../_base/declare',
+		'sinon'
 	], function (
 		registerSuite,
 		assert,
 		aspect,
 		lang,
 		kernel,
-		declare
+		declare,
+		sinon
 	) {
 		registerSuite({
 			name: 'dojo/_base/declare',
@@ -288,13 +290,10 @@
 				// testing if a plain Class-like object can be inherited
 				// by declare
 				var test;
-				var wasCalled = false;
 
 				function Thing() { }
 
-				Thing.prototype.method = function () {
-					wasCalled = true;
-				};
+				Thing.prototype.method = sinon.spy();
 
 				declare('tests.Thinger', Thing, {
 					method: function () {
@@ -304,7 +303,7 @@
 
 				test = new global.tests.Thinger();
 				test.method();
-				assert.isTrue(wasCalled, 'expected method to be called');
+				assert.isTrue(Thing.prototype.method.called, 'expected method to be called');
 			},
 
 			'mutated methods': function () {
@@ -596,19 +595,64 @@
 				var C = declare(null, {
 					bar: 'thonk'
 				});
+
+				// Both 'mixins' and 'props' parameters are provided
 				var D1 = A.createSubclass([B, C], {
 					constructor: function () {
 						this.foo = 'blah';
 					}
 				});
+
+				// Only 'mixins' parameters is provided
 				var D2 = A.createSubclass([B, C]);
+
+				// The 'props' parameter is provided as first instead of second parameter
+				var D3 = A.createSubclass({
+					constructor: function () {
+						this.foo = 'blah';
+					}
+				});
+
+				// No arguments at all provided
+				var D4 = A.createSubclass();
+
+				// Single Mixin
+				var D5 = A.createSubclass(C);
+
 				var d1 = new D1();
 				var d2 = new D2();
+				var d3 = new D3();
+				var d4 = new D4();
+				var d5 = new D5();
 
 				assert.equal(d1.foo, 'blah');
 				assert.equal(d2.foo, 'thonk');
 				assert.equal(d1.bar, 'thonk');
 				assert.equal(d2.bar, 'thonk');
+				assert.equal(d3.foo, 'blah');
+				assert.equal(d4.foo, 'thonk');
+				assert.equal(d5.bar, 'thonk');
+			},
+
+			safeMixin: function () {
+				var C = declare(null, {
+					foo: sinon.spy()
+				});
+				var c = new C();
+				// make sure we can mixin foo
+				declare.safeMixin(c, {
+					foo: function () {
+						this.inherited(arguments);
+					}
+				});
+				sinon.spy(c, 'foo');
+				c.foo();
+
+				assert.isTrue(C.prototype.foo.called);
+				assert.isTrue(c.foo.called);
+				assert.doesNotThrow(function () {
+					declare.safeMixin(c);
+				});
 			}
 			// TODO: there are still some permutations to test like:
 			//	- ctor arguments

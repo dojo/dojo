@@ -1,7 +1,9 @@
 define([
+	'require',
 	'../util',
-	'intern/dojo/node!querystring'
-], function (util, qs) {
+	'intern/dojo/node!querystring',
+	'intern/dojo/node!fs'
+], function (require, util, qs, fs) {
 	function xml() {
 		return {
 			status: 200,
@@ -13,6 +15,20 @@ define([
 				'<foo><bar baz="thonk">blargh</bar><bar>blah</bar></foo>'
 			]
 		};
+	}
+
+	function responseType(filename, mimeType) {
+		return util.call(fs.readFile, filename).then(function (buffer) {
+			return {
+				status: 200,
+				headers: {
+					'Content-Type': mimeType
+				},
+				body: [
+					buffer.toString()
+				]
+			};
+		});
 	}
 
 	return function (request) {
@@ -36,6 +52,15 @@ define([
 
 			if (request.serviceURL.indexOf('/xml') > -1) {
 				resolve(xml(request));
+				return;
+			}
+
+			if (request.serviceURL.indexOf('/responseTypeGif') > -1) {
+				resolve(responseType(require.toUrl('./support/blob.gif'), 'image/gif'));
+				return;
+			}
+			if (request.serviceURL.indexOf('/responseTypeDoc') > -1) {
+				resolve(responseType(require.toUrl('./support/document.html'), 'text/html'));
 				return;
 			}
 

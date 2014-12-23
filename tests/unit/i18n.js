@@ -7,7 +7,7 @@ define([
 	'dojo/Deferred',
 	'dojo/_base/lang'
 ], function (require, registerSuite, assert, i18n, array, Deferred, lang) {
-	var bundlePath = require.toAbsMid('./__support/i18n');
+	var bundlePath = require.toAbsMid('./support/i18n');
 
 	function localePluginTest(locale, expected) {
 		return function () {

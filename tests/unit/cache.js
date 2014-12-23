@@ -8,7 +8,7 @@ define([
 	'dojo/_base/lang'
 ], function (require, module, registerSuite, assert, sinon, cache, Url, lang) {
 	var expected = '<h1>Hello World</h1>';
-	var cacheNamespace = require.toAbsMid('./__support/cache').replace(/\//g, '.');
+	var cacheNamespace = require.toAbsMid('./support/cache').replace(/\//g, '.');
 	var cacheSanitizeOptions = { sanitize: true };
 
 	registerSuite(function () {

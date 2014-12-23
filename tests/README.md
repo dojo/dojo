@@ -94,18 +94,10 @@ follow the style of the tests currently written.
 If tests are required to communicate with a server (for instance,
 dojo/request), services can be written for the test runner. Simply
 create an AMD module and be sure the filename ends in "service.js". The
-module must return a function that accepts a JSGI request object and
+module must return a function that accepts a
+[JSGI](https://github.com/kriszyp/jsgi-node/) request object and
 returns either an object describing the response or a promise that will
-resolve to an object describing the response. For services, I've chosen
-when.js for generating and manipulating promises, mostly because it is
-AMD compatible, but it also comes with a whole host of utilities. For
-more information on JSGI and when.js, see the following links:
-
-* https://github.com/kriszyp/jsgi-node/
-* https://github.com/cujojs/when
-* https://github.com/cujojs/when/blob/master/docs/api.md#api
-
-Or look at the dojo/request test services in "tests/request/".
+resolve to an object describing the response.
 
 Once a service is written, it can be accessed from the proxy via the
 following URL pattern:
@@ -119,21 +111,6 @@ endpoint would be:
 http://localhost:9001/__services/request/xhr
 ```
 
-While this is very useful, I want to make sure to note that *most tests
-should be mocking their data instead of using live data from a service*.
-Services should only be written for tests that absolutely *MUST*
-communicate with a server, such as tests for IO functionality.
-
-
-## Continuous integration
-CI tests are running TravisCI using Intern's Open Sauce account. You can see the result of the latest builds here:
-https://travis-ci.org/bryanforbes/dojo/builds
-
-When pull requests are submitted, they will have a test build run via TravisCI
-and the result of the test run will show up in the pull request.
-
-## Notes
-* We are currently experiencing intermittent errors in IE when running tests on Sauce Labs,
-especially `dojo/request` tests. It appears to be an issue with Sauce Labs infrastructure not allowing
-POST requests over a particular size. Sauce Labs was made aware of the issue but has been slow to respond.
-* I haven't looked into testing builds. Rawld and I will need to do that offline, but I'm pretty sure it will be doable.
+While this is very useful, *most tests should be mocking their data instead of
+using live data from a service*. Services should only be written for tests that
+absolutely *MUST* communicate with a server, such as tests for IO functionality.

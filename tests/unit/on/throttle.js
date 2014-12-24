@@ -40,6 +40,12 @@ define([
 				on(testObject, throttle('custom', 200), spy);
 
 				var emitter = sinon.spy(function () {
+					if (!testObject) {
+						// clearInterval() will not clear an already
+						// scheduled interval, so this checks if afterEach
+						// has cleaned up already
+						return;
+					}
 					testObject.emit('custom');
 				});
 				var interval = setInterval(emitter, 50);
@@ -71,7 +77,9 @@ define([
 			containerDiv = domConstruct.create('div', null, document.body);
 			containerDiv2 = domConstruct.create('div', null, containerDiv);
 			anchor = domConstruct.create('a', null, containerDiv2);
-			button = domConstruct.create('button', null, anchor);
+			button = domConstruct.create('button', {
+				type: 'button'
+			}, anchor);
 		},
 
 		throttles: function () {
@@ -85,6 +93,12 @@ define([
 			on(containerDiv2, 'a:click', clickSpy);
 
 			var clicker = sinon.spy(function () {
+				if (!button) {
+					// clearInterval() will not clear an already
+					// scheduled interval, so this checks if afterEach
+					// has cleaned up already
+					return;
+				}
 				button.click();
 			});
 			var interval = setInterval(clicker, 50);

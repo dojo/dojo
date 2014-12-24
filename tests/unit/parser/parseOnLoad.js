@@ -46,26 +46,31 @@ define([
 			container = domConstruct.place(
 				util.fixScope('<div id="main">' +
 					'<script type="dojo/require">' +
-						'AMDWidget: "${dojo}/tests/unit/parser/support/AMDWidget",' +
-						'AMDWidget2: "${dojo}/tests/unit/parser/support/AMDWidget2"' +
 					'</script>' +
 					'<div data-${dojo}-id="dr1" data-${dojo}-type="AMDWidget" data-${dojo}-props="foo: \'bar\'"></div>' +
 					'<div data-${dojo}-id="dr2" data-${dojo}-type="AMDWidget2" data-${dojo}-props="foo: \'bar\'"></div>' +
-					'<script type="dojo/require">' +
-						'"acme.AMDWidget3": "${dojo}/tests/unit/parser/support/AMDWidget3"' +
-					'</script>' +
 					'<div data-${dojo}-id="dr3" data-${dojo}-type="acme.AMDWidget3" data-${dojo}-props="foo: \'bar\'"></div>' +
-					'<script type="dojo/require">' +
-						'amdmodule: "${dojo}/tests/unit/parser/support/amdmodule"' +
-					'</script>' +
 					'<div data-${dojo}-id="dr4" data-${dojo}-type="AMDWidget" data-${dojo}-props="foo: amdmodule(1)"></div>' +
 					'<div data-${dojo}-id="dr5" data-${dojo}-type="AMDWidget2">' +
-						'<script type="dojo/aspect" data-${dojo}-advice="before" data-${dojo}-method="method1" data-${dojo}-args="value">' +
-							'return [amdmodule(value)];' +
-						'</script>' +
 					'</div>' +
 				'</div>'), win.body());
-			return parser.parse();
+			var script = document.createElement('script');
+			script.type = 'dojo/require';
+			script.text = util.fixScope(
+				'AMDWidget: "${dojo}/tests/unit/parser/support/AMDWidget",' +
+				'AMDWidget2: "${dojo}/tests/unit/parser/support/AMDWidget2",' +
+				'"acme.AMDWidget3": "${dojo}/tests/unit/parser/support/AMDWidget3",' +
+				'amdmodule: "${dojo}/tests/unit/parser/support/amdmodule"'
+			);
+			domConstruct.place(script, container, 'first');
+			
+			script = document.createElement('script');
+			script.type = 'dojo/aspect';
+			script.setAttribute(util.fixScope('data-${dojo}-advice'), 'before');
+			script.setAttribute(util.fixScope('data-${dojo}-method'), 'method1');
+			script.setAttribute(util.fixScope('data-${dojo}-args'), 'value');
+			script.text = 'return [amdmodule(value)];';
+			domConstruct.place(script, container.lastChild);
 		},
 
 		teardown: function () {
@@ -75,14 +80,22 @@ define([
 		},
 
 		'parseOnLoad': function () {
-			assert.isObject(dr1, 'dr1 created');
-			assert.equal(dr1.params.foo, 'bar', 'dr1 parameters set on instantiation');
-			assert.isObject(dr2, 'dr2 created');
-			assert.equal(dr2.params.foo, 'bar', 'dr2 parameters set on instantiation');
-			assert.isObject(dr3, 'dr3 created');
-			assert.equal(dr3.params.foo, 'bar', 'dr3 parameters set on instantiation');
-			assert.equal(dr4.params.foo, 2, 'module loaded and executed');
-			assert.equal(dr5.method1(1), 3, 'declarative script has access to parser scope');
+			var dfd = this.async();
+			setTimeout(function () {
+				parser.parse().then(
+					dfd.callback(function () {
+						assert.isObject(dr1, 'dr1 created');
+						assert.equal(dr1.params.foo, 'bar', 'dr1 parameters set on instantiation');
+						assert.isObject(dr2, 'dr2 created');
+						assert.equal(dr2.params.foo, 'bar', 'dr2 parameters set on instantiation');
+						assert.isObject(dr3, 'dr3 created');
+						assert.equal(dr3.params.foo, 'bar', 'dr3 parameters set on instantiation');
+						assert.equal(dr4.params.foo, 2, 'module loaded and executed');
+						assert.equal(dr5.method1(1), 3, 'declarative script has access to parser scope');
+					}),
+					dfd.reject
+				);
+			}, 500);
 		}
 	});
 });

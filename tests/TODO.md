@@ -18,3 +18,7 @@
 # Individual tests to be converted
 
 For changes from the time of branching until the time of merge back to master, see [changes.diff](changes.diff).
+
+# Other things
+
+* The parser tests need to be rewritten as functional tests because IE8 does not allow script tags to be created using innerHTML.

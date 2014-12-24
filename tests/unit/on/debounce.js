@@ -44,8 +44,7 @@ define([
 				testObject.emit('custom');
 				testObject.emit('custom');
 
-				var dfd = this.async();
-				setTimeout(dfd.callback(function () {
+				setTimeout(this.async().callback(function () {
 					assert.equal(spy.callCount, 1);
 				}), 500);
 			},
@@ -78,8 +77,8 @@ define([
 				this.skip('Not running browser-only tests');
 			}
 			var spy1 = sinon.spy(function (event) {
-				assert.ok(event);
-				assert.ok(event.target);
+				assert.ok(Boolean(event));
+				assert.ok(Boolean(event.target));
 				assert.equal(event.target.nodeType, 1);
 			});
 			var spy2 = sinon.spy();
@@ -99,8 +98,7 @@ define([
 			}
 			catch (e) {}
 
-			var dfd = this.async();
-			setTimeout(dfd.callback(function () {
+			setTimeout(this.async().callback(function () {
 				assert.equal(spy1.callCount, 1);
 				assert.equal(spy2.callCount, 1);
 				assert.equal(spy3.callCount, 1);

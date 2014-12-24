@@ -476,7 +476,7 @@ define([
 				// Run the parser and see if it reads in newParam
 				var widgets = parser.parse({ rootNode: wrapper });
 				assert.lengthOf(widgets, 1);
-				assert.equal(widgets[0].params.newparam, 12345);
+				assert.equal(widgets[0].params.newparam || widgets[0].params.newParam, 12345);
 			}
 			finally {
 				domConstruct.destroy(wrapper);
@@ -692,7 +692,7 @@ define([
 			assert.equal(params.type, 'password', 'type');
 			assert.equal(params.name, 'test', 'name');
 			assert.equal(params.value, '123', 'value');
-			assert.equal(params.class, 'myClass', 'class');
+			assert.equal(params['class'], 'myClass', 'class');
 			assert.equal(params.style.replace(/[ ;]/g, '').toLowerCase(), 'display:block', 'style');
 			assert.equal(params.tabIndex, '3', 'tabIndex');
 		},

@@ -5,7 +5,6 @@ define([
 	"dojo/testsDOH/query",
 	"dojo/testsDOH/DeferredList",
 	"dojo/testsDOH/errors",
-	"dojo/has!host-browser?dojo/testsDOH/dom-attr",
 	"dojo/has!host-browser?dojo/testsDOH/dom-prop",
 	"dojo/has!host-browser?dojo/testsDOH/dom-construct",
 	"dojo/has!host-browser?dojo/testsDOH/html",

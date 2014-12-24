@@ -3,7 +3,7 @@ define([
 	'./Deferred',
 	'./Evented',
 	'./Stateful',
-	'./_base',
+	'./_base/all',
 	'./aspect',
 	'./cache',
 	'./cldr/monetary',

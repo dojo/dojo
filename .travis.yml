@@ -9,5 +9,5 @@ env:
     - SAUCE_ACCESS_KEY: e92610e3-834e-4bec-a3b5-6f7b9d874601
   matrix:
     - NPM_SCRIPT: test-coverage
-	- NPM_SCRIPT: test-remote-coverage
+    - NPM_SCRIPT: test-remote-coverage
 script: "npm run $NPM_SCRIPT"

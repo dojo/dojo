@@ -8,7 +8,7 @@
 * [\_base/query](https://github.com/bryanforbes/dojo/pull/64)
 * [\_base/sniff](https://github.com/bryanforbes/dojo/pull/66)
 * [\_base/window](https://github.com/bryanforbes/dojo/pull/68)
-* dom-attr
+* dom-attr (https://github.com/bryanforbes/dojo/pull/83)
 * dom-construct
 * dom-prop
 * dom-style

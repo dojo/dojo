@@ -1,7 +1,7 @@
 # Module tests to be converted
 
-* NodeList-manipulate
-* NodeList-traverse
+x NodeList-manipulate
+x NodeList-traverse
 * [dnd](https://github.com/bryanforbes/dojo/pull/81)
 * \_base/NodeList
 * [\_base/html](https://github.com/bryanforbes/dojo/pull/74)

@@ -1051,19 +1051,6 @@ define([
                 }
             }
         })(),
-        "html()": (function () {
-            return {
-                "is same as NodeList.prototype.innerHTML": function () {
-                    //arrange
-                    var nodeList = new NodeList();
-
-                    //act
-
-                    //assert
-                    assert.strictEqual(nodeList.html, nodeList.innerHTML);
-                }
-            }
-        })(),
         "validation tests": (function () {
             var container;
             function verify(/*dojo.NodeList*/nl, /*Array*/ids, /*String*/ comment) {

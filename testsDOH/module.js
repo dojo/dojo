@@ -8,7 +8,6 @@ define([
 	"dojo/has!host-browser?dojo/testsDOH/dom-prop",
 	"dojo/has!host-browser?dojo/testsDOH/dom-construct",
 	"dojo/has!host-browser?dojo/testsDOH/html",
-	"dojo/has!host-browser?dojo/testsDOH/NodeList-traverse",
 	"dojo/has!host-browser?dojo/testsDOH/NodeList-data",
 	"dojo/has!host-browser?dojo/testsDOH/uacss"
 ], 1);

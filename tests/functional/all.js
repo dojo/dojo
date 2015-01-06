@@ -10,6 +10,7 @@ define([
 	'./fx/Toggler',
 	'./io/script',
 	'./on',
+	'./parser',
 	'./touch',
 	'./window'
 ], function () {

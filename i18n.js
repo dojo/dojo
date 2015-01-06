@@ -287,10 +287,6 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 			});
 		};
 
-	if(has("dojo-unit-tests")){
-		var unitTests = thisModule.unitTests = [];
-	}
-
 	if(has("dojo-preload-i18n-Api") || has("dojo-v1x-i18n-Api")){
 		var normalizeLocale = thisModule.normalizeLocale = function(locale){
 				var result = locale ? locale.toLowerCase() : dojo.locale;
@@ -595,35 +591,6 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 			);
 			return result;
 		};
-
-		if(has("dojo-unit-tests")){
-			unitTests.push(function(doh){
-				doh.register("tests.i18n.unit", function(t){
-					var check;
-
-					check = evalBundle("{prop:1}", checkForLegacyModules, "nonsense", amdValue);
-					t.is({prop:1}, check); t.is(undefined, check[1]);
-
-					check = evalBundle("({prop:1})", checkForLegacyModules, "nonsense", amdValue);
-					t.is({prop:1}, check); t.is(undefined, check[1]);
-
-					check = evalBundle("{'prop-x':1}", checkForLegacyModules, "nonsense", amdValue);
-					t.is({'prop-x':1}, check); t.is(undefined, check[1]);
-
-					check = evalBundle("({'prop-x':1})", checkForLegacyModules, "nonsense", amdValue);
-					t.is({'prop-x':1}, check); t.is(undefined, check[1]);
-
-					check = evalBundle("define({'prop-x':1})", checkForLegacyModules, "nonsense", amdValue);
-					t.is(amdValue, check); t.is({'prop-x':1}, amdValue.result);
-
-					check = evalBundle("define('some/module', {'prop-x':1})", checkForLegacyModules, "nonsense", amdValue);
-					t.is(amdValue, check); t.is({'prop-x':1}, amdValue.result);
-
-					check = evalBundle("this is total nonsense and should throw an error", checkForLegacyModules, "nonsense", amdValue);
-					t.is(check instanceof Error, true);
-				});
-			});
-		}
 	}
 
 	return lang.mixin(thisModule, {

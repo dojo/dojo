@@ -1,4 +1,4 @@
-# dojo
+# dojo [![Build Status](https://travis-ci.org/bryanforbes/dojo.png?branch=intern-conversion)](https://travis-ci.org/bryanforbes/dojo)
 
 **dojo** is the foundation package of the Dojo Toolkit. Sometimes referred to as the “core”, it contains the most
 generally applicable sub-packages and modules. The dojo package covers a wide range of functionality like AJAX, DOM

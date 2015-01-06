@@ -3,7 +3,7 @@
 x NodeList-manipulate
 x NodeList-traverse
 * [dnd](https://github.com/bryanforbes/dojo/pull/81)
-* \_base/NodeList
+x \_base/NodeList
 * [\_base/html](https://github.com/bryanforbes/dojo/pull/74)
 * [\_base/query](https://github.com/bryanforbes/dojo/pull/64)
 * [\_base/sniff](https://github.com/bryanforbes/dojo/pull/66)

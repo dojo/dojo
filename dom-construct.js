@@ -91,7 +91,7 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 		//	|		var tr = domConstruct.toDom("<tr><td>First!</td></tr>");
 		//	|	});
 
-		doc = doc || win.doc;
+	    doc = doc || win.doc;
 		var masterId = doc[masterName];
 		if(!masterId){
 			doc[masterName] = masterId = ++masterNum + "";
@@ -107,7 +107,7 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 		// make sure the frag is a string.
 		frag += "";
 
-		// find the starting tag, and get node wrapper
+	    // find the starting tag, and get node wrapper
 		var match = frag.match(reTag),
 			tag = match ? match[1].toLowerCase() : "",
 			master = masterNode[masterId],

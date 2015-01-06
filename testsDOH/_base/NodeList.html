@@ -262,14 +262,11 @@
 						},
 
 						// layout DOM functions
-						function coords(){
+						function position(){
 							var tnl = new NodeList(dojo.byId('sq100'));
 							doh.t(dojo.isArray(tnl));
-							doh.is(100, tnl.coords()[0].w);
-							doh.is(100, tnl.coords()[0].h);
 							doh.is(100, tnl.position()[0].w);
 							doh.is(100, tnl.position()[0].h);
-							doh.is(document.body.getElementsByTagName("*").length, query("body *").coords().length);
 							doh.is(document.body.getElementsByTagName("*").length, query("body *").position().length);
 						},
 
@@ -507,23 +504,7 @@
 							templs.orphan();
 						},
 
-						function connect(){
-							var ih = "<div><span></span></div><span class='thud'><button>blah</button></span>";
-
-							tn = document.createElement("div");
-							tn.innerHTML = ih;
-							dojo.body().appendChild(tn);
-
-							var ctr = 0;
-							var nl = query("button", tn).connect("onclick", function(){
-								ctr++;
-							});
-							nl[0].click();
-							doh.is(1, ctr);
-							nl[0].click();
-							nl[0].click();
-							doh.is(3, ctr);
-						},
+						
 						function on(){
 							var ctr = 0;
 							dojo.body().appendChild(tn);

@@ -115,6 +115,26 @@ define([
 			return this.then(null, errback);
 		},
 
+		'finally': function(callbackOrErrback) {
+			// summary:
+			//		Add a callback to be invoked when the promise is resolved
+			//		or rejected. Returns a promise which is resolved or rejected
+			//		based on the initial state of the promise.
+			// callbackOrErrback: Function?
+			//		A function that is used both as a callback and errback.
+			// returns: dojo/promise/Promise
+			//		Returns a new promise that is resolved or rejected based on
+			//		the initial promise.
+
+			return this.then(function(success) {
+				callbackOrErrback();
+				return success;
+			}, function(error) {
+				callbackOrErrback();
+				throw error;
+			});
+		},
+
 		trace: function(){
 			return this;
 		},

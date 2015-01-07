@@ -10,7 +10,7 @@ x \_base/NodeList
 * [\_base/window](https://github.com/bryanforbes/dojo/pull/68)
 * dom-attr (https://github.com/bryanforbes/dojo/pull/83)
 x dom-construct
-* dom-prop
+x dom-prop
 * dom-style
 * [errors](https://github.com/bryanforbes/dojo/pull/56)
 * [query](https://github.com/bryanforbes/dojo/pull/69)

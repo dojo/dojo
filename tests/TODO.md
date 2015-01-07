@@ -9,7 +9,7 @@ x \_base/NodeList
 * [\_base/sniff](https://github.com/bryanforbes/dojo/pull/66)
 * [\_base/window](https://github.com/bryanforbes/dojo/pull/68)
 * dom-attr (https://github.com/bryanforbes/dojo/pull/83)
-* dom-construct
+x dom-construct
 * dom-prop
 * dom-style
 * [errors](https://github.com/bryanforbes/dojo/pull/56)

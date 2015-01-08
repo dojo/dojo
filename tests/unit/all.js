@@ -38,6 +38,7 @@ define([
 	'dojo/has!host-browser?./NodeList-manipulate',
 	'dojo/has!host-browser?./NodeList-traverse',
 	'dojo/has!host-browser?./back',
+    'dojo/has!host-browser?./dom',
 	'dojo/has!host-browser?./dom-attr',
 	'dojo/has!host-browser?./dom-construct',
 	'dojo/has!host-browser?./dom-form',

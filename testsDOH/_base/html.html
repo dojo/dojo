@@ -43,11 +43,6 @@
 
 				doh.register("t",
 					[
-						"doh.is(null, dojo.byId('nonExistentId'));",
-						"doh.is(null, dojo.byId(null));",
-						"doh.is(null, dojo.byId(''));",
-						"doh.is(undefined, dojo.byId(undefined));",
-
 						"doh.is(100, dojo.marginBox('sq100').w);",
 						"doh.is(100, dojo.marginBox('sq100').h);",
 						"doh.is(100, dojo._getMarginSize('sq100').w);",
@@ -224,24 +219,6 @@
 						function getBgcolor(t){
 							var bgc = dojo.style('sq100nopos', 'backgroundColor');
 							doh.t((bgc == "rgb(0, 0, 0)")||(bgc == "black")||(bgc == "#000000"));
-						},
-						function isDescendant(t){
-							doh.t(dojo.isDescendant("sq100", dojo.body()));
-							doh.t(dojo.isDescendant("sq100", dojo.doc));
-							doh.t(dojo.isDescendant("sq100", "sq100"));
-							doh.t(dojo.isDescendant(dojo.byId("sq100"), "sq100"));
-							doh.f(dojo.isDescendant("sq100", dojo.byId("sq100").firstChild));
-							doh.t(dojo.isDescendant(dojo.byId("sq100").firstChild, "sq100"));
-						},
-						function isDescendantIframe(t){
-							var bif = dojo.byId("blah");
-							// this test barely makes sense. disabling it for now.
-							// doh.t(dojo.isDescendant(bif.contentDocument.getElementById("subDiv"), bif.parentNode));
-							var subDiv = getIframeDocument(bif).getElementById("subDiv");
-							doh.t(dojo.isDescendant(subDiv, subDiv));
-							doh.t(dojo.isDescendant(subDiv, subDiv.parentNode));
-							doh.f(dojo.isDescendant(subDiv.parentNode, subDiv));
-
 						},
 						function testClassFunctions(t){
 							var node = dojo.byId("sq100");

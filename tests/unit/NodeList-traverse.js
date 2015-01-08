@@ -11,86 +11,84 @@ define([
     registerSuite({
         name: 'dojo/NodeList-traverse',
 
-        "children()": (function () {
-            return {
-                "returns children of nodes": function () {
-                    //arrange
-                    var containers =
+        "children()": {
+            "returns children of nodes": function () {
+                //arrange
+                var containers =
+                    [
+                        document.createElement("div"),
+                        document.createElement("div")
+                    ],
+                    children =
+                    [
                         [
-                            document.createElement("div"),
-                            document.createElement("div")
-                        ],
-                        children =
-                        [
-                            [
-                                document.createElement("span"),
-                                document.createElement("span")
-                            ], [
-                                document.createElement("input"),
-                                document.createElement("input")
-                            ]
-                        ],
-                        allChildren = children[0].concat(children[1]),
-                        nodeList = new NodeList(containers);
+                            document.createElement("span"),
+                            document.createElement("span")
+                        ], [
+                            document.createElement("input"),
+                            document.createElement("input")
+                        ]
+                    ],
+                    allChildren = children[0].concat(children[1]),
+                    nodeList = new NodeList(containers);
 
-                    for (var i in containers) {
-                        for (var j in children[i]) {
-                            containers[i].appendChild(children[i][j]);
-                        }
-                        document.body.appendChild(containers[i]);
+                for (var i in containers) {
+                    for (var j in children[i]) {
+                        containers[i].appendChild(children[i][j]);
                     }
-
-                    //act
-                    var result = nodeList.children();
-
-                    //assert
-                    for (var i = 0; i < result.length; i++) {
-                        assert.propertyVal(allChildren, result[i]);
-                    }
-
-                    for (var i in containers) {
-                        document.body.removeChild(containers[i]);
-                    }
-
-                },
-                "filters children with query, if present": function () {
-                    //arrange
-                    var containers =
-                        [
-                            document.createElement("div"),
-                            document.createElement("div")
-                        ],
-                        children =
-                        [
-                            [
-                                document.createElement("span"),
-                                document.createElement("span")
-                            ], [
-                                document.createElement("input"),
-                                document.createElement("input")
-                            ]
-                        ],
-                        query = "span",
-                        allChildren = children[0].concat(children[1]),
-                        nodeList = new NodeList(containers);
-
-                    for (var i in containers) {
-                        for (var j in children[i]) {
-                            containers[i].appendChild(children[i][j]);
-                        }
-                        document.body.appendChild(containers[i]);
-                    }
-
-                    //act
-                    var result = nodeList.children(query);
-
-                    //assert
-                    for (var i = 0; i < result.length; i++) {
-                        assert.equal(result[i].nodeName.toLowerCase(), "span");
-                    }
+                    document.body.appendChild(containers[i]);
                 }
-            };
-        })(),
+
+                //act
+                var result = nodeList.children();
+
+                //assert
+                for (var i = 0; i < result.length; i++) {
+                    assert.propertyVal(allChildren, result[i]);
+                }
+
+                for (var i in containers) {
+                    document.body.removeChild(containers[i]);
+                }
+
+            },
+            "filters children with query, if present": function () {
+                //arrange
+                var containers =
+                    [
+                        document.createElement("div"),
+                        document.createElement("div")
+                    ],
+                    children =
+                    [
+                        [
+                            document.createElement("span"),
+                            document.createElement("span")
+                        ], [
+                            document.createElement("input"),
+                            document.createElement("input")
+                        ]
+                    ],
+                    query = "span",
+                    allChildren = children[0].concat(children[1]),
+                    nodeList = new NodeList(containers);
+
+                for (var i in containers) {
+                    for (var j in children[i]) {
+                        containers[i].appendChild(children[i][j]);
+                    }
+                    document.body.appendChild(containers[i]);
+                }
+
+                //act
+                var result = nodeList.children(query);
+
+                //assert
+                for (var i = 0; i < result.length; i++) {
+                    assert.equal(result[i].nodeName.toLowerCase(), "span");
+                }
+            }
+        },
 
         "closest()": (function () {
             var root,
@@ -654,165 +652,155 @@ define([
             };
         })(),
 
-        "andSelf()": (function () {
-            return {
-                "returns concatenation of nodeList's parent to itself": function () {
-                    //arrange
-                    var nodes =
-                        [
-                            document.createElement("div"),
-                            document.createElement("div")
-                        ],
-                        parentNodes =
-                        [
-                            document.createElement("span"),
-                            document.createElement("span")
-                        ],
-                        nodeList = new NodeList(nodes),
-                        parentNodeList = new NodeList(parentNodes);
+        "andSelf()": {
+            "returns concatenation of nodeList's parent to itself": function () {
+                //arrange
+                var nodes =
+                    [
+                        document.createElement("div"),
+                        document.createElement("div")
+                    ],
+                    parentNodes =
+                    [
+                        document.createElement("span"),
+                        document.createElement("span")
+                    ],
+                    nodeList = new NodeList(nodes),
+                    parentNodeList = new NodeList(parentNodes);
 
-                    nodeList._parent = parentNodeList;
+                nodeList._parent = parentNodeList;
 
-                    //act
-                    var result = nodeList.andSelf();
+                //act
+                var result = nodeList.andSelf();
 
-                    //assert
-                    var allNodes = nodes.concat(parentNodes);
-                    assert.equal(result.length, allNodes.length);
-                    for (var i in allNodes) {
-                        assert.propertyVal(result, allNodes[i]);
-                    }
+                //assert
+                var allNodes = nodes.concat(parentNodes);
+                assert.equal(result.length, allNodes.length);
+                for (var i in allNodes) {
+                    assert.propertyVal(result, allNodes[i]);
                 }
-            };
-        })(),
+            }
+        },
 
-        "first()": (function () {
-            return {
-                "returns first node from the NodeList": function () {
-                    //arrange
-                    var expected = document.createElement("div"),
-                        notExpected =
-                        [
-                            document.createElement("span"),
-                            document.createElement("button")
-                        ],
-                        nodes = [expected].concat(notExpected),
-                        nodeList = new NodeList(nodes);
-
-                    //act
-                    var result = nodeList.first();
-                    console.dir(result);
-                    //assert
-                    assert.equal(result.length, 1);
-                    assert.equal(result[0], expected);
-
-                }
-            };
-        })(),
-
-        "last()": (function () {
-            return {
-                "returns last node from the NodeList": function () {
-                    //arrange
-                    var expected = document.createElement("div"),
-                        notExpected =
-                        [
-                            document.createElement("span"),
-                            document.createElement("button")
-                        ],
-                        nodes = notExpected.concat([expected]),
-                        nodeList = new NodeList(nodes);
-
-                    //act
-                    var result = nodeList.last();
-                    console.dir(result);
-                    //assert
-                    assert.equal(result.length, 1);
-                    assert.equal(result[0], expected);
-
-                }
-            };
-        })(),
-
-        "even()": (function () {
-            return {
-                "returns even entries from the nodeList": function () {
-                    //arrange
-                    var odd =
-                        [
-                            document.createElement("div"),
-                            document.createElement("div"),
-                            document.createElement("div")
-                        ],
-                        even =
-                        [
-                            document.createElement("div"),
-                            document.createElement("div")
-                        ],
-                        nodes = [],
-                        nodeList;
-
-                    for (var i in odd) {
-                        nodes.push(odd[i]);
-                        if (even[i]) {
-                            nodes.push(even[i]);
-                        }
-                    }
-
+        "first()": {
+            "returns first node from the NodeList": function () {
+                //arrange
+                var expected = document.createElement("div"),
+                    notExpected =
+                    [
+                        document.createElement("span"),
+                        document.createElement("button")
+                    ],
+                    nodes = [expected].concat(notExpected),
                     nodeList = new NodeList(nodes);
 
-                    //act
-                    var result = nodeList.even();
+                //act
+                var result = nodeList.first();
+                console.dir(result);
+                //assert
+                assert.equal(result.length, 1);
+                assert.equal(result[0], expected);
 
-                    //assert
-                    assert.equal(result.length, even.length);
-                    for (var i in even) {
-                        assert.propertyVal(result, even[i]);
-                    }
+            }
+        },
 
-                }
-            };
-        })(),
-
-        "odd()": (function () {
-            return {
-                "returns odd entries from the nodeList": function () {
-                    //arrange
-                    var odd =
-                        [
-                            document.createElement("div"),
-                            document.createElement("div"),
-                            document.createElement("div")
-                        ],
-                        even =
-                        [
-                            document.createElement("div"),
-                            document.createElement("div")
-                        ],
-                        nodes = [],
-                        nodeList;
-
-                    for (var i in odd) {
-                        nodes.push(odd[i]);
-                        if (even[i]) {
-                            nodes.push(even[i]);
-                        }
-                    }
-
+        "last()": {
+            "returns last node from the NodeList": function () {
+                //arrange
+                var expected = document.createElement("div"),
+                    notExpected =
+                    [
+                        document.createElement("span"),
+                        document.createElement("button")
+                    ],
+                    nodes = notExpected.concat([expected]),
                     nodeList = new NodeList(nodes);
 
-                    //act
-                    var result = nodeList.odd();
+                //act
+                var result = nodeList.last();
+                console.dir(result);
+                //assert
+                assert.equal(result.length, 1);
+                assert.equal(result[0], expected);
 
-                    //assert
-                    assert.equal(result.length, odd.length);
-                    for (var i in odd) {
-                        assert.propertyVal(result, odd[i]);
+            }
+        },
+
+        "even()": {
+            "returns even entries from the nodeList": function () {
+                //arrange
+                var odd =
+                    [
+                        document.createElement("div"),
+                        document.createElement("div"),
+                        document.createElement("div")
+                    ],
+                    even =
+                    [
+                        document.createElement("div"),
+                        document.createElement("div")
+                    ],
+                    nodes = [],
+                    nodeList;
+
+                for (var i in odd) {
+                    nodes.push(odd[i]);
+                    if (even[i]) {
+                        nodes.push(even[i]);
                     }
-
                 }
-            };
-        })(),
+
+                nodeList = new NodeList(nodes);
+
+                //act
+                var result = nodeList.even();
+
+                //assert
+                assert.equal(result.length, even.length);
+                for (var i in even) {
+                    assert.propertyVal(result, even[i]);
+                }
+
+            }
+        },
+
+        "odd()": {
+            "returns odd entries from the nodeList": function () {
+                //arrange
+                var odd =
+                    [
+                        document.createElement("div"),
+                        document.createElement("div"),
+                        document.createElement("div")
+                    ],
+                    even =
+                    [
+                        document.createElement("div"),
+                        document.createElement("div")
+                    ],
+                    nodes = [],
+                    nodeList;
+
+                for (var i in odd) {
+                    nodes.push(odd[i]);
+                    if (even[i]) {
+                        nodes.push(even[i]);
+                    }
+                }
+
+                nodeList = new NodeList(nodes);
+
+                //act
+                var result = nodeList.odd();
+
+                //assert
+                assert.equal(result.length, odd.length);
+                for (var i in odd) {
+                    assert.propertyVal(result, odd[i]);
+                }
+
+            }
+        },
 
         "validation tests": (function () {
             function verify(/*dojo.NodeList*/nl, /*Array*/ids, /*String*/ comment) {

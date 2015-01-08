@@ -13,11 +13,21 @@ define([
         return baseId + uniqueId++;
     }
 
+    var container;
+
     registerSuite({
         name: 'dojo/dom-style',
 
-        "getComputedStyle()": (function () {
-            return {
+        setup: function() {
+            container = document.createElement("div");
+            document.body.appendChild(container);
+        },
+
+        teardown: function() {
+            document.body.removeChild(container);
+        },
+
+        "getComputedStyle()": {
                 "gets expected result": function () {
                     //arrange
                     var node = document.createElement("div"),
@@ -31,7 +41,7 @@ define([
                         node.style[i] = map[i];
                     }
 
-                    document.body.appendChild(node);
+                    container.appendChild(node);
 
                     //act
                     var result = domStyle.getComputedStyle(node);
@@ -41,15 +51,13 @@ define([
                         assert.equal(result[i], map[i]);
                     }
                 }
-            };
-        })(),
-        "toPixelValue()": (function () {
-            return {
+            },
+        "toPixelValue()": {
                 "node + undefined": function () {
                     //arrange
                     var node = document.createElement("div");
 
-                    document.body.appendChild(node);
+                    container.appendChild(node);
 
                     //act
                     var result = domStyle.toPixelValue(node, undefined);
@@ -84,10 +92,8 @@ define([
                     //assert
                     assert.equal(result, value);
                 }
-            };
-        })(),
-        "get()": (function () {
-            return {
+            },
+        "get()": {
                 "string + string": function () {
                     //arrange
                     var node = document.createElement("div"),
@@ -95,7 +101,7 @@ define([
                         style = "width",
                         value = 42;
 
-                    document.body.appendChild(node);
+                    container.appendChild(node);
                     node.id = id;
                     node.style[style] = value + "px";
 
@@ -112,7 +118,7 @@ define([
                         style = "width",
                         value = 42;
 
-                    document.body.appendChild(node);
+                    container.appendChild(node);
                     node.style[style] = value + "px";
 
                     //act
@@ -130,7 +136,7 @@ define([
                             style = "opacity",
                             value = 0.3;
 
-                        document.body.appendChild(node);
+                        container.appendChild(node);
                         node.style[style] = value;
 
                         //act
@@ -151,7 +157,7 @@ define([
                         node = document.createElement("div"),
                         value = 'right';
 
-                    document.body.appendChild(node);
+                    container.appendChild(node);
                     node.style.float = value;
 
                     for (var i in styles) {
@@ -169,7 +175,7 @@ define([
                         style = "width",
                         value = "auto";
 
-                    document.body.appendChild(node);
+                    container.appendChild(node);
                     node.style[style] = value;
 
                     //act
@@ -185,7 +191,7 @@ define([
                         style = "height",
                         value = "auto";
 
-                    document.body.appendChild(node);
+                    container.appendChild(node);
                     node.style[style] = value;
 
                     //act
@@ -202,7 +208,7 @@ define([
                             style = "fontweight",
                             value = 400;
 
-                        document.body.appendChild(node);
+                        container.appendChild(node);
                         node.style[style] = value;
 
                         //act
@@ -223,7 +229,7 @@ define([
                             style = "fontweight",
                             value = 700;
 
-                        document.body.appendChild(node);
+                        container.appendChild(node);
                         node.style[style] = value;
 
                         //act
@@ -250,7 +256,7 @@ define([
                         node = document.createElement("div"),
                         value = 10;
 
-                    document.body.appendChild(node);
+                    container.appendChild(node);
 
                     for (var i in styles) {
                         node.style[styles[i]] = value + "px";
@@ -277,7 +283,7 @@ define([
                         node.style[i] = map[i];
                     }
 
-                    document.body.appendChild(node);
+                    container.appendChild(node);
 
                     //act
                     var result = domStyle.get(node);
@@ -287,10 +293,8 @@ define([
                         assert.equal(result[i], map[i]);
                     }
                 }
-            };
-        })(),
-        "set()": (function () {
-            return {
+            },
+        "set()": {
                 "string + string + string": function () {
                     //arrange
                     var node = document.createElement("div"),
@@ -298,7 +302,7 @@ define([
                         style = "width",
                         value = "10px";
 
-                    document.body.appendChild(node);
+                    container.appendChild(node);
 
                     node.id = id;
 
@@ -314,7 +318,7 @@ define([
                         style = "width",
                         value = "10px";
 
-                    document.body.appendChild(node);
+                    container.appendChild(node);
 
                     //act
                     domStyle.set(node, style, value);
@@ -332,7 +336,7 @@ define([
                             height: "125px"
                         };
 
-                    document.body.appendChild(node);
+                    container.appendChild(node);
 
                     //act
                     domStyle.set(node, map);
@@ -353,7 +357,7 @@ define([
                         node = document.createElement("div"),
                         value = "right";
 
-                    document.body.appendChild(node);
+                    container.appendChild(node);
                     node.style.float = value;
 
                     for (var i in styles) {
@@ -372,7 +376,7 @@ define([
                         style = "opacity",
                         value = 0.3
 
-                    document.body.appendChild(node);
+                    container.appendChild(node);
 
                     //act
                     domStyle.set(node, style, value);
@@ -393,7 +397,7 @@ define([
                         node.style[i] = map[i];
                     }
 
-                    document.body.appendChild(node);
+                    container.appendChild(node);
 
                     //act
                     var result = domStyle.set(node);
@@ -403,8 +407,7 @@ define([
                         assert.equal(result[i], map[i]);
                     }
                 }
-            };
-        })(),
+            },
         "validation tests": (function () {
             var container,
                 node,

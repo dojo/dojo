@@ -4,9 +4,8 @@ define([
     'sinon',
     '../../dom-construct',
     '../../_base/window',
-    '../../dom-attr',
-    'dojo'
-], function (registerSuite, assert, sinon, domConstruct, win, domAttr, dojo) {
+    '../../dom-attr'
+], function (registerSuite, assert, sinon, domConstruct, win, domAttr) {
     var baseId = "dom-construct",
         uniqueId = 0;
 

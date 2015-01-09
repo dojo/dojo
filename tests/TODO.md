@@ -6,7 +6,6 @@
 * [\_base/sniff](https://github.com/bryanforbes/dojo/pull/66)
 * [\_base/window](https://github.com/bryanforbes/dojo/pull/68)
 * [errors](https://github.com/bryanforbes/dojo/pull/56)
-* [query](https://github.com/bryanforbes/dojo/pull/69)
 
 # Individual tests to be converted
 

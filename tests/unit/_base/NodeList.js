@@ -187,11 +187,11 @@ define([
 
                     var frag = domConstruct.toDom(
                         '<h1>testing dojo.NodeList</h1>' +
-                        '<div id="sq100" style="position:absolute;left:100px;top:100px;width:100px;height:100px;">' +
+                        '<div id="sq100-NodeList" style="position:absolute;left:100px;top:100px;width:100px;height:100px;">' +
                         '    100px square, abs' +
                         '</div>' +
-                        '<div id="t">' +
-                        '    <span id="c1">c1</span>' +
+                        '<div id="t-NodeList">' +
+                        '    <span id="c1-NodeList">c1</span>' +
                         '</div>');
                     
 
@@ -214,9 +214,9 @@ define([
                     container.appendChild(secondSubContainer);
                     container.appendChild(thirdSubContainer);
                     document.body.appendChild(container);
-                    c = dojo.byId("c1");
-                    t = dojo.byId("t");
-                    s = dojo.byId("sq100");
+                    c = dojo.byId("c1-NodeList");
+                    t = dojo.byId("t-NodeList");
+                    s = dojo.byId("sq100-NodeList");
                     fourElementNL = new NodeList(c, t, c, t);
                 },
                 teardown: function () {
@@ -322,7 +322,7 @@ define([
                     assert.isTrue(ret);
 
                     var ret = fourElementNL.some(function (i) {
-                        return (i.id == "t");
+                        return (i.id == "t-NodeList");
                     });
                     assert.isTrue(ret);
                 },
@@ -336,7 +336,7 @@ define([
                         assert.equal(ret[i], true);
                     }
 
-                    verify(ret.end(), ["c1", "t", "c1", "t"]);
+                    verify(ret.end(), ["c1-NodeList", "t-NodeList", "c1-NodeList", "t-NodeList"]);
 
                     var cnt = 0;
                     var ret = fourElementNL.map(function () {
@@ -358,7 +358,7 @@ define([
                     assert.equal(pnl.length, 3);
                     assert.equal(pnl.slice(-1)[0], c);
                     assert.equal(pnl.slice(-2).length, 2);
-                    verify(pnl.slice(1).end(), ["t", "t", "c1"]);
+                    verify(pnl.slice(1).end(), ["t-NodeList", "t-NodeList", "c1-NodeList"]);
                 },
 
                 "splice": function () {
@@ -440,17 +440,17 @@ define([
                 "queryTest": function () {
                     var pnl = new NodeList(t);
                     assert.equal(pnl.query("span")[0], c);
-                    if (name != "t") {
+                    if (name != "t-NodeList") {
                         // this gets messed up by new DOM nodes the second time around
                         assert.equal(query(":last-child", secondSubContainer)[0], t);
                         assert.equal(query(":last-child", secondSubContainer)[1], c);
                         assert.equal(pnl.query().length, 1);
-                        verify(pnl.query("span").end(), ["t"]);
+                        verify(pnl.query("span").end(), ["t-NodeList"]);
                     }
                 },
 
                 "filter": function () {
-                    if (name != "t") {
+                    if (name != "t-NodeList") {
                         // this gets messed up by new DOM nodes the second time around
                         assert.equal(c, query(":first-child", secondSubContainer).filter(":last-child")[0]);
                         assert.equal(query("*", container).filter(function (n) { return (n.nodeName.toLowerCase() == "span"); }).length, 1);
@@ -462,13 +462,13 @@ define([
                         };
                         assert.equal(query("*", container).filter(filterObj.filterFunc).length, 1);
                         assert.equal(query("*", container).filter(filterObj.filterFunc, filterObj).length, 1);
-                        verify((new NodeList(t)).filter("span").end(), ["t"]);
+                        verify((new NodeList(t)).filter("span").end(), ["t-NodeList"]);
                     }
                 },
 
                 // layout DOM functions
                 "position": function () {
-                    var tnl = new NodeList(dojo.byId('sq100'));
+                    var tnl = new NodeList(dojo.byId('sq100-NodeList'));
                     assert.isTrue(dojo.isArray(tnl));
                     assert.equal(tnl.position()[0].w, 100);
                     assert.equal(tnl.position()[0].h, 100);
@@ -562,7 +562,7 @@ define([
                         console.debug(cat);
                         assert.isTrue(cat.constructor == NodeList || cat.constructor == NodeList);
                         assert.equal(cat.length, (divs.length + spans.length));
-                        verify(cat.end(), ["c1"]);
+                        verify(cat.end(), ["c1-NodeList"]);
                     }
                 },
 
@@ -782,7 +782,7 @@ define([
                     var divs = query("div", thirdSubContainer);
                     var at0 = divs.at(0);
                     assert.equal( at0[0], divs[0]);
-                    if (name != "t") {
+                    if (name != "t-NodeList") {
                         // this gets messed up by new DOM nodes the second time around
 
                         var at1 = divs.at(1, 3, 5);

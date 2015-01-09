@@ -3,9 +3,8 @@ define([
     'intern/chai!assert',
     'sinon',
     '../../dom-construct',
-    '../../_base/window',
     '../../dom-attr'
-], function (registerSuite, assert, sinon, domConstruct, win, domAttr) {
+], function (registerSuite, assert, sinon, domConstruct, domAttr) {
     var baseId = "dom-construct",
         uniqueId = 0;
 

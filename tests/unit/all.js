@@ -51,7 +51,7 @@ define([
 	// TODO: this should work in node as well, but it uses dom-construct
 	'dojo/has!host-browser?./on/debounce',
 	'dojo/has!host-browser?./parser',
-	'dojo/has!host-browser?./query',
+	'dojo/has!host-browser?./query/all',
 	'dojo/has!host-browser?./require/require',
 	'dojo/has!host-browser?./router',
 	'dojo/has!host-browser?./rpc',

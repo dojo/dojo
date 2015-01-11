@@ -50,7 +50,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 		//		event.
 		// description:
 		//		To listen for "click" events on a button node, we can do:
-		//		|	define(["dojo/on"], function(listen){
+		//		|	define(["dojo/on"], function(on){
 		//		|		on(button, "click", clickHandler);
 		//		|		...
 		//		Evented JavaScript objects can also have their own events.
@@ -59,7 +59,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 		//		And then we could publish a "foo" event:
 		//		|	on.emit(obj, "foo", {key: "value"});
 		//		We can use extension events as well. For example, you could listen for a tap gesture:
-		//		|	define(["dojo/on", "dojo/gesture/tap", function(listen, tap){
+		//		|	define(["dojo/on", "dojo/gesture/tap", function(on, tap){
 		//		|		on(button, tap, tapHandler);
 		//		|		...
 		//		which would trigger fooHandler. Note that for a simple object this is equivalent to calling:
@@ -238,7 +238,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 		//		Indicates if children elements of the selector should be allowed. This defaults to 
 		//		true
 		// example:
-		// |	require(["dojo/on", "dojo/mouse", "dojo/query!css2"], function(listen, mouse){
+		// |	require(["dojo/on", "dojo/mouse", "dojo/query!css2"], function(on, mouse){
 		// |		on(node, on.selector(".my-class", mouse.enter), handlerForMyHover);
 		return function(target, listener){
 			// if the selector is function, use it to select the node, otherwise use the matches method

@@ -1,6 +1,7 @@
 define([
 	"./_base/kernel",	// kernel.global
-	"./_base/lang"
+	"./_base/lang",
+	"./has"
 ], function(kernel, lang){
 
 // module:
@@ -142,7 +143,12 @@ string.substitute = function(	/*String*/		template,
 		function(match, key, format){
 			var value = lang.getObject(key, false, map);
 			if(format){
-				value = lang.getObject(format, false, thisObject).call(thisObject, value, key);
+				if(has("string-substitute-warn") && value === undefined){
+					console.warn(className + " template couldn\'t find: " + key);
+					return match;
+				}else{
+					value = lang.getObject(format, false, thisObject).call(thisObject, value, key);
+				}
 			}
 			return transform(value, key).toString();
 		}); // String

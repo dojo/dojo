@@ -1,8 +1,7 @@
 define([
 	"dojo/testsDOH/_base/loader",
 	"dojo/testsDOH/_base/object",
-	"dojo/has!host-browser?dojo/testsDOH/_base/html",
-	"dojo/has!host-browser?dojo/testsDOH/_base/query" ], 1);
+	"dojo/has!host-browser?dojo/testsDOH/_base/html" ], 1);
 
 	// TODO: platform boot tests
 	//dojo.platformRequire({

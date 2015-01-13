@@ -299,7 +299,7 @@ define([
                 domProp.set(node, propertyName, newPropertyValue);
 
                 //assert
-                assert.isTrue(mock.calledWith(oldPropertyValue));
+                assert.isTrue(mock.called);
 
                 mock.restore();
 

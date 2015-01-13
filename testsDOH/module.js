@@ -3,7 +3,6 @@ define([
 	"dojo/testsDOH/i18n",
 	"dojo/testsDOH/data",
 	"dojo/testsDOH/DeferredList",
-	"dojo/testsDOH/errors",
 	"dojo/has!host-browser?dojo/testsDOH/html",
 	"dojo/has!host-browser?dojo/testsDOH/NodeList-data",
 	"dojo/has!host-browser?dojo/testsDOH/uacss"

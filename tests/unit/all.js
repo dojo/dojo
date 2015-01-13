@@ -14,7 +14,7 @@ define([
 	'./date/locale',
 	'./date/stamp',
 	'./debounce',
-	'./errors',
+	'./errors/all',
 	'./fx/easing',
 	'./i18n',
 	'./io-query',

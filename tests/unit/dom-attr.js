@@ -648,58 +648,107 @@ define([
                     var input = document.createElement("input"),
                         input2 = document.createElement("input"),
                         ctr = 0,
+                        callbackFired = false,
                         map = {
                             "tabIndex": 1,
                             "type": "text",
                             "onfocus": function (e) {
                                 ctr++;
+                                callbackFired = true;
                             }
                         };
                     domAttr.set(input, map);
+                    domAttr.set(input2, {
+                        "onfocus": function (e) {
+                            callbackFired = true;
+                        }
+                    });
                     document.body.appendChild(input);
                     document.body.appendChild(input2);
                     assert.equal(domAttr.get(input, "tabIndex"), map.tabIndex, "tabIndex");
                     assert.equal(domAttr.get(input, "type"), map.type, "type");
                     assert.equal(ctr, 0, "onfocus ctr == 0");
                     var def = this.async(1000);
-                    input.focus();
-                    setTimeout(def.callback(function () {
-                        assert.equal(ctr, 1, "onfocus ctr == 1");
-                        input2.focus();
-                        setTimeout(def.callback(function () {
+
+                    firstCallback = def.callback(function () {
+                        if (callbackFired) {
+                            console.log("one");
+                            assert.equal(ctr, 1, "onfocus ctr == 1");
+                            callbackFired = false;
+                            input2.focus();
+                        } else {
+                            setTimeout(firstCallback, 50); //try again in a bit
+                        }
+                    });
+
+                    secondCallback = def.callback(function () {
+                        if (callbackFired) {
+                            console.log("two");
+                            callbackFired = false;
                             input.focus();
-                            setTimeout(def.callback(function () {
-                                assert.equal(ctr, 2, "onfocus ctr == 2");
-                            }), 50);
-                        }), 50);
-                    }), 50);
-                    return def.promise;
+                        } else {
+                            setTimeout(secondCallback, 50); //try again in a bit
+                        }
+                    });
+                    thirdCallback = def.callback(function () {
+                        if (callbackFired) {
+                            console.log("three");
+                            assert.equal(ctr, 2, "onfocus ctr == 2");
+                            callbackFired = false;
+                        } else {
+                            setTimeout(thirdCallback, 50); //try again in a bit
+                        }
+                    });
+                    callbackFired = false;
+                    firstCallback();
+                    input.focus();
                 },
                 "attr_reconnect": function () {
                     var input = document.createElement("input"),
-                        input2 = document.createElement("input");
+                        input2 = document.createElement("input"),
+                        callbackFired = false;
                     var ctr = 0;
                     domAttr.set(input, "type", "text");
-                    domAttr.set(input, "onfocus", function (e) { ctr++; });
-                    domAttr.set(input, "onfocus", function (e) { ctr++; });
-                    domAttr.set(input, "onfocus", function (e) { ctr++; });
+                    domAttr.set(input, "onfocus", function (e) { ctr++; callbackFired = true});
+                    domAttr.set(input, "onfocus", function (e) { ctr++; callbackFired = true });
+                    domAttr.set(input, "onfocus", function (e) { ctr++; callbackFired = true });
+                    domAttr.set(input2, "onfocus", function (e) { callbackFired = true });
                     document.body.appendChild(input);
                     document.body.appendChild(input2);
                     assert.equal(domAttr.get(input, "type"), "text");
                     assert.equal(ctr, 0);
                     var def = this.async(1000);
-                    input.focus();
-                    setTimeout(def.callback(function () {
-                        assert.equal(ctr, 1, "onfocus ctr == 1");
-                        input2.focus();
-                        setTimeout(def.callback(function () {
+
+                    firstCallback = def.callback(function () {
+                        if (callbackFired) {
+                            assert.equal(ctr, 1, "onfocus ctr == 1");
+                            callbackFired = false;
+                            input2.focus();
+                        } else {
+                            setTimeout(firstCallback, 50); //try again in a bit
+                        }
+                    });
+
+                    secondCallback = def.callback(function () {
+                        if (callbackFired) {
+                            callbackFired = false;
                             input.focus();
-                            setTimeout(def.callback(function () {
-                                assert.equal(ctr, 2, "onfocus ctr == 2");
-                            }), 50);
-                        }), 50);
-                    }), 50);
-                    return def.promise
+                        } else {
+                            setTimeout(secondCallback, 50); //try again in a bit
+                        }
+                    });
+                    thirdCallback = def.callback(function () {
+                        if (callbackFired) {
+                            assert.equal(ctr, 2, "onfocus ctr == 2");
+                            callbackFired = false;
+                        } else {
+                            setTimeout(thirdCallback, 50); //try again in a bit
+                        }
+                    });
+
+                    callbackFired = false;
+                    firstCallback();
+                    input.focus();
                 },
                 "attrSpecials": function () {
                     var node = document.createElement("div"),

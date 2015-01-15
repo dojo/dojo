@@ -12,6 +12,7 @@ define([
 	'./on',
 	'./parser',
 	'./touch',
-	'./window'
+	'./window',
+    './query/all'
 ], function () {
 });

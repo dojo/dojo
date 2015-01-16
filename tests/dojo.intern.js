@@ -90,6 +90,6 @@ define([
 			/./ :
 			/(?:^|[\/\\])(?:(?:cldr\/nls|html-report|nls|node_modules|tests|testsDOH)[\/\\]|(?:Gruntfile|package)\.js$)/,
 		suites: [ 'testing/tests/unit/all' ],
-		functionalSuites: [ 'testing/tests/functional/all' ]
+		functionalSuites: [ /*'testing/tests/functional/all'*/ ]
 	};
 });

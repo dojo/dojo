@@ -4,11 +4,10 @@ define([
     'sinon',
     '../../dom',
     '../../sniff',
-    '../../dom-construct'
-
+    '../../dom-construct',
 ], function (registerSuite, assert, sinon, dom, has, domConstruct) {
 
-    var baseId = "dojo/dom",
+    var baseId = "dojo_dom",
         uniqueId = 0;
 
     function getId() {
@@ -32,17 +31,21 @@ define([
                     container = document.createElement("div");
                     iframe = document.createElement("iframe");
                     node = document.createElement("span");
-                    iframeChild = document.createElement("div"),
-                    nodeId = getId(),
-                    iframeChildId = nodeId;
-
+                    nodeId = getId();
                     document.body.appendChild(container);
                     container.appendChild(iframe);
                     container.appendChild(node);
-                    iframe.contentDocument.body.appendChild(iframeChild);
+                    
+                    iframeChild = iframe.contentDocument.createElement("div");
+                    iframeChildId = getId();
 
-                    node.id = nodeId;
-                    iframeChild.id = nodeId;
+                    setTimeout(function () { //make async because FF seems to need a bit to setup the iframe's contentDocument after adding to the page
+                        iframe.contentDocument.body.appendChild(iframeChild);
+
+                        node.id = nodeId;
+                        iframeChild.id = iframeChildId;
+                    }, 0);
+                    
                 },
                 teardown: function () {
                     document.body.removeChild(container);
@@ -70,7 +73,7 @@ define([
                     //arrange
 
                     //act
-                    var result = dom.byId(nodeId, iframe.contentDocument);
+                    var result = dom.byId(iframeChildId, iframe.contentDocument);
 
                     //assert
                     assert.equal(result, iframeChild);
@@ -291,7 +294,10 @@ define([
                             container.appendChild(iframe);
                             container.appendChild(node);
                             node.appendChild(child);
-                            domConstruct.place(iframeContent, iframe.contentDocument.body);
+                            setTimeout(function () { //make async because FF seems to need a bit to setup the iframe's contentDocument after adding to the page
+                                domConstruct.place(iframeContent, iframe.contentDocument.body);
+                            }, 0);
+                            
                         },
                         teardown: function () {
                             document.body.removeChild(container);

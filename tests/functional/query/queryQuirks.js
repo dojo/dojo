@@ -433,6 +433,7 @@ define([
                                     "</body>",
                                     "</html>"
                                 ].join(""));
+                                doc.close();
 
                                 result["st1 h3"] = query('h3', dom.byId("st1", doc));
                                 // use a long query to force a test of the XPath system on FF. see bug #7075
@@ -482,23 +483,23 @@ define([
                             );
                             var de = doc.documentElement;
 
-                            result["result"] = query("result", de);
-                            result["result>nested"] = query("result>nested", de);
-                            result["Result"] = query("Result", de);
-                            result["RESULT"] = query("RESULT", de);
-                            result["resulT"] = query("resulT", de);
-                            result["rEsulT"] = query("rEsulT", de);
+                            result["result"] = query("result", de).length;
+                            result["result>nested"] = query("result>nested", de).length;
+                            result["Result"] = query("Result", de).length;
+                            result["RESULT"] = query("RESULT", de).length;
+                            result["resulT"] = query("resulT", de).length;
+                            result["rEsulT"] = query("rEsulT", de).length;
 
                             return result;
                         })
                         .then(function (result) {
-                            assert.equal(result["result"].length, 2, "all lower");
+                            assert.equal(result["result"], 2, "all lower");
 
                             //assert.equal(result["result>nested", de).length, 1, "nested XML");
-                            assert.equal(result["Result"].length, 1, "mixed case");
-                            assert.equal(result["RESULT"].length, 1, "all upper");
-                            assert.equal(result["resulT"].length, 0, "no match");
-                            assert.equal(result["rEsulT"].length, 0, "no match");
+                            assert.equal(result["Result"], 1, "mixed case");
+                            assert.equal(result["RESULT"], 1, "all upper");
+                            assert.equal(result["resulT"], 0, "no match");
+                            assert.equal(result["rEsulT"], 0, "no match");
                         });
 
                 },
@@ -516,11 +517,11 @@ define([
                                 ].join(""));
                                 var de = doc.documentElement;
 
-                                result["RESULT"] = query("RESULT", de);
-                                result["RESULT[THINGER]"] = query("RESULT[THINGER]", de);
-                                result["RESULT[thinger]"] = query("RESULT[thinger]", de);
-                                result["RESULT[thinger=blah]"] = query("RESULT[thinger=blah]", de);
-                                result["RESULT > CHILD"] = query("RESULT > CHILD", de);
+                                result["RESULT"] = query("RESULT", de).length;
+                                result["RESULT[THINGER]"] = query("RESULT[THINGER]", de).length;
+                                result["RESULT[thinger]"] = query("RESULT[thinger]", de).length;
+                                result["RESULT[thinger=blah]"] = query("RESULT[thinger=blah]", de).length;
+                                result["RESULT > CHILD"] = query("RESULT > CHILD", de).length;
 
                             } else {
                                 this.skip("do not run in IE till bug #14880 is fixed");
@@ -528,11 +529,11 @@ define([
                             return result;
                         })
                         .then(function (result) {
-                            assert.equal(result["RESULT"].length, 2, "result elements");
-                            assert.equal(result["RESULT[THINGER]"].length, 0, "result elements with attrs (wrong)");
-                            assert.equal(result["RESULT[thinger]"].length, 2, "result elements with attrs");
-                            assert.equal(result["RESULT[thinger=blah]"].length, 1, "result elements with attr value");
-                            assert.equal(result["RESULT > CHILD"].length, 1, "Using child operator");
+                            assert.equal(result["RESULT"], 2, "result elements");
+                            assert.equal(result["RESULT[THINGER]"], 0, "result elements with attrs (wrong)");
+                            assert.equal(result["RESULT[thinger]"], 2, "result elements with attrs");
+                            assert.equal(result["RESULT[thinger=blah]"], 1, "result elements with attr value");
+                            assert.equal(result["RESULT > CHILD"], 1, "Using child operator");
                         });
                 },
                 "sort": function () {

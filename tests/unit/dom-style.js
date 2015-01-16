@@ -158,7 +158,7 @@ define([
                         value = 'right';
 
                     container.appendChild(node);
-                    node.style.float = value;
+                    node.style.cssFloat = value;
 
                     for (var i in styles) {
                         //act
@@ -365,9 +365,9 @@ define([
                         domStyle.set(node, styles[i], value);
 
                         //assert
-                        assert.equal(node.style.float, value);
+                        assert.equal(node.style.cssFloat, value);
 
-                        node.style.float = "none";
+                        node.style.cssFloat = "none";
                     }
                 },
                 "node + opacity + number": function() {

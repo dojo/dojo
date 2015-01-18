@@ -67,7 +67,7 @@ define(["./_base/lang"], function(lang){
 			//		Note that spaces and other urlencoded entities are correctly
 			//		handled.
 
-			var dec = decodeURIComponent, qp, ret = {}, name, val;
+        	var dec = decodeURIComponent, qp = str.split("&"), ret = {}, name, val;
 			for(var i = 0, l = qp.length, item; i < l; ++i){
 				item = qp[i];
 				if(item.length){

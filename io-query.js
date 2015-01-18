@@ -1,5 +1,4 @@
 define(["./_base/lang"], function(lang){
-	"use strict";
 
 	// module:
 	//		dojo/io-query
@@ -47,34 +46,28 @@ define(["./_base/lang"], function(lang){
 			return pairs.join("&"); // String
 		},
 
-		queryToObject: function queryToObject(/*String?*/ str){
-			// summary:
-			//		Create an object representing a de-serialized query section of a
-			//		URL. Query keys with multiple values are returned in an array.
-			//  str:
-			//      Query string to convert. If no string is passed, URL is used instead.
-			//
-			// example:
-			//		This string:
-			//
-			//	|		"foo=bar&foo=baz&thinger=%20spaces%20=blah&zonk=blarg&"
-			//
-			//		results in this object structure:
-			//
-			//	|		{
-			//	|			foo: [ "bar", "baz" ],
-			//	|			thinger: " spaces =blah",
-			//	|			zonk: "blarg"
-			//	|		}
-			//
-			//		Note that spaces and other urlencoded entities are correctly
-			//		handled.
+	queryToObject: function queryToObject(/*String*/ str){
+		// summary:
+		//		Create an object representing a de-serialized query section of a
+		//		URL. Query keys with multiple values are returned in an array.
+		//
+		// example:
+		//		This string:
+		//
+		//	|		"foo=bar&foo=baz&thinger=%20spaces%20=blah&zonk=blarg&"
+		//
+		//		results in this object structure:
+		//
+		//	|		{
+		//	|			foo: [ "bar", "baz" ],
+		//	|			thinger: " spaces =blah",
+		//	|			zonk: "blarg"
+		//	|		}
+		//
+		//		Note that spaces and other urlencoded entities are correctly
+		//		handled.
 
-			var dec = decodeURIComponent, qp, ret = {}, name, val;
-
-			str = str || window.location.search.slice(1);
-			qp = str.split("&");
-
+        var dec = decodeURIComponent, qp = str.split("&"), ret = {}, name, val;
 			for(var i = 0, l = qp.length, item; i < l; ++i){
 				item = qp[i];
 				if(item.length){

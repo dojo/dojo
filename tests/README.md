@@ -51,7 +51,7 @@ During development of tests, it is often desirable to run the test suite
 or portions of the test suite in a local browser. To do this, simply run
 the test runner in proxy-only mode:
 ```
-grunt run test-proxy
+npm run test-proxy
 ```
 
 With the proxy running, navigate to the following URL:

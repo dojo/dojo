@@ -1,12 +1,14 @@
 define([
-	'intern!object',
-	'intern/chai!assert'
-], function (registerSuite, assert) {
-	registerSuite({
-		name: 'dojo/_base/query',
+    'intern!object',
+    'intern/chai!assert',
+    '../../../query',
+    '../../../_base/query'
+], function (registerSuite, assert, query, baseQuery) {
+    registerSuite({
+        name: 'dojo/_base/query',
 
-		'TODO: convert tests': function () {
-			assert.fail();
-		}
-	});
+        "delegates to dojo/query": function () {
+            assert.equal(query, baseQuery);
+        }
+    });
 });

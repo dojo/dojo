@@ -50,6 +50,9 @@ define([
 		//		subsequent classes will be mixed into the first class and a unique constructor will be
 		//		returned for that array.
 
+		var _require = contextRequire ? contextRequire : require;
+		types = darray.map(types, _require.toAbsMid);
+		
 		var ts = types.join();
 		if(!_ctorMap[ts]){
 			var mixins = [];
@@ -57,7 +60,7 @@ define([
 				var t = types[i];
 				// TODO: Consider swapping getObject and require in the future
 				mixins[mixins.length] = (_ctorMap[t] = _ctorMap[t] || (dlang.getObject(t) || (~t.indexOf('/') &&
-					(contextRequire ? contextRequire(t) : require(t)))));
+						_require(t))));
 			}
 			var ctor = mixins.shift();
 			_ctorMap[ts] = mixins.length ? (ctor.createSubclass ? ctor.createSubclass(mixins) : ctor.extend.apply(ctor, mixins)) : ctor;

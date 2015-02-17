@@ -2,5 +2,6 @@ define([
 	'./parser/parseOnLoadAutoRequire',
 	'./parser/parseOnLoadDeclarativeRequire',
 	'./parser/parser-args',
-	'./parser/parserAsync'
+	'./parser/parserAsync',
+	'./parser/parserContextRequire'
 ], function () { });

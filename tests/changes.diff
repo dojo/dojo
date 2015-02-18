@@ -5,7 +5,7 @@ index 4f66fa8..30ef027 100644
 @@ -1,10 +1,6 @@
  This file lists tests that need to be implemented or expanded. See ticket #3121
  for changes related to things listed here.
- 
+
 -Tests to add:
 --------------
 -	* add tests for dojo.place()
@@ -18,7 +18,7 @@ index 02ce9ad..d774bc3 100644
 --- a/tests/_base/html.html
 +++ b/tests/_base/html.html
 @@ -43,7 +43,7 @@
- 
+
  				doh.register("t",
  					[
 -						"doh.is(null, dojo.byId('nonExistantId'));",
@@ -45,11 +45,11 @@ index 02ce9ad..d774bc3 100644
 +*/
  					]
  				);
- 
+
 @@ -915,6 +928,13 @@
  			><param name="background" value="transparent"
  		/></object>
- 
+
 +		<!-- Test that empty doesn't disconnect grandchildren from children -->
 +		<div id="emptyParent">
 +			<div id="emptyChild">
@@ -1312,7 +1312,7 @@ index 86849e4..e36aa4c 100644
 +						doh.t(rowWidth > 0, "width: " + rowWidth);
  					}
  				]);
- 
+
 @@ -39,5 +44,6 @@
  	</head>
  	<body>
@@ -1326,14 +1326,14 @@ index 592f1ad..f65a9b2 100644
 +++ b/tests/query/query.html
 @@ -12,8 +12,8 @@
  			var selector = specified ? specified[0].split("=")[1] : "acme";
- 
+
  			require(["doh", "dojo/_base/array", "dojo/dom", "dojo/request/iframe",
 -				"dojo/query!"+selector, "dojo/NodeList", "dojo/sniff", "dojo/domReady!"],
 -					function(doh, array, dom, iframe, dq, NodeList, has){
 +				"dojo/query!"+selector, "dojo/NodeList", "dojo/sniff", "dojo/dom-construct", "dojo/domReady!"],
 +					function(doh, array, dom, iframe, dq, NodeList, has, domConstruct){
  				query = dq; // make a global
- 
+
  				function createDocument(xml){
 @@ -236,6 +236,21 @@
  						var i = query("div");
@@ -1356,7 +1356,7 @@ index 592f1ad..f65a9b2 100644
 +						doh.is(0, query("#b", documentFragment2).length);
  					}
  				]);
- 
+
 diff --git a/tests/query/queryQuirks.html b/tests/query/queryQuirks.html
 index 8612e35..749249d 100644
 --- a/tests/query/queryQuirks.html
@@ -1364,13 +1364,13 @@ index 8612e35..749249d 100644
 @@ -10,8 +10,8 @@
  			var specified = window.location.search.substr(1).match(/selector=(.*)/);
  			var selector = specified ? specified[0].split("=")[1] : "acme";
- 
+
 -			require(["dojo", "doh", "dojo/query!"+selector, "dojo/sniff", "dojo/io/iframe", "dojo/domReady!"],
 -					function(dojo, doh, dq, has){
 +			require(["dojo", "doh", "dojo/query!"+selector, "dojo/sniff", "dojo/dom-construct", "dojo/io/iframe", "dojo/domReady!"],
 +					function(dojo, doh, dq, has, domConstruct){
  				query = dq; // make a global
- 
+
  				function createDocument(xml){
 @@ -219,6 +219,27 @@
  						var i = query("div");
@@ -1399,4 +1399,4 @@ index 8612e35..749249d 100644
 +						doh.is(0, query("#b", documentFragment2).length);
  					}
  				]);
- 
+

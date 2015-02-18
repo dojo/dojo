@@ -6,7 +6,7 @@ define([
 		name: 'dojo/dnd',
 
 		'TODO: convert tests': function () {
-			assert.fail();
+			return this.skip("test not converted from DOH yet");
 		}
 	});
 });

@@ -1234,26 +1234,28 @@ define([
 			var tq = (specials.indexOf(query.charAt(query.length-1)) >= 0) ?
 						(query + " *") : query;
 			return _queryFuncCacheQSA[query] = function(root){
-				try{
-					// the QSA system contains an egregious spec bug which
-					// limits us, effectively, to only running QSA queries over
-					// entire documents.  See:
-					//		http://ejohn.org/blog/thoughts-on-queryselectorall/
-					//	despite this, we can also handle QSA runs on simple
-					//	selectors, but we don't want detection to be expensive
-					//	so we're just checking for the presence of a space char
-					//	right now. Not elegant, but it's cheaper than running
-					//	the query parser when we might not need to
-					if(!((9 == root.nodeType) || nospace)){ throw ""; }
-					var r = root[qsa](tq);
-					// skip expensive duplication checks and just wrap in a NodeList
-					r[noZip] = true;
-					return r;
-				}catch(e){
-					// else run the DOM branch on this query, ensuring that we
-					// default that way in the future
-					return getQueryFunc(query, true)(root);
+				// the QSA system contains an egregious spec bug which
+				// limits us, effectively, to only running QSA queries over
+				// entire documents.  See:
+				//		http://ejohn.org/blog/thoughts-on-queryselectorall/
+				//	despite this, we can also handle QSA runs on simple
+				//	selectors, but we don't want detection to be expensive
+				//	so we're just checking for the presence of a space char
+				//	right now. Not elegant, but it's cheaper than running
+				//	the query parser when we might not need to
+				if(9 == root.nodeType || nospace){
+					try{
+						var r = root[qsa](tq);
+						// skip expensive duplication checks and just wrap in a NodeList
+						r[noZip] = true;
+						return r;
+					}catch(e){
+						// if root[qsa](tq), fall through to getQueryFunc() branch below
+					}
 				}
+				// else run the DOM branch on this query, ensuring that we
+				// default that way in the future
+				return getQueryFunc(query, true)(root);
 			};
 		}else{
 			// DOM branch

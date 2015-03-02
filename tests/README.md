@@ -81,6 +81,63 @@ view of the source code with which lines were not covered).
 More information about running intern tests can be found at
 https://github.com/theintern/intern/wiki/Running-Intern.
 
+## Running against a VM
+
+If you are developing on a mac, you can use selenium grid mode to launch tests in a PC VM,
+by following these steps, replacing MAC_IP_ADDRESS with the IP address of your mac.
+
+### Setup mac
+
+a) Modify dojo.intern.local.js to add "internet explorer" as browser to test:
+
+	{ browserName: 'internet explorer',
+		'prerun': 'http://MAC_IP_ADDRESS:9001/tests/support/prerun.bat' },
+
+
+b) Modify dojo.intern.local.js to have:
+
+	intern.proxyUrl = "http://MAC_IP_ADDRESS:9000";
+
+c) Launch hub server
+
+	$ java -jar selenium-server-standalone-2.45.0.jar -role hub
+
+
+### Setup PC VM
+
+a) Make sure PC can connect to the mac's IP address.
+
+My VM is running in VirtualBox.  I had to change the properties of the VM, specifically the
+network settings tab, so the VM used "bridged adapter".
+
+b) Download selenium from http://www.seleniumhq.org/download/.
+
+c) Downgrade FF to the ESR release (https://www.mozilla.org/en-US/firefox/organizations/all/),
+   version 31, because the latest stable release doesn't work with Intern.
+
+d) Download chromedriver from https://sites.google.com/a/chromium.org/chromedriver/downloads,
+   and internet explorer driver from https://code.google.com/p/selenium/wiki/InternetExplorerDriver.
+   Put both somewhere in your path, for example `C:\Windows\System32`.
+
+e) Launch selenium in the node role:
+
+	$ java -jar selenium-server-standalone-2.45.0.jar -role node -hub http://MAC_IP_ADDRESS:4444/grid/register
+
+(Filename of JAR may vary according to its version.)
+
+On Windows 7+, optionally you can launch the server automatically on startup
+by creating a task in the "Task Scheduler" application.
+
+
+### Run regression
+
+Run this command from your dojo root directory:
+
+	$ npm run test-local
+
+You will get security dialogs on the PC that you have to click "OK" to.
+
+
 ## Writing tests
 
 To add a test suite to the suites to automatically run when the runner

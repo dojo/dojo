@@ -14,7 +14,7 @@ tests/
     services/ - Service proxy server plus service modules
 ```
 
-## Running the tests
+## Running the tests locally
 
 To get started, simply run the following commands in the dojo directory:
 ```
@@ -30,17 +30,7 @@ following command:
 npm run test
 ```
 
-To run unit and functional tests via SauceLabs run the following command:
-```
-npm run test-remote
-```
-
-This command will attempt to open a tunnel to SauceLabs and run the test
-suite in all of the browsers defined in `tests/dojo.intern.js`. SauceLabs
-requires an account (SL offers free accounts). The Dojo Foundation has an
-account, but please use your own when running your own tests.
-
-If a local Selenium instance is more desirable, install "selenium-standalone-server"
+To run against the browsers, install "selenium-standalone-server"
 and the drivers for the browsers to test, launch Selenium on port 4444, and issue
 the following command:
 ```
@@ -137,6 +127,21 @@ Run this command from your dojo root directory:
 
 You will get security dialogs on the PC that you have to click "OK" to.
 
+
+## Running tests against SauceLabs
+
+Although the dojo tests can be run against SauceLabs, the intermittent failures and timeouts
+essentially make it impossible to get an accurate result.  Nonetheless, here are the instructions to do it.
+
+To run unit and functional tests via SauceLabs run the following command:
+```
+npm run test-remote
+```
+
+This command will attempt to open a tunnel to SauceLabs and run the test
+suite in all of the browsers defined in `tests/dojo.intern.js`. SauceLabs
+requires an account (SL offers free accounts). The Dojo Foundation has an
+account, but please use your own when running your own tests.
 
 ## Writing tests
 

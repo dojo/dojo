@@ -527,7 +527,7 @@ define([
 			var node = root.firstChild;
 
 			// Info on parent of DOMNode currently being processed
-			//	- inherited: dir, lang, and textDir setting of parent, or inherited by parent
+			//	- inherited: dir, lang, textDir and numericShaperType setting of parent, or inherited by parent
 			//	- parent: pointer to identical structure for my parent (or null if no parent)
 			//	- scripts: if specified, collects <script type="dojo/..."> type nodes from children
 			var inherited = options.inherited;
@@ -540,7 +540,8 @@ define([
 				inherited = {
 					dir: findAncestorAttr(root, "dir"),
 					lang: findAncestorAttr(root, "lang"),
-					textDir: findAncestorAttr(root, dataDojoTextDir)
+					textDir: findAncestorAttr(root, dataDojoTextDir),
+					numericShaperType: findAncestorAttr(root, "numericShaperType")
 				};
 				for(var key in inherited){
 					if(!inherited[key]){
@@ -562,7 +563,7 @@ define([
 
 			function getEffective(parent){
 				// summary:
-				//		Get effective dir, lang, textDir settings for specified obj
+				//		Get effective dir, lang, textDir & numericShaperType settings for specified obj
 				//		(matching "parent" object structure above), and do caching.
 				//		Take care not to return null entries.
 				if(!parent.inherited){
@@ -572,7 +573,8 @@ define([
 					var inherited = {
 						dir: node.getAttribute("dir") || grandparent.dir,
 						lang: node.getAttribute("lang") || grandparent.lang,
-						textDir: node.getAttribute(dataDojoTextDir) || grandparent.textDir
+						textDir: node.getAttribute(dataDojoTextDir) || grandparent.textDir,
+						numericShaperType: node.getAttribute("numericShaperType") || grandparent.numericShaperType
 					};
 					for(var key in inherited){
 						if(inherited[key]){

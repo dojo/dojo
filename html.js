@@ -286,7 +286,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 				try{
 					// store the results (widgets, whatever) for potential retrieval
 					var inherited = {};
-					darray.forEach(["dir", "lang", "textDir"], function(name){
+					darray.forEach(["dir", "lang", "textDir", "numericShaperType"], function(name){
 						if(this[name]){
 							inherited[name] = this[name];
 						}

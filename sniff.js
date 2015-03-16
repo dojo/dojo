@@ -21,7 +21,9 @@ define(["./has"], function(has){
 		has.add("khtml", dav.indexOf("Konqueror") >= 0 ? tv : undefined);
 		has.add("webkit", parseFloat(dua.split("WebKit/")[1]) || undefined);
 		has.add("chrome", parseFloat(dua.split("Chrome/")[1]) || undefined);
-		has.add("safari", dav.indexOf("Safari")>=0 && !has("chrome") ? parseFloat(dav.split("Version/")[1]) : undefined);
+		has.add("android", parseFloat(dua.split("Android ")[1]) || undefined);
+		has.add("safari", dav.indexOf("Safari") >= 0 && !has("chrome") && !has("android") ?
+			parseFloat(dav.split("Version/")[1]) : undefined);
 		has.add("mac", dav.indexOf("Macintosh") >= 0);
 		has.add("quirks", document.compatMode == "BackCompat");
 		if(dua.match(/(iPhone|iPod|iPad)/)){
@@ -31,7 +33,6 @@ define(["./has"], function(has){
 			has.add(p, os);		// "iphone", "ipad" or "ipod"
 			has.add("ios", os);
 		}
-		has.add("android", parseFloat(dua.split("Android ")[1]) || undefined);
 		has.add("bb", (dua.indexOf("BlackBerry") >= 0 || dua.indexOf("BB10") >= 0) && parseFloat(dua.split("Version/")[1]) || undefined);
 		has.add("trident", parseFloat(dav.split("Trident/")[1]) || undefined);
 

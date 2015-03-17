@@ -285,7 +285,7 @@ define([
 				hash[attrData + "props"] = "data-dojo-props";
 				hash[attrData + "type"] = "data-dojo-type";
 				hash[attrData + "mixins"] = "data-dojo-mixins";
-				hash[scope + "type"] = "dojoType";
+				hash[scope + "type"] = "dojotype";
 				hash[attrData + "id"] = "data-dojo-id";
 			}
 

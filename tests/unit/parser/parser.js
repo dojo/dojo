@@ -333,11 +333,6 @@ define([
 			// Make sure that parser doesn't pass any unwanted parameters to
 			// widget constructor, especially 'toString' or 'constructor'.
 			// Make exception for dir/lang which parser gleans from document itself.
-			//
-			// TODO: File a bug about ${scope}[Tt]ype being left in the params in
-			// dojo/parser.js. Line 282 in parser.js should alias "dojotype", rather
-			// than "dojoType", to "${scope}type"; this would prevent ${scope}[Tt]ype
-			// from ending up in the object params.
 			for (var param in obj.params) {
 				assert.ok(array.indexOf(
 					[

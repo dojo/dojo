@@ -15,18 +15,20 @@ define(["./has"], function(has){
 			dua = n.userAgent,
 			dav = n.appVersion,
 			tv = parseFloat(dav);
-
 		has.add("air", dua.indexOf("AdobeAIR") >= 0);
+		has.add("wp", parseFloat(dua.split("Windows Phone")[1]) || undefined);
 		has.add("msapp", parseFloat(dua.split("MSAppHost/")[1]) || undefined);
 		has.add("khtml", dav.indexOf("Konqueror") >= 0 ? tv : undefined);
 		has.add("webkit", parseFloat(dua.split("WebKit/")[1]) || undefined);
 		has.add("chrome", parseFloat(dua.split("Chrome/")[1]) || undefined);
-		has.add("android", parseFloat(dua.split("Android ")[1]) || undefined);
+		has.add("android", !has("wp") // NOTE: necessary since Windows Phone 8.1 Update 1, see #18528
+				&& parseFloat(dua.split("Android ")[1]) || undefined);
 		has.add("safari", dav.indexOf("Safari") >= 0 && !has("chrome") && !has("android") ?
 			parseFloat(dav.split("Version/")[1]) : undefined);
 		has.add("mac", dav.indexOf("Macintosh") >= 0);
 		has.add("quirks", document.compatMode == "BackCompat");
-		if(dua.match(/(iPhone|iPod|iPad)/)){
+		if(!has("wp") // NOTE: necessary since Windows Phone 8.1 Update 1, see #18528
+				&& dua.match(/(iPhone|iPod|iPad)/)){
 			var p = RegExp.$1.replace(/P/, "p");
 			var v = dua.match(/OS ([\d_]+)/) ? RegExp.$1 : "1";
 			var os = parseFloat(v.replace(/_/, ".").replace(/_/g, ""));

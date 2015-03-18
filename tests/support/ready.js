@@ -5,7 +5,7 @@ define([
 		return remote
 			.get(url)
 			.then(pollUntil(
-				'return typeof ready !== "undefined" ? ready : null;',
+				'return typeof ready !== "undefined" && ready ? true : undefined;',
 				[],
 				typeof timeout === 'undefined' ? 5000 : timeout
 			));

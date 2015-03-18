@@ -16,13 +16,15 @@
 				baseUrl: '.',
 				packages: [
 					{ name: 'dojo', location: '../../../' }
-				],
-				callback: function () {
-					ready = true;
-				}
+				]
 			};
 		</script>
 		<script src="../../../dojo.js"></script>
+		<script>
+			dojo.ready(function(){
+				ready = true;
+			});
+		</script>
 	</head>
 	<body>
 		<h1>parseOnLoad:true, async:false unit test</h1>
@@ -55,7 +57,5 @@
 				return [amdmodule(value)];
 			</script>
 		</div>
-
-
 	</body>
 </html>

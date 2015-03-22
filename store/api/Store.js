@@ -170,7 +170,7 @@ Store.QueryOptions = declare(null, {
 	// sort: dojo/store/api/Store.SortInformation[]?
 	//		A list of attributes to sort on, as well as direction
 	//		For example:
-	//		| [{attribute:"price, descending: true}].
+	//		| [{attribute:"price", descending: true}].
 	//		If the sort parameter is omitted, then the natural order of the store may be
 	//		applied if there is a natural order.
 	// start: Number?

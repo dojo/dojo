@@ -195,8 +195,8 @@ define([
 
 				on.emit(button, 'click', { cancelable: true, bubbles: true });
 
-				assert.strictEqual(result.contextIsOk, true);
-				assert.strictEqual(result.selectorTargetIsOk, true);
+				assert.isTrue(result.contextIsOk, "contextIsOk");
+				assert.isTrue(result.selectorTargetIsOk, "selectorTargetIsOk");
 			},
 			'hitch with selector': function () {
 				var div = document.body.appendChild(document.createElement("div"));
@@ -215,8 +215,8 @@ define([
 
 				on.emit(button, 'click', { cancelable: true, bubbles: true });
 
-				assert.strictEqual(result.contextIsOk, true);
-				assert.strictEqual(result.selectorTargetIsOk, true);
+				assert.isTrue(result.contextIsOk, "contextIsOk");
+				assert.isTrue(result.selectorTargetIsOk, "selectorTargetIsOk");
 			},
 
 			'listener call order': function () {

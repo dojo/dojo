@@ -37,5 +37,10 @@
 	"bugs": "http://bugs.dojotoolkit.org/",
 	"keywords": ["JavaScript", "Dojo", "Toolkit"],
 	"homepage": "http://dojotoolkit.org/",
+	"repository":
+        { 
+                "type": "git",
+                "url": "https://github.com/dojo/dojo.git"
+        },
 	"dojoBuild": "dojo.profile.js"
 }

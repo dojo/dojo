@@ -652,35 +652,36 @@ define([
 			require.toUrl('./loader/index.html'),
 			{
 				async: true,
+				baseUrl: '.',
 				packages: [
 					{ name: 'dojo', location: 'node_modules/dojo' },
 					{
 						name: 'test',
-						location: './loader/mapping-multi-layer'
+						location: './mapping-multi-layer'
 					},
 					{
 						name: 'app1',
-						location: './loader/mapping-multi-layer/App1'
+						location: './mapping-multi-layer/App1'
 					},
 					{
 						name: 'app2',
-						location: './loader/mapping-multi-layer/App2'
+						location: './mapping-multi-layer/App2'
 					},
 					{
 						name: 'common1',
-						location: './loader/mapping-multi-layer/Common1'
+						location: './mapping-multi-layer/Common1'
 					},
 					{
 						name: 'common2',
-						location: './loader/mapping-multi-layer/Common2'
+						location: './mapping-multi-layer/Common2'
 					},
 					{
 						name: 'router',
-						location: './loader/mapping-multi-layer/Router'
+						location: './mapping-multi-layer/Router'
 					},
 					{
 						name: 'mappedModule',
-						location: './loader/mapping-multi-layer/MappedModule'
+						location: './mapping-multi-layer/MappedModule'
 					}
 				],
 				map: {
@@ -714,7 +715,6 @@ define([
 					handle.remove();
 					callback({ error: true });
 				});
-
 				require([ 'test/main' ], function () {
 					handle.remove();
 					callback({ error: false, results: results });
@@ -722,7 +722,7 @@ define([
 			},
 			function (data) {
 				if (data.error) {
-					assert.fail();
+					assert.fail("require error");
 				}
 				else {
 					var expected = ["Common1/another:cache", "Router/demoB:nocache", "App1/thing:cache", "Router/demoC:cache", "Router/demoA:cache", "MappedModule/mappedC:cache", "mappedModule/mappedA:cache", "my/B:cache", "my/A:cache", "my/replacement/A:cache", "mainRequire1:loaded", "Common2/anotherone:cache", "Common2/another:cache", "mappedModule/mappedB:cache", "App2/thing:cache", "mainRequire2:loaded"];

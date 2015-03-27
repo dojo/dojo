@@ -149,27 +149,36 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 						//some attributes can be on the Touch object, not on the Event:
 						//http://www.w3.org/TR/touch-events/#touch-interface
 						var src = (e.changedTouches) ? e.changedTouches[0] : e;
-						//create the synthetic event.
-						//http://www.w3.org/TR/DOM-Level-3-Events/#widl-MouseEvent-initMouseEvent
-						var clickEvt = document.createEvent("MouseEvents");
-						clickEvt._dojo_click = true;
-						clickEvt.initMouseEvent("click",
-							true, //bubbles
-							true, //cancelable
-							e.view,
-							e.detail,
-							src.screenX,
-							src.screenY,
-							src.clientX,
-							src.clientY,
-							e.ctrlKey,
-							e.altKey,
-							e.shiftKey,
-							e.metaKey,
-							0, //button
-							null //related target
-						);
+						function createMouseEvent(type){
+							//create the synthetic event.
+							//http://www.w3.org/TR/DOM-Level-3-Events/#widl-MouseEvent-initMouseEvent
+							var evt = document.createEvent("MouseEvents");
+							evt._dojo_click = true;
+							evt.initMouseEvent(type,
+								true, //bubbles
+								true, //cancelable
+								e.view,
+								e.detail,
+								src.screenX,
+								src.screenY,
+								src.clientX,
+								src.clientY,
+								e.ctrlKey,
+								e.altKey,
+								e.shiftKey,
+								e.metaKey,
+								0, //button
+								null //related target
+							);
+							return evt;
+						}
+						var mouseDownEvt = createMouseEvent("mousedown");
+						var mouseUpEvt = createMouseEvent("mouseup");
+						var clickEvt = createMouseEvent("click");
+
 						setTimeout(function(){
+							on.emit(target, "mousedown", mouseDownEvt);
+							on.emit(target, "mouseup", mouseUpEvt);
 							on.emit(target, "click", clickEvt);
 
 							// refresh clickTime in case app-defined click handler took a long time to run

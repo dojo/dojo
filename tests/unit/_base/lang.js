@@ -51,7 +51,8 @@ define([
 
 			// empty path should return the same object
 			assert.strictEqual(lang.getObject('', false, test), test);
-			assert.strictEqual(lang.getObject(''), kernel.global);
+			assert.strictEqual(lang.getObject('', false, null), null);
+			assert.strictEqual(lang.getObject(''), undefined);
 		},
 
 		'.setObject': function () {

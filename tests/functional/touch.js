@@ -45,13 +45,28 @@ define([
 				return loadPage(this);
 			},
 
-			'press': function () {
-				var elementPromise = this.get('remote')
+			'click/tap': function () {
+				var remote = this.get('remote');
+				var elementPromise = remote
 					.executeAsync(function (done) {
-						require(['sinon', 'dojo/on', 'dojo/touch'], function (sinon, on, touch) {
-							window.tracker = sinon.stub();
+						require(['dojo/on', 'dojo/touch'], function (on, touch) {
+							window.log = [];
 							var node = document.getElementById('upper-right');
-							on(node, touch.press, tracker);
+							on(node, touch.press, function () {
+								log.push('touch.press');
+							});
+							on(node, touch.release, function () {
+								log.push('touch.release');
+							});
+							on(node, 'mousedown', function () {
+								log.push('mousedown');
+							});
+							on(node, 'mouseup', function () {
+								log.push('mouseup');
+							});
+							on(node, 'click', function () {
+								log.push('click');
+							});
 							done();
 						});
 					})
@@ -59,10 +74,16 @@ define([
 
 				return tapOrClick(elementPromise)
 					.execute(function () {
-						return tracker.calledOnce;
+						return window.log.join(', ');
 					})
 					.then(function (result) {
-						assert.isTrue(result);
+						// Test that proper touch.* events fired, and also that mousedown and mouseup weren't suppressed.
+						// Tricky though because the order mousedown/mouseup events occurs varies by browser.
+						// See https://github.com/dojo/dojo/pull/138.
+						assert(/touch\.press.*touch\.release.*click/.test(result),
+							"touch.press --> touch.release --> click");
+						assert(/mousedown.*mouseup.*click/.test(result),
+							"mousedown --> mouseup --> click");
 					});
 			},
 
@@ -91,26 +112,6 @@ define([
 					})
 					.then(function (result) {
 						assert.ok(result);
-					});
-			},
-
-			'release': function () {
-				return this.get('remote')
-					.executeAsync(function (done) {
-						require(['sinon', 'dojo/on', 'dojo/touch'], function (sinon, on, touch) {
-							var node = document.getElementById('upper-left');
-							window.tracker = sinon.stub();
-							on(node, touch.release, tracker);
-							done();
-						});
-					})
-					.findById('upper-left')
-					.click()
-					.execute(function () {
-						return tracker.called;
-					})
-					.then(function (result) {
-						assert.isTrue(result);
 					});
 			},
 

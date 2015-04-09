@@ -3,6 +3,7 @@ define([
 	// TODO: reenable when tests are fixed
 	// './_base/eventMouse'
 	'./_base/loader',
+	'./aspect',
 	'./behavior',
 	'./cookie',
 	'./dnd',

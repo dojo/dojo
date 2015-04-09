@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>dojo/aspect tests</title>
+</head>
+<body>
+	<script>
+		var ready = false;
+		var dojoConfig = {
+			async: true,
+			isDebug: true,
+			baseUrl: '.',
+			packages: [
+				{ name: 'dojo1', location: '../..' },
+				{ name: 'dojo2', location: '../..' }
+			]
+		};
+	</script>
+	<script src="../../dojo.js"></script>
+	<script>
+
+		require([
+			'dojo1/aspect',
+			'dojo2/aspect'
+		], function (aspect1, aspect2) {
+			aspectOne = aspect1;
+			aspectTwo = aspect2;
+			ready = true;
+		});
+	</script>
+</body>
+</html>

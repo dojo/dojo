@@ -376,7 +376,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 											bundlePath = match[1] + "/";
 
 										// backcompat
-										bundle._localized = bundle._localized || {};
+										if(!bundle._localized){continue;}
 
 										var localized;
 										if(loc === "ROOT"){

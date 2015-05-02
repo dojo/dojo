@@ -350,6 +350,9 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 				console.warn("dojo.html.set: no cont argument provided, using empty string");
 				cont = "";
 			}
+			if (typeof cont == 'number'){
+				cont = cont.toString();
+			}
 			if(!params){
 				// simple and fast
 				return html._setNodeContent(node, cont, true);

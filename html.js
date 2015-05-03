@@ -27,7 +27,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 		// Deprecated, should use dojo/dom-constuct.empty() directly, remove in 2.0.
 		_emptyNode: domConstruct.empty,
 
-		_setNodeContent: function(/*DomNode*/ node, /*Number|String|DomNode|NodeList*/ cont){
+		_setNodeContent: function(/*DomNode*/ node, /*String|DomNode|NodeList*/ cont){
 			// summary:
 			//		inserts the given content into the given node
 			// node:
@@ -130,7 +130,7 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 				if(undefined !== cont){
 					this.content = cont;
 				}
-				if(typeof cont === 'number'){
+				if(typeof cont == 'number'){
 					cont = cont.toString();
 				}
 				// in the re-use scenario, set needs to be able to mixin new configuration

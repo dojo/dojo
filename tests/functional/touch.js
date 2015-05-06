@@ -1,8 +1,9 @@
 define([
 	'require',
 	'intern!object',
-	'intern/chai!assert'
-], function (require, registerSuite, assert) {
+	'intern/chai!assert',
+	'../support/ready'
+], function (require, registerSuite, assert, ready) {
 	/* globals tracker */
 
 	function loadPage(driver) {
@@ -222,6 +223,44 @@ define([
 					.then(function (result) {
 						assert.isTrue(result);
 					});
+			}
+		};
+	});
+
+	registerSuite(function () {
+		var tapOrClick;
+
+		return {
+			name: 'dojo/touch dojoClick tests',
+
+			'before': function () {
+				// Not all browsers or drivers support touch events
+				tapOrClick = this.get('remote').environmentType.touchEnabled ?
+					tapElement :
+					clickElement;
+			},
+
+			'beforeEach': function () {
+				return ready(this.get('remote'), require.toUrl('./support/touch_dojoclick.html'));
+			},
+
+			'press': function () {
+				return tapOrClick(this.get('remote').findById('dojoClickBtn'))
+						.execute(function () {
+							return dojoClicks.value;
+						})
+						.then(function (result) {
+							assert.equal(result, 1, 'dojoClicks');
+						})
+						.end()
+					.findById('nativeClickBtn')
+						.click()
+						.execute(function () {
+							return nativeClicks.value;
+						})
+						.then(function (result) {
+							assert.equal(result, 1, 'nativeClicks');
+						})
 			}
 		};
 	});

@@ -187,7 +187,7 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 						// sent shortly after ours, similar to what is done in dualEvent.
 						// The INPUT.dijitOffScreen test is for offscreen inputs used in dijit/form/Button, on which
 						// we call click() explicitly, we don't want to stop this event.
-							if(!e._dojo_click &&
+						if(clickTracker && !e._dojo_click &&
 								(new Date()).getTime() <= clickTime + 1000 &&
 								!(e.target.tagName == "INPUT" && domClass.contains(e.target, "dijitOffScreen"))){
 							e.stopPropagation();

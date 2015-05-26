@@ -48,6 +48,33 @@ define([
 				})
 			);
 		},
+		
+		'.get json with truthy value': function () {
+			var def = this.async(),
+				promise = xhr.get(require.toUrl('./support/truthy.json'), {
+					preventCache: true,
+					handleAs: 'json'
+				});
+
+			promise.then(
+				def.callback(function (response) {
+					assert.strictEqual(response, true);
+				})
+			);
+		},
+		'.get json with falsy value': function () {
+			var def = this.async(),
+				promise = xhr.get(require.toUrl('./support/falsy.json'), {
+					preventCache: true,
+					handleAs: 'json'
+				});
+
+			promise.then(
+				def.callback(function (response) {
+					assert.strictEqual(response, false);
+				})
+			);
+		},
 
 		'.get with query': function () {
 			var def = this.async(),

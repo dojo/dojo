@@ -52,6 +52,32 @@
 						);
 						return d;
 					},
+					function xhrGetJsonTruthyValue(t){
+						var d = new doh.Deferred();
+						var td = xhr.get(require.toUrl('./support/truthy.json'), {
+								preventCache: true,
+								handleAs: 'json'
+							}).then(
+								d.getTestCallback(function(response){
+									t.is(true, response);
+								})
+						);
+
+						return d;
+					},
+					function xhrGetJsonFalsyValue(t){
+						var d = new doh.Deferred();
+						var td = xhr.get(require.toUrl('./support/falsy.json'), {
+								preventCache: true,
+								handleAs: 'json'
+							}).then(
+								d.getTestCallback(function(response){
+									t.is(false, response);
+								})
+						);
+
+						return d;
+					},
 					function xhrGetQuery(t){
 						var d = new doh.Deferred();
 						var td = xhr.get("xhrDummyMethod.php?color=blue", {
@@ -408,4 +434,3 @@
 	<body>
 	</body>
 </html>
-

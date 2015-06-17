@@ -1,4 +1,4 @@
-define(['../on', '../_base/window', 'dojo/has!host-browser?../dom-construct:', 'dojo/has!host-browser?../domReady!'], function(on, baseWin, domConstruct){
+define(['../on', '../has', '../_base/window', 'dojo/has!host-browser?../dom-construct', 'dojo/has!host-browser?../domReady!'], function(on, has, baseWin, domConstruct){
 	// summary:
 	//		This sub module provide an event factory for delayed events (like debounce or throttle)
 	// module:
@@ -25,7 +25,7 @@ define(['../on', '../_base/window', 'dojo/has!host-browser?../dom-construct:', '
 			domConstruct.destroy(testNode);
 		}
 	}
-
+	has.add('native-async-event-support', !requiresClone);
 
 	function clone(arg){
 		// summary:

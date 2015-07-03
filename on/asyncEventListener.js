@@ -1,4 +1,4 @@
-define(['../on', '../_base/window', '../dom-construct', '../domReady!'], function(on, baseWin, domConstruct){
+define(['../on', '../has', '../_base/window', 'dojo/has!host-browser?../dom-construct', 'dojo/has!host-browser?../domReady!'], function(on, has, baseWin, domConstruct){
 	// summary:
 	//		This sub module provide an event factory for delayed events (like debounce or throttle)
 	// module:
@@ -8,20 +8,24 @@ define(['../on', '../_base/window', '../dom-construct', '../domReady!'], functio
 	//Testing is the browser support async event access
 	//If not we need to clone the event, otherwise accessing the event properties
 	//will trigger a JS error (invalid member)
-	var testNode = domConstruct.create('div', null, baseWin.body()),
+	var testNode,
 		testEvent,
-		requiresClone;
-	on.once(testNode, 'click', function(e){
-		testEvent = e;
-	});
-	testNode.click();
-	try{
-		requiresClone = testEvent.clientX === undefined;
-	}catch(e){
-		requiresClone = true;
-	}finally{
-		domConstruct.destroy(testNode);
+		requiresClone = false;
+	if(domConstruct) {
+		testNode = domConstruct.create('input', {type: 'button'}, baseWin.body()),
+		on.once(testNode, 'click', function(e){
+			testEvent = e;
+		});
+		testNode.click();
+		try{
+			requiresClone = testEvent.clientX === undefined;
+		}catch(e){
+			requiresClone = true;
+		}finally{
+			domConstruct.destroy(testNode);
+		}
 	}
+	has.add('native-async-event-support', !requiresClone);
 
 	function clone(arg){
 		// summary:

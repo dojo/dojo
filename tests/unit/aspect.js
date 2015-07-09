@@ -55,6 +55,25 @@ define([
 					assert.equal(aspectSpy1.lastCall.args[0], 6);
 					assert.equal(methodSpy.lastCall.args[0], 7);
 					assert.equal(methodSpy.returnValues[0], 8);
+				},
+
+				'multiple aspect.before() with removal inside handler': function () {
+					var count = 0;
+
+					var handle1 = aspect.before(obj, 'method', function () {
+						count++;
+					});
+
+					var handle2 = aspect.before(obj, 'method', function () {
+						count++;
+						handle2.remove();
+						handle1.remove();
+					});
+
+					assert.doesNotThrow(function () {
+						obj.method();
+					});
+					assert.strictEqual(count, 1, 'Only one advising function should be called');
 				}
 			},
 
@@ -78,6 +97,25 @@ define([
 					obj.method(0);
 					assert.isTrue(aspectStub1.calledAfter(methodSpy));
 					assert.isTrue(aspectStub2.calledAfter(aspectStub1));
+				},
+
+				'multiple aspect.after() with removal inside handler': function () {
+					var count = 0;
+
+					var handle1 = aspect.after(obj, 'method', function () {
+						handle1.remove();
+						handle2.remove();
+						count++;
+					});
+
+					var handle2 = aspect.after(obj, 'method', function () {
+						count++;
+					});
+
+					assert.doesNotThrow(function () {
+						obj.method();
+					});
+					assert.strictEqual(count, 1, 'Only one advising function should be called');
 				},
 
 				'recieveArguments is true': {

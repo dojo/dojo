@@ -84,7 +84,9 @@ define([], function(){
 					var args = arguments;
 					var before = dispatcher.before;
 					while(before){
-						args = before.advice.apply(this, args) || args;
+						if(before.advice){
+							args = before.advice.apply(this, args) || args;
+						}
 						before = before.next;
 					}
 					// around advice
@@ -94,12 +96,14 @@ define([], function(){
 					// after advice
 					var after = dispatcher.after;
 					while(after && after.id < executionId){
-						if(after.receiveArguments){
-							var newResults = after.advice.apply(this, args);
-							// change the return value only if a new value was returned
-							results = newResults === undefined ? results : newResults;
-						}else{
-							results = after.advice.call(this, results, args);
+						if(after.advice){
+							if(after.receiveArguments){
+								var newResults = after.advice.apply(this, args);
+								// change the return value only if a new value was returned
+								results = newResults === undefined ? results : newResults;
+							}else{
+								results = after.advice.call(this, results, args);
+							}
 						}
 						after = after.next;
 					}

@@ -26,7 +26,31 @@ doh.register("tests.aspect",
 			obj.method(9);
 			t.is(order, [0,1,2,3,4,5,6,7,8,9]);
 		},
+		function beforeMultipleRemoveInHandler(t){
+			var count = 0;
+			var error;
+			var obj = {
+				method: function(){}
+			};
 
+			var handle1 = aspect.before(obj, 'method', function(){
+				count++;
+			});
+
+			var handle2 = aspect.before(obj, 'method', function(){
+				count++;
+				handle2.remove();
+				handle1.remove();
+			});
+
+			try{
+				obj.method();
+			}catch(e){
+				error = e;
+			}
+			t.f(error, 'Calling method should not throw an error');
+			t.is(count, 1, 'Only one advising function should be called');
+		},
 		function after(t){
 			var order = [];
 			var obj = {
@@ -82,7 +106,7 @@ doh.register("tests.aspect",
 		},
 		function afterMultiple(t){
 			var order = [];
-			obj = {
+			var obj = {
 				foo: function(){}
 			};
 			aspect.after(obj, "foo", function(){order.push(1)});
@@ -90,6 +114,31 @@ doh.register("tests.aspect",
 			aspect.after(obj, "foo", function(){order.push(3)});
 			obj.foo();
 			t.is([1,2,3], order);
+		},
+		function afterMultipleRemoveInHandler(t){
+			var count = 0;
+			var error;
+			var obj = {
+				method: function(){}
+			};
+
+			var handle1 = aspect.after(obj, 'method', function () {
+				handle1.remove();
+				handle2.remove();
+				count++;
+			});
+
+			var handle2 = aspect.after(obj, 'method', function () {
+				count++;
+			});
+
+			try{
+				obj.method();
+			}catch(e){
+				error = e;
+			}
+			t.f(error, 'Calling method should not throw an error');
+			t.is(count, 1, 'Only one advising function should be called');
 		},
 		function around(t){
 			var order = [];
@@ -160,14 +209,14 @@ doh.register("tests.aspect",
 
 			// This should execute all 3 callbacks
 			foo.bar();
-			
+
 			signal2.remove();
 			signal3.remove();
 
 			// Ideally signal2 should not be removed again, but can happen if the app
 			// fails to clear its state.
 			signal2.remove();
-			
+
 			// This should execute only the first callback, but notice that the third callback
 			// is executed as well
 			foo.bar();

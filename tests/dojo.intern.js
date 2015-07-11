@@ -89,7 +89,7 @@ define([
 		excludeInstrumentation: intern.args.fast ?
 			/./ :
 			/(?:^|[\/\\])(?:(?:cldr\/nls|html-report|nls|node_modules|tests|testsDOH)[\/\\]|(?:Gruntfile|package)\.js$)/,
-		suites: [ 'testing/tests/unit/all', 'testing/tests/bidiSupport/all' ],
+		suites: [ 'testing/tests/unit/all' ],
 		functionalSuites: [ 'testing/tests/functional/all' ]
 	};
 });

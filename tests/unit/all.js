@@ -32,6 +32,7 @@ define([
 	'./throttle',
 	'./topic',
 	'./when',
+	'../bidiSupport/all',
 
 	// host-specific tests
 	'dojo/has!host-browser?./NodeList-html',

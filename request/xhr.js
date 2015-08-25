@@ -115,7 +115,7 @@ define([
 					response.total = evt.total;
 					dfd.progress(response);
 				} else if(response.xhr.readyState === 3){
-					response.loaded = evt.position;
+					response.loaded = evt.loaded;
 					dfd.progress(response);
 				}
 			}

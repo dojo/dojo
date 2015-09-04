@@ -41,7 +41,7 @@ define(["./_base/kernel", "./has", "require", "./has!host-browser?./domReady", "
 			// The last step is necessary so that a user defined dojo.ready() callback is delayed until after the
 			// domReady() calls inside of dojo.   Failure can be seen on dijit/tests/robot/Dialog_ally.html on IE8
 			// because the dijit/focus.js domReady() callback doesn't execute until after the test starts running.
-			while(isDomReady && (!domReady || domReady._Q.length == 0) && require.idle() && loadQ.length){
+			while(isDomReady && (!domReady || domReady._Q.length == 0) && (require.idle ? require.idle() : true) && loadQ.length){
 				var f = loadQ.shift();
 				try{
 					f();
@@ -55,7 +55,7 @@ define(["./_base/kernel", "./has", "require", "./has!host-browser?./domReady", "
 
 	// Check if we should run the next queue operation whenever require() finishes loading modules or domReady
 	// finishes processing it's queue.
-	require.on("idle", onEvent);
+	require.on && require.on("idle", onEvent);
 	if(domReady){
 		domReady._onQEmpty = onEvent;
 	}

@@ -257,6 +257,8 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 				var eventTarget = select(event.target);
 				// if it matches we call the listener
 				if (eventTarget) {
+					// We save the matching target into the event, so it can be accessed even when hitching (see #18355)
+					event.selectorTarget = eventTarget;
 					return listener.call(eventTarget, event);
 				}
 			});

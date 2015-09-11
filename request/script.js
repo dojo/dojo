@@ -162,6 +162,11 @@ define([
 			}
 		}
 
+		on.once(node, 'error', function (error) {
+			dfd.reject(error);
+			script._remove(dfd.id, options.frameDoc, true);
+		});
+
 		watch(dfd);
 
 		return returnDeferred ? dfd : dfd.promise;

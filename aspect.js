@@ -4,7 +4,7 @@ define([], function(){
 	//		dojo/aspect
 
 	"use strict";
-	var undefined, nextId = 0;
+	var undefined;
 	function advise(dispatcher, type, advice, receiveArguments){
 		var previous = dispatcher[type];
 		var around = type == "around";
@@ -49,7 +49,7 @@ define([], function(){
 						dispatcher = advice = signal.advice = null;
 					}
 				},
-				id: nextId++,
+				id: dispatcher.nextId++,
 				advice: advice,
 				receiveArguments: receiveArguments
 			};
@@ -79,7 +79,7 @@ define([], function(){
 			if(!existing || existing.target != target){
 				// no dispatcher in place
 				target[methodName] = dispatcher = function(){
-					var executionId = nextId;
+					var executionId = dispatcher.nextId;
 					// before advice
 					var args = arguments;
 					var before = dispatcher.before;
@@ -115,6 +115,7 @@ define([], function(){
 					}};
 				}
 				dispatcher.target = target;
+				dispatcher.nextId = dispatcher.nextId || 0;
 			}
 			var results = advise((dispatcher || existing), type, advice, receiveArguments);
 			advice = null;

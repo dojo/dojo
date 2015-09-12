@@ -73,6 +73,13 @@ define([
 					testHtmlSet(container, markup);
 				},
 
+				'numeric value': function () {
+					var markup = 1.618;
+
+					html.set(container, markup);
+					assert.strictEqual(container.innerHTML, markup.toString());
+				},
+
 				'attach onEnd handler': function () {
 					var msg = 'expected';
 					var handler = sinon.stub();

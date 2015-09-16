@@ -33,6 +33,13 @@ define([
 					'File "foo.html" is not found in directory "/temp".'
 				);
 
+				assert.strictEqual(
+					string.substitute(
+						'Escaped ${}'
+					),
+					'Escaped $'
+				);
+
 				assert.throws(function () {
 					string.substitute('${x}', { y: 1 });
 				});

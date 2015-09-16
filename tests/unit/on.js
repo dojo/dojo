@@ -178,6 +178,47 @@ define([
 				assert.strictEqual(listenerCallCount, 1);
 			},
 
+			'hitch no selector': function () {
+				var div = document.body.appendChild(document.createElement("div"));
+				var span = div.appendChild(document.createElement("span"));
+				var button = span.appendChild(document.createElement("button"));
+				var that = { fake: true };
+				var result = {
+					contextIsOk: false,
+					selectorTargetIsOk: false
+				}
+
+				on(div, "click", lang.hitch(that, function (e) {
+					result.contextIsOk = this === that;
+					result.selectorTargetIsOk = e.selectorTarget === undefined; //selectorTarget is only available with event delegation
+				}));
+
+				on.emit(button, 'click', { cancelable: true, bubbles: true });
+
+				assert.isTrue(result.contextIsOk, "contextIsOk");
+				assert.isTrue(result.selectorTargetIsOk, "selectorTargetIsOk");
+			},
+			'hitch with selector': function () {
+				var div = document.body.appendChild(document.createElement("div"));
+				var span = div.appendChild(document.createElement("span"));
+				var button = span.appendChild(document.createElement("button"));
+				var that = { fake: true };
+				var result = {
+					contextIsOk: false,
+					selectorTargetIsOk: false
+				}
+
+				on(div, "span:click", lang.hitch(that, function (e) {
+					result.contextIsOk = this === that;
+					result.selectorTargetIsOk = e.selectorTarget === span;
+				}));
+
+				on.emit(button, 'click', { cancelable: true, bubbles: true });
+
+				assert.isTrue(result.contextIsOk, "contextIsOk");
+				assert.isTrue(result.selectorTargetIsOk, "selectorTargetIsOk");
+			},
+
 			'listener call order': function () {
 				var order = [],
 					onMethodName = 'on' + testEventName;

@@ -78,6 +78,33 @@ define([
 			},
 
 			'.after': {
+				'multiple dojo version': function() {
+					var aspectAfterCount = 0;
+					require({
+						packages: [
+							{ name: 'dojo1', location: './' },
+							{ name: 'dojo2', location: './' }
+						]
+					}, ['dojo1/aspect', 'dojo2/aspect'], this.async().callback(function(aspectOne, aspectTwo) {
+						//empty function to aspect on
+						var target = {};
+						target.onclick = function() {};
+						
+						aspectOne.after(target, 'onclick', function() {
+							aspectAfterCount++;
+						});
+						aspectTwo.after(target, 'onclick', function() {
+							aspectAfterCount++;
+						});
+						aspectTwo.after(target, 'onclick', function() {
+							aspectAfterCount++;
+						});
+		
+						target.onclick();
+						
+						assert.equal(aspectAfterCount, 3);
+					}));
+				},
 				'overriding return value from original method': function () {
 					var expected = 'override!';
 					var aspectSpy = sinon.stub().returns(expected);

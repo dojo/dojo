@@ -46,6 +46,23 @@ define([
 			);
 		},
 
+		'script error event': function () {
+			var def = this.async();
+
+			script.get('/__services/non-existent-script', {
+				jsonp: 'callback',
+				timeout: 3000 // timeout for old IE
+			}).then(def.reject, def.callback(function (error) {
+				if (error.type) {
+					assert.strictEqual(error.type, 'error');
+				}
+				else {
+					// old IE doesn't emit an error event, timeout instead
+					assert.instanceOf(error, RequestTimeoutError);
+				}
+			}));
+		},
+
 		jsonp: function () {
 			var def = this.async();
 

@@ -1,4 +1,4 @@
-define(['dojo/throttle', 'dojo/on'], function(throttle, on){
+define(['../throttle', '../on'], function(throttle, on){
 	// summary:
 	//		This module provides an event throttler for dojo/on
 	// module:

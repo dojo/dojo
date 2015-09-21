@@ -41,9 +41,7 @@ define(
 	"dateFormatItem-MMMEd": "d MMMM E",
 	"eraNarrow": [
 		"MÖ",
-		"İÖ",
-		"MS",
-		"İS"
+		"MS"
 	],
 	"dateFormatItem-yMM": "MM.y",
 	"field-tue-relative+-1": "geçen salı",
@@ -181,9 +179,7 @@ define(
 	],
 	"eraAbbr": [
 		"MÖ",
-		"İÖ",
-		"MS",
-		"İS"
+		"MS"
 	],
 	"field-minute": "Dakika",
 	"field-dayperiod": "ÖÖ/ÖS",
@@ -255,9 +251,7 @@ define(
 	"dateFormatItem-yMMMd": "dd MMM y",
 	"eraNames": [
 		"Milattan Önce",
-		"Milattan Sonra",
-		"MS",
-		"İS"
+		"Milattan Sonra"
 	],
 	"days-format-narrow": [
 		"P",

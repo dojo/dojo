@@ -29,8 +29,12 @@ var liteEngine = function(selector, root){
 			.exec(selector);
 	root = root || doc;
 	if(match){
+		var isInsideDomTree = has('ie') === 8 && has('quirks')?
+			root.nodeType === doc.nodeType:
+			root.parentNode !== null && root.nodeType !== 9 && root.parentNode === doc;
+
 		// fast path regardless of whether or not querySelectorAll exists
-		if(match[2]){
+		if(match[2] && isInsideDomTree){
 			// an #id
 			// use dojo.byId if available as it fixes the id retrieval in IE, note that we can't use the dojo namespace in 2.0, but if there is a conditional module use, we will use that
 			var found = dojo.byId ? dojo.byId(match[2], doc) : doc.getElementById(match[2]);

@@ -184,7 +184,6 @@ define(
 	"field-sun-relative+1": "来週の日曜日",
 	"eraAbbr": [
 		"紀元前",
-		"西暦紀元前",
 		"西暦"
 	],
 	"field-minute": "分",

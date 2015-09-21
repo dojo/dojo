@@ -89,7 +89,7 @@ return declare("dojo.rpc.RpcService", null, {
 		// deferredRequestHandler: Deferred
 		//		The deferred object handling a request.
 		return function(data){
-			deferredRequestHandler.errback(data.message);
+			deferredRequestHandler.errback(data);
 		};
 	},
 

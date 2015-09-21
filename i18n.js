@@ -287,10 +287,6 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 			});
 		};
 
-	if(has("dojo-unit-tests")){
-		var unitTests = thisModule.unitTests = [];
-	}
-
 	if(has("dojo-preload-i18n-Api") || has("dojo-v1x-i18n-Api")){
 		var normalizeLocale = thisModule.normalizeLocale = function(locale){
 				var result = locale ? locale.toLowerCase() : dojo.locale;
@@ -378,7 +374,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 											bundlePath = match[1] + "/";
 
 										// backcompat
-										bundle._localized = bundle._localized || {};
+										if(!bundle._localized){continue;}
 
 										var localized;
 										if(loc === "ROOT"){
@@ -423,7 +419,10 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 												if(requiredBundles.length){
 													preloadingAddLock();
 													contextRequire(requiredBundles, function(){
-														for(var i = 0; i < requiredBundles.length; i++){
+														// requiredBundles was constructed by forEachLocale so it contains locales from 
+														// less specific to most specific. 
+														// the loop starts with the most specific locale, the last one.
+														for(var i = requiredBundles.length - 1; i >= 0 ; i--){
 															bundle = lang.mixin(lang.clone(bundle), arguments[i]);
 															cache[cacheIds[i]] = bundle;
 														}
@@ -532,13 +531,15 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 						results.push(cache[url]);
 					}else{
 						var bundle = require.syncLoadNls(mid);
-						// don't need to check for legacy since syncLoadNls returns a module if the module
-						// (1) was already loaded, or (2) was in the cache. In case 1, if syncRequire is called
-						// from getLocalization --> load, then load will have called checkForLegacyModules() before
-						// calling syncRequire; if syncRequire is called from preloadLocalizations, then we
-						// don't care about checkForLegacyModules() because that will be done when a particular
-						// bundle is actually demanded. In case 2, checkForLegacyModules() is never relevant
-						// because cached modules are always v1.7+ built modules.
+						// need to check for legacy module here because there might be a legacy module for a
+						// less specific locale (which was not looked up during the first checkForLegacyModules
+						// call in load()).
+						// Also need to reverse the locale and the module name in the mid because syncRequire
+						// deps parameters uses the AMD style package/nls/locale/module while legacy code uses
+						// package/nls/module/locale.
+						if(!bundle){
+							bundle = checkForLegacyModules(mid.replace(/nls\/([^\/]*)\/([^\/]*)$/, "nls/$2/$1"));
+						}
 						if(bundle){
 							results.push(bundle);
 						}else{
@@ -595,35 +596,6 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 			);
 			return result;
 		};
-
-		if(has("dojo-unit-tests")){
-			unitTests.push(function(doh){
-				doh.register("tests.i18n.unit", function(t){
-					var check;
-
-					check = evalBundle("{prop:1}", checkForLegacyModules, "nonsense", amdValue);
-					t.is({prop:1}, check); t.is(undefined, check[1]);
-
-					check = evalBundle("({prop:1})", checkForLegacyModules, "nonsense", amdValue);
-					t.is({prop:1}, check); t.is(undefined, check[1]);
-
-					check = evalBundle("{'prop-x':1}", checkForLegacyModules, "nonsense", amdValue);
-					t.is({'prop-x':1}, check); t.is(undefined, check[1]);
-
-					check = evalBundle("({'prop-x':1})", checkForLegacyModules, "nonsense", amdValue);
-					t.is({'prop-x':1}, check); t.is(undefined, check[1]);
-
-					check = evalBundle("define({'prop-x':1})", checkForLegacyModules, "nonsense", amdValue);
-					t.is(amdValue, check); t.is({'prop-x':1}, amdValue.result);
-
-					check = evalBundle("define('some/module', {'prop-x':1})", checkForLegacyModules, "nonsense", amdValue);
-					t.is(amdValue, check); t.is({'prop-x':1}, amdValue.result);
-
-					check = evalBundle("this is total nonsense and should throw an error", checkForLegacyModules, "nonsense", amdValue);
-					t.is(check instanceof Error, true);
-				});
-			});
-		}
 	}
 
 	return lang.mixin(thisModule, {

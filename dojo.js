@@ -346,7 +346,7 @@
 
 	req.eval =
 		function(text, hint){
-			return eval_(text + "\r\n////@ sourceURL=" + hint);
+			return eval_(text + "\r\n//# sourceURL=" + hint);
 		};
 
 	//
@@ -1373,7 +1373,7 @@
 			evalModuleText = function(text, module){
 				// see def() for the injectingCachedModule bracket; it simply causes a short, safe circuit
 				if(has("config-stripStrict")){
-					text = text.replace(/"use strict"/g, '');
+					text = text.replace(/(["'])use strict\1/g, '');
 				}
 				injectingCachedModule = 1;
 				if(has("config-dojo-loader-catches")){

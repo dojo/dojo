@@ -40,6 +40,9 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 			domConstruct.empty(node);
 
 			if(cont){
+				if(typeof cont == "number"){
+					cont = cont.toString();
+				}
 				if(typeof cont == "string"){
 					cont = domConstruct.toDom(cont, node.ownerDocument);
 				}
@@ -126,6 +129,9 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 				//		If not provided, the object's content property will be used
 				if(undefined !== cont){
 					this.content = cont;
+				}
+				if(typeof cont == 'number'){
+					cont = cont.toString();
 				}
 				// in the re-use scenario, set needs to be able to mixin new configuration
 				if(params){
@@ -349,6 +355,9 @@ define(["./_base/kernel", "./_base/lang", "./_base/array", "./_base/declare", ".
 			if(undefined == cont){
 				console.warn("dojo.html.set: no cont argument provided, using empty string");
 				cont = "";
+			}
+			if (typeof cont == 'number'){
+				cont = cont.toString();
 			}
 			if(!params){
 				// simple and fast

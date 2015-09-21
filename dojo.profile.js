@@ -1,5 +1,5 @@
 var profile = (function(){
-	var testResourceRe = /^dojo\/tests\//,
+	var testResourceRe = /^dojo\/tests(?:DOH)?\//,
 
 		copyOnly = function(filename, mid){
 			var list = {

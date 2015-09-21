@@ -21,9 +21,10 @@ define([], function(){
 			if(timer){
 				clearTimeout(timer);
 			}
+			var self = this;
 			var a = arguments;
 			timer = setTimeout(function(){
-				cb.apply(this, a);
+				cb.apply(self, a);
 			}, wait);
 		};
 	};

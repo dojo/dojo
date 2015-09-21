@@ -37,7 +37,7 @@ you are covered by a CLA in the notes of the pull request.  The committer will [
 
 If your GitHub user id you are submitting your pull request from differs from the Dojo Community ID or e-mail address
 which you have signed your CLA under, you should specifically note what you have your CLA filed under (and for CCLA
-that you are listed under your companies authorised contributors).
+that you are listed under your company's authorised contributors).
 
 # Submitting a Pull Request
 
@@ -52,14 +52,14 @@ to follow step 3 and beyond:
 6. Issue a Pull Request to the official repository
 7. Your Pull Request is reviewed by a committer and merged into the repository
 
-*Note* While there are other ways to accomplish the steps using other tools, the examples here will assume the most
+*Note*: While there are other ways to accomplish the steps using other tools, the examples here will assume the most
 actions will be performed via the `git` command line.
 
 ## 1. Fork the Repository
 
-When logged into your GitHub account, and you are viewing one of the main repositories, you will see the *Fork* button.
+When logged in to your GitHub account, and you are viewing one of the main repositories, you will see the *Fork* button.
 Clicking this button will show you which repositories your can fork to.  Choose your own account.  Once the process
-finishes, you will have your own repository that is "forked" from the GitHub one.
+finishes, you will have your own repository that is "forked" from the official one.
 
 Forking is a GitHub term and not a git term.  Git is a wholly distributed source control system and simply worries
 about local and remote repositories and allows you to manage your code against them.  GitHub then adds this additional
@@ -79,7 +79,7 @@ It is important that you clone recursively for ``dojox``, ``demos`` or ``util``b
 submodules.  You won't be able to submit your changes to the repositories that way though.  If you are working on any of
 these sub-projects, you should contact those project leads to see if their workflow differs.
 
-You should also setup the `upstream` repository.  This will allow you to take changes from the "master" repository
+You should also set up the `upstream` repository.  This will allow you to take changes from the "master" repository
 and merge them into your local clone and then push them to your GitHub fork:
 
 ```bash

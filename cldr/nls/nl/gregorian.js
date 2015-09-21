@@ -182,9 +182,7 @@ define(
 	"field-sun-relative+1": "volgende week zondag",
 	"eraAbbr": [
 		"v.Chr.",
-		"v.g.j.",
-		"n.Chr.",
-		"g.j."
+		"n.Chr."
 	],
 	"field-minute": "Minuut",
 	"field-dayperiod": "AM/PM",

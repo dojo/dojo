@@ -816,11 +816,37 @@ define([
 	};
 
 	// get an array of child *elements*, skipping text and comment nodes
-	var _childElements = function(filterFunc){
+	var _childElements = function(filterFunc, recursive){
+
+		var _toArray = function (iterable) {
+			var result = [];
+
+			try {
+				result = Array.prototype.slice.call(iterable);
+			} catch(e) {
+				// IE8- throws an error when we try convert HTMLCollection
+				// to array using Array.prototype.slice.call
+				for(var i = 0, len = iterable.length; i < len; i++) {
+					result.push(iterable[i]);
+				}
+			}
+
+			return result;
+		};
+
 		filterFunc = filterFunc||yesman;
 		return function(root, ret, bag){
 			// get an array of child elements, skipping text and comment nodes
-			var te, x = 0, tret = root.children || root.childNodes;
+			var te, x = 0, tret = []; tret = _toArray(root.children || root.childNodes);
+
+			if(recursive) {
+				array.forEach(tret, function (node) {
+					if(node.nodeType === 1) {
+						tret = tret.concat(_toArray(node.getElementsByTagName("*")));
+					}
+				});
+			}
+
 			while(te = tret[x++]){
 				if(
 					_simpleNodeTest(te) &&
@@ -928,6 +954,26 @@ define([
 
 				retFunc = function(root, arr){
 					var te = dom.byId(query.id, (root.ownerDocument||root));
+
+					// We can't look for ID inside a detached dom.
+					// loop over all elements searching for specified id.
+					if(root.ownerDocument && !_isDescendant(root, root.ownerDocument)) {
+
+						// document-fragment or regular HTMLElement
+						var roots = root.nodeType === 11? root.childNodes: [root];
+
+						array.some(roots, function (currentRoot) {
+							var elems = _childElements(function (node) {
+								return node.id === query.id;
+							}, true)(currentRoot, []);
+
+							if(elems.length) {
+								te = elems[0];
+								return false;
+							}
+						});
+					}
+
 					if(!te || !filterFunc(te)){ return; }
 					if(9 == root.nodeType){ // if root's a doc, we just return directly
 						return getArr(te, arr);
@@ -1188,26 +1234,28 @@ define([
 			var tq = (specials.indexOf(query.charAt(query.length-1)) >= 0) ?
 						(query + " *") : query;
 			return _queryFuncCacheQSA[query] = function(root){
-				try{
-					// the QSA system contains an egregious spec bug which
-					// limits us, effectively, to only running QSA queries over
-					// entire documents.  See:
-					//		http://ejohn.org/blog/thoughts-on-queryselectorall/
-					//	despite this, we can also handle QSA runs on simple
-					//	selectors, but we don't want detection to be expensive
-					//	so we're just checking for the presence of a space char
-					//	right now. Not elegant, but it's cheaper than running
-					//	the query parser when we might not need to
-					if(!((9 == root.nodeType) || nospace)){ throw ""; }
-					var r = root[qsa](tq);
-					// skip expensive duplication checks and just wrap in a NodeList
-					r[noZip] = true;
-					return r;
-				}catch(e){
-					// else run the DOM branch on this query, ensuring that we
-					// default that way in the future
-					return getQueryFunc(query, true)(root);
+				// the QSA system contains an egregious spec bug which
+				// limits us, effectively, to only running QSA queries over
+				// entire documents.  See:
+				//		http://ejohn.org/blog/thoughts-on-queryselectorall/
+				//	despite this, we can also handle QSA runs on simple
+				//	selectors, but we don't want detection to be expensive
+				//	so we're just checking for the presence of a space char
+				//	right now. Not elegant, but it's cheaper than running
+				//	the query parser when we might not need to
+				if(9 == root.nodeType || nospace){
+					try{
+						var r = root[qsa](tq);
+						// skip expensive duplication checks and just wrap in a NodeList
+						r[noZip] = true;
+						return r;
+					}catch(e){
+						// if root[qsa](tq), fall through to getQueryFunc() branch below
+					}
 				}
+				// else run the DOM branch on this query, ensuring that we
+				// default that way in the future
+				return getQueryFunc(query, true)(root);
 			};
 		}else{
 			// DOM branch

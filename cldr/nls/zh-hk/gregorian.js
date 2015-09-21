@@ -8,9 +8,7 @@ define(
 	"field-minute": "分鐘",
 	"eraNames": [
 		"西元前",
-		"公元前",
-		"西元",
-		"公元"
+		"西元"
 	],
 	"dateTimeFormat-full": "{1}{0}",
 	"field-weekday": "週天",
@@ -33,9 +31,7 @@ define(
 	"dateFormatItem-Ed": "d日（E）",
 	"eraAbbr": [
 		"西元前",
-		"公元前",
-		"西元",
-		"公元"
+		"西元"
 	],
 	"field-day-relative+2": "後天",
 	"dateFormatItem-GyMMMd": "G y 年 M 月 d 日",
@@ -122,9 +118,7 @@ define(
 	],
 	"eraNarrow": [
 		"西元前",
-		"公元前",
-		"西元",
-		"公元"
+		"西元"
 	],
 	"dateFormatItem-h": "ah時",
 	"field-thu-relative+-1": "上週四"

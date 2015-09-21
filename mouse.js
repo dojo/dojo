@@ -119,7 +119,7 @@ define(["./_base/kernel", "./on", "./has", "./dom", "./_base/window"], function(
 		//		mouseenter and mouseleave event emulation.
 		// example:
 		//		To use these events, you register a mouseenter like this:
-		//		|	define(["dojo/on", dojo/mouse"], function(on, mouse){
+		//		|	define(["dojo/on", "dojo/mouse"], function(on, mouse){
 		//		|		on(targetNode, mouse.enter, function(event){
 		//		|			dojo.addClass(targetNode, "highlighted");
 		//		|		});

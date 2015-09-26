@@ -21,12 +21,14 @@ define(["./has"], function(has){
 		has.add("khtml", dav.indexOf("Konqueror") >= 0 ? tv : undefined);
 		has.add("webkit", !has("wp") // NOTE: necessary since Windows Phone 8.1 Update 1, see #18540
 				&& parseFloat(dua.split("WebKit/")[1]) || undefined);
-		has.add("chrome", parseFloat(dua.split("Chrome/")[1]) || undefined);
+		has.add("edge", parseFloat(dua.split("Edge/")[1]) || undefined);
+		has.add("chrome", !has("edge")
+				&& parseFloat(dua.split("Chrome/")[1]) || undefined);
 		has.add("android", !has("wp") // NOTE: necessary since Windows Phone 8.1 Update 1, see #18528
 				&& parseFloat(dua.split("Android ")[1]) || undefined);
 		has.add("safari", dav.indexOf("Safari") >= 0 
 				&& !has("wp") // NOTE: necessary since Windows Phone 8.1 Update 1, see #18540
-				&& !has("chrome") && !has("android") ?
+				&& !has("chrome") && !has("android") && !has("edge") ?
 			parseFloat(dav.split("Version/")[1]) : undefined);
 		has.add("mac", dav.indexOf("Macintosh") >= 0);
 		has.add("quirks", document.compatMode == "BackCompat");

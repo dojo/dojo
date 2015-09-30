@@ -111,7 +111,7 @@ define(["require", "module"], function(require, module){
 
 		// Pointer Events support
 		has.add("pointer-events", "onpointerdown" in document);
-		has.add("MSPointer", "msPointerEnabled" in navigator); //IE10 (+IE11 preview)
+		has.add("MSPointer", "MSPointerEvent" in window); //IE10 (+IE11 preview)
 
 		// I don't know if any of these tests are really correct, just a rough guess
 		has.add("device-width", screen.availWidth || innerWidth);

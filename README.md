@@ -1,5 +1,7 @@
 # dojo
 
+[![Join the chat at https://gitter.im/dojo/dojo](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/dojo/dojo?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 **dojo** is the foundation package of the Dojo Toolkit. Sometimes referred to as the “core”, it contains the most
 generally applicable sub-packages and modules. The dojo package covers a wide range of functionality like AJAX, DOM
 manipulation, class-type programming, events, promises, data stores, drag-and-drop and internationalization libraries.

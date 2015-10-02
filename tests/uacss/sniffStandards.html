@@ -1,7 +1,5 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
-	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
 
@@ -22,7 +20,7 @@
 			height: 60px;
 		}
 	</style>
-	<script type="text/javascript" src="../../dojo.js" data-dojo-config="isDebug:true"></script>
+	<script type="text/javascript" src="../../dojo.js" data-dojo-config="isDebug:true, async:true"></script>
 	<script type="text/javascript">
 		require([
 			"doh",
@@ -35,7 +33,7 @@
 			reportNode.innerHTML = json.stringify({
 				boxModel: domGeom.boxModel,
 				hasQuirks: has("quirks"),
-				width: dojo.style(node, "width"),
+				width: domStyle.get(node, "width"),
 				marginBoxWidth: domGeom.getMarginBox(node).w,
 				htmlClassName: document.documentElement.className
 			}, null, "    ");

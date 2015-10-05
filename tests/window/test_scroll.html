@@ -253,10 +253,11 @@
 					'tooBig',
 					'htmlPadding' ],
 				function(test){
-					// IE9+ don't support quirks (or loose?) mode <iframe>'s inside a strict document (or vice-versa).
-					// The <iframe> loads but it's actually running in strict mode.
-					// Therefore, it's pointless to run those tests
-					var modes = (has("ie") >= 9 || has("trident")) ? ["_strict"] :
+					// IE9+ doesn't support quirks or loose mode <iframe>'s inside a strict document (or vice-versa).
+					// The <iframe> loads but it's actually running in strict mode.  Therefore, skip those tests.
+					// Also disabling quirks and loose tests on Edge, since it doesn't support document modes at all,
+					// and those tests get failures.
+					var modes = (has("trident") >= 5 || has("edge")) ? ["_strict"] :
 							["_strict", "_quirks", "_loose_rtl", "_quirks_rtl" ];
 					array.forEach(modes,
 						function(mode){

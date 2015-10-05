@@ -24,10 +24,6 @@ kernel.experimental("dojo.robotx");
 // The iframe containing the external app
 var iframe = null;
 
-// On IE6/7, a firebug console will appear.   Scrunch it a bit to leave room for the external test file.
-kernel.config.debugHeight = kernel.config.debugHeight || 200;
-
-
 // urlLoaded is a Deferred that will be resolved whenever the iframe passed to initRobot() finishes loading, or reloads
 var urlLoaded;
 
@@ -49,19 +45,18 @@ function attachIframe(url){
 		style.set(document.documentElement, emptyStyle);
 		style.set(document.body, emptyStyle);
 
-		// Create the iframe for the external document.   Put it above the firebug-lite div (if such a div exists).
+		// Create the iframe for the external document.
 		// console.log("creating iframe for external document");
 		iframe = document.createElement("iframe");
 		iframe.setAttribute("ALLOWTRANSPARENCY","true");
 		iframe.scrolling = has("ie") ? "yes" : "auto";
 		var scrollRoot = document.compatMode == "BackCompat" ? document.body : document.documentElement;
-		var consoleHeight = (document.getElementById("firebug") || {}).offsetHeight || 0;
 		style.set(iframe, {
 			border: "0px none",
 			padding: "0px",
 			margin: "0px",
 			width: "100%",
-			height: consoleHeight ? (scrollRoot.clientHeight - consoleHeight)+"px" : "100%"
+			height: "100%"
 		});
 		iframe.src = url;
 

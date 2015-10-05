@@ -37,14 +37,7 @@ return {
 
 	// isDebug: Boolean
 	//		Defaults to `false`. If set to `true`, ensures that Dojo provides
-	//		extended debugging feedback via Firebug. If Firebug is not available
-	//		on your platform, setting `isDebug` to `true` will force Dojo to
-	//		pull in (and display) the version of Firebug Lite which is
-	//		integrated into the Dojo distribution, thereby always providing a
-	//		debugging/logging console when `isDebug` is enabled. Note that
-	//		Firebug's `console.*` methods are ALWAYS defined by Dojo. If
-	//		`isDebug` is false and you are on a platform without Firebug, these
-	//		methods will be defined as no-ops.
+	//		extended debugging feedback to the console.
 	isDebug: false,
 
 	// locale: String
@@ -121,12 +114,6 @@ return {
 	//		IO operations. Publishing is done via dojo/topic.publish(). See dojo/main.__IoPublish for a list
 	//		of topics that are published.
 	ioPublish: false,
-
-	// useCustomLogger: Anything?
-	//		If set to a value that evaluates to true such as a string or array and
-	//		isDebug is true and Firebug is not available or running, then it bypasses
-	//		the creation of Firebug Lite allowing you to define your own console object.
-	useCustomLogger: undefined,
 
 	// transparentColor: Array
 	//		Array containing the r, g, b components used as transparent color in dojo.Color;

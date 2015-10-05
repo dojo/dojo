@@ -64,16 +64,8 @@ define([
 		try{ console.clear(); }catch(e){}
 	}
 
-	if(
-		has("ff") ||								// Firefox has Firebug
-		has("chrome") ||							// Chrome 3+ has a console
-		has("safari") ||							// Safari 4 has a console
-		isNewIE ||									// Has the new IE console
-		window.firebug ||							// Testing for mozilla firebug lite
-		(typeof console != "undefined" && console.firebug) || //The firebug console
-		dojo.config.useCustomLogger ||				// Allow custom loggers
-		has("air")									// isDebug triggers AIRInsector, not Firebug
-	){
+	// All browsers we support have built in consoles, but leaving firebug lite for IE6 and IE7.
+	if(!(has("ie") < 8)){
 		return;
 	}
 

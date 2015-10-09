@@ -8,6 +8,7 @@ define([
 	'./dnd',
 	'./fx',
 	'./fx/Toggler',
+	'./hash',
 	'./io/script',
 	'./on',
 	'./parser',

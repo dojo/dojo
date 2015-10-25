@@ -32,7 +32,7 @@ return declare("dojo.store.DataStore", base, {
 	 		// but some other do and throw errors in that case.
 			}
 			// if no idAttribute we have implicit id
-			(lang.isArray(idAttribute) ? idAttribute[0] : idAttribute) || this.idProperty;
+			this.idProperty = (lang.isArray(idAttribute) ? idAttribute[0] : idAttribute) || this.idProperty;
 		}
 		var features = this.store.getFeatures();
 		// check the feature set and null out any methods that shouldn't be available

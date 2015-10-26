@@ -201,11 +201,23 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 								!(e.target.tagName == "INPUT" && domClass.contains(e.target, "dijitOffScreen"))){
 							e.stopPropagation();
 							e.stopImmediatePropagation && e.stopImmediatePropagation();
-							if(type == "click" && (e.target.tagName != "INPUT" || e.target.type == "radio" || e.target.type == "checkbox")
-								&& e.target.tagName != "TEXTAREA" && e.target.tagName != "AUDIO" && e.target.tagName != "VIDEO"){
-								 // preventDefault() breaks textual <input>s on android, keyboard doesn't popup,
-								 // but it is still needed for checkboxes and radio buttons, otherwise in some cases
-								 // the checked state becomes inconsistent with the widget's state
+							if(type == "click" &&
+								(e.target.tagName != "INPUT" ||
+								(e.target.type == "radio" &&
+									// #18352 Do not preventDefault for radios that are not dijit or
+									// dojox/mobile widgets.
+									// (The CSS class dijitCheckBoxInput holds for both checkboxes and radio buttons.)
+									(domClass.contains(e.target, "dijitCheckBoxInput") ||
+										domClass.contains(e.target, "mblRadioButton"))) ||
+								(e.target.type == "checkbox" &&
+									// #18352 Do not preventDefault for checkboxes that are not dijit or
+									// dojox/mobile widgets.
+									(domClass.contains(e.target, "dijitCheckBoxInput") ||
+										domClass.contains(e.target, "mblCheckBox")))) &&
+								e.target.tagName != "TEXTAREA" && e.target.tagName != "AUDIO" && e.target.tagName != "VIDEO"){
+								// preventDefault() breaks textual <input>s on android, keyboard doesn't popup,
+								// but it is still needed for checkboxes and radio buttons, otherwise in some cases
+								// the checked state becomes inconsistent with the widget's state
 								e.preventDefault();
 							}
 						}

@@ -265,4 +265,46 @@ define([
 			}
 		};
 	});
+
+	// Tests for #18352
+	// Checks that dojo/touch with dojoClick=true does not break interaction with "native" HTML input
+	// of type checkbox and radio (used to be broken on iOS and Android).
+	registerSuite(function () {
+		var tapOrClick;
+
+		return {
+			name: 'dojo/touch dojoClick2 tests',
+
+			'before': function () {
+				// Not all browsers or drivers support touch events
+				tapOrClick = this.get('remote').environmentType.touchEnabled ?
+					tapElement :
+					clickElement;
+			},
+
+			'beforeEach': function () {
+				return ready(this.get('remote'), require.toUrl('./support/touch_dojoclick2.html'));
+			},
+
+			'press': function () {
+				return tapOrClick(this.get('remote').findById('dojoClickCheckbox'))
+					.execute(function () {
+						return dojoClickCheckbox.checked;
+					})
+					.then(function (result) {
+						assert.isTrue(result, 'dojoClicks2 - checkbox');
+					})
+					.end()
+					.findById('dojoClickRadio2')
+					.click()
+					.execute(function () {
+						return dojoClickRadio2.checked;
+					})
+					.then(function (result) {
+						assert.isTrue(result, 'dojoClicks2 - radio');
+					});
+			}
+		};
+	});
+
 });

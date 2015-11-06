@@ -117,17 +117,11 @@
 						},
 						
 						function destroyAll(t){
-							var c = function(){
-								// eg: don't destroy firebug lite in page
-								return dojo.query("body >").filter(function(n){
-									return !dojo.hasClass(n, "firebug");
-								})
-							};
-							c().forEach(dojo.destroy);
+							dojo.query("body >").forEach(dojo.destroy);
 
-							// check for deepest embeeded id
+							// check for deepest embedded id
 							doh.f(dojo.byId("ancFoo"));
-							doh.is(0, c().length);
+							doh.is(0, dojo.query("body >").length);
 						},
 
 						function recreateOneV1(t){

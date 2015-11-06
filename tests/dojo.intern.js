@@ -38,8 +38,9 @@ define([
 				'prerun': 'http://localhost:9001/tests/support/prerun.bat' },
 			{ browserName: 'internet explorer', version: '10', platform: 'Windows 8',
 				'prerun': 'http://localhost:9001/tests/support/prerun.bat' },
-			{ browserName: 'internet explorer', version: '11', platform: 'Windows 8.1',
+			{ browserName: 'internet explorer', version: '11', platform: 'Windows 10',
 				'prerun': 'http://localhost:9001/tests/support/prerun.bat' },
+			{ browserName: 'microsoftedge', version: '20.10240', platform: 'Windows 10' },
 			{ browserName: 'firefox', version: '', platform: [ 'OS X 10.10', 'Windows 7' ] },
 			{ browserName: 'chrome', version: '', platform: [
 				'OS X 10.10', 'Windows 7'

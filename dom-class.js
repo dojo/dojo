@@ -235,7 +235,7 @@ define(["./_base/lang", "./_base/array", "./dom"], function(lang, array, dom){
 		replace: function replaceClass(/*DomNode|String*/ node, /*String|Array*/ addClassStr, /*String|Array?*/ removeClassStr){
 			// summary:
 			//		Replaces one or more classes on a node if not present.
-			//		Operates more quickly than calling dojo.removeClass and dojo.addClass
+			//		Operates more quickly than calling domClass.remove and domClass.add
 			//
 			// node: String|DOMNode
 			//		String ID or DomNode reference to remove the class from.

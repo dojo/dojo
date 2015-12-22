@@ -10,8 +10,8 @@ define([
 	var serverUrl = 'http://localhost:' + serverPort;
 	var server;
 
-	function getRequestUrl(dataKey){
-		return serverUrl + '?dataKey=' + dataKey;
+	function getRequestUrl(dataKey, httpState){
+		return serverUrl + '?dataKey=' + dataKey + '&' + 'httpState=' + httpState;
 	}
 
 	registerSuite({
@@ -23,6 +23,10 @@ define([
 				'fooBar': '{ "foo": "bar" }',
 				'invalidJson': '<not>JSON</not>'
 			};
+			var httpCodeMap = {
+				'error': 500,
+				'success': 200
+			};
 
 			function getResponseData(request){
 				var parseQueryString = true;
@@ -30,10 +34,17 @@ define([
 				return responseDataMap[urlInfo.query.dataKey];
 			}
 
+			function getHTTPCode(request){
+				var parseQueryString = true;
+				var urlInfo = url.parse(request.url, parseQueryString);
+				return httpCodeMap[urlInfo.query.httpState];
+			}
+
 			server = http.createServer(function(request, response){
 				var body = getResponseData(request);
+				var httpCode = getHTTPCode(request);
 
-				response.writeHead(200, {
+				response.writeHead(httpCode, {
 					'Content-Length': body.length,
 					'Content-Type': 'application/json'
 				});
@@ -55,7 +66,7 @@ define([
 			'successfully get a record': function () {
 				var dfd = this.async();
 
-				request.get(getRequestUrl('fooBar'), {
+				request.get(getRequestUrl('fooBar', 'success'), {
 					handleAs: 'json'
 				}).then(dfd.callback(function(data){
 					assert.deepEqual(data, {foo: 'bar'});
@@ -65,13 +76,24 @@ define([
 			'invalid json response throws': function () {
 				var dfd = this.async();
 
-				request.get(getRequestUrl('invalidJson'), {
+				request.get(getRequestUrl('invalidJson', 'success'), {
 					handleAs: 'json'
 				}).then(
 					dfd.reject.bind(dfd),
 					dfd.callback(function(err){
 						assert.instanceOf(err, SyntaxError);
 				}));
+			},
+
+			'http error state throws': function () {
+				var dfd = this.async();
+
+				request.get(getRequestUrl('fooBar', 'error'), {
+					handleAs: 'json'
+				}).then(
+					dfd.reject.bind(dfd),
+					dfd.resolve
+				);
 			}
 		}
 	});

@@ -61,7 +61,7 @@ return declare("dojo.store.JsonRest", base, {
 	// descendingPrefix: String
 	//		The prefix to apply to sort attribute names that are ascending
 	descendingPrefix: "-",
-	 
+
 	_getTarget: function(id){
 		// summary:
 		//		If the target has no trailing '/', then append it.
@@ -69,7 +69,7 @@ return declare("dojo.store.JsonRest", base, {
 		//		The identity of the requested target
 		var target = this.target;
 		if(typeof id != "undefined"){
-			if(target.charAt(target.length-1) == '/'){
+			if( (target.charAt(target.length-1) == '/') || (target.charAt(target.length-1) == '=')){
 				target += id;
 			}else{
 				target += '/' + id;
@@ -77,7 +77,7 @@ return declare("dojo.store.JsonRest", base, {
 		}
 		return target;
 	},
-					
+
 	get: function(id, options){
 		// summary:
 		//		Retrieves an object by its identity. This will trigger a GET request to the server using

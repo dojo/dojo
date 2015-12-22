@@ -200,6 +200,10 @@ define([
 			},
 			'with slash': function () {
 				assert.equal(store.target + 'foo', store._getTarget('foo'));
+			},
+			'with equals': function () {
+				store.target = store.target.slice(0, -1) + '=';
+				assert.equal(store.target + 'foo', store._getTarget('foo'));
 			}
 		},
 

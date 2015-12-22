@@ -203,7 +203,7 @@ define([
 			},
 			'with equals': function () {
 				store.target = store.target.slice(0, -1) + '=';
-				assert.equal(store.target + '=foo', store._getTarget('foo'));
+				assert.equal(store.target + 'foo', store._getTarget('foo'));
 			}
 		},
 

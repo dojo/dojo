@@ -69,7 +69,7 @@ return declare("dojo.store.JsonRest", base, {
 		//		The identity of the requested target
 		var target = this.target;
 		if(typeof id != "undefined"){
-			if((target.charAt(target.length-1) == '/') || target.charAt(target.length-1) == '=')){
+			if( (target.charAt(target.length-1) == '/') || (target.charAt(target.length-1) == '=')){
 				target += id;
 			}else{
 				target += '/' + id;

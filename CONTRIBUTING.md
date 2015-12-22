@@ -58,7 +58,7 @@ actions will be performed via the `git` command line.
 ## 1. Fork the Repository
 
 When logged in to your GitHub account, and you are viewing one of the main repositories, you will see the *Fork* button.
-Clicking this button will show you which repositories your can fork to.  Choose your own account.  Once the process
+Clicking this button will show you which organizations your can fork to.  Choose your own account.  Once the process
 finishes, you will have your own repository that is "forked" from the official one.
 
 Forking is a GitHub term and not a git term.  Git is a wholly distributed source control system and simply worries

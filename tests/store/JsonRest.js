@@ -41,6 +41,9 @@ define(["doh/main", "require", "dojo/_base/lang", "dojo/store/JsonRest"], functi
 				// and with the slash
 				store.target = store.target + '/';
 				t.is(store.target + "foo", store._getTarget("foo"));
+				// and with an equals sign
+				store.target = store.target.slice(0, -1);
+				t.is(store.target + "=foo", store._getTarget("foo"));
 			},
 			function testQueryIterative(t){
 				var d = new doh.Deferred();

@@ -71,9 +71,14 @@ var Observable = function(/*Store*/ store){
 							var removedObject, removedFrom = -1, insertedInto = -1;
 							if(existingId !== undef){
 								// remove the old one
+								var filteredArray = [].concat(resultsArray);
+								if(queryExecutor && !changed){
+									filteredArray = queryExecutor(resultsArray);
+								}
 								for(i = 0, l = resultsArray.length; i < l; i++){
 									var object = resultsArray[i];
 									if(store.getIdentity(object) == existingId){
+										if(filteredArray.indexOf(object)<0) continue;
 										removedObject = object;
 										removedFrom = i;
 										if(queryExecutor || !changed){// if it was changed and we don't have a queryExecutor, we shouldn't remove it because updated objects would be eliminated

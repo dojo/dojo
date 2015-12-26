@@ -36,7 +36,7 @@ if (!empty($_SERVER['QUERY_STRING'])) {
 
 $post = null;
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-	if(!strcmp($_SERVER['HTTP_CONTENT_TYPE'], 'application/x-www-form-urlencoded')){
+	if(!strcmp($_SERVER['CONTENT_TYPE'], 'application/x-www-form-urlencoded')){
 		$post = fix_raw_data(file_get_contents('php://input'));
 	}else{
 		$post = $_POST;

@@ -121,8 +121,8 @@ define([
 
 			if(result && has("dom-qsa2.1") && !result.querySelectorAll && has("dom-parser")){
 				// http://bugs.dojotoolkit.org/ticket/15631
-				// IE9 supports a CSS3 querySelectorAll implementation, but the DOM implementation 
-				// returned by IE9 xhr.responseXML does not. Manually create the XML DOM to gain 
+				// IE9 supports a CSS3 querySelectorAll implementation, but the DOM implementation
+				// returned by IE9 xhr.responseXML does not. Manually create the XML DOM to gain
 				// the fuller-featured implementation and avoid bugs caused by the inconsistency
 				result = new DOMParser().parseFromString(xhr.responseText, "application/xml");
 			}
@@ -334,7 +334,7 @@ define([
 			//IE requires going through getAttributeNode instead of just getAttribute in some form cases,
 			//so use it for all. See #2844
 			var actnNode = form.getAttributeNode("action");
-			ioArgs.url = ioArgs.url || (actnNode ? actnNode.value : null);
+			ioArgs.url = ioArgs.url || (actnNode ? actnNode.value : (dojo.doc ? dojo.doc.URL : null));
 			formObject = domForm.toObject(form);
 		}
 

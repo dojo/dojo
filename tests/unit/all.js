@@ -21,6 +21,7 @@ define([
 	'./json',
 	'./keys',
 	'./loadInit',
+	'./loader_tests/all',
 	'./number',
 	'./on',
 	'./on/debounce',

@@ -147,10 +147,14 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 		};
 	}
 
-	has.add("dojo-guarantee-console",
-		// ensure that console.log, console.warn, etc. are defined
-		1
-	);
+	if(!has("host-webworker")){
+		// console is immutable in FF30+, https://bugs.dojotoolkit.org/ticket/18100
+		has.add("dojo-guarantee-console",
+			// ensure that console.log, console.warn, etc. are defined
+			1
+		);
+	}
+
 	if(has("dojo-guarantee-console")){
 		typeof console != "undefined" || (console = {});
 		//	Be careful to leave 'log' always at the end

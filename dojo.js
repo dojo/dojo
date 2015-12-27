@@ -176,7 +176,8 @@
 			"dojo-dom-ready-api": 0,
 			"dojo-sniff": 0,
 			"dojo-inject-api": 1,
-			"host-webworker": 1
+			"host-webworker": 1,
+			"dojo-guarantee-console": 0 // console is immutable in FF30+, see https://bugs.dojotoolkit.org/ticket/18100
 		});
 
 		defaultConfig.loaderPatch = {

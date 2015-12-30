@@ -71,14 +71,14 @@ define([
 				error = e;
 			}
 		}
-
+		var handleError;
 		if(error){
 			this.reject(error);
 		}else{
 			try{
 				handlers(response);
 			}catch(e){
-				var handleError = e;
+				handleError = e;
 			}
 			if(util.checkStatus(_xhr.status)){
 				if(!handleError){

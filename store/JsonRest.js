@@ -180,6 +180,7 @@ return declare("dojo.store.JsonRest", base, {
 		var headers = lang.mixin({ Accept: this.accepts }, this.headers, options.headers);
 
 		var hasQuestionMark = this.target.indexOf("?") > -1;
+		query = query || ""; // https://bugs.dojotoolkit.org/ticket/17628
 		if(query && typeof query == "object"){
 			query = xhr.objectToQuery(query);
 			query = query ? (hasQuestionMark ? "&" : "?") + query: "";

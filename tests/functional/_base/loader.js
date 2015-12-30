@@ -648,6 +648,88 @@ define([
 				});
 			}
 		),
+		mappingMultiLayer: loaderTest(
+			require.toUrl('./loader/index.html'),
+			{
+				async: true,
+				baseUrl: '.',
+				packages: [
+					{ name: 'dojo', location: 'node_modules/dojo' },
+					{
+						name: 'test',
+						location: './mapping-multi-layer'
+					},
+					{
+						name: 'app1',
+						location: './mapping-multi-layer/App1'
+					},
+					{
+						name: 'app2',
+						location: './mapping-multi-layer/App2'
+					},
+					{
+						name: 'common1',
+						location: './mapping-multi-layer/Common1'
+					},
+					{
+						name: 'common2',
+						location: './mapping-multi-layer/Common2'
+					},
+					{
+						name: 'router',
+						location: './mapping-multi-layer/Router'
+					},
+					{
+						name: 'mappedModule',
+						location: './mapping-multi-layer/MappedModule'
+					}
+				],
+				map: {
+					'app1': {
+						'common': 'common1'
+					},
+					'app2': {
+						'common': 'common2'
+					},
+					'my/replacement/A': {
+						'my/A': 'my/A'
+					},
+					'*': {
+						'starmap/demo1': 'router/demoA',
+						'starmap/demo2': 'router/demoB',
+						'starmapModule': 'mappedModule',
+						'my/A': 'my/replacement/A'
+					}
+				}
+			},
+			function (callback) {
+				// consume pending cache, the following are added at the end of a built dojo.js in a closure
+				require({ cache: {} });
+				!require.async && require([ 'dojo' ]);
+				require.boot && require.apply(null, require.boot);
+
+				// begin test:
+				// moving modules from the pending cache to the module cache should ignore
+				// any mapping, pathing, or alias rules
+				var handle = require.on('error', function () {
+					handle.remove();
+					callback({ error: true });
+				});
+				require([ 'test/main' ], function () {
+					handle.remove();
+					callback({ error: false, results: results });
+				});
+			},
+			function (data) {
+				if (data.error) {
+					assert.fail("require error");
+				}
+				else {
+					var expected = ["Common1/another:cache", "Router/demoB:nocache", "App1/thing:cache", "Router/demoC:cache", "Router/demoA:cache", "MappedModule/mappedC:cache", "mappedModule/mappedA:cache", "my/B:cache", "my/A:cache", "my/replacement/A:cache", "mainRequire1:loaded", "Common2/anotherone:cache", "Common2/another:cache", "mappedModule/mappedB:cache", "App2/thing:cache", "mainRequire2:loaded"];
+					assert.strictEqual(data.results.join(), expected.join());
+				}
+			}
+		),
 
 		mapping: loaderTest(
 			require.toUrl('./loader/index.html'),

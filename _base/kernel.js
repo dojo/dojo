@@ -151,7 +151,9 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 		1
 	);
 	if(has("dojo-guarantee-console")){
-		typeof console != "undefined" || (console = {});
+		// IE 9 bug: https://bugs.dojotoolkit.org/ticket/18197
+		has.add("console-as-object", Function.prototype.bind && console && typeof console.log === "object");
+		typeof console != "undefined" || (console = {});  // intentional assignment
 		//	Be careful to leave 'log' always at the end
 		var cn = [
 			"assert", "count", "debug", "dir", "dirxml", "error", "group",
@@ -171,6 +173,8 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 					} : function(){};
 					console[tcn]._fake = true;
 				})();
+			}else if(has("console-as-object")){
+				console[tn] = Function.prototype.bind.call(console[tn], console);
 			}
 		}
 	}

@@ -51,8 +51,14 @@ if(!dojo.isAsync){
 
 		this.duration = 0;
 		arrayUtil.forEach(this._animations, function(a){
-			this.duration += a.duration;
-			if(a.delay){ this.duration += a.delay; }
+			if(a){
+				if(typeof a.duration != "undefined"){
+	        		this.duration += a.duration;
+				}
+				if(a.delay){
+					this.duration += a.delay;
+				}
+			}
 		}, this);
 	};
 	_chain.prototype = new Evented();

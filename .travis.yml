@@ -15,5 +15,5 @@ env:
     - BROWSERSTACK_ACCESS_KEY: mG2qbEFJCZY2qLsM7yfx
   matrix:
     - NPM_SCRIPT: test-coverage
-    - NPM_SCRIPT: test-remote-coverage
+    - NPM_SCRIPT: test-remote-ci
 script: "npm run $NPM_SCRIPT"

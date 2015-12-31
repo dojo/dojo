@@ -1,5 +1,6 @@
 var profile = (function(){
 	var testResourceRe = /^dojo\/tests(?:DOH)?\//,
+		nodeModulesRe = /\/node_modules\//,
 
 		copyOnly = function(filename, mid){
 			var list = {
@@ -19,7 +20,7 @@ var profile = (function(){
 				/^dojo\/_base\/config\w+$/.test(mid) ||
 				(/^dojo\/resources\//.test(mid) && !/\.css$/.test(filename)) ||
 				/(png|jpg|jpeg|gif|tiff)$/.test(filename) ||
-				/\/node_modules\//.test(mid) ||
+				nodeModulesRe.test(mid) ||
 				/built\-i18n\-test\/152\-build/.test(mid);
 		};
 
@@ -38,7 +39,7 @@ var profile = (function(){
 			},
 
 			miniExclude: function(filename, mid){
-				return /\/node_modules\//.test(mid);
+				return nodeModulesRe.test(mid);
 			}
 		}
 	};

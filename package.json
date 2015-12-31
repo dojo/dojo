@@ -6,6 +6,7 @@
 	},
 	"devDependencies": {
 		"intern-geezer": "kitsonk/intern#geezer",
+		"codecov.io": "0.1.6",
 		"http-proxy": "0.10.3",
 		"glob": "3.2.7",
 		"jsgi-node": "0.3.1",
@@ -22,7 +23,8 @@
 		"test-remote-ci": "intern-runner config=tests/dojo.intern.ci reporters=runner reporters=lcovhtml",
 		"test-local": "intern-runner config=tests/dojo.intern.local",
 		"test-local-coverage": "intern-runner config=tests/dojo.intern.local reporters=runner reporters=lcovhtml",
-		"test-proxy": "intern-runner config=tests/dojo.intern.proxy proxyOnly=true"
+		"test-proxy": "intern-runner config=tests/dojo.intern.proxy proxyOnly=true",
+		"test-upload-coverage": "codecov < ./lcov.info"
 	},
 	"description": "Dojo core is a powerful, lightweight library that makes common tasks quicker and easier. Animate elements, manipulate the DOM, and query with easy CSS syntax, all without sacrificing performance.",
 	"licenses": [

@@ -11,7 +11,7 @@ define([
 	};
 
 	intern.environments = [
-		{ browserName: 'internet explorer', version: [ '6', '7', '8', '9', '10', '11' ], platform: 'WINDOWS' },
+		{ browserName: 'internet explorer', version: [ '7', '8', '9', '10', '11' ], platform: 'WINDOWS' },
 		{ browserName: 'chrome', platform: [ 'WINDOWS' ] },
 		{ browserName: 'firefox', platform: [ 'WINDOWS' ] }
 	];

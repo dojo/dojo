@@ -36,7 +36,6 @@ define([
 		environments: [
 			{ browserName: 'internet explorer', version: [ '8', '9', '10' ], platform: 'Windows 7',
 				'prerun': 'http://localhost:9001/tests/support/prerun.bat' },
-			{ browserName: 'internet explorer', version: [ '6', '7' ], platform: 'Windows XP' },
 			{ browserName: 'internet explorer', version: '10', platform: 'Windows 8',
 				'prerun': 'http://localhost:9001/tests/support/prerun.bat' },
 			{ browserName: 'internet explorer', version: '11', platform: 'Windows 10',

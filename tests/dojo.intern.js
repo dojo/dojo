@@ -36,18 +36,15 @@ define([
 		environments: [
 			{ browserName: 'internet explorer', version: [ '8', '9', '10' ], platform: 'Windows 7',
 				'prerun': 'http://localhost:9001/tests/support/prerun.bat' },
+			{ browserName: 'internet explorer', version: [ '6', '7' ], platform: 'Windows XP' },
 			{ browserName: 'internet explorer', version: '10', platform: 'Windows 8',
 				'prerun': 'http://localhost:9001/tests/support/prerun.bat' },
 			{ browserName: 'internet explorer', version: '11', platform: 'Windows 10',
 				'prerun': 'http://localhost:9001/tests/support/prerun.bat' },
-			{ browserName: 'microsoftedge', version: '20.10240', platform: 'Windows 10' },
-			{ browserName: 'firefox', version: '', platform: [ 'OS X 10.10', 'Windows 7' ] },
-			{ browserName: 'chrome', version: '', platform: [
-				'OS X 10.10', 'Windows 7'
-			] },
-			{ browserName: 'safari', version: '6', platform: 'OS X 10.8' },
-			{ browserName: 'safari', version: '7', platform: 'OS X 10.9' },
-			{ browserName: 'safari', version: '8', platform: 'OS X 10.10' }
+			{ browserName: 'microsoftedge', platform: 'Windows 10' },
+			{ browserName: 'firefox', platform: [ 'OS X 10.10', 'Windows 7' ] },
+			{ browserName: 'chrome', platform: [ 'OS X 10.10', 'Windows 7' ] },
+			{ browserName: 'safari', version: '9', platform: 'OS X 10.11' }
 		],
 		maxConcurrency: 3,
 		tunnel: 'SauceLabsTunnel',

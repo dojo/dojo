@@ -5,7 +5,7 @@
 		"lib": "."
 	},
 	"devDependencies": {
-		"intern-geezer": "2.2.2",
+		"intern-geezer": "kitsonk/intern#geezer",
 		"http-proxy": "0.10.3",
 		"glob": "3.2.7",
 		"jsgi-node": "0.3.1",

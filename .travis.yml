@@ -16,5 +16,4 @@ env:
   matrix:
     - NPM_SCRIPT: test-coverage
     - NPM_SCRIPT: test-remote-ci
-    - NPM_SCRIPT: test-upload-coverage
 script: "npm run $NPM_SCRIPT"

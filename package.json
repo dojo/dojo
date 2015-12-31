@@ -20,11 +20,10 @@
 		"test-coverage": "intern-client config=tests/dojo.intern reporters=console reporters=lcovhtml",
 		"test-remote": "intern-runner config=tests/dojo.intern",
 		"test-remote-coverage": "intern-runner config=tests/dojo.intern reporters=runner reporters=lcovhtml",
-		"test-remote-ci": "intern-runner config=tests/dojo.intern.ci reporters=runner reporters=lcovhtml",
+		"test-remote-ci": "intern-runner config=tests/dojo.intern.ci reporters=runner reporters=lcov",
 		"test-local": "intern-runner config=tests/dojo.intern.local",
 		"test-local-coverage": "intern-runner config=tests/dojo.intern.local reporters=runner reporters=lcovhtml",
-		"test-proxy": "intern-runner config=tests/dojo.intern.proxy proxyOnly=true",
-		"test-upload-coverage": "codecov < ./lcov.info"
+		"test-proxy": "intern-runner config=tests/dojo.intern.proxy proxyOnly=true"
 	},
 	"description": "Dojo core is a powerful, lightweight library that makes common tasks quicker and easier. Animate elements, manipulate the DOM, and query with easy CSS syntax, all without sacrificing performance.",
 	"licenses": [

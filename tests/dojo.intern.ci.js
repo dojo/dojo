@@ -4,19 +4,19 @@ define([
 	intern.tunnel = 'BrowserStackTunnel';
 
 	intern.capabilities = {
-		'selenium-version': '2.43.1',
 		'idle-timeout': 30,
+		timeout: 1800,
 		project: 'Dojo',
 		name: 'dojo/dojo'
 	};
 
 	intern.environments = [
 		{ browserName: 'internet explorer', version: [ '6', '7', '8', '9', '10', '11' ], platform: 'WINDOWS' },
-		{ browserName: 'firefox', platform: [ 'WINDOWS', 'MAC' ] },
-		{ browserName: 'chrome', platform: [ 'WINDOWS', 'MAC' ] },
+		{ browserName: 'chrome', platform: [ 'WINDOWS' ] },
+		{ browserName: 'firefox', platform: [ 'WINDOWS' ] }
 	];
 
-	intern.maxConcurrency = 1;
+	intern.maxConcurrency = 2;
 
 	return intern;
 });

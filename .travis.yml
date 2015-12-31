@@ -1,6 +1,7 @@
+sudo: false
 language: node_js
 node_js:
-  - "0.10"
+  - "0.12"
 env:
   global:
     # Sauce Labs are OK with this and it is currently necessary to expose this information for testing pull requests;

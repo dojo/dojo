@@ -18,7 +18,7 @@
 		"test": "intern-client config=tests/dojo.intern",
 		"test-coverage": "intern-client config=tests/dojo.intern reporters=console reporters=lcovhtml",
 		"test-remote": "intern-runner config=tests/dojo.intern",
-		"test-remote-coverage": "intern-runner config=tests/dojo.intern reporters=runner reporters=lcovhtml",
+		"test-remote-coverage": "intern-runner config=tests/dojo.intern.bs reporters=runner reporters=lcovhtml",
 		"test-local": "intern-runner config=tests/dojo.intern.local",
 		"test-local-coverage": "intern-runner config=tests/dojo.intern.local reporters=runner reporters=lcovhtml",
 		"test-proxy": "intern-runner config=tests/dojo.intern.proxy proxyOnly=true"
@@ -37,7 +37,7 @@
 	"bugs": "http://bugs.dojotoolkit.org/",
 	"keywords": ["JavaScript", "Dojo", "Toolkit"],
 	"homepage": "http://dojotoolkit.org/",
-	"repository":{ 
+	"repository":{
 		"type": "git",
 		"url": "https://github.com/dojo/dojo.git"
 	},

@@ -127,7 +127,7 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 			var handles = [];
 			var i = 0;
 			var eventName;
-			while(eventName == events[i++]){
+			while(eventName = events[i++]){ // intentional assignment
 				handles.push(on.parse(target, eventName, listener, addListener, dontFix, matchesTarget));
 			}
 			handles.remove = function(){

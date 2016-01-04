@@ -312,6 +312,8 @@ define([
 			};
 
 			assert.deepEqual(obj1, lang.clone(obj1));
+			obj1.baz.b[6] = "c"; // intentional sparse populatation
+			assert.deepEqual(obj1.baz.b, lang.clone(obj1).baz.b, "Sparse arrays should be equal");
 		},
 
 		'.delegate': function () {

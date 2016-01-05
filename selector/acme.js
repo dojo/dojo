@@ -502,7 +502,8 @@ define([
 	// to the spec, https://bugzilla.mozilla.org/show_bug.cgi?id=932501
 	// and https://www.w3.org/Bugs/Public/show_bug.cgi?id=23691 ,
 	// where nextElementSibling was implemented on the DocumentType
-	var _noNES = !(htmlElmement.nextElementSibling ||
+	var htmlElement = getDoc().documentElement;
+	var _noNES = !(htmlElement.nextElementSibling ||
 		"nextElementSibling" in htmlElement);
 	var _ns = !_noNES ? "nextElementSibling" : "nextSibling";
 	var _ps = !_noNES ? "previousElementSibling" : "previousSibling";

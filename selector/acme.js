@@ -503,7 +503,11 @@ define(["../_base/kernel", "../has", "../dom", "../_base/sniff", "../_base/array
 
 	// avoid testing for node type if we can. Defining this in the negative
 	// here to avoid negation in the fast path.
-	var _noNES = (typeof getDoc().firstChild.nextElementSibling == "undefined");
+	// NOTE: Firefox versions 25-27 implemented an incompatible change
+	// to the spec, https://bugzilla.mozilla.org/show_bug.cgi?id=932501
+	// and https://www.w3.org/Bugs/Public/show_bug.cgi?id=23691 ,
+	// where nextElementSibling was implemented on the DocumentType
+	var _noNES = "nextElementSibling" in getDoc().documentElement;
 	var _ns = !_noNES ? "nextElementSibling" : "nextSibling";
 	var _ps = !_noNES ? "previousElementSibling" : "previousSibling";
 	var _simpleNodeTest = (_noNES ? _isElement : yesman);
@@ -1133,7 +1137,7 @@ define(["../_base/kernel", "../has", "../dom", "../_base/sniff", "../_base/array
 	var infixSpaceFunc = function(match, pre, ch, post){
 		return ch ? (pre ? pre + " " : "") + ch + (post ? " " + post : "") : /*n+3*/ match;
 	};
-	
+
 	//Don't apply the infixSpaceRe to attribute value selectors
 	var attRe = /([^[]*)([^\]]*])?/g;
 	var attFunc = function(match, nonAtt, att) {

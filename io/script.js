@@ -1,4 +1,4 @@
-define(["../main"], function(dojo) {
+define(["../main", "has"], function(dojo, has) {
 	// module:
 	//		dojo/io/script
 	// summary:
@@ -41,7 +41,13 @@ dojo.declare("dojo.io.script.__ioArgs", dojo.__IoArgs, {
 });
 =====*/
 
-	var loadEvent = dojo.isIE ? "onreadystatechange" : "load",
+	has.add("script-readystatechange", function(global, document){
+		var script = document.createElement("script");
+		return typeof script["onreadystatechange"] !== "undefined" &&
+			(typeof global["opera"] === "undefined" || global["opera"].toString() !== "[object Opera]");
+	});
+
+	var loadEvent = has("script-readystatechange") ? "onreadystatechange" : "load",
 		readyRegExp = /complete|loaded/;
 
 	dojo.io.script = {

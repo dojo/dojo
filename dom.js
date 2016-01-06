@@ -97,7 +97,7 @@ define(["./sniff", "./_base/window", "./_base/kernel"],
 	// and also problems when either ancestor or node are text nodes.
 
 	var doc = kernel.global["document"] || null;
-	has.add("dom-contains", !!(doc.contains));
+	has.add("dom-contains", !!(doc && doc.contains));
 	dom.isDescendant = has("dom-contains") ?
 		// FF9+, IE9+, webkit, opera, iOS, Android, Edge, etc.
 		function(/*DOMNode|String*/ node, /*DOMNode|String*/ ancestor){

@@ -1,4 +1,4 @@
-define(["../main", "has"], function(dojo, has) {
+define(["../main", "../has"], function(dojo, has) {
 	// module:
 	//		dojo/io/script
 	// summary:

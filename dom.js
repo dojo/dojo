@@ -1,5 +1,5 @@
-define(["./sniff", "./_base/window"],
-		function(has, win){
+define(["./sniff", "./_base/window", "./_base/kernel"],
+		function(has, win, kernel){
 	// module:
 	//		dojo/dom
 
@@ -95,7 +95,9 @@ define(["./sniff", "./_base/window"],
 	// Test for DOMNode.contains() method, available everywhere except FF8-
 	// and IE8-, where it's available in general, but not on document itself,
 	// and also problems when either ancestor or node are text nodes.
-	has.add("dom-contains", !!document.contains);
+
+	var doc = kernel.global["document"] || null;
+	has.add("dom-contains", !!(doc && doc.contains));
 	dom.isDescendant = has("dom-contains") ?
 		// FF9+, IE9+, webkit, opera, iOS, Android, Edge, etc.
 		function(/*DOMNode|String*/ node, /*DOMNode|String*/ ancestor){

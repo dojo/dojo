@@ -65,9 +65,19 @@ define([
 			},
 
 			'.emit return value': function () {
+				// NOTE: Uncancelable events are treated inconsistently.
+				// The return value depends on whether the browser DOM offers
+				// an `addEventListener` method and whether the event is a DOM or simple object event.
+				// Therefore, the purpose of testing the return value for uncancelable events
+				// is to codify current behavior and catch unintentional changes.
 				var returnValue = on.emit(target, testEventName, { cancelable: false });
-				assert.ok(returnValue);
-				assert.propertyVal(returnValue, 'cancelable', false);
+				if (has('dom-addeventlistener') && 'dispatchEvent' in target) {
+					assert.ok(returnValue);
+					assert.propertyVal(returnValue, 'cancelable', false);
+				}
+				else {
+					assert.isFalse(returnValue);
+				}
 
 				returnValue = on.emit(target, testEventName, { cancelable: true });
 				assert.ok(returnValue);

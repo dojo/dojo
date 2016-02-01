@@ -1276,6 +1276,9 @@
 			try{
 				checkCompleteGuard++;
 				proc();
+			}catch(e){
+				// https://bugs.dojotoolkit.org/ticket/16617
+				throw e;
 			}finally{
 				checkCompleteGuard--;
 			}
@@ -1674,7 +1677,11 @@
 			},
 			windowOnLoadListener = domOn(window, "load", "onload", function(){
 				req.pageLoaded = 1;
-				doc.readyState!="complete" && (doc.readyState = "complete");
+				// https://bugs.dojotoolkit.org/ticket/16248
+				try{
+					doc.readyState!="complete" && (doc.readyState = "complete");
+				}catch(e){
+				}
 				windowOnLoadListener();
 			});
 

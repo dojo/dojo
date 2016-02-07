@@ -6,11 +6,11 @@ manipulation, class-type programming, events, promises, data stores, drag-and-dr
 
 ##Amazing Results in Less Time!
 
-Designing applications for the web is facilitated by the functionality dojo provides. Dojo offers plugins that a developer can employ to make writing javascript and AJAX more cross browser compliant. This will save you time and frustration. 
+Designing applications for the web is facilitated by the functionality Dojo provides. Dojo offers plugins that a developer can employ to make writing JavaScript and AJAX more cross-browser compliant. This will save you time and frustration. 
 
-If you want to add AJAX to your site, Ajax with Dojo will let you send and receive data without reloading the page. 
+If you want to add AJAX to your site, AJAX with Dojo will let you send and receive data without reloading the page. 
 
-If you want to create template based widgets, Dijit widgets offers a charting system that was designed to alleviate the pains of displaying dynamic data. 
+If you want to create template-based widgets, Dijit widgets offers a charting system that was designed to alleviate the pains of displaying dynamic data. 
 
 If you want to architect powerful web applications, Dojo's Core Concepts offers modular functionality to make it easier to author and debug code.
 

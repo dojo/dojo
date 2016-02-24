@@ -1,6 +1,6 @@
 {
 	"name": "dojo",
-	"version":"1.11.0-pre",
+	"version": "1.11.0-pre",
 	"directories": {
 		"lib": "."
 	},
@@ -26,9 +26,9 @@
 	"description": "Dojo core is a powerful, lightweight library that makes common tasks quicker and easier. Animate elements, manipulate the DOM, and query with easy CSS syntax, all without sacrificing performance.",
 	"license" : "BSD-3-Clause OR AFL-2.1",
 	"bugs": "http://bugs.dojotoolkit.org/",
-	"keywords": ["JavaScript", "Dojo", "Toolkit"],
+	"keywords": [ "JavaScript", "Dojo", "Toolkit" ],
 	"homepage": "http://dojotoolkit.org/",
-	"repository":{
+	"repository": {
 		"type": "git",
 		"url": "https://github.com/dojo/dojo.git"
 	},

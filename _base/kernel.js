@@ -80,7 +80,7 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 	dojo.isAsync = !has("dojo-loader") || require.async;
 	dojo.locale = config.locale;
 
-	var rev = "$Rev$".match(/[0-9a-f]{7,}/);
+	var rev = "$Rev: 382e75b $".match(/[0-9a-f]{7,}/);
 	dojo.version = {
 		// summary:
 		//		Version number of the Dojo Toolkit

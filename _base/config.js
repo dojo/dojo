@@ -186,7 +186,8 @@ return {
 
 	if(!result.locale && typeof navigator != "undefined"){
 		// Default locale for browsers (ensure it's read from user-settings not download locale).
-		var language = navigator.languages ? navigator.languages[0] : (navigator.language || navigator.userLanguage);
+		var language = (navigator.languages && navigator.languages.length) ? navigator.languages[0] :
+			(navigator.language || navigator.userLanguage);
 		if(language){
 			result.locale = language.toLowerCase();
 		}

@@ -176,7 +176,7 @@ define([
 		//	|		]).play();
 		//	|	});
 		//
-		return new _chain(lang.isArray(animations) ? animations : Array.prototype.slice.call(arguments, 0)); // dojo/_base/fx.Animation
+		return new _chain(lang.isArray(animations) ? animations : Array.prototype.slice.call(animations, 0)); // dojo/_base/fx.Animation
 	};
 
 	var _combine = function(animations){
@@ -286,7 +286,7 @@ define([
 		//	|		anim.play(); // play the animation
 		//	|	});
 		//
-		return new _combine(lang.isArray(animations) ? animations : Array.prototype.slice.call(arguments, 0)); // dojo/_base/fx.Animation
+		return new _combine(lang.isArray(animations) ? animations : Array.prototype.slice.call(animations, 0)); // dojo/_base/fx.Animation
 	};
 
 	coreFx.wipeIn = function(/*Object*/ args){

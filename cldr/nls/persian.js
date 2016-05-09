@@ -284,6 +284,7 @@ define({ root:
 	"pl": true,
 	"pt": true,
 	"ru": true,
+	"sr": true,
 	"sv": true,
 	"th": true,
 	"tr": true,

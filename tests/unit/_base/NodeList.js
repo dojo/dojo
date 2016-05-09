@@ -246,7 +246,7 @@ define([
                 },
                 "coords": function () {
                     var tnl = new NodeList(dojo.byId(sq100Id));
-                    assert.isTrue(dojo.isArray(tnl));
+                    assert.isTrue(dojo.isArrayLike(tnl));
                     assert.equal(120, tnl.coords()[0].w, 120);
                     assert.equal(130, tnl.coords()[0].h, 130);
                     assert.equal(query("body *").coords().length, document.body.getElementsByTagName("*").length);
@@ -363,9 +363,7 @@ define([
 
                 "splice": function () {
                     var pnl = new NodeList(t, t, c);
-                    console.debug(pnl.splice(1));
 
-                    /*
                     assert.equal(pnl.splice(1).length, 2);
                     assert.equal(pnl.length, 1);
                     pnl = new NodeList(t, t, c);
@@ -373,7 +371,6 @@ define([
                     assert.equal(pnl.length, 2);
                     pnl = new NodeList(t, t, c);
                     assert.equal(pnl.splice(-2).length, 2);
-                    */
                 },
 
                 "spliceInsert": function () {
@@ -469,7 +466,7 @@ define([
                 // layout DOM functions
                 "position": function () {
                     var tnl = new NodeList(dojo.byId('sq100-NodeList'));
-                    assert.isTrue(dojo.isArray(tnl));
+                    assert.isTrue(dojo.isArrayLike(tnl));
                     assert.equal(tnl.position()[0].w, 100);
                     assert.equal(tnl.position()[0].h, 100);
                     assert.equal(query("body *").position().length, document.body.getElementsByTagName("*").length);

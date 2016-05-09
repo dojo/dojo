@@ -119,9 +119,9 @@ define([
 	exports.parseArgs = function parseArgs(url, options, skipData){
 		var data = options.data,
 			query = options.query;
-		
+
 		if(data && !skipData){
-			if(typeof data === 'object'){
+			if(typeof data === 'object' && !(data instanceof ArrayBuffer || data instanceof Blob )){
 				options.data = ioQuery.objectToQuery(data);
 			}
 		}

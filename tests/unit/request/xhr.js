@@ -15,7 +15,6 @@ define([
 
 	registerSuite({
 		name: 'dojo/request/xhr',
-
 		'.get': function () {
 			var promise = xhr.get('/__services/request/xhr', {
 				preventCache: true,
@@ -48,7 +47,7 @@ define([
 				})
 			);
 		},
-		
+
 		'.get json with truthy value': function () {
 			var def = this.async(),
 				promise = xhr.get(require.toUrl('./support/truthy.json'), {
@@ -117,7 +116,88 @@ define([
 				def.reject
 			);
 		},
+		'.post ArrayBuffer': function() {
+			if (!ArrayBuffer) {
+				this.skip('ArrayBuffer not available');
+			}
+			var def = this.async(),
+				str = 'foo',
+				arrbuff = new ArrayBuffer(str.length),
+				i8array = new Uint8Array(arrbuff);
 
+			for (var i = 0; i < str.length; i++) {
+				i8array[i] = str.charCodeAt(i);
+			}
+			var promise = xhr.post('/__services/request/xhr', {
+				data: arrbuff,
+				handleAs: 'json',
+				headers: {
+					'Content-Type':'text/plain'
+				}
+			});
+
+			promise.response.then(
+				def.callback(function (response) {
+					assert.strictEqual(response.data.method, 'POST');
+					var payload = response.data.payload;
+
+					assert.deepEqual(payload, {'foo':''});
+				}),
+				def.reject
+			);
+		},
+		'.post Blob': function() {
+			if (!Blob) {
+				this.skip('Blob not available');
+			}
+			var def = this.async(),
+				str = 'foo',
+				blob = new Blob([str], {type:'text/plain'});
+
+			var promise = xhr.post('/__services/request/xhr', {
+				data: blob,
+				handleAs: 'json',
+				headers: {
+					'Content-Type':'text/plain'
+				}
+			});
+
+			promise.response.then(
+				def.callback(function (response) {
+					assert.strictEqual(response.data.method, 'POST');
+					var payload = response.data.payload;
+
+					assert.deepEqual(payload, {'foo':''});
+				}),
+				def.reject
+			);
+		},
+		'.post File': function() {
+			if (!File) {
+				this.skip('File not available');
+			}
+			var def = this.async(),
+				str = 'foo',
+				file = new File([str], 'bar.txt', {type:'text/plain'});
+
+			var promise = xhr.post('/__services/request/xhr', {
+				data: file,
+				handleAs: 'json',
+				headers: {
+					'Content-Type':'text/plain'
+				}
+			});
+
+			promise.response.then(
+				def.callback(function (response) {
+					assert.strictEqual(response.data.method, 'POST');
+					var payload = response.data.payload;
+
+					assert.deepEqual(payload, {'foo':''});
+				}),
+				def.reject
+			);
+		},
 		'.post with query': function () {
 			var def = this.async(),
 				promise = xhr.post('/__services/request/xhr', {

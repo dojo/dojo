@@ -23,7 +23,7 @@ return {
 	//		This module handles loading the appropriate selector engine for the given browser
 
 	load: function(id, parentRequire, loaded, config){
-		if (config.isBuild) {
+		if (config && config.isBuild) {
 			//Indicate that the optimizer should not wait
 			//for this resource any more and complete optimization.
 			//This resource will be resolved dynamically during

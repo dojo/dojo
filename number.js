@@ -252,7 +252,7 @@ dojo.number._formatAbsolute = function(/*Number*/value, /*String*/pattern, /*doj
 		whole = (off > 0) ? whole.slice(0, off) : "";
 		if(groupSize2){
 			groupSize = groupSize2;
-			delete groupSize2;
+			groupSize2 = undefined;
 		}
 	}
 	valueParts[0] = pieces.reverse().join(options.group || ",");

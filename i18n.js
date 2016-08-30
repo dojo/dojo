@@ -242,6 +242,21 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 			//		of these additional transactions can be done concurrently. Owing to this analysis, the entire preloading
 			//		algorithm can be discard during a build by setting the has feature dojo-preload-i18n-Api to false.
 
+			var match = nlsRe.exec(id),
+				bundlePath = match[1] + "/",
+				bundleName = match[5] || match[4],
+				bundlePathAndName = bundlePath + bundleName,
+				localeSpecified = (match[5] && match[4]),
+				targetLocale =	localeSpecified || dojo.locale || "";
+				loadTarget = bundlePathAndName + "/" + targetLocale;
+				loadList = localeSpecified ? [targetLocale] : getLocalesToLoad(targetLocale);
+				remaining = loadList.length;
+				finish = function(){
+					if(!--remaining){
+						load(lang.delegate(cache[loadTarget]));
+					}
+				};
+
 			if(has("dojo-preload-i18n-Api")){
 				var split = id.split("*"),
 					preloadDemand = split[1] == "preload";
@@ -255,25 +270,11 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 					// don't stall the loader!
 					load(1);
 				}
-				if(preloadDemand || waitForPreloads(id, require, load)){
+				if(preloadDemand || (waitForPreloads(id, require, load) && !cache[loadTarget])){
 					return;
 				}
 			}
 
-			var match = nlsRe.exec(id),
-				bundlePath = match[1] + "/",
-				bundleName = match[5] || match[4],
-				bundlePathAndName = bundlePath + bundleName,
-				localeSpecified = (match[5] && match[4]),
-				targetLocale =	localeSpecified || dojo.locale || "",
-				loadTarget = bundlePathAndName + "/" + targetLocale,
-				loadList = localeSpecified ? [targetLocale] : getLocalesToLoad(targetLocale),
-				remaining = loadList.length,
-				finish = function(){
-					if(!--remaining){
-						load(lang.delegate(cache[loadTarget]));
-					}
-				};
 			array.forEach(loadList, function(locale){
 				var target = bundlePathAndName + "/" + locale;
 				if(has("dojo-preload-i18n-Api")){

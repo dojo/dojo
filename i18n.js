@@ -247,10 +247,10 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 				bundleName = match[5] || match[4],
 				bundlePathAndName = bundlePath + bundleName,
 				localeSpecified = (match[5] && match[4]),
-				targetLocale =	localeSpecified || dojo.locale || "";
-				loadTarget = bundlePathAndName + "/" + targetLocale;
-				loadList = localeSpecified ? [targetLocale] : getLocalesToLoad(targetLocale);
-				remaining = loadList.length;
+				targetLocale =	localeSpecified || dojo.locale || "",
+				loadTarget = bundlePathAndName + "/" + targetLocale,
+				loadList = localeSpecified ? [targetLocale] : getLocalesToLoad(targetLocale),
+				remaining = loadList.length,
 				finish = function(){
 					if(!--remaining){
 						load(lang.delegate(cache[loadTarget]));

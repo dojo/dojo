@@ -22,8 +22,8 @@ var Manager = declare("dojo.dnd.Manager", [Evented], {
 	},
 
 	// avatar's offset from the mouse
-	OFFSET_X: has("touch") ? 0 : 16,
-	OFFSET_Y: has("touch") ? -64 : 16,
+	OFFSET_X: has("touch") ? 4 : 16,
+	OFFSET_Y: has("touch") ? 4 : 16,
 
 	// methods
 	overSource: function(source){

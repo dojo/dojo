@@ -85,7 +85,7 @@ exports.autoScrollNodes = function(e){
 			var s = domStyle.getComputedStyle(n),
 				overflowX = (s.overflowX.toLowerCase() in exports._validOverflow),
 				overflowY = (s.overflowY.toLowerCase() in exports._validOverflow);
-			if(overflow || overflowX || overflowY){
+			if(overflowX || overflowY){
 				b = domGeom.getContentBox(n, s);
 				t = domGeom.position(n, true);
 			}

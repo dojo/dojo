@@ -66,7 +66,7 @@ define(["./has"], function(has){
 			}
 
 			// IE
-			if(document.all && !has("opera")){
+			if(document.all !== undefined && !has("opera")){
 				var isIE = parseFloat(dav.split("MSIE ")[1]) || undefined;
 
 				//In cases where the page has an HTTP header or META tag with

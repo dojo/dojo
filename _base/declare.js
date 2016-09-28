@@ -794,6 +794,10 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 			chains = mix(chains || {}, proto["-chains-"]);
 		}
 
+		if(superclass && superclass.prototype && superclass.prototype["-chains-"]) {
+			chains = mix(chains || {}, superclass.prototype["-chains-"]);
+		}
+
 		// build ctor
 		t = !chains || !chains.hasOwnProperty(cname);
 		bases[0] = ctor = (chains && chains.constructor === "manual") ? simpleConstructor(bases) :

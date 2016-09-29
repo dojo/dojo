@@ -83,15 +83,14 @@ exports.autoScrollNodes = function(e){
 	for(var n = e.target; n;){
 		if(n.nodeType == 1 && (n.tagName.toLowerCase() in exports._validNodes)){
 			var s = domStyle.getComputedStyle(n),
-				overflow = (s.overflow.toLowerCase() in exports._validOverflow),
 				overflowX = (s.overflowX.toLowerCase() in exports._validOverflow),
 				overflowY = (s.overflowY.toLowerCase() in exports._validOverflow);
-			if(overflow || overflowX || overflowY){
+			if(overflowX || overflowY){
 				b = domGeom.getContentBox(n, s);
 				t = domGeom.position(n, true);
 			}
 			// overflow-x
-			if(overflow || overflowX){
+			if(overflowX){
 				w = Math.min(exports.H_TRIGGER_AUTOSCROLL, b.w / 2);
 				rx = e.pageX - t.x;
 				if(has("webkit") || has("opera")){
@@ -112,7 +111,7 @@ exports.autoScrollNodes = function(e){
 				}
 			}
 			// overflow-y
-			if(overflow || overflowY){
+			if(overflowY){
 				//console.log(b.l, b.t, t.x, t.y, n.scrollLeft, n.scrollTop);
 				h = Math.min(exports.V_TRIGGER_AUTOSCROLL, b.h / 2);
 				ry = e.pageY - t.y;

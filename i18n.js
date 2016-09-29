@@ -242,24 +242,6 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 			//		of these additional transactions can be done concurrently. Owing to this analysis, the entire preloading
 			//		algorithm can be discard during a build by setting the has feature dojo-preload-i18n-Api to false.
 
-			if(has("dojo-preload-i18n-Api")){
-				var split = id.split("*"),
-					preloadDemand = split[1] == "preload";
-				if(preloadDemand){
-					if(!cache[id]){
-						// use cache[id] to prevent multiple preloads of the same preload; this shouldn't happen, but
-						// who knows what over-aggressive human optimizers may attempt
-						cache[id] = 1;
-						preloadL10n(split[2], json.parse(split[3]), 1, require);
-					}
-					// don't stall the loader!
-					load(1);
-				}
-				if(preloadDemand || waitForPreloads(id, require, load)){
-					return;
-				}
-			}
-
 			var match = nlsRe.exec(id),
 				bundlePath = match[1] + "/",
 				bundleName = match[5] || match[4],
@@ -274,6 +256,25 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 						load(lang.delegate(cache[loadTarget]));
 					}
 				};
+
+			if(has("dojo-preload-i18n-Api")){
+				var split = id.split("*"),
+					preloadDemand = split[1] == "preload";
+				if(preloadDemand){
+					if(!cache[id]){
+						// use cache[id] to prevent multiple preloads of the same preload; this shouldn't happen, but
+						// who knows what over-aggressive human optimizers may attempt
+						cache[id] = 1;
+						preloadL10n(split[2], json.parse(split[3]), 1, require);
+					}
+					// don't stall the loader!
+					load(1);
+				}
+				if(preloadDemand || (waitForPreloads(id, require, load) && !cache[loadTarget])){
+					return;
+				}
+			}
+
 			array.forEach(loadList, function(locale){
 				var target = bundlePathAndName + "/" + locale;
 				if(has("dojo-preload-i18n-Api")){

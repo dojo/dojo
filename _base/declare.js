@@ -3,12 +3,16 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 	//		dojo/_base/declare
 
 	var mix = lang.mixin, op = Object.prototype, opts = op.toString,
-		xtor, counter = 0, cname = "constructor";
+		xtor, counter = 0, cname = "constructor", createNewFunction;
 
 	if(!has("csp-restrictions")){
 		xtor = new Function;
 	}else{
 		xtor = function(){};
+		// 'new Function()' is preferable when available since it does not create a closure
+		createNewFunction = function() {
+			return new function() {};
+		};
 	}
 
 	function err(msg, cls){ throw new Error("declare" + (cls ? " " + cls : "") + ": " + msg); }
@@ -781,7 +785,12 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 				t = bases[i];
 				(t._meta ? mixOwn : mix)(proto, t.prototype);
 				// chain in new constructor
-				ctor = new Function;
+				if (has('csp-restrictions')) {
+					ctor = createNewFunction();
+				}
+				else {
+					ctor = new Function;
+				}
 				ctor.superclass = superclass;
 				ctor.prototype = proto;
 				superclass = proto.constructor = ctor;

@@ -785,7 +785,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 				t = bases[i];
 				(t._meta ? mixOwn : mix)(proto, t.prototype);
 				// chain in new constructor
-				if (has('csp-restrictions')) {
+				if (has("csp-restrictions")) {
 					ctor = createNewFunction();
 				}
 				else {

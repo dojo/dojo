@@ -146,6 +146,10 @@ string.substitute = function(	/*String*/		template,
 			}
 			var value = lang.getObject(key, false, map);
 			if(format){
+				if (value === undefined){
+					console.warn(className + ' template couldn\'t find: ' + key);
+					return match;
+				}
 				value = lang.getObject(format, false, thisObject).call(thisObject, value, key);
 			}
 			return transform(value, key).toString();

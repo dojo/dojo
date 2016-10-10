@@ -3,16 +3,13 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 	//		dojo/_base/declare
 
 	var mix = lang.mixin, op = Object.prototype, opts = op.toString,
-		xtor, counter = 0, cname = "constructor", createNewFunction;
+		xtor, counter = 0, cname = "constructor";
 
 	if(!has("csp-restrictions")){
+		// 'new Function()' is preferable when available since it does not create a closure
 		xtor = new Function;
 	}else{
 		xtor = function(){};
-		// 'new Function()' is preferable when available since it does not create a closure
-		createNewFunction = function() {
-			return new function() {};
-		};
 	}
 
 	function err(msg, cls){ throw new Error("declare" + (cls ? " " + cls : "") + ": " + msg); }
@@ -786,7 +783,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 				(t._meta ? mixOwn : mix)(proto, t.prototype);
 				// chain in new constructor
 				if (has("csp-restrictions")) {
-					ctor = createNewFunction();
+					ctor = function () {};
 				}
 				else {
 					ctor = new Function;

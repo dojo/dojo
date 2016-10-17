@@ -20,7 +20,7 @@ If you are starting out with Dojo, the following resources are available to you:
 ## License and Copyright
 
 The Dojo Toolkit (including this package) is dual licensed under BSD 3-Clause and AFL.  For more information on the
-license please see the [License Information][].  The Dojo Toolkit is Copyright (c) 2005-2016, The Dojo Foundation.  All
+license please see the [License Information][].  The Dojo Toolkit is Copyright (c) 2005-2016, The JS Foundation.  All
 rights reserved.
 
 [download]: http://dojotoolkit.org/download/

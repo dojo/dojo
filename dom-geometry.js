@@ -206,8 +206,8 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 					}
 				}
 			}
-		}else if(has("opera") || (has("ie") == 8 && !has("quirks"))){
-			// On Opera and IE 8, offsetLeft/Top includes the parent's border
+		}else if((has("ie") == 8 && !has("quirks"))){
+			// IE 8 offsetLeft/Top includes the parent's border
 			if(p){
 				pcs = style.getComputedStyle(p);
 				l -= pcs.borderLeftStyle != none ? px(node, pcs.borderLeftWidth) : 0;

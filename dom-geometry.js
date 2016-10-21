@@ -235,20 +235,26 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		// fallback to offsetWidth/Height for special cases (see #3378)
 		node = dom.byId(node);
 		var s = computedStyle || style.getComputedStyle(node), w = node.clientWidth, h,
-			pe = geom.getPadExtents(node, s), be = geom.getBorderExtents(node, s);
+			pe = geom.getPadExtents(node, s), be = geom.getBorderExtents(node, s), l = node.offsetLeft + pe.l + be.l,
+			t = node.offsetTop + pe.t + be.t;
 		if(!w){
-			w = node.offsetWidth;
-			h = node.offsetHeight;
+			w = node.offsetWidth - be.w;
+			h = node.offsetHeight - be.h;
 		}else{
 			h = node.clientHeight;
-			be.w = be.h = 0;
 		}
-		// On Opera, offsetLeft includes the parent's border
-		if(has("opera")){
-			pe.l += be.l;
-			pe.t += be.t;
+
+		if((has("ie") == 8 && !has("quirks"))){
+			// IE 8 offsetLeft/Top includes the parent's border
+			var p = node.parentNode, px = style.toPixelValue, pcs;
+			if(p){
+				pcs = style.getComputedStyle(p);
+				l -= pcs.borderLeftStyle != none ? px(node, pcs.borderLeftWidth) : 0;
+				t -= pcs.borderTopStyle != none ? px(node, pcs.borderTopWidth) : 0;
+			}
 		}
-		return {l: pe.l, t: pe.t, w: w - pe.w - be.w, h: h - pe.h - be.h};
+
+		return {l: l, t: t, w: w - pe.w, h: h - pe.h};
 	};
 
 	// Box setters depend on box context because interpretation of width/height styles

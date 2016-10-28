@@ -3,7 +3,7 @@ define([
 	'intern/chai!assert',
 	'intern/dojo/_base/kernel',
 	'dojo/when',
-	'dojo/_base/Deferred'
+	'testing/_base/Deferred'
 ], function (
 	registerSuite,
 	assert,
@@ -146,6 +146,46 @@ define([
 			});
 			def.promise.cancel();
 			assert.equal(def, cancelledDef);
+		},
+
+		'.cancel() doesn\'t write to console': function () {
+			var testDef = new Deferred();
+
+			require(['dojo/has', 'testing/Deferred', 'testing/promise/instrumentation'],
+				function(has,
+						 NewDeferred,
+						 instrumentation) {
+
+					var origUseDeferredInstrumentation = has('config-useDeferredInstrumentation');
+					has.add('config-useDeferredInstrumentation', "report-unhandled-rejections", null, true);
+					instrumentation(NewDeferred);
+					require(['testing/promise/instrumentation'], function () {
+						var def = new Deferred(),
+						errOrig = console.error,
+						errorThrown = false;
+
+						console.error = function (s) {
+							if(s == "CancelError"){
+								console.error = errOrig;
+								testDef.reject(s);
+							}
+							errOrig.apply(null, arguments);
+						}
+
+						setTimeout(function() {
+							if (!testDef.isCanceled() && !testDef.isFulfilled()) {
+								testDef.resolve();
+							}
+							has.add('config-useDeferredInstrumentation', origUseDeferredInstrumentation, null, true);
+							instrumentation(NewDeferred);
+						}, 2500);
+
+						def.cancel();
+					}
+				);
+			});
+
+			return testDef.promise;
 		},
 
 		'.error() result': function () {

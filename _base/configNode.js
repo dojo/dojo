@@ -7,6 +7,27 @@ exports.config = function(config){
 		var arg = (process.argv[i] + "").split("=");
 		if(arg[0] == "load"){
 			deps.push(arg[1]);
+		}else if(arg[0] == "mapPackage") {
+			var parts = arg[1].split(":"),
+				name = parts[0],
+				location=parts[1],
+				isPrexisting = false;
+
+			for (var j = 0; j < config.packages.length; j++) {
+				var pkg = config.packages[j];
+				if (pkg.name === name) {
+					pkg.location = location;
+					isPrexisting = true;
+					break;
+				}
+			}
+
+			if (!isPrexisting) {
+				config.packages.push({
+					name: name,
+					location: location
+				});
+			}
 		}else{
 			args.push(arg);
 		}

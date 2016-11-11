@@ -150,8 +150,8 @@ string.substitute = function(	/*String*/		template,
 			}
 			var result = transform(value, key);
 
-			if (typeof value === 'undefined') {
-				throw 'string.substitute could not find key "' + key + '" in template';
+			if (typeof result === 'undefined') {
+				throw new Error('string.substitute could not find key "' + key + '" in template');
 			}
 
 			return result.toString();

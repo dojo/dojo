@@ -520,6 +520,7 @@ function _processPattern(pattern, applyPattern, applyLiteral, applyAll){
 	return applyAll(chunks.join(''));
 }
 
+var widthList = ['abbr', 'wide', 'narrow'];
 function _buildDateTimeRE(tokens, bundle, options, pattern){
 	pattern = regexp.escapeString(pattern);
 	if(!options.strict){ pattern = pattern.replace(" a", " ?a"); } // kludge to tolerate no space before am/pm
@@ -541,7 +542,21 @@ function _buildDateTimeRE(tokens, bundle, options, pattern){
 				break;
 			case 'M':
 			case 'L':
-				s = (l>2) ? '\\S+?' : '1[0-2]|'+p2+'[1-9]';
+				if(l>2){
+					var months = bundle[
+						'months-' +
+						(c == 'L' ? 'standAlone' : 'format') +
+						'-' + widthList[l-3]
+					].slice(0);
+					s = months.join('|');
+					if(!options.strict){
+						s = s.replace(/\./g, '');
+						//Tolerate abbreviating period in month part
+						s = '(?:' + s + ')\\.?';
+					}
+				}else{
+					s = '1[0-2]|'+p2+'[1-9]';
+				}
 				break;
 			case 'D':
 				s = '[12][0-9][0-9]|3[0-5][0-9]|36[0-6]|'+p2+'[1-9][0-9]|'+p3+'[1-9]';

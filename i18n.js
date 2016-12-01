@@ -25,6 +25,39 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 				//		allows foreign AMD loaders to be used without their plugins.
 			},
 
+		localesMap,
+			// initialized during preload flow with all the locales available from all flatten bundles and all root bundles.
+			
+		getMatchedLocale = function(
+			locale
+		){
+			// summary:
+			//		return the most specific fallback locale from localesMap
+			// description:
+			//		If a built application with i18n preload statements is running, this function return the
+			//		most specific locale available in localesMap. Otherwise it's no-op.
+			var loc = normalizeLocale(locale),
+				forEachLocale = function (locale, func){
+					// given locale= "ab-cd-ef", calls func on "ab-cd-ef", "ab-cd", "ab", "ROOT"; stops calling the first time func returns truthy and return the truthy locale.
+					var parts = locale.split("-");
+					while(parts.length){
+						if(func(parts.join("-"))){
+							return parts.join("-");
+						}
+						parts.pop();
+					}
+					if(func("ROOT")){return "ROOT"};
+				}
+			
+			if(localesMap){
+				return forEachLocale(loc, function(loc){
+					return localesMap[loc];
+				});
+			}else{
+				return locale;
+			}
+		},
+			
 		nlsRe =
 			// regexp for reconstructing the master bundle name from parts of the regexp match
 			// nlsRe.exec("foo/bar/baz/nls/en-ca/foo") gives:
@@ -111,6 +144,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 		getLocalesToLoad = function(targetLocale){
 			var list = config.extraLocale || [];
 			list = lang.isArray(list) ? list : [list];
+			list = array.map(list, getMatchedLocale);
 			list.push(targetLocale);
 			return list;
 		},
@@ -242,13 +276,22 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 
 			if(has("dojo-preload-i18n-Api")){
 				var split = id.split("*"),
-					preloadDemand = split[1] == "preload";
+					preloadDemand = split[1] == "preload",
+					flattenedLocales = split[3],
+					allLocales = split[4];
+				if(preloadDemand && allLocales){
+					var localesTable = json.parse(allLocales);
+					if (!localesMap){localesMap = {}};
+					array.forEach(localesTable, function(i){
+						localesMap[i] = 1;
+					});
+				}
 				if(preloadDemand){
 					if(!cache[id]){
 						// use cache[id] to prevent multiple preloads of the same preload; this shouldn't happen, but
 						// who knows what over-aggressive human optimizers may attempt
 						cache[id] = 1;
-						preloadL10n(split[2], json.parse(split[3]), 1, require);
+						preloadL10n(split[2], json.parse(flattenedLocales), 1, require);
 					}
 					// don't stall the loader!
 					load(1);
@@ -263,7 +306,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 				bundleName = match[5] || match[4],
 				bundlePathAndName = bundlePath + bundleName,
 				localeSpecified = (match[5] && match[4]),
-				targetLocale =	localeSpecified || dojo.locale,
+				targetLocale =	getMatchedLocale(localeSpecified || dojo.locale),
 				loadTarget = bundlePathAndName + "/" + targetLocale,
 				loadList = localeSpecified ? [targetLocale] : getLocalesToLoad(targetLocale),
 				remaining = loadList.length,

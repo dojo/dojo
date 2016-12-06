@@ -319,6 +319,7 @@ define({ root:
 	"ar": true,
 	"fr": true,
 	"hu": true,
+	"id": true,
 	"ja": true,
 	"nl": true,
 	"pl": true,

@@ -27,7 +27,7 @@ If your desired contribution is more than a non-trivial fix, you should discuss 
 
 ## Contributor License Agreement
 
-We require all contributions, to be covered under the Dojo Foundation's [Contributor License Agreement][cla].  This can
+We require all contributions, to be covered under the JS Foundation's [Contributor License Agreement][cla].  This can
 be done electronically and essentially ensures that you are making it clear that your contributions are your
 contributions, you have the legal right to contribute and you are transferring the copyright of your works to the Dojo
 Foundation.

@@ -448,6 +448,7 @@ define({ root:
 	"ar": true,
 	"fr": true,
 	"hu": true,
+	"id": true,
 	"ja": true,
 	"ko": true,
 	"nl": true,

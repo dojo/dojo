@@ -44,6 +44,7 @@ define({ root:
 	"he": true,
 	"hr": true,
 	"hu": true,
+	"id": true,
 	"it": true,
 	"ja": true,
 	"ko": true,

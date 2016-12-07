@@ -27,17 +27,16 @@ If your desired contribution is more than a non-trivial fix, you should discuss 
 
 ## Contributor License Agreement
 
-We require all contributions, to be covered under the Dojo Foundation's [Contributor License Agreement][cla].  This can
+We require all contributions, to be covered under the JS Foundation's [Contributor License Agreement][cla].  This can
 be done electronically and essentially ensures that you are making it clear that your contributions are your
 contributions, you have the legal right to contribute and you are transferring the copyright of your works to the Dojo
 Foundation.
 
 If you are an unfamiliar contributor to the committer assessing your pull request, it is best to make it clear how
-you are covered by a CLA in the notes of the pull request.  The committer will [verify][claCheck] your status.
+you are covered by a CLA in the notes of the pull request.  A bot will verify your status.
 
-If your GitHub user id you are submitting your pull request from differs from the Dojo Community ID or e-mail address
-which you have signed your CLA under, you should specifically note what you have your CLA filed under (and for CCLA
-that you are listed under your company's authorised contributors).
+If your GitHub user id you are submitting your pull request from differs from the e-mail address
+which you have signed your CLA under, you should specifically note what you have your CLA filed under.
 
 # Submitting a Pull Request
 
@@ -215,8 +214,7 @@ unfamiliar to those who are just starting to contribute.
 [bug database]: http://bugs.dojotoolkit.org/
 [support forum]: http://dojotoolkit.org/community/
 [dojo-contrib]: http://mail.dojotoolkit.org/mailman/listinfo/dojo-contributors
-[cla]: http://dojofoundation.org/about/cla
-[claCheck]: http://dojofoundation.org/about/claCheck
+[cla]: https://js.foundation/CLA/
 [Creating a Pull Request]: https://help.github.com/articles/creating-a-pull-request
 [Fork a Repo]: https://help.github.com/articles/fork-a-repo
 [Intern]: http://theintern.io/

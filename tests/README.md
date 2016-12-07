@@ -140,7 +140,7 @@ npm run test-remote
 
 This command will attempt to open a tunnel to SauceLabs and run the test
 suite in all of the browsers defined in `tests/dojo.intern.js`. SauceLabs
-requires an account (SL offers free accounts). The Dojo Foundation has an
+requires an account (SL offers free accounts). The JS Foundation has an
 account, but please use your own when running your own tests.
 
 ## Writing tests

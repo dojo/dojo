@@ -4,6 +4,20 @@
 generally applicable sub-packages and modules. The dojo package covers a wide range of functionality like AJAX, DOM
 manipulation, class-type programming, events, promises, data stores, drag-and-drop and internationalization libraries.
 
+##Amazing Results in Less Time!
+
+Designing applications for the web is facilitated by the functionality Dojo provides. Dojo offers plugins that a developer can employ to make writing JavaScript and AJAX more cross-browser compliant. This will save you time and frustration. 
+
+If you want to add AJAX to your site, AJAX with Dojo will let you send and receive data without reloading the page. 
+
+If you want to create template-based widgets, Dijit widgets offers a charting system that was designed to alleviate the pains of displaying dynamic data. 
+
+If you want to architect powerful web applications, Dojo's Core Concepts offers modular functionality to make it easier to author and debug code.
+
+If you want to create mobile applications, dojox/mobile will let you mimic the interface of common devices such as Android, iOS, Blackberry, and Windows Phone. 
+
+
+
 ## Installing
 
 Installation instructions are available at [dojotoolkit.org/download][download].

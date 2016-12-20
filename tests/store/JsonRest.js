@@ -45,18 +45,6 @@ define(["doh/main", "require", "dojo/_base/lang", "dojo/store/JsonRest"], functi
 				store.target = store.target.slice(0, -1);
 				t.is(store.target + "=foo", store._getTarget("foo"));
 			},
-			function testQueryIterative(t){
-				var d = new doh.Deferred();
-				var i = 0;
-				store.query("treeTestRoot").forEach(function(object){
-					i++;
-					console.log(i);
-					t.is(object.name, "node" + i);
-				}).then(function(){
-					d.callback(true);
-				});
-				return d;
-			},
 			function testHeaders(t){
 				var d = new doh.Deferred(),
 					error,

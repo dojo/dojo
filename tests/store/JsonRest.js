@@ -42,8 +42,8 @@ define(["doh/main", "require", "dojo/_base/lang", "dojo/store/JsonRest"], functi
 				store.target = store.target + '/';
 				t.is(store.target + "foo", store._getTarget("foo"));
 				// and with an equals sign
-				store.target = store.target.slice(0, -1);
-				t.is(store.target + "=foo", store._getTarget("foo"));
+				store.target = store.target.slice(0, -1) + '=';
+				t.is(store.target + "foo", store._getTarget("foo"));
 			},
 			function testHeaders(t){
 				var d = new doh.Deferred(),

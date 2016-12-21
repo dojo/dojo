@@ -39,14 +39,15 @@ define(["doh/main", "dojo/_base/array", "dojo/_base/lang", "dojo/_base/kernel"
 			kernel.global._getObjectTest = {};
 			t.assertEqual(kernel.global._getObjectTest, lang.getObject("_getObjectTest", false), // don't create
 				'lang.getObject("_getObjectTest", false)');
-			t.assertEqual({}, lang.getObject("_getObjectTest.bar", true), 'lang.getObject("_getObjectTest.bar", true)'); // do create
+			t.assertEqual("object", typeof lang.getObject("_getObjectTest.bar", true), 'lang.getObject("_getObjectTest.bar", true)'); // do create
 
 			// strangely, parser does this
 			t.assertEqual("undefined", typeof lang.getObject("./TestWidget"), 'typeof lang.getObject("./TestWidget")');
 
 			// empty path should return the same object
 			t.assertEqual(test, lang.getObject("", false, test));
-			t.assertEqual(kernel.global, lang.getObject(""));
+			t.assertEqual(null, lang.getObject("", false, null));
+			t.assertEqual(undefined, lang.getObject(""));
 		},
 
 		function setObject(t){

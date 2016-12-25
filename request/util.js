@@ -6,8 +6,9 @@ define([
 	'../io-query',
 	'../_base/array',
 	'../_base/lang',
-	'../promise/Promise'
-], function(exports, RequestError, CancelError, Deferred, ioQuery, array, lang, Promise){
+	'../promise/Promise',
+	'../has'
+], function(exports, RequestError, CancelError, Deferred, ioQuery, array, lang, Promise, has){
 	exports.deepCopy = function deepCopy(target, source){
 		for(var name in source){
 			var tval = target[name],
@@ -121,7 +122,7 @@ define([
 			query = options.query;
 
 		if(data && !skipData){
-			if(typeof data === 'object' && !(data instanceof ArrayBuffer || data instanceof Blob )){
+			if(typeof data === 'object' && (!(has('native-xhr2')) || !(data instanceof ArrayBuffer || data instanceof Blob ))){
 				options.data = ioQuery.objectToQuery(data);
 			}
 		}

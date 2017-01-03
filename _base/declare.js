@@ -101,7 +101,8 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 			a = f;
 			f = g;
 		}
-		else if(typeof args === "function"){
+
+		if(typeof args === "function"){
 			// support strict mode
 			caller = args;
 			args = a;

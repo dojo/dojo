@@ -455,10 +455,6 @@ return declare("dojo.data.ObjectStore", [Evented],{
 					dirtyObjects.splice(i--,1);
 
 				}
-				if(transaction){
-					transaction.commit();
-				}
-
 				all(actions).then(function(value){
 					if(kwArgs.onComplete){
 						kwArgs.onComplete.call(kwArgs.scope, value);
@@ -468,6 +464,10 @@ return declare("dojo.data.ObjectStore", [Evented],{
 						kwArgs.onError.call(kwArgs.scope, error);
 					}
 				});
+
+				if(transaction){
+					transaction.commit();
+				}
 
 			}catch(e){
 				kwArgs.onError.call(kwArgs.scope, value);

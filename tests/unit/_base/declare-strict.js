@@ -17,8 +17,21 @@
 	) {
 		'use strict';
 
+		function hasStrict() {
+			return !this;
+		}
+
 		registerSuite({
 			name: 'dojo/_base/declare in strict mode',
+
+			setup: function () {
+				global.hasStrictModeSupport = hasStrict();
+			},
+
+			teardown: function () {
+				global.hasStrictModeSupport = undefined;
+				global.tests = undefined;
+			},
 
 			// There is a bug in lang.setObject() which prevents declare from extending a
 			// global which has been set to undefined. To work around this problem we
@@ -26,10 +39,6 @@
 			// the tests have completed we set it to undefined.
 			beforeEach: function () {
 				global.tests = {};
-			},
-
-			teardown: function () {
-				global.tests = undefined;
 			},
 
 			afterEach: function () {
@@ -280,19 +289,28 @@
 			},
 
 			'throws error': function () {
-				function A () {}
+				var A = declare(null, {
+					foo: function () {
+						return 'foo';
+					}
+				});
 
 				var B = declare(A, {
 					foo: function () {
-						this.inherited(arguments);
+						return this.inherited(arguments);
 					}
 				});
 
 				var b = new B();
 
-				assert.throws(function () {
-					b.foo();
-				}, 'strict mode inherited', 'Calling inherited without callee parameter should throw error');
+				if (global.hasStrictModeSupport) {
+					assert.throws(function () {
+						b.foo();
+					}, 'strict mode inherited', 'Calling inherited without callee parameter should throw error');
+				}
+				else {
+					assert.strictEqual(b.foo(), 'foo');
+				}
 			},
 
 			getInherited: function () {
@@ -316,19 +334,28 @@
 			},
 
 			'getInherited throws error': function () {
-				function A () {}
+				var A = declare(null, {
+					foo: function () {
+						return 'foo';
+					}
+				});
 
 				var B = declare(A, {
 					foo: function () {
-						this.getInherited(arguments);
+						return this.getInherited(arguments)();
 					}
 				});
 
 				var b = new B();
 
-				assert.throws(function () {
-					b.foo();
-				}, 'strict mode inherited', 'Calling getInherited without callee parameter should throw error');
+				if (global.hasStrictModeSupport) {
+					assert.throws(function () {
+						b.foo();
+					}, 'strict mode inherited', 'Calling getInherited without callee parameter should throw error');
+				}
+				else {
+					assert.strictEqual(b.foo(), 'foo');
+				}
 			}
 		});
 	});

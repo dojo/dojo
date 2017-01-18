@@ -4,6 +4,7 @@ define([
 	'./array',
 	'./connect',
 	'./declare',
+	'./declare-strict',
 	'./json',
 	'./lang',
 	'./sniff',

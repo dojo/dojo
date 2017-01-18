@@ -4,6 +4,7 @@
 		'intern!object',
 		'intern/chai!assert',
 		'dojo/aspect',
+		'dojo/has',
 		'dojo/_base/lang',
 		'../../../_base/declare',
 		'sinon'
@@ -11,6 +12,7 @@
 		registerSuite,
 		assert,
 		aspect,
+		has,
 		lang,
 		declare,
 		sinon
@@ -20,6 +22,15 @@
 		function hasStrict() {
 			return !this;
 		}
+
+		// IE prior to 9 does not handle Named Function Expressions correctly, so no code that uses
+		// NFEs should be run in old IE
+		// http://kangax.github.io/nfe/#jscript-bugs
+		function hasNfeBug() {
+			return has('ie') < 9;
+		}
+
+		var nfeMessage = "Old IE does not support NFEs correctly";
 
 		registerSuite({
 			name: 'dojo/_base/declare in strict mode',
@@ -46,6 +57,10 @@
 			},
 
 			'inherited explicit call': function () {
+				if (hasNfeBug()) {
+					this.skip(nfeMessage);
+				}
+
 				var foo = 'xyzzy';
 				var test;
 
@@ -87,6 +102,10 @@
 			},
 
 			'inherited with mixin calls': function () {
+				if (hasNfeBug()) {
+					this.skip(nfeMessage);
+				}
+
 				var test;
 
 				declare('tests._base.declare.tmp16', null, {
@@ -126,6 +145,10 @@
 			},
 
 			'basic mixin': function () {
+				if (hasNfeBug()) {
+					this.skip(nfeMessage);
+				}
+
 				// testing if a plain Class-like object can be inherited
 				// by declare
 				var test;
@@ -146,6 +169,10 @@
 			},
 
 			'mutated methods': function () {
+				if (hasNfeBug()) {
+					this.skip(nfeMessage);
+				}
+
 				// testing if methods can be mutated (within a reason)
 				declare('tests._base.declare.tmp18', null, {
 					constructor: function () { this.clear(); },
@@ -208,6 +235,10 @@
 			},
 
 			'modified instance': function () {
+				if (hasNfeBug()) {
+					this.skip(nfeMessage);
+				}
+
 				var stack;
 
 				declare('tests._base.declare.tmp20', null, {
@@ -268,6 +299,10 @@
 			},
 
 			safeMixin: function () {
+				if (hasNfeBug()) {
+					this.skip(nfeMessage);
+				}
+
 				var C = declare(null, {
 					foo: sinon.spy()
 				});
@@ -314,6 +349,10 @@
 			},
 
 			getInherited: function () {
+				if (hasNfeBug()) {
+					this.skip(nfeMessage);
+				}
+
 				var A = declare(null, {
 					foo: function () {
 						return 'foo';

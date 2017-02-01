@@ -7,9 +7,9 @@ define([
 //		dojo/dnd/Moveable
 
 var touchActionPropertyName;
-var setTouchAction;
+var setTouchAction = function () {};
 
-if (has("touch-action")) {
+function setTouchActionPropertyName() {
 	if ("touchAction" in document.body.style) {
 		touchActionPropertyName = "touchAction";
 	}
@@ -19,6 +19,12 @@ if (has("touch-action")) {
 	setTouchAction = function setTouchAction(/* Node */ node, /* string */ action) {
 		node.style[touchActionPropertyName] = action;
 	}
+	setTouchAction(arguments[0], arguments[1]);
+}
+
+if (has("touch-action")) {
+	// Ensure that the logic to determine "touchActionPropertyName" runs
+	setTouchAction = setTouchActionPropertyName;
 }
 
 var Moveable = declare("dojo.dnd.Moveable", [Evented], {
@@ -36,9 +42,7 @@ var Moveable = declare("dojo.dnd.Moveable", [Evented], {
 		// params: Moveable.__MoveableArgs?
 		//		optional parameters
 		this.node = dom.byId(node);
-		if (has("touch-action")) {
-			setTouchAction(this.node, "none");
-		}
+		setTouchAction(this.node, "none");
 		if(!params){ params = {}; }
 		this.handle = params.handle ? dom.byId(params.handle) : null;
 		if(!this.handle){ this.handle = this.node; }
@@ -63,9 +67,7 @@ var Moveable = declare("dojo.dnd.Moveable", [Evented], {
 		// summary:
 		//		stops watching for possible move, deletes all references, so the object can be garbage-collected
 		array.forEach(this.events, function(handle){ handle.remove(); });
-		if (has("touch-action")) {
-			setTouchAction(this.node, "");
-		}
+		setTouchAction(this.node, "");
 		this.events = this.node = this.handle = null;
 	},
 

@@ -581,11 +581,13 @@ define(["./has!dom-addeventlistener?:./aspect", "./_base/kernel", "./sniff"], fu
 						event.rotation = 0;
 						event.scale = 1;
 					}
-					//use event.changedTouches[0].pageX|pageY|screenX|screenY|clientX|clientY|target
-					var firstChangeTouch = event.changedTouches[0];
-					for(var i in firstChangeTouch){ // use for-in, we don't need to have dependency on dojo/_base/lang here
-						delete event[i]; // delete it first to make it mutable
-						event[i] = firstChangeTouch[i];
+					if (window.TouchEvent && originalEvent instanceof TouchEvent) {
+						// use event.changedTouches[0].pageX|pageY|screenX|screenY|clientX|clientY|target
+						var firstChangeTouch = event.changedTouches[0];
+						for(var i in firstChangeTouch){ // use for-in, we don't need to have dependency on dojo/_base/lang here
+							delete event[i]; // delete it first to make it mutable
+							event[i] = firstChangeTouch[i];
+						}
 					}
 				}
 				return listener.call(this, event);

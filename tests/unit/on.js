@@ -597,7 +597,7 @@ define([
 				// threw insecure operation errors when saving an event to a closure-bound variable.
 				lastEvent = lang.mixin({}, event);
 			});
-			// Since we can't simulate invoking TouchEvents (with the current version of Chrome)
+			// Since we can't simulate invoking TouchEvents (with current browsers initTouchEvent isn't available)
 			// we will make TouchEvent be an Event temporarily so the `on` implementation
 			// thinks that it is one for this test.
 			var originalTouchEvent = window.TouchEvent;

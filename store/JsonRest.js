@@ -94,7 +94,8 @@ return declare("dojo.store.JsonRest", base, {
 		return xhr("GET", {
 			url: this._getTarget(id),
 			handleAs: "json",
-			headers: headers
+			headers: headers,
+			timeout: options && options.timeout
 		});
 	},
 
@@ -133,7 +134,8 @@ return declare("dojo.store.JsonRest", base, {
 					Accept: this.accepts,
 					"If-Match": options.overwrite === true ? "*" : null,
 					"If-None-Match": options.overwrite === false ? "*" : null
-				}, this.headers, options.headers)
+				}, this.headers, options.headers),
+				timeout: options && options.timeout
 			});
 	},
 
@@ -161,7 +163,8 @@ return declare("dojo.store.JsonRest", base, {
 		options = options || {};
 		return xhr("DELETE", {
 			url: this._getTarget(id),
-			headers: lang.mixin({}, this.headers, options.headers)
+			headers: lang.mixin({}, this.headers, options.headers),
+			timeout: options && options.timeout
 		});
 	},
 
@@ -210,7 +213,8 @@ return declare("dojo.store.JsonRest", base, {
 		var results = xhr("GET", {
 			url: this.target + (query || ""),
 			handleAs: "json",
-			headers: headers
+			headers: headers,
+			timeout: options && options.timeout
 		});
 		results.total = results.then(function(){
 			var range = results.ioArgs.xhr.getResponseHeader("Content-Range");

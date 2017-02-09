@@ -116,6 +116,10 @@ define(["require", "module"], function(require, module){
 		has.add("pointer-events", "pointerEnabled" in window.navigator ?
 				window.navigator.pointerEnabled : "PointerEvent" in window);
 		has.add("MSPointer", window.navigator.msPointerEnabled);
+		// The "pointermove"" event is only continuously emitted in a touch environment if
+		// the target node's "touch-action"" CSS property is set to "none"
+		// https://www.w3.org/TR/pointerevents/#the-touch-action-css-property
+		has.add("touch-action", has("touch") && has("pointer-events"));
 
 		// I don't know if any of these tests are really correct, just a rough guess
 		has.add("device-width", screen.availWidth || innerWidth);

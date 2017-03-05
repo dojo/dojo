@@ -1,6 +1,6 @@
 {
 	"name": "dojo",
-	"version": "1.7.12-pre",
+	"version":"1.7.12",
 	"directories": {
 		"lib": "."
 	},

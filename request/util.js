@@ -15,7 +15,11 @@ define([
 				sval = source[name];
 			if(tval !== sval){
 				if(tval && typeof tval === 'object' && sval && typeof sval === 'object'){
-					exports.deepCopy(tval, sval);
+					if(sval instanceof Date){
+						target[name] = new Date(sval);
+					}else{
+						exports.deepCopy(tval, sval);
+					}
 				}else{
 					target[name] = sval;
 				}

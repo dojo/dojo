@@ -517,6 +517,10 @@ define([
 
 		'Web Workers': {
 			'from blob': function () {
+				if (!('URL' in global)) {
+					this.skip('URL is not supported');
+				}
+
 				if (!('Worker' in global)) {
 					this.skip('Worker is not supported');
 				}

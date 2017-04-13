@@ -409,6 +409,18 @@ define([
 			);
 		},
 
+		'strip fragment': function () {
+			var def = this.async(),
+				promise = xhr.get('/__services/request/xhr?color=blue#some-hash', {
+					handleAs: 'json'
+				});
+		
+			promise.response.then(def.callback(function (response) {
+				assert.strictEqual(response.data.method, 'GET');
+				assert.strictEqual(response.data.url, '/__services/request/xhr?color=blue');
+			}));
+		},
+
 		'form data': {
 			setup: function () {
 				if(!hasFormData) { return; }

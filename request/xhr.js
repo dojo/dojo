@@ -189,6 +189,11 @@ define([
 		url = response.url;
 		options = response.options;
 
+		if(has('ie') <= 10){
+			// older IE breaks point 9 in http://www.w3.org/TR/XMLHttpRequest/#the-open()-method and sends fragment, so strip it
+			url = url.split('#')[0];
+		}
+		
 		var remover,
 			last = function(){
 				remover && remover();

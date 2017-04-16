@@ -1,0 +1,4 @@
+define([
+    './numericShaping/NumericShapingTest'
+], function () {
+});

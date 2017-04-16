@@ -1,0 +1,3 @@
+define([
+	"./NumericShapingTest"
+], 1);

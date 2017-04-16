@@ -175,6 +175,23 @@ define([
 			assert.isFalse(lang.isString([]));
 		},
 
+		'.isAlien': function () {
+			assert.isTrue(lang.isAlien(isNaN));
+			assert.isTrue(lang.isAlien({}.toString));
+			assert.isFalse(lang.isAlien(function () {}));
+			assert.isFalse(lang.isAlien(function () {/* [native code] */}));
+			assert.isFalse(lang.isAlien({}));
+			assert.isFalse(lang.isAlien(''));
+			assert.isFalse(lang.isAlien(0));
+			assert.isFalse(lang.isAlien(NaN));
+			assert.isFalse(lang.isAlien(null));
+			assert.isFalse(lang.isAlien(undefined));
+			if(typeof window != "undefined"){
+				assert.isTrue(lang.isAlien(window.atob));
+				assert.isFalse(lang.isAlien(window));
+			}
+		},
+
 		'.partial': function () {
 			var scope = { foo: 'bar' };
 			var st1;

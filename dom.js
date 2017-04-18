@@ -101,7 +101,7 @@ define(["./sniff", "./_base/window", "./_base/kernel"],
 	dom.isDescendant = has("dom-contains") ?
 		// FF9+, IE9+, webkit, opera, iOS, Android, Edge, etc.
 		function(/*DOMNode|String*/ node, /*DOMNode|String*/ ancestor){
-			return !!( (ancestor = dom.byId(ancestor)) && ancestor.contains(dom.byId(node)) );
+			return !!( (ancestor = dom.byId(ancestor)) && ancestor.contains && ancestor.contains(dom.byId(node)) );
 		} :
 		function(/*DOMNode|String*/ node, /*DOMNode|String*/ ancestor){
 			// summary:

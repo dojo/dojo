@@ -332,34 +332,47 @@ define(["./kernel", "./config", /*===== "./declare", =====*/ "./lang", "../Event
 	});
 
 	// the local timer, stubbed into all Animation instances
-	var ctr = 0,
-		timer = null,
-		runner = {
+	// make different timers for different rates
+	// otherwise some slow rate animations may screw up highrate animations
+	var rates = {};
+	function _getRate(parRate){
+		var r = rates[parRate];
+		if (r){
+			return r;
+		};
+		r = {
+			ctr: 0,
+			timer: null,
 			run: function(){}
 		};
-
+		rates[parRate] = r;
+		return r;
+	};
+	
 	lang.extend(Animation, {
 
 		_startTimer: function(){
+			var rateEntry = _getRate(this.rate);
 			if(!this._timer){
-				this._timer = aspect.after(runner, "run", lang.hitch(this, "_cycle"), true);
-				ctr++;
+				this._timer = aspect.after(rateEntry, "run", lang.hitch(this, "_cycle"), true);
+				rateEntry.ctr++;
 			}
-			if(!timer){
-				timer = setInterval(lang.hitch(runner, "run"), this.rate);
+			if(!rateEntry.timer){
+				rateEntry.timer = setInterval(lang.hitch(rateEntry, "run"), this.rate);
 			}
 		},
 
 		_stopTimer: function(){
+			var rateEntry = _getRate(this.rate);
 			if(this._timer){
 				this._timer.remove();
 				this._timer = null;
-				ctr--;
+				rateEntry.ctr--;
 			}
-			if(ctr <= 0){
-				clearInterval(timer);
-				timer = null;
-				ctr = 0;
+			if(rateEntry.ctr <= 0){
+				clearInterval(rateEntry.timer);
+				rateEntry.timer = null;
+				rateEntry.ctr = 0;
 			}
 		}
 

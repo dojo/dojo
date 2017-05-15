@@ -155,6 +155,11 @@ define([
 
 		if(!options.canAttach || options.canAttach(dfd)){
 			var node = script._attach(dfd.id, url, options.frameDoc, function (error) {
+				if (!(error instanceof Error)) {
+					var newError = new Error('Error loading ' + (error.target ? error.target.src : 'script'));
+					newError.source = error;
+					error = newError;
+				}
 				dfd.reject(error);
 				script._remove(dfd.id, options.frameDoc, true);
 			});

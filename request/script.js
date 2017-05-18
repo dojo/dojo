@@ -35,7 +35,12 @@ define([
 		}
 
 		element.type = 'text/javascript';
-		element.src = url;
+		try {
+			element.src = url;
+		} catch(err) {
+			errorHandler && errorHandler(element);
+		}
+
 		element.id = id;
 		element.async = true;
 		element.charset = 'utf-8';

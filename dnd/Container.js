@@ -278,7 +278,7 @@ var Container = declare("dojo.dnd.Container", Evented, {
 		//		event processor for onselectevent and ondragevent
 		// e: Event
 		//		mouse event
-		if(!this.skipForm || !dnd.isFormElement(e)){
+		if(!this.withHandles && (!this.skipForm || !dnd.isFormElement(e))){
 			e.stopPropagation();
 			e.preventDefault();
 		}

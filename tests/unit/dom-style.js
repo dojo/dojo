@@ -50,6 +50,24 @@ define([
                     for (var i in map) {
                         assert.equal(result[i], map[i]);
                     }
+                },
+                "does not throw on frame elements": function () {
+                    var node = document.createElement("div"),
+                        frame = document.createElement("iframe"),
+                        frameDoc;
+
+                    node.appendChild(frame);
+                    container.appendChild(node);
+
+                    domStyle.set(frame, "display", "none");
+
+                    frameDoc = frame.contentWindow.document
+
+                    frameDoc.open();
+                    frameDoc.write("<!doctype html><html><body><div>Test</div></body></html>");
+                    frameDoc.close();
+
+                    assert.isNotNull(domStyle.getComputedStyle(frameDoc.body));
                 }
             },
         "toPixelValue()": {

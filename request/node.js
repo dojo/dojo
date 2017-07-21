@@ -92,6 +92,12 @@ define([
 					clearTimeout(timeout);
 				}
 				response.text = body.join('');
+				if (!util.checkStatus(response.status)){
+					def.reject({
+						message: 'http response code ' +  response.status,
+						response: response
+					});
+				};
 				try{
 					handlers(response);
 					def.resolve(response);

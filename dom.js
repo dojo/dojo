@@ -1,5 +1,5 @@
-define(["./sniff", "./_base/window"],
-		function(has, win){
+define(["./sniff", "./_base/window", "./_base/kernel"],
+		function(has, win, kernel){
 	// module:
 	//		dojo/dom
 
@@ -92,33 +92,43 @@ define(["./sniff", "./_base/window"],
 	 };
 	 =====*/
 
-	dom.isDescendant = function(/*DOMNode|String*/ node, /*DOMNode|String*/ ancestor){
-		// summary:
-		//		Returns true if node is a descendant of ancestor
-		// node: DOMNode|String
-		//		string id or node reference to test
-		// ancestor: DOMNode|String
-		//		string id or node reference of potential parent to test against
-		//
-		// example:
-		//		Test is node id="bar" is a descendant of node id="foo"
-		//	|	require(["dojo/dom"], function(dom){
-		//	|		if(dom.isDescendant("bar", "foo")){ ... }
-		//	|	});
+	// Test for DOMNode.contains() method, available everywhere except FF8-
+	// and IE8-, where it's available in general, but not on document itself,
+	// and also problems when either ancestor or node are text nodes.
 
-		try{
-			node = dom.byId(node);
-			ancestor = dom.byId(ancestor);
-			while(node){
-				if(node == ancestor){
-					return true; // Boolean
+	var doc = kernel.global["document"] || null;
+	has.add("dom-contains", !!(doc && doc.contains));
+	dom.isDescendant = has("dom-contains") ?
+		// FF9+, IE9+, webkit, opera, iOS, Android, Edge, etc.
+		function(/*DOMNode|String*/ node, /*DOMNode|String*/ ancestor){
+			return !!( (ancestor = dom.byId(ancestor)) && ancestor.contains(dom.byId(node)) );
+		} :
+		function(/*DOMNode|String*/ node, /*DOMNode|String*/ ancestor){
+			// summary:
+			//		Returns true if node is a descendant of ancestor
+			// node: DOMNode|String
+			//		string id or node reference to test
+			// ancestor: DOMNode|String
+			//		string id or node reference of potential parent to test against
+			//
+			// example:
+			//		Test is node id="bar" is a descendant of node id="foo"
+			//	|	require(["dojo/dom"], function(dom){
+			//	|		if(dom.isDescendant("bar", "foo")){ ... }
+			//	|	});
+
+			try{
+				node = dom.byId(node);
+				ancestor = dom.byId(ancestor);
+				while(node){
+					if(node == ancestor){
+						return true; // Boolean
+					}
+					node = node.parentNode;
 				}
-				node = node.parentNode;
-			}
-		}catch(e){ /* squelch, return false */ }
-		return false; // Boolean
-	};
-
+			}catch(e){ /* squelch, return false */ }
+			return false; // Boolean
+		};
 
 	// TODO: do we need setSelectable in the base?
 
@@ -132,7 +142,7 @@ define(["./sniff", "./_base/window"],
 	has.add("css-user-select", function(global, doc, element){
 		// Avoid exception when dom.js is loaded in non-browser environments
 		if(!element){ return false; }
-		
+
 		var style = element.style;
 		var prefixes = ["Khtml", "O", "Moz", "Webkit"],
 			i = prefixes.length,

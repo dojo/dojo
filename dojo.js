@@ -176,7 +176,8 @@
 			"dojo-dom-ready-api": 0,
 			"dojo-sniff": 0,
 			"dojo-inject-api": 1,
-			"host-webworker": 1
+			"host-webworker": 1,
+			"dojo-guarantee-console": 0 // console is immutable in FF30+, see https://bugs.dojotoolkit.org/ticket/18100
 		});
 
 		defaultConfig.loaderPatch = {
@@ -340,7 +341,9 @@
 	//
 	// loader eval
 	//
-	var eval_ =
+	var eval_ =  has("csp-restrictions") ?
+		// noop eval if there are csp restrictions
+		function(){} :
 		// use the function constructor so our eval is scoped close to (but not in) in the global space with minimal pollution
 		new Function('return eval(arguments[0]);');
 
@@ -479,7 +482,8 @@
 			= 0;
 
 	if(has("dojo-config-api")){
-		var consumePendingCacheInsert = function(referenceModule){
+		var consumePendingCacheInsert = function(referenceModule, clear){
+				clear = clear !== false;
 				var p, item, match, now, m;
 				for(p in pendingCacheInsert){
 					item = pendingCacheInsert[p];
@@ -496,7 +500,9 @@
 				if(now){
 					now(createRequire(referenceModule));
 				}
-				pendingCacheInsert = {};
+				if(clear){
+					pendingCacheInsert = {};
+				}
 			},
 
 			escapeString = function(s){
@@ -651,9 +657,8 @@
 				if(config.cache){
 					consumePendingCacheInsert();
 					pendingCacheInsert = config.cache;
-					if(config.cache["*noref"]){
-						consumePendingCacheInsert();
-					}
+					//inject now all depencies so cache is available for mapped module
+					consumePendingCacheInsert(0, !!config.cache["*noref"]);
 				}
 
 				signal("config", [config, req.rawConfig]);
@@ -955,7 +960,7 @@
 			}
 		},
 
-		getModuleInfo_ = function(mid, referenceModule, packs, modules, baseUrl, mapProgs, pathsMapProg, aliases, alwaysCreate){
+		getModuleInfo_ = function(mid, referenceModule, packs, modules, baseUrl, mapProgs, pathsMapProg, aliases, alwaysCreate, fromPendingCache){
 			// arguments are passed instead of using lexical variables so that this function my be used independent of the loader (e.g., the builder)
 			// alwaysCreate is useful in this case so that getModuleInfo never returns references to real modules owned by the loader
 			var pid, pack, midInPackage, mapItem, url, result, isRelative, requestedMid;
@@ -976,11 +981,13 @@
 				// at this point, mid is an absolute mid
 
 				// map the mid
-				if(referenceModule){
-					mapItem = runMapProg(referenceModule.mid, mapProgs);
+				if(!fromPendingCache && !isRelative && mapProgs.star){
+					mapItem = runMapProg(mid, mapProgs.star[1]);
 				}
-				mapItem = mapItem || mapProgs.star;
-				mapItem = mapItem && runMapProg(mid, mapItem[1]);
+				if(!mapItem && referenceModule){
+					mapItem = runMapProg(referenceModule.mid, mapProgs);
+					mapItem = mapItem && runMapProg(mid, mapItem[1]);
+				}
 
 				if(mapItem){
 					mid = mapItem[1] + mid.substring(mapItem[3]);
@@ -1035,7 +1042,7 @@
 		},
 
 		getModuleInfo = function(mid, referenceModule, fromPendingCache){
-			return getModuleInfo_(mid, referenceModule, packs, modules, req.baseUrl, fromPendingCache ? [] : mapProgs, fromPendingCache ? [] : pathsMapProg, fromPendingCache ? [] : aliases);
+			return getModuleInfo_(mid, referenceModule, packs, modules, req.baseUrl, mapProgs, pathsMapProg, aliases, undefined, fromPendingCache);
 		},
 
 		resolvePluginResourceId = function(plugin, prid, referenceModule){
@@ -1275,6 +1282,9 @@
 			try{
 				checkCompleteGuard++;
 				proc();
+			}catch(e){
+				// https://bugs.dojotoolkit.org/ticket/16617
+				throw e;
 			}finally{
 				checkCompleteGuard--;
 			}
@@ -1673,7 +1683,11 @@
 			},
 			windowOnLoadListener = domOn(window, "load", "onload", function(){
 				req.pageLoaded = 1;
-				doc.readyState!="complete" && (doc.readyState = "complete");
+				// https://bugs.dojotoolkit.org/ticket/16248
+				try{
+					doc.readyState!="complete" && (doc.readyState = "complete");
+				}catch(e){
+				}
 				windowOnLoadListener();
 			});
 

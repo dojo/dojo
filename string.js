@@ -148,7 +148,13 @@ string.substitute = function(	/*String*/		template,
 			if(format){
 				value = lang.getObject(format, false, thisObject).call(thisObject, value, key);
 			}
-			return transform(value, key).toString();
+			var result = transform(value, key);
+
+			if (typeof result === 'undefined') {
+				throw new Error('string.substitute could not find key "' + key + '" in template');
+			}
+
+			return result.toString();
 		}); // String
 };
 

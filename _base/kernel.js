@@ -93,7 +93,7 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 		//		- flag: String: Descriptor flag. If total version is "1.2.0beta1", will be "beta1"
 		//		- revision: Number: The Git rev from which dojo was pulled
 
-		major: 1, minor: 11, patch: 0, flag: "-pre",
+		major: 1, minor: 13, patch: 0, flag: "-pre",
 		revision: rev ? rev[0] : NaN,
 		toString: function(){
 			var v = dojo.version;
@@ -107,8 +107,9 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 	// is migrated. Absent specific advice otherwise, set extend-dojo to truthy.
 	has.add("extend-dojo", 1);
 
-
-	(Function("d", "d.eval = function(){return d.global.eval ? d.global.eval(arguments[0]) : eval(arguments[0]);}"))(dojo);
+	if(!has("csp-restrictions")){
+		(Function("d", "d.eval = function(){return d.global.eval ? d.global.eval(arguments[0]) : eval(arguments[0]);}"))(dojo);
+	}
 	/*=====
 	dojo.eval = function(scriptText){
 		// summary:
@@ -146,12 +147,21 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 		};
 	}
 
-	has.add("dojo-guarantee-console",
-		// ensure that console.log, console.warn, etc. are defined
-		1
-	);
+	if(!has("host-webworker")){
+		// console is immutable in FF30+, https://bugs.dojotoolkit.org/ticket/18100
+		has.add("dojo-guarantee-console",
+			// ensure that console.log, console.warn, etc. are defined
+			1
+		);
+	}
+
 	if(has("dojo-guarantee-console")){
-		typeof console != "undefined" || (console = {});
+		// IE 9 bug: https://bugs.dojotoolkit.org/ticket/18197
+		has.add("console-as-object", function () {
+			return Function.prototype.bind && console && typeof console.log === "object";
+		});
+
+		typeof console != "undefined" || (console = {});  // intentional assignment
 		//	Be careful to leave 'log' always at the end
 		var cn = [
 			"assert", "count", "debug", "dir", "dirxml", "error", "group",
@@ -171,6 +181,8 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 					} : function(){};
 					console[tcn]._fake = true;
 				})();
+			}else if(has("console-as-object")){
+				console[tn] = Function.prototype.bind.call(console[tn], console);
 			}
 		}
 	}

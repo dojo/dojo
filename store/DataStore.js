@@ -23,16 +23,16 @@ return declare("dojo.store.DataStore", base, {
 		//		This provides any configuration information that will be mixed into the store,
 		//		including a reference to the Dojo data store under the property "store".
 		lang.mixin(this, options);
- 		if(!"idProperty" in options){
-			var idAttribute; 
+ 		if(!("idProperty" in options)){
+			var idAttribute;
 			try{
-				idAttribute = this.store.getIdentityAttributes(); 
-			}catch(e){ 
-	 		// some store are not requiring an item instance to give us the ID attributes 
-	 		// but some other do and throw errors in that case. 
-			} 
-			// if no idAttribute we have implicit id 
-			this.idProperty = (!idAttribute || !idAttributes[0]) || this.idProperty; 
+				idAttribute = this.store.getIdentityAttributes();
+			}catch(e){
+	 		// some store are not requiring an item instance to give us the ID attributes
+	 		// but some other do and throw errors in that case.
+			}
+			// if no idAttribute we have implicit id
+			this.idProperty = (lang.isArray(idAttribute) ? idAttribute[0] : idAttribute) || this.idProperty;
 		}
 		var features = this.store.getFeatures();
 		// check the feature set and null out any methods that shouldn't be available
@@ -55,7 +55,7 @@ return declare("dojo.store.DataStore", base, {
 	// queryEngine: Function
 	//		Defines the query engine to use for querying the data store
 	queryEngine: SimpleQueryEngine,
-	
+
 	_objectConverter: function(callback){
 		var store = this.store;
 		var idProperty = this.idProperty;
@@ -129,10 +129,10 @@ return declare("dojo.store.DataStore", base, {
 		var idProperty = this.idProperty;
 		var deferred = new Deferred();
 		if(typeof id == "undefined"){
-			store.newItem(object);
+			var item = store.newItem(object);
 			store.save({
 				onComplete: function(){
-					deferred.resolve(object);
+					deferred.resolve(item);
 				},
 				onError: function(error){
 					deferred.reject(error);
@@ -157,11 +157,11 @@ return declare("dojo.store.DataStore", base, {
 						if(options.overwrite === true){
 							return deferred.reject(new Error("Creating new object not allowed"));
 						}
-						store.newItem(object);
+						var item = store.newItem(object);
 					}
 					store.save({
 						onComplete: function(){
-							deferred.resolve(object);
+							deferred.resolve(item);
 						},
 						onError: function(error){
 							deferred.reject(error);

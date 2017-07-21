@@ -6,15 +6,20 @@ define([
 	'../io-query',
 	'../_base/array',
 	'../_base/lang',
-	'../promise/Promise'
-], function(exports, RequestError, CancelError, Deferred, ioQuery, array, lang, Promise){
+	'../promise/Promise',
+	'../has'
+], function(exports, RequestError, CancelError, Deferred, ioQuery, array, lang, Promise, has){
 	exports.deepCopy = function deepCopy(target, source){
 		for(var name in source){
 			var tval = target[name],
 				sval = source[name];
 			if(tval !== sval){
 				if(tval && typeof tval === 'object' && sval && typeof sval === 'object'){
-					exports.deepCopy(tval, sval);
+					if(sval instanceof Date){
+						target[name] = new Date(sval);
+					}else{
+						exports.deepCopy(tval, sval);
+					}
 				}else{
 					target[name] = sval;
 				}
@@ -119,9 +124,9 @@ define([
 	exports.parseArgs = function parseArgs(url, options, skipData){
 		var data = options.data,
 			query = options.query;
-		
+
 		if(data && !skipData){
-			if(typeof data === 'object'){
+			if(typeof data === 'object' && (!(has('native-xhr2')) || !(data instanceof ArrayBuffer || data instanceof Blob ))){
 				options.data = ioQuery.objectToQuery(data);
 			}
 		}

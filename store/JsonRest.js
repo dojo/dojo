@@ -61,7 +61,7 @@ return declare("dojo.store.JsonRest", base, {
 	// descendingPrefix: String
 	//		The prefix to apply to sort attribute names that are ascending
 	descendingPrefix: "-",
-	 
+
 	_getTarget: function(id){
 		// summary:
 		//		If the target has no trailing '/', then append it.
@@ -69,7 +69,7 @@ return declare("dojo.store.JsonRest", base, {
 		//		The identity of the requested target
 		var target = this.target;
 		if(typeof id != "undefined"){
-			if(target.charAt(target.length-1) == '/'){
+			if( (target.charAt(target.length-1) == '/') || (target.charAt(target.length-1) == '=')){
 				target += id;
 			}else{
 				target += '/' + id;
@@ -77,7 +77,7 @@ return declare("dojo.store.JsonRest", base, {
 		}
 		return target;
 	},
-					
+
 	get: function(id, options){
 		// summary:
 		//		Retrieves an object by its identity. This will trigger a GET request to the server using
@@ -94,7 +94,8 @@ return declare("dojo.store.JsonRest", base, {
 		return xhr("GET", {
 			url: this._getTarget(id),
 			handleAs: "json",
-			headers: headers
+			headers: headers,
+			timeout: options && options.timeout
 		});
 	},
 
@@ -133,7 +134,8 @@ return declare("dojo.store.JsonRest", base, {
 					Accept: this.accepts,
 					"If-Match": options.overwrite === true ? "*" : null,
 					"If-None-Match": options.overwrite === false ? "*" : null
-				}, this.headers, options.headers)
+				}, this.headers, options.headers),
+				timeout: options && options.timeout
 			});
 	},
 
@@ -161,7 +163,8 @@ return declare("dojo.store.JsonRest", base, {
 		options = options || {};
 		return xhr("DELETE", {
 			url: this._getTarget(id),
-			headers: lang.mixin({}, this.headers, options.headers)
+			headers: lang.mixin({}, this.headers, options.headers),
+			timeout: options && options.timeout
 		});
 	},
 
@@ -180,6 +183,7 @@ return declare("dojo.store.JsonRest", base, {
 		var headers = lang.mixin({ Accept: this.accepts }, this.headers, options.headers);
 
 		var hasQuestionMark = this.target.indexOf("?") > -1;
+		query = query || ""; // https://bugs.dojotoolkit.org/ticket/17628
 		if(query && typeof query == "object"){
 			query = xhr.objectToQuery(query);
 			query = query ? (hasQuestionMark ? "&" : "?") + query: "";
@@ -209,7 +213,8 @@ return declare("dojo.store.JsonRest", base, {
 		var results = xhr("GET", {
 			url: this.target + (query || ""),
 			handleAs: "json",
-			headers: headers
+			headers: headers,
+			timeout: options && options.timeout
 		});
 		results.total = results.then(function(){
 			var range = results.ioArgs.xhr.getResponseHeader("Content-Range");

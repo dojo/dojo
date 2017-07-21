@@ -498,7 +498,13 @@ define([
 
 	// avoid testing for node type if we can. Defining this in the negative
 	// here to avoid negation in the fast path.
-	var _noNES = (typeof getDoc().firstChild.nextElementSibling == "undefined");
+	// NOTE: Firefox versions 25-27 implemented an incompatible change
+	// to the spec, https://bugzilla.mozilla.org/show_bug.cgi?id=932501
+	// and https://www.w3.org/Bugs/Public/show_bug.cgi?id=23691 ,
+	// where nextElementSibling was implemented on the DocumentType
+	var htmlElement = getDoc().documentElement;
+	var _noNES = !(htmlElement.nextElementSibling ||
+		"nextElementSibling" in htmlElement);
 	var _ns = !_noNES ? "nextElementSibling" : "nextSibling";
 	var _ps = !_noNES ? "previousElementSibling" : "previousSibling";
 	var _simpleNodeTest = (_noNES ? _isElement : yesman);
@@ -1163,7 +1169,7 @@ define([
 	var infixSpaceFunc = function(match, pre, ch, post){
 		return ch ? (pre ? pre + " " : "") + ch + (post ? " " + post : "") : /*n+3*/ match;
 	};
-	
+
 	//Don't apply the infixSpaceRe to attribute value selectors
 	var attRe = /([^[]*)([^\]]*])?/g;
 	var attFunc = function(match, nonAtt, att){
@@ -1459,7 +1465,7 @@ define([
 		//	|	require(["dojo/query"], function(query) {
 		//	|	    query(".foo.bar").forEach(function(q) { console.log(q); });
 		//	|	});
-		
+
 		//		these elements will match:
 		//	|	<span class="foo bar"></span>
 		//		while these will not:
@@ -1481,7 +1487,7 @@ define([
 		//		set an "odd" class on all odd table rows inside of the table
 		//		`#tabular_data`, using the `>` (direct child) selector to avoid
 		//		affecting any nested tables:
-		//	|	require(["dojo/query"], function(query) {    
+		//	|	require(["dojo/query"], function(query) {
 		//	|	    query("#tabular_data > tbody > tr:nth-child(odd)").addClass("odd");
 		//	|	);
 		// example:

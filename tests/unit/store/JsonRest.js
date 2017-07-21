@@ -139,6 +139,16 @@ define([
 				}), lang.hitch(dfd, 'reject'));
 			},
 
+			'null query': function () {
+				var dfd = this.async();
+
+				store.query().then(dfd.callback(function (results) {
+					var object = results[0];
+					assert.equal(object.name, 'node1');
+					assert.equal(object.someProperty, 'somePropertyA');
+				}), lang.hitch(dfd, 'reject'));
+			},
+
 			'result iteration': function () {
 				var dfd = this.async();
 
@@ -199,6 +209,10 @@ define([
 				assert.equal(store.target + '/foo', store._getTarget('foo'));
 			},
 			'with slash': function () {
+				assert.equal(store.target + 'foo', store._getTarget('foo'));
+			},
+			'with equals': function () {
+				store.target = store.target.slice(0, -1) + '=';
 				assert.equal(store.target + 'foo', store._getTarget('foo'));
 			}
 		},

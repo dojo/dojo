@@ -44,6 +44,7 @@ define([
 							method: request.method,
 							query: request.query,
 							headers: request.headers,
+							url : request.nodeRequest.url,
 							payload: data || null
 						})
 					]

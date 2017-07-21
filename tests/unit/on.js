@@ -65,9 +65,19 @@ define([
 			},
 
 			'.emit return value': function () {
+				// NOTE: Uncancelable events are treated inconsistently.
+				// The return value depends on whether the browser DOM offers
+				// an `addEventListener` method and whether the event is a DOM or simple object event.
+				// Therefore, the purpose of testing the return value for uncancelable events
+				// is to codify current behavior and catch unintentional changes.
 				var returnValue = on.emit(target, testEventName, { cancelable: false });
-				assert.ok(returnValue);
-				assert.propertyVal(returnValue, 'cancelable', false);
+				if (has('dom-addeventlistener') && 'dispatchEvent' in target) {
+					assert.ok(returnValue);
+					assert.propertyVal(returnValue, 'cancelable', false);
+				}
+				else {
+					assert.isFalse(returnValue);
+				}
 
 				returnValue = on.emit(target, testEventName, { cancelable: true });
 				assert.ok(returnValue);
@@ -587,10 +597,30 @@ define([
 				// threw insecure operation errors when saving an event to a closure-bound variable.
 				lastEvent = lang.mixin({}, event);
 			});
+			// Since we can't simulate invoking TouchEvents (with current browsers initTouchEvent isn't available)
+			// we will make TouchEvent be an Event temporarily so the `on` implementation
+			// thinks that it is one for this test.
+			var originalTouchEvent = window.TouchEvent;
+			window.TouchEvent = Event;
 			on.emit(div, 'touchstart', { changedTouches: [{ pageX: 100 }] });
+			window.TouchEvent = originalTouchEvent;
 
 			assert.property(lastEvent, 'rotation');
 			assert.property(lastEvent, 'pageX');
+		});
+
+		has('touch') && (suite['DOM-specific']['touch event normalization doesn\'t happen to non-TouchEvent'] = function () {
+			var div = document.body.appendChild(document.createElement('div'));
+
+			var lastEvent;
+			on(div, 'touchstart', function (event) {
+				// Copying event properties to an object because certain versions of Firefox
+				// threw insecure operation errors when saving an event to a closure-bound variable.
+				lastEvent = lang.mixin({}, event);
+			});
+			on.emit(div, 'touchstart', { changedTouches: [{ pageX: 100 }] });
+
+			assert.isFalse(lastEvent.pageX === 100);
 		});
 	}
 

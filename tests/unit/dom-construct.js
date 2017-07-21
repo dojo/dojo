@@ -603,9 +603,10 @@ define([
             var nodes = {};
             var child;
             var fragment;
+            var container;
 
             function clearTarget() {
-                document.body.innerHTML = "";
+                domConstruct.empty(container);
                 child = domConstruct.toDom(HTMLString);
                 nodes.last = domConstruct.toDom(lastHtml);
                 nodes.first = domConstruct.toDom(firstHtml);
@@ -614,13 +615,13 @@ define([
                 nodes.replace = domConstruct.toDom(replaceHtml);
                 nodes.only = domConstruct.toDom(onlyHtml);
                 nodes.pos = domConstruct.toDom(posHtml);
-                document.body.appendChild(nodes.last);
-                document.body.appendChild(nodes.first);
-                document.body.appendChild(nodes.before);
-                document.body.appendChild(nodes.after);
-                document.body.appendChild(nodes.replace);
-                document.body.appendChild(nodes.only);
-                document.body.appendChild(nodes.pos);
+                container.appendChild(nodes.last);
+                container.appendChild(nodes.first);
+                container.appendChild(nodes.before);
+                container.appendChild(nodes.after);
+                container.appendChild(nodes.replace);
+                container.appendChild(nodes.only);
+                container.appendChild(nodes.pos);
                 fragment = document.createDocumentFragment();
                 fragment.appendChild(document.createElement("div"));
                 fragment.appendChild(document.createElement("div"));
@@ -634,6 +635,14 @@ define([
             }
 
             return {
+                setup: function () {
+                    document.body.innerHTML = "";
+                    container = document.createElement("div");
+                    document.body.appendChild(container);
+                },
+                teardown: function () {
+                    document.body.removeChild(container);
+                },
                 beforeEach: clearTarget,
                 "last - place html string with node reference": function () {
                     domConstruct.place(HTMLString, nodes.last);
@@ -745,7 +754,6 @@ define([
                     assert.equal(1, nodes.only.children.length);
                     assert.isTrue(elementsEqual(child, nodes.only.firstChild));
                 },
-                setUp: clearTarget,
                 "only - place html string with fragment reference": function () {
                     domConstruct.place(HTMLString, fragment, "only");
                     assert.equal(1, fragment.childNodes.length);

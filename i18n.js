@@ -242,24 +242,6 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 			//		of these additional transactions can be done concurrently. Owing to this analysis, the entire preloading
 			//		algorithm can be discard during a build by setting the has feature dojo-preload-i18n-Api to false.
 
-			if(has("dojo-preload-i18n-Api")){
-				var split = id.split("*"),
-					preloadDemand = split[1] == "preload";
-				if(preloadDemand){
-					if(!cache[id]){
-						// use cache[id] to prevent multiple preloads of the same preload; this shouldn't happen, but
-						// who knows what over-aggressive human optimizers may attempt
-						cache[id] = 1;
-						preloadL10n(split[2], json.parse(split[3]), 1, require);
-					}
-					// don't stall the loader!
-					load(1);
-				}
-				if(preloadDemand || waitForPreloads(id, require, load)){
-					return;
-				}
-			}
-
 			var match = nlsRe.exec(id),
 				bundlePath = match[1] + "/",
 				bundleName = match[5] || match[4],
@@ -273,7 +255,38 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 					if(!--remaining){
 						load(lang.delegate(cache[loadTarget]));
 					}
-				};
+				},
+				split = id.split("*"),
+				preloadDemand = split[1] == "preload";
+
+			if(has("dojo-preload-i18n-Api")){
+				if(preloadDemand){
+					if(!cache[id]){
+						// use cache[id] to prevent multiple preloads of the same preload; this shouldn't happen, but
+						// who knows what over-aggressive human optimizers may attempt
+						cache[id] = 1;
+						preloadL10n(split[2], json.parse(split[3]), 1, require);
+					}
+					// don't stall the loader!
+					load(1);
+				}
+				if(preloadDemand || (waitForPreloads(id, require, load) && !cache[loadTarget])){
+					return;
+				}
+			}
+			else if (preloadDemand) {
+				// If a build is created with nls resources and 'dojo-preload-i18n-Api' has not been set to false,
+				// the built file will include a preload in the cache (which looks about like so:)
+				// '*now':function(r){r(['dojo/i18n!*preload*dojo/nls/dojo*["ar","ca","cs","da","de","el","en-gb","en-us","es-es","fi-fi","fr-fr","he-il","hu","it-it","ja-jp","ko-kr","nl-nl","nb","pl","pt-br","pt-pt","ru","sk","sl","sv","th","tr","zh-tw","zh-cn","ROOT"]']);}
+				// If the consumer of the build sets 'dojo-preload-i18n-Api' to false in the Dojo config, the cached
+				// preload will not be parsed and will result in an attempt to call 'require' passing it the unparsed
+				// preload, which is not a valid module id.
+				// In this case we should skip this request.
+				load(1);
+
+				return;
+			}
+
 			array.forEach(loadList, function(locale){
 				var target = bundlePathAndName + "/" + locale;
 				if(has("dojo-preload-i18n-Api")){
@@ -464,44 +477,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 	if(has("dojo-v1x-i18n-Api")){
 		// this code path assumes the dojo loader and won't work with a standard AMD loader
 		var amdValue = {},
-			evalBundle =
-				// use the function ctor to keep the minifiers away (also come close to global scope, but this is secondary)
-				new Function(
-					"__bundle",				   // the bundle to evalutate
-					"__checkForLegacyModules", // a function that checks if __bundle defined __mid in the global space
-					"__mid",				   // the mid that __bundle is intended to define
-					"__amdValue",
-
-					// returns one of:
-					//		1 => the bundle was an AMD bundle
-					//		a legacy bundle object that is the value of __mid
-					//		instance of Error => could not figure out how to evaluate bundle
-
-					  // used to detect when __bundle calls define
-					  "var define = function(mid, factory){define.called = 1; __amdValue.result = factory || mid;},"
-					+ "	   require = function(){define.called = 1;};"
-
-					+ "try{"
-					+		"define.called = 0;"
-					+		"eval(__bundle);"
-					+		"if(define.called==1)"
-								// bundle called define; therefore signal it's an AMD bundle
-					+			"return __amdValue;"
-
-					+		"if((__checkForLegacyModules = __checkForLegacyModules(__mid)))"
-								// bundle was probably a v1.6- built NLS flattened NLS bundle that defined __mid in the global space
-					+			"return __checkForLegacyModules;"
-
-					+ "}catch(e){}"
-					// evaulating the bundle was *neither* an AMD *nor* a legacy flattened bundle
-					// either way, re-eval *after* surrounding with parentheses
-
-					+ "try{"
-					+		"return eval('('+__bundle+')');"
-					+ "}catch(e){"
-					+		"return e;"
-					+ "}"
-				),
+			evalBundle,
 
 			syncRequire = function(deps, callback, require){
 				var results = [];
@@ -509,6 +485,45 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 					var url = require.toUrl(mid + ".js");
 
 					function load(text){
+						if (!evalBundle) {
+							// use the function ctor to keep the minifiers away (also come close to global scope, but this is secondary)
+							evalBundle = new Function(
+								"__bundle",				   // the bundle to evalutate
+								"__checkForLegacyModules", // a function that checks if __bundle defined __mid in the global space
+								"__mid",				   // the mid that __bundle is intended to define
+								"__amdValue",
+
+								// returns one of:
+								//		1 => the bundle was an AMD bundle
+								//		a legacy bundle object that is the value of __mid
+								//		instance of Error => could not figure out how to evaluate bundle
+
+								// used to detect when __bundle calls define
+								"var define = function(mid, factory){define.called = 1; __amdValue.result = factory || mid;},"
+								+ "	   require = function(){define.called = 1;};"
+
+								+ "try{"
+								+		"define.called = 0;"
+								+		"eval(__bundle);"
+								+		"if(define.called==1)"
+											// bundle called define; therefore signal it's an AMD bundle
+								+			"return __amdValue;"
+
+								+		"if((__checkForLegacyModules = __checkForLegacyModules(__mid)))"
+											// bundle was probably a v1.6- built NLS flattened NLS bundle that defined __mid in the global space
+								+			"return __checkForLegacyModules;"
+
+								+ "}catch(e){}"
+								// evaulating the bundle was *neither* an AMD *nor* a legacy flattened bundle
+								// either way, re-eval *after* surrounding with parentheses
+
+								+ "try{"
+								+		"return eval('('+__bundle+')');"
+								+ "}catch(e){"
+								+		"return e;"
+								+ "}"
+							);
+						}
 						var result = evalBundle(text, checkForLegacyModules, mid, amdValue);
 						if(result===amdValue){
 							// the bundle was an AMD module; re-inject it through the normal AMD path

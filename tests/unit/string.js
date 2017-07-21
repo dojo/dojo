@@ -39,10 +39,12 @@ define([
 					),
 					'Escaped $'
 				);
+			},
 
+			'missing key': function () {
 				assert.throws(function () {
 					string.substitute('${x}', { y: 1 });
-				});
+				}, /^string\.substitute could not find key "\w+" in template$/);
 			},
 
 			transform: function () {

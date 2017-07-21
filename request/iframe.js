@@ -304,7 +304,7 @@ define([
 						// IE6-8 have to parse the XML manually. See http://bugs.dojotoolkit.org/ticket/6334
 						if(doc.documentElement.tagName.toLowerCase() === 'html'){
 							query('a', doc.documentElement).orphan();
-							var xmlText = doc.documentElement.innerText;
+							var xmlText = doc.documentElement.innerText || doc.documentElement.textContent;
 							xmlText = xmlText.replace(/>\s+</g, '><');
 							response.text = lang.trim(xmlText);
 						}else{

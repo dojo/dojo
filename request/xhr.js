@@ -12,11 +12,11 @@ define([
 		return typeof XMLHttpRequest !== 'undefined';
 	});
 	has.add('dojo-force-activex-xhr', function(){
-		return has('activex') && !document.addEventListener && window.location.protocol === 'file:';
+		return has('activex') && window.location.protocol === 'file:';
 	});
 
 	has.add('native-xhr2', function(){
-		if(!has('native-xhr')){ return; }
+		if(!has('native-xhr') || has('dojo-force-activex-xhr')){ return; }
 		var x = new XMLHttpRequest();
 		return typeof x['addEventListener'] !== 'undefined' &&
 			(typeof opera === 'undefined' || typeof x['upload'] !== 'undefined');
@@ -34,7 +34,10 @@ define([
 	has.add('native-xhr2-blob', function(){
 		if(!has('native-response-type')){ return; }
 		var x = new XMLHttpRequest();
-		x.open('GET', '/', true);
+		// The URL used here does not have to be reachable as the XHR's `send` method is never called.
+		// It does need to be parsable/resolvable in all cases, so it should be an absolute URL.
+		// XMLHttpRequest within a Worker created from a Blob does not support relative URL paths.
+		x.open('GET', 'https://dojotoolkit.org/', true);
 		x.responseType = 'blob';
 		// will not be set if unsupported
 		var responseType = x.responseType;
@@ -71,15 +74,31 @@ define([
 				error = e;
 			}
 		}
-
+		var handleError;
 		if(error){
 			this.reject(error);
-		}else if(util.checkStatus(_xhr.status)){
-			this.resolve(response);
 		}else{
-			error = new RequestError('Unable to load ' + response.url + ' status: ' + _xhr.status, response);
-
-			this.reject(error);
+			try{
+				handlers(response);
+			}catch(e){
+				handleError = e;
+			}
+			if(util.checkStatus(_xhr.status)){
+				if(!handleError){
+					this.resolve(response);
+				}else{
+					this.reject(handleError);
+				}
+			}else{
+				if(!handleError){
+					error = new RequestError('Unable to load ' + response.url + ' status: ' + _xhr.status, response);
+					this.reject(error);
+				}else{
+					error = new RequestError('Unable to load ' + response.url + ' status: ' + _xhr.status +
+						' and an error in handleAs: transformation of response', response);
+    				this.reject(error);
+				}
+			}
 		}
 	}
 
@@ -170,6 +189,11 @@ define([
 		url = response.url;
 		options = response.options;
 
+		if(has('ie') <= 10){
+			// older IE breaks point 9 in http://www.w3.org/TR/XMLHttpRequest/#the-open()-method and sends fragment, so strip it
+			url = url.split('#')[0];
+		}
+		
 		var remover,
 			last = function(){
 				remover && remover();
@@ -199,7 +223,8 @@ define([
 			remover = addListeners(_xhr, dfd, response);
 		}
 
-		var data = options.data,
+		// IE11 treats data: undefined different than other browsers
+		var data = typeof(options.data) === 'undefined' ? null : options.data,
 			async = !options.sync,
 			method = options.method;
 

@@ -1316,7 +1316,13 @@
 					}
 				}
 			});
+		},
+
+		fixupUrl= typeof userConfig.fixupUrl == "function" ? userConfig.fixupUrl : function(url){
+			url += ""; // make sure url is a Javascript string (some paths may be a Java string)
+			return url + (cacheBust ? ((/\?/.test(url) ? "&" : "?") + cacheBust) : "");
 		};
+
 
 
 	if(has("dojo-undef-api")){
@@ -1334,12 +1340,7 @@
 			has.add("dojo-loader-eval-hint-url", 1);
 		}
 
-		var fixupUrl= typeof userConfig.fixupUrl == "function" ? userConfig.fixupUrl : function(url){
-				url += ""; // make sure url is a Javascript string (some paths may be a Java string)
-				return url + (cacheBust ? ((/\?/.test(url) ? "&" : "?") + cacheBust) : "");
-			},
-
-			injectPlugin = function(
+		var	injectPlugin = function(
 				module
 			){
 				// injects the plugin module given by module; may have to inject the plugin itself

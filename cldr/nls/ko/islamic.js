@@ -107,7 +107,7 @@ define(
 	],
 	"field-zone": "시간대",
 	"dateFormatItem-y": "G y년",
-	"field-year-relative+-1": "지난해",
+	"field-year-relative+-1": "작년",
 	"field-month-relative+-1": "지난달",
 	"dateFormatItem-hm": "a h:mm",
 	"days-format-abbr": [

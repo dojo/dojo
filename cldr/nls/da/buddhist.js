@@ -126,10 +126,10 @@ define(
 		"dec"
 	],
 	"quarters-format-abbr": [
-		"K1",
-		"K2",
-		"K3",
-		"K4"
+		"1. kvt.",
+		"2. kvt.",
+		"3. kvt.",
+		"4. kvt."
 	],
 	"quarters-standAlone-wide": [
 		"1. kvartal",
@@ -157,10 +157,10 @@ define(
 	"dateFormatItem-Hm": "HH.mm",
 	"field-sun-relative+1": "næste søndag",
 	"quarters-standAlone-abbr": [
-		"K1",
-		"K2",
-		"K3",
-		"K4"
+		"1. kvt.",
+		"2. kvt.",
+		"3. kvt.",
+		"4. kvt."
 	],
 	"eraAbbr": [
 		"BE"

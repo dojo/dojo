@@ -1,8 +1,8 @@
 define(
 //begin v1.x content
 {
-	"field-sat-relative+0": "השבת הזאת",
-	"field-sat-relative+1": "השבת הבאה",
+	"field-sat-relative+0": "יום שבת",
+	"field-sat-relative+1": "יום שבת הבא",
 	"field-dayperiod": "לפנה״צ/אחה״צ",
 	"field-sun-relative+-1": "יום ראשון שעבר",
 	"field-mon-relative+-1": "יום שני שעבר",
@@ -100,7 +100,7 @@ define(
 	"field-week-relative+-1": "השבוע שעבר",
 	"field-year-relative+0": "השנה",
 	"field-year-relative+1": "השנה הבאה",
-	"field-sat-relative+-1": "השבת שעברה",
+	"field-sat-relative+-1": "יום שבת שעבר",
 	"field-year-relative+-1": "השנה שעברה",
 	"field-year": "שנה",
 	"field-fri-relative+0": "יום שישי",
@@ -115,7 +115,7 @@ define(
 	"field-second": "שנייה",
 	"field-tue-relative+-1": "יום שלישי שעבר",
 	"field-day": "יום",
-	"field-mon-relative+0": "יום שני הזה",
+	"field-mon-relative+0": "יום שני",
 	"field-mon-relative+1": "יום שני הבא",
 	"field-thu-relative+0": "יום חמישי",
 	"field-second-relative+0": "עכשיו",

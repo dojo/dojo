@@ -11,7 +11,7 @@ define(
 		"sab"
 	],
 	"field-second-relative+0": "ora",
-	"field-weekday": "giorno della settimana",
+	"field-weekday": "Giorno della settimana",
 	"field-wed-relative+0": "questo mercoledì",
 	"field-wed-relative+1": "mercoledì prossimo",
 	"dateFormatItem-GyMMMEd": "E d MMM y G",
@@ -35,15 +35,15 @@ define(
 	"dateFormatItem-yyyyMEd": "E d/M/y GGGGG",
 	"field-thu-relative+-1": "giovedì scorso",
 	"dateFormatItem-Md": "d/M",
-	"field-era": "era",
+	"field-era": "Era",
 	"quarters-format-wide": [
 		"1º trimestre",
 		"2º trimestre",
 		"3º trimestre",
 		"4º trimestre"
 	],
-	"field-year": "anno",
-	"field-hour": "ora",
+	"field-year": "Anno",
+	"field-hour": "Ora",
 	"field-sat-relative+0": "questo sabato",
 	"field-sat-relative+1": "sabato prossimo",
 	"field-day-relative+0": "oggi",
@@ -59,10 +59,10 @@ define(
 		"T4"
 	],
 	"quarters-standAlone-wide": [
-		"Primo trimestre",
-		"Secondo trimestre",
-		"Terzo trimestre",
-		"Quarto trimestre"
+		"1º trimestre",
+		"2º trimestre",
+		"3º trimestre",
+		"4º trimestre"
 	],
 	"dateFormatItem-Gy": "y G",
 	"dateFormatItem-yyyyMMMEd": "E d MMM y G",
@@ -88,8 +88,8 @@ define(
 	"eraAbbr": [
 		"AH"
 	],
-	"field-minute": "minuto",
-	"field-dayperiod": "periodo del giorno",
+	"field-minute": "Minuto",
+	"field-dayperiod": "AM/PM",
 	"days-standAlone-abbr": [
 		"dom",
 		"lun",
@@ -103,13 +103,13 @@ define(
 	"dateFormatItem-h": "hh a",
 	"dateTimeFormat-long": "{1} 'alle' {0}",
 	"dayPeriods-format-narrow-am": "m.",
-	"field-day-relative+-2": "l'altro ieri",
+	"field-day-relative+-2": "l’altro ieri",
 	"dateFormatItem-MMMd": "d MMM",
 	"dateFormatItem-MEd": "E d/M",
 	"dateTimeFormat-full": "{1} 'alle' {0}",
 	"field-fri-relative+0": "questo venerdì",
 	"field-fri-relative+1": "venerdì prossimo",
-	"field-day": "giorno",
+	"field-day": "Giorno",
 	"days-format-wide": [
 		"domenica",
 		"lunedì",
@@ -119,7 +119,7 @@ define(
 		"venerdì",
 		"sabato"
 	],
-	"field-zone": "fuso orario",
+	"field-zone": "Fuso orario",
 	"dateFormatItem-y": "y G",
 	"field-year-relative+-1": "anno scorso",
 	"field-month-relative+-1": "mese scorso",
@@ -143,7 +143,7 @@ define(
 		"S"
 	],
 	"dateFormatItem-yyyyMd": "d/M/y GGGGG",
-	"field-month": "mese",
+	"field-month": "Mese",
 	"days-standAlone-narrow": [
 		"D",
 		"L",
@@ -158,15 +158,15 @@ define(
 	"field-mon-relative+0": "questo lunedì",
 	"field-mon-relative+1": "lunedì prossimo",
 	"dateFormat-short": "dd/MM/yy GGGGG",
-	"field-second": "secondo",
+	"field-second": "Secondo",
 	"field-sat-relative+-1": "sabato scorso",
 	"field-sun-relative+-1": "domenica scorsa",
 	"field-month-relative+0": "questo mese",
 	"field-month-relative+1": "mese prossimo",
 	"dateFormatItem-Ed": "E d",
-	"field-week": "settimana",
-	"dateFormat-medium": "dd/MMM/y G",
-	"field-year-relative+0": "quest'anno",
+	"field-week": "Settimana",
+	"dateFormat-medium": "dd MMM y G",
+	"field-year-relative+0": "quest’anno",
 	"field-week-relative+-1": "settimana scorsa",
 	"dateFormatItem-yyyyM": "M/y GGGGG",
 	"field-year-relative+1": "anno prossimo",

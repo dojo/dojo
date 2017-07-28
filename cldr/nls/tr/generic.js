@@ -19,7 +19,7 @@ define(
 	"dateFormatItem-Md": "dd/MM",
 	"field-era": "Miladi Dönem",
 	"field-year": "Yıl",
-	"dateFormatItem-yyyyMMMM": "MMMM y G",
+	"dateFormatItem-yyyyMMMM": "G MMMM y",
 	"field-hour": "Saat",
 	"field-sat-relative+0": "bu cumartesi",
 	"field-sat-relative+1": "gelecek cumartesi",

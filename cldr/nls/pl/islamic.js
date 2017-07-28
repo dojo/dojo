@@ -234,7 +234,7 @@ define(
 	"field-week": "tydzień",
 	"dateFormat-medium": "d MMM y G",
 	"field-year-relative+0": "w tym roku",
-	"field-week-relative+-1": "Zeszły tydzień",
+	"field-week-relative+-1": "w zeszłym tygodniu",
 	"dateFormatItem-yyyyM": "MM.y G",
 	"field-year-relative+1": "w przyszłym roku",
 	"dateFormatItem-yyyyQQQQ": "QQQQ y G",

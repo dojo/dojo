@@ -37,11 +37,13 @@ define(
 	"dateFormatItem-yMEd": "E, d.MM.y",
 	"field-wed-relative+0": "w tę środę",
 	"field-wed-relative+1": "w przyszłą środę",
-	"dateFormatItem-GyMMMEd": "E, d MMM y G",
-	"dateFormatItem-MMMEd": "E, d MMM",
+	"dateFormatItem-GyMMMEd": "E, d.MM.y G",
+	"dateFormatItem-MMMEd": "E, d.MM",
 	"eraNarrow": [
 		"p.n.e.",
-		"n.e."
+		"BCE",
+		"n.e.",
+		"CE"
 	],
 	"dateFormatItem-yMM": "MM.y",
 	"field-tue-relative+-1": "w zeszły wtorek",
@@ -107,7 +109,7 @@ define(
 	"dateFormatItem-yQQQQ": "QQQQ y",
 	"timeFormat-long": "HH:mm:ss z",
 	"field-year": "rok",
-	"dateFormatItem-yMMM": "LLL y",
+	"dateFormatItem-yMMM": "MM.y",
 	"field-hour": "godzina",
 	"dateFormatItem-MMdd": "d.MM",
 	"months-format-abbr": [
@@ -131,7 +133,7 @@ define(
 	"field-thu-relative+0": "w ten czwartek",
 	"field-day-relative+1": "jutro",
 	"field-thu-relative+1": "w przyszły czwartek",
-	"dateFormatItem-GyMMMd": "d MMM y G",
+	"dateFormatItem-GyMMMd": "d.MM.y G",
 	"field-day-relative+2": "pojutrze",
 	"dateFormatItem-H": "HH",
 	"months-standAlone-abbr": [
@@ -184,7 +186,9 @@ define(
 	],
 	"eraAbbr": [
 		"p.n.e.",
-		"n.e."
+		"BCE",
+		"n.e.",
+		"CE"
 	],
 	"field-minute": "minuta",
 	"field-dayperiod": "rano / po południu / wieczorem",
@@ -210,7 +214,7 @@ define(
 	"dateFormatItem-h": "h a",
 	"dateTimeFormat-long": "{1} {0}",
 	"field-day-relative+-2": "przedwczoraj",
-	"dateFormatItem-MMMd": "d MMM",
+	"dateFormatItem-MMMd": "d.MM",
 	"dateFormatItem-MEd": "E, d.MM",
 	"dayPeriods-format-wide-lateMorning": "przed południem",
 	"dateTimeFormat-full": "{1} {0}",
@@ -257,9 +261,11 @@ define(
 	],
 	"eraNames": [
 		"p.n.e.",
-		"n.e."
+		"BCE",
+		"n.e.",
+		"CE"
 	],
-	"dateFormatItem-yMMMd": "d MMM y",
+	"dateFormatItem-yMMMd": "d.MM.y",
 	"days-format-narrow": [
 		"N",
 		"P",
@@ -292,21 +298,21 @@ define(
 	"dateFormatItem-Ehms": "E, h:mm:ss a",
 	"field-second": "sekunda",
 	"field-sat-relative+-1": "w zeszłą sobotę",
-	"dateFormatItem-yMMMEd": "E, d MMM y",
+	"dateFormatItem-yMMMEd": "E, d.MM.y",
 	"field-sun-relative+-1": "w zeszłą niedzielę",
 	"field-month-relative+0": "w tym miesiącu",
 	"field-month-relative+1": "w przyszłym miesiącu",
 	"dateFormatItem-Ed": "E, d",
 	"dateTimeFormats-appendItem-Timezone": "{0} {1}",
 	"field-week": "tydzień",
-	"dateFormat-medium": "d MMM y",
+	"dateFormat-medium": "dd.MM.y",
 	"field-year-relative+0": "w tym roku",
-	"field-week-relative+-1": "Zeszły tydzień",
+	"field-week-relative+-1": "w zeszłym tygodniu",
 	"field-year-relative+1": "w przyszłym roku",
 	"dateTimeFormat-short": "{1}, {0}",
 	"dateFormatItem-Hms": "HH:mm:ss",
 	"dateFormatItem-hms": "h:mm:ss a",
-	"dateFormatItem-GyMMM": "MMM y G",
+	"dateFormatItem-GyMMM": "MM.y G",
 	"field-mon-relative+-1": "w zeszły poniedziałek",
 	"field-week-relative+0": "w tym tygodniu",
 	"field-week-relative+1": "w przyszłym tygodniu"

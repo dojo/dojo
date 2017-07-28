@@ -73,7 +73,7 @@ define(
 		"4:e kvartalet"
 	],
 	"field-year": "År",
-	"field-hour": "timme",
+	"field-hour": "Timme",
 	"months-format-abbr": [
 		"tishrí",
 		"heshván",

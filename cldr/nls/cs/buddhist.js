@@ -138,7 +138,7 @@ define(
 		"BE"
 	],
 	"field-minute": "Minuta",
-	"field-dayperiod": "AM/PM",
+	"field-dayperiod": "dop./odp.",
 	"days-standAlone-abbr": [
 		"ne",
 		"po",
@@ -150,7 +150,7 @@ define(
 	],
 	"dateFormatItem-d": "d.",
 	"field-day-relative+-1": "včera",
-	"dayPeriods-format-narrow-am": "AM",
+	"dayPeriods-format-narrow-am": "dop.",
 	"field-day-relative+-2": "předevčírem",
 	"dateFormatItem-MMMd": "d. M.",
 	"dateFormatItem-MEd": "E d. M.",
@@ -230,7 +230,7 @@ define(
 	"field-week-relative+-1": "minulý týden",
 	"dateFormatItem-yyyyM": "M/y GGGGG",
 	"field-year-relative+1": "příští rok",
-	"dayPeriods-format-narrow-pm": "PM",
+	"dayPeriods-format-narrow-pm": "odp.",
 	"dateFormatItem-yyyyQQQQ": "QQQQ y G",
 	"dateFormatItem-Hms": "H:mm:ss",
 	"dateFormatItem-GyMMM": "LLLL y G",

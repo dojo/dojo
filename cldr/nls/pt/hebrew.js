@@ -147,7 +147,7 @@ define(
 		"T4"
 	],
 	"field-minute": "Minuto",
-	"field-dayperiod": "Período do dia",
+	"field-dayperiod": "AM/PM",
 	"days-standAlone-abbr": [
 		"dom",
 		"seg",
@@ -173,7 +173,7 @@ define(
 		"sexta-feira",
 		"sábado"
 	],
-	"field-zone": "Fuso",
+	"field-zone": "Fuso horário",
 	"months-standAlone-abbr-leap": "Adar II",
 	"dateFormatItem-y": "y G",
 	"field-year-relative+-1": "ano passado",

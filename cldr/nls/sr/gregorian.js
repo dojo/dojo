@@ -35,7 +35,7 @@ define(
 	"field-weekday": "дан у недељи",
 	"dateFormatItem-yQQQ": "QQQ. y",
 	"dateFormatItem-yMEd": "E, d.M.y.",
-	"field-wed-relative+0": "ове среде",
+	"field-wed-relative+0": "у среду",
 	"dateFormatItem-GyMMMEd": "E, d. MMM y. G",
 	"dateFormatItem-MMMEd": "E d. MMM",
 	"field-wed-relative+1": "следеће среде",
@@ -73,7 +73,7 @@ define(
 		"децембар"
 	],
 	"dateTimeFormat-medium": "{1} {0}",
-	"dayPeriods-format-wide-pm": "поподне",
+	"dayPeriods-format-wide-pm": "по подне",
 	"dateFormat-full": "EEEE, dd. MMMM y.",
 	"field-thu-relative+-1": "прошлог четвртка",
 	"dateFormatItem-Md": "d/M",
@@ -106,7 +106,7 @@ define(
 	"dateFormatItem-yQQQQ": "QQQQ. y",
 	"field-year": "година",
 	"dateFormatItem-MMdd": "MM-dd",
-	"field-hour": "час",
+	"field-hour": "сат",
 	"months-format-abbr": [
 		"јан",
 		"феб",
@@ -121,12 +121,12 @@ define(
 		"нов",
 		"дец"
 	],
-	"field-sat-relative+0": "ове суботе",
+	"field-sat-relative+0": "у суботу",
 	"field-sat-relative+1": "следеће суботе",
 	"timeFormat-full": "HH.mm.ss zzzz",
 	"field-day-relative+0": "данас",
 	"field-day-relative+1": "сутра",
-	"field-thu-relative+0": "овог четвртка",
+	"field-thu-relative+0": "у четвртак",
 	"dateFormatItem-GyMMMd": "d. MMM y. G",
 	"field-day-relative+2": "прекосутра",
 	"field-thu-relative+1": "следећег четвртка",
@@ -171,7 +171,7 @@ define(
 	"dateFormatItem-MMMMd": "d. MMMM",
 	"timeFormat-medium": "HH.mm.ss",
 	"dateFormatItem-yMMdd": "dd.MM.y.",
-	"field-sun-relative+0": "ове недеље",
+	"field-sun-relative+0": "у недељу",
 	"dateFormatItem-Hm": "HH.mm",
 	"quarters-standAlone-abbr": [
 		"К1",
@@ -185,7 +185,7 @@ define(
 		"н. е."
 	],
 	"field-minute": "минут",
-	"field-dayperiod": "пре подне/поподне",
+	"field-dayperiod": "пре подне/по подне",
 	"days-standAlone-abbr": [
 		"нед",
 		"пон",
@@ -210,7 +210,7 @@ define(
 	"dateFormatItem-MMMd": "d. MMM",
 	"dateFormatItem-MEd": "E, M-d",
 	"dateTimeFormat-full": "{1} {0}",
-	"field-fri-relative+0": "овог петка",
+	"field-fri-relative+0": "у петак",
 	"dateFormatItem-yMMMM": "MMMM y.",
 	"field-fri-relative+1": "следећег петка",
 	"field-day": "дан",
@@ -223,7 +223,7 @@ define(
 		"петак",
 		"субота"
 	],
-	"field-zone": "зона",
+	"field-zone": "временска зона",
 	"dateFormatItem-y": "y.",
 	"months-standAlone-narrow": [
 		"ј",
@@ -239,8 +239,8 @@ define(
 		"н",
 		"д"
 	],
-	"field-year-relative+-1": "Прошле године",
-	"field-month-relative+-1": "Прошлог месеца",
+	"field-year-relative+-1": "прошле године",
+	"field-month-relative+-1": "прошлог месеца",
 	"dateFormatItem-hm": "hh.mm a",
 	"days-format-abbr": [
 		"нед",
@@ -253,7 +253,9 @@ define(
 	],
 	"eraNames": [
 		"Пре нове ере",
-		"Нове ере"
+		"п. н. е.",
+		"Нове ере",
+		"н. е."
 	],
 	"dateFormatItem-yMMMd": "d. MMM y.",
 	"days-format-narrow": [
@@ -276,12 +278,12 @@ define(
 	],
 	"dateFormatItem-MMM": "LLL",
 	"field-month": "месец",
-	"field-tue-relative+0": "овог уторка",
+	"field-tue-relative+0": "у уторак",
 	"field-tue-relative+1": "следећег уторка",
 	"dayPeriods-format-wide-am": "пре подне",
 	"dateFormatItem-MMMMEd": "E d. MMMM",
 	"dateFormatItem-EHm": "E, HH:mm",
-	"field-mon-relative+0": "овог понедељка",
+	"field-mon-relative+0": "у понедељак",
 	"field-mon-relative+1": "следећег понедељка",
 	"dateFormat-short": "d.M.yy.",
 	"dateFormatItem-EHms": "E, HH:mm:ss",
@@ -290,22 +292,22 @@ define(
 	"field-sat-relative+-1": "прошле суботе",
 	"dateFormatItem-yMMMEd": "E, d. MMM y.",
 	"field-sun-relative+-1": "прошле недеље",
-	"field-month-relative+0": "Овог месеца",
-	"field-month-relative+1": "Следећег месеца",
+	"field-month-relative+0": "овог месеца",
+	"field-month-relative+1": "следећег месеца",
 	"dateFormatItem-Ed": "E d.",
 	"dateTimeFormats-appendItem-Timezone": "{0} {1}",
 	"field-week": "недеља",
 	"dateFormat-medium": "dd.MM.y.",
-	"field-year-relative+0": "Ове године",
-	"field-week-relative+-1": "Прошле недеље",
-	"field-year-relative+1": "Следеће године",
+	"field-year-relative+0": "ове године",
+	"field-week-relative+-1": "прошле недеље",
+	"field-year-relative+1": "следеће године",
 	"dateTimeFormat-short": "{1} {0}",
 	"dateFormatItem-Hms": "HH.mm.ss",
 	"dateFormatItem-hms": "hh.mm.ss a",
 	"dateFormatItem-GyMMM": "MMM y. G",
 	"field-mon-relative+-1": "прошлог понедељка",
-	"field-week-relative+0": "Ове недеље",
-	"field-week-relative+1": "Следеће недеље"
+	"field-week-relative+0": "ове недеље",
+	"field-week-relative+1": "следеће недеље"
 }
 //end v1.x content
 );

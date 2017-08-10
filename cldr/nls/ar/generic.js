@@ -73,7 +73,7 @@ define(
 	"dateFormatItem-Ed": "E، d",
 	"field-week": "الأسبوع",
 	"dateFormat-medium": "dd‏/MM‏/y G",
-	"field-year-relative+0": "هذه السنة",
+	"field-year-relative+0": "السنة الحالية",
 	"field-week-relative+-1": "الأسبوع الماضي",
 	"dateFormatItem-yyyyM": "M‏/y G",
 	"field-year-relative+1": "السنة التالية",

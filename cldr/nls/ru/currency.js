@@ -6,7 +6,7 @@ define(
 	"JPY_symbol": "¥",
 	"CAD_displayName": "Канадский доллар",
 	"HKD_symbol": "HK$",
-	"CNY_displayName": "Юань Ренминби",
+	"CNY_displayName": "Китайский юань",
 	"USD_symbol": "$",
 	"AUD_displayName": "Австралийский доллар",
 	"JPY_displayName": "Японская иена",
@@ -14,7 +14,7 @@ define(
 	"USD_displayName": "Доллар США",
 	"EUR_symbol": "€",
 	"CNY_symbol": "CN¥",
-	"GBP_displayName": "Английский фунт стерлингов",
+	"GBP_displayName": "Английский фунт",
 	"GBP_symbol": "£",
 	"AUD_symbol": "A$",
 	"EUR_displayName": "Евро"

@@ -14,7 +14,7 @@ define(
 	"dateTimeFormat-short": "{1} {0}",
 	"field-era": "Era",
 	"dateTimeFormat-medium": "{1} {0}",
-	"field-hour": "timme",
+	"field-hour": "Timme",
 	"field-sun-relative+0": "söndag denna vecka",
 	"field-sun-relative+1": "söndag nästa vecka",
 	"field-wed-relative+-1": "onsdag förra veckan",

@@ -179,7 +179,7 @@ define(
 	"dateFormatItem-ms": "mm.ss",
 	"field-day-relative+-1": "eilen",
 	"dayPeriods-format-narrow-am": "ap.",
-	"field-day-relative+-2": "toissapäivänä",
+	"field-day-relative+-2": "toissa päivänä",
 	"dateFormatItem-MMMd": "d. MMM",
 	"dateFormatItem-MEd": "E d.M.",
 	"field-fri-relative+0": "tänä perjantaina",

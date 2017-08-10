@@ -37,9 +37,9 @@ define(
 	"field-wed-relative+-1": "prošla srijeda",
 	"dateFormatItem-yyyyQQQ": "QQQ y. G",
 	"dateFormat-full": "EEEE, d. MMMM y. G",
-	"dateFormatItem-yyyyMEd": "E, d. M. y. G",
+	"dateFormatItem-yyyyMEd": "E, dd.MM.y. GGGGG",
 	"field-thu-relative+-1": "prošli četvrtak",
-	"dateFormatItem-Md": "d. M.",
+	"dateFormatItem-Md": "dd.MM.",
 	"dayPeriods-format-wide-noon": "podne",
 	"field-era": "Era",
 	"quarters-format-wide": [
@@ -97,7 +97,7 @@ define(
 		"AM"
 	],
 	"field-minute": "Minuta",
-	"field-dayperiod": "Prijepodne/popodne",
+	"field-dayperiod": "AM/PM",
 	"days-standAlone-abbr": [
 		"ned",
 		"pon",
@@ -118,7 +118,7 @@ define(
 	"dateFormatItem-h": "hh a",
 	"field-day-relative+-2": "prekjučer",
 	"dateFormatItem-MMMd": "d. MMM",
-	"dateFormatItem-MEd": "E, d. M.",
+	"dateFormatItem-MEd": "E, dd.MM.",
 	"field-fri-relative+0": "ovaj petak",
 	"field-fri-relative+1": "sljedeći petak",
 	"field-day": "Dan",
@@ -154,7 +154,7 @@ define(
 		"P",
 		"S"
 	],
-	"dateFormatItem-yyyyMd": "d. M. y. G",
+	"dateFormatItem-yyyyMd": "dd.MM.y. GGGGG",
 	"field-month": "Mjesec",
 	"days-standAlone-narrow": [
 		"n",
@@ -169,7 +169,7 @@ define(
 	"field-tue-relative+1": "sljedeći utorak",
 	"field-mon-relative+0": "ovaj ponedjeljak",
 	"field-mon-relative+1": "sljedeći ponedjeljak",
-	"dateFormat-short": "d.M.y. GGGGG",
+	"dateFormat-short": "dd.MM.y. GGGGG",
 	"field-second": "Sekunda",
 	"field-sat-relative+-1": "prošla subota",
 	"field-sun-relative+-1": "prošla nedjelja",
@@ -180,7 +180,7 @@ define(
 	"dateFormat-medium": "d. M. y. G",
 	"field-year-relative+0": "ove godine",
 	"field-week-relative+-1": "prošli tjedan",
-	"dateFormatItem-yyyyM": "M. y. G",
+	"dateFormatItem-yyyyM": "MM.y. GGGGG",
 	"field-year-relative+1": "sljedeće godine",
 	"dateFormatItem-yyyyQQQQ": "QQQQ y. G",
 	"dateFormatItem-hms": "hh:mm:ss a",

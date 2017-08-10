@@ -88,7 +88,7 @@ define(
 		"AH"
 	],
 	"field-minute": "Minuto",
-	"field-dayperiod": "Período do dia",
+	"field-dayperiod": "AM/PM",
 	"days-standAlone-abbr": [
 		"dom",
 		"seg",
@@ -114,7 +114,7 @@ define(
 		"sexta-feira",
 		"sábado"
 	],
-	"field-zone": "Fuso",
+	"field-zone": "Fuso horário",
 	"dateFormatItem-y": "y G",
 	"field-year-relative+-1": "ano passado",
 	"field-month-relative+-1": "mês passado",

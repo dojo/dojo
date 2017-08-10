@@ -2,13 +2,13 @@ define(
 //begin v1.x content
 {
 	"days-standAlone-short": [
-		"zo",
-		"ma",
-		"di",
-		"wo",
-		"do",
-		"vr",
-		"za"
+		"Zo",
+		"Ma",
+		"Di",
+		"Wo",
+		"Do",
+		"Vr",
+		"Za"
 	],
 	"months-format-narrow": [
 		"1",
@@ -62,7 +62,7 @@ define(
 	"dateFormatItem-yyyyMEd": "E d-M-y GGGGG",
 	"field-thu-relative+-1": "afgelopen donderdag",
 	"dateFormatItem-Md": "d-M",
-	"dayPeriods-format-wide-noon": "12 uur 's middags",
+	"dayPeriods-format-wide-noon": "12 uur ‘s middags",
 	"field-era": "Tijdperk",
 	"months-standAlone-wide": [
 		"Farvardin",
@@ -137,17 +137,17 @@ define(
 	"dateFormatItem-Gy": "y G",
 	"dateFormatItem-yyyyMMMEd": "E d MMM y G",
 	"days-standAlone-wide": [
-		"zondag",
-		"maandag",
-		"dinsdag",
-		"woensdag",
-		"donderdag",
-		"vrijdag",
-		"zaterdag"
+		"Zondag",
+		"Maandag",
+		"Dinsdag",
+		"Woensdag",
+		"Donderdag",
+		"Vrijdag",
+		"Zaterdag"
 	],
 	"dateFormatItem-yyyyMMM": "MMM y G",
 	"dateFormatItem-yyyyMMMd": "d MMM y G",
-	"dayPeriods-format-abbr-noon": "12 uur 's middags",
+	"dayPeriods-format-abbr-noon": "12 uur ‘s middags",
 	"field-sun-relative+0": "deze zondag",
 	"field-sun-relative+1": "volgende week zondag",
 	"quarters-standAlone-abbr": [
@@ -160,18 +160,18 @@ define(
 		"AP"
 	],
 	"field-minute": "Minuut",
-	"field-dayperiod": "AM/PM",
+	"field-dayperiod": "a.m./p.m.",
 	"days-standAlone-abbr": [
-		"zo",
-		"ma",
-		"di",
-		"wo",
-		"do",
-		"vr",
-		"za"
+		"Zo",
+		"Ma",
+		"Di",
+		"Wo",
+		"Do",
+		"Vr",
+		"Za"
 	],
 	"field-day-relative+-1": "gisteren",
-	"dayPeriods-format-narrow-am": "AM",
+	"dayPeriods-format-narrow-am": "a.m.",
 	"field-day-relative+-2": "eergisteren",
 	"dateFormatItem-MMMd": "d MMM",
 	"dateFormatItem-MEd": "E d-M",
@@ -251,7 +251,7 @@ define(
 	"field-week-relative+-1": "vorige week",
 	"dateFormatItem-yyyyM": "M-y GGGGG",
 	"field-year-relative+1": "volgend jaar",
-	"dayPeriods-format-narrow-pm": "PM",
+	"dayPeriods-format-narrow-pm": "p.m.",
 	"dateFormatItem-yyyyQQQQ": "QQQQ y G",
 	"dateFormatItem-GyMMM": "MMM y G",
 	"field-mon-relative+-1": "afgelopen maandag",

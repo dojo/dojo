@@ -3,7 +3,7 @@ define(
 {
 	"field-sat-relative+0": "tuto sobotu",
 	"field-sat-relative+1": "příští sobotu",
-	"field-dayperiod": "AM/PM",
+	"field-dayperiod": "dop./odp.",
 	"field-sun-relative+-1": "minulou neděli",
 	"field-mon-relative+-1": "minulé pondělí",
 	"field-minute": "Minuta",

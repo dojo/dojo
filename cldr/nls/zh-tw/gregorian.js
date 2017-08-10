@@ -22,7 +22,7 @@ define(
 		"第3季",
 		"第4季"
 	],
-	"timeFormat-full": "zzzzah時mm分ss秒",
+	"timeFormat-full": "ah:mm:ss [zzzz]",
 	"dateTimeFormats-appendItem-Timezone": "{0} {1}",
 	"dateFormatItem-yMM": "y-MM",
 	"field-sun-relative+0": "本週日",
@@ -68,7 +68,7 @@ define(
 	"field-week-relative+0": "本週",
 	"dateFormatItem-Ehms": "E a h:mm:ss",
 	"field-week-relative+1": "下週",
-	"timeFormat-long": "zah時mm分ss秒",
+	"timeFormat-long": "ah:mm:ss [z]",
 	"dateFormatItem-yQQQQ": "y年QQQQ",
 	"field-month-relative+1": "下個月",
 	"dateFormatItem-H": "H時",
@@ -80,7 +80,7 @@ define(
 		"第4季"
 	],
 	"field-second": "秒",
-	"dateFormatItem-GyMMMEd": "G y 年 M 月 d 日E",
+	"dateFormatItem-GyMMMEd": "Gy年M月d日 E",
 	"field-tue-relative+-1": "上週二",
 	"dateFormatItem-GyMMM": "G y 年 M 月",
 	"dateFormatItem-MEd": "M/d（E）",

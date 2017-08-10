@@ -6,7 +6,7 @@ define(
 	"JPY_symbol": "JPY",
 	"CAD_displayName": "dolar canadian",
 	"HKD_symbol": "HKD",
-	"CNY_displayName": "yuan renminbi chinezesc",
+	"CNY_displayName": "yuan chinezesc",
 	"USD_symbol": "USD",
 	"AUD_displayName": "dolar australian",
 	"JPY_displayName": "yen japonez",

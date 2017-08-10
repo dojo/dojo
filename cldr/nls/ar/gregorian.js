@@ -294,7 +294,7 @@ define(
 	"dateTimeFormats-appendItem-Timezone": "{0} {1}",
 	"field-week": "الأسبوع",
 	"dateFormat-medium": "dd‏/MM‏/y",
-	"field-year-relative+0": "هذه السنة",
+	"field-year-relative+0": "السنة الحالية",
 	"field-week-relative+-1": "الأسبوع الماضي",
 	"field-year-relative+1": "السنة التالية",
 	"dateTimeFormat-short": "{1} {0}",

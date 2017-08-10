@@ -3,7 +3,7 @@ define(
 {
 	"field-sat-relative+0": "este sábado",
 	"field-sat-relative+1": "próximo sábado",
-	"field-dayperiod": "Período do dia",
+	"field-dayperiod": "AM/PM",
 	"field-sun-relative+-1": "domingo passado",
 	"field-mon-relative+-1": "segunda-feira passada",
 	"field-minute": "Minuto",
@@ -34,7 +34,7 @@ define(
 	"field-day-relative+1": "amanhã",
 	"field-day-relative+2": "depois de amanhã",
 	"field-tue-relative+0": "esta terça-feira",
-	"field-zone": "Fuso",
+	"field-zone": "Fuso horário",
 	"field-tue-relative+1": "próxima terça-feira",
 	"field-week-relative+-1": "semana passada",
 	"field-year-relative+0": "este ano",

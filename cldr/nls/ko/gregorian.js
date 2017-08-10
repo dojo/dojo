@@ -239,7 +239,7 @@ define(
 		"11월",
 		"12월"
 	],
-	"field-year-relative+-1": "지난해",
+	"field-year-relative+-1": "작년",
 	"field-month-relative+-1": "지난달",
 	"dateFormatItem-hm": "a h:mm",
 	"dateFormatItem-GyMMMEEEEd": "G y년 MMM d일 EEEE",
@@ -254,8 +254,8 @@ define(
 	],
 	"dateFormatItem-yMMMd": "y년 MMM d일",
 	"eraNames": [
-		"서력기원전",
-		"서력기원"
+		"기원전",
+		"서기"
 	],
 	"days-format-narrow": [
 		"일",

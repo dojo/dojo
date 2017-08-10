@@ -5,7 +5,7 @@ define(
 	"percentSign": "%",
 	"exponential": "E",
 	"scientificFormat": "#E0",
-	"percentFormat": "#,##0%",
+	"percentFormat": "#,##0 %",
 	"list": ";",
 	"infinity": "∞",
 	"minusSign": "-",
@@ -17,7 +17,7 @@ define(
 	"currencyFormat": "#,##0.00 ¤",
 	"plusSign": "+",
 	"decimalFormat-long": "000 billones",
-	"decimalFormat-short": "000B"
+	"decimalFormat-short": "000 B"
 }
 //end v1.x content
 );

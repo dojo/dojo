@@ -9,7 +9,7 @@ define(
 	"field-minute": "minuutti",
 	"field-day-relative+-1": "eilen",
 	"field-weekday": "viikonpäivä",
-	"field-day-relative+-2": "toissapäivänä",
+	"field-day-relative+-2": "toissa päivänä",
 	"field-era": "aikakausi",
 	"field-hour": "tunti",
 	"field-sun-relative+0": "tänä sunnuntaina",

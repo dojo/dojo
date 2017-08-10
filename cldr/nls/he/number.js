@@ -17,7 +17,7 @@ define(
 	"currencyFormat": "#,##0.00 ¤",
 	"plusSign": "‎+",
 	"decimalFormat-long": "‏000 טריליון",
-	"decimalFormat-short": "000T"
+	"decimalFormat-short": "‏000 ביל׳"
 }
 //end v1.x content
 );

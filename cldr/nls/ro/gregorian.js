@@ -32,7 +32,7 @@ define(
 		"3",
 		"4"
 	],
-	"field-weekday": "zi a săptămânii",
+	"field-weekday": "Zi a săptămânii",
 	"dateFormatItem-yQQQ": "QQQ y",
 	"dateFormatItem-yMEd": "E, dd.MM.y",
 	"field-wed-relative+0": "miercurea aceasta",
@@ -41,9 +41,7 @@ define(
 	"dateFormatItem-MMMEd": "E, d MMM",
 	"eraNarrow": [
 		"î.Hr.",
-		"î.e.n",
-		"d.Hr.",
-		"e.n."
+		"d.Hr."
 	],
 	"dateFormatItem-yMM": "MM.y",
 	"field-tue-relative+-1": "marțea trecută",
@@ -79,21 +77,21 @@ define(
 	"field-thu-relative+-1": "joia trecută",
 	"dateFormatItem-Md": "dd.MM",
 	"dateFormatItem-yMd": "dd.MM.y",
-	"field-era": "eră",
+	"field-era": "Eră",
 	"dateFormatItem-yM": "MM.y",
 	"months-standAlone-wide": [
-		"ianuarie",
-		"februarie",
-		"martie",
-		"aprilie",
-		"mai",
-		"iunie",
-		"iulie",
-		"august",
-		"septembrie",
-		"octombrie",
-		"noiembrie",
-		"decembrie"
+		"Ianuarie",
+		"Februarie",
+		"Martie",
+		"Aprilie",
+		"Mai",
+		"Iunie",
+		"Iulie",
+		"August",
+		"Septembrie",
+		"Octombrie",
+		"Noiembrie",
+		"Decembrie"
 	],
 	"timeFormat-short": "HH:mm",
 	"quarters-format-wide": [
@@ -104,9 +102,9 @@ define(
 	],
 	"dateFormatItem-yQQQQ": "QQQQ y",
 	"timeFormat-long": "HH:mm:ss z",
-	"field-year": "an",
+	"field-year": "An",
 	"dateFormatItem-yMMM": "MMM y",
-	"field-hour": "oră",
+	"field-hour": "Oră",
 	"dateFormatItem-MMdd": "dd.MM",
 	"months-format-abbr": [
 		"ian.",
@@ -153,21 +151,21 @@ define(
 		"trim. IV"
 	],
 	"quarters-standAlone-wide": [
-		"trimestrul I",
-		"trimestrul al II-lea",
-		"trimestrul al III-lea",
-		"trimestrul al IV-lea"
+		"Trimestrul I",
+		"Trimestrul al II-lea",
+		"Trimestrul al III-lea",
+		"Trimestrul al IV-lea"
 	],
 	"dateFormatItem-Gy": "y G",
 	"dateFormatItem-M": "L",
 	"days-standAlone-wide": [
-		"duminică",
-		"luni",
-		"marți",
-		"miercuri",
-		"joi",
-		"vineri",
-		"sâmbătă"
+		"Duminică",
+		"Luni",
+		"Marți",
+		"Miercuri",
+		"Joi",
+		"Vineri",
+		"Sâmbătă"
 	],
 	"dateFormatItem-MMMMd": "d MMMM",
 	"timeFormat-medium": "HH:mm:ss",
@@ -175,19 +173,17 @@ define(
 	"dateFormatItem-Hm": "HH:mm",
 	"field-sun-relative+1": "duminica viitoare",
 	"quarters-standAlone-abbr": [
-		"T1",
-		"T2",
-		"T3",
-		"T4"
+		"Trim. I",
+		"Trim. II",
+		"Trim. III",
+		"Trim. IV"
 	],
 	"eraAbbr": [
 		"î.Hr.",
-		"î.e.n",
-		"d.Hr.",
-		"e.n."
+		"d.Hr."
 	],
-	"field-minute": "minut",
-	"field-dayperiod": "a.m./p.m",
+	"field-minute": "Minut",
+	"field-dayperiod": "a.m/p.m.",
 	"days-standAlone-abbr": [
 		"Dum",
 		"Lun",
@@ -215,7 +211,7 @@ define(
 	"field-fri-relative+0": "vinerea aceasta",
 	"dateFormatItem-yMMMM": "MMMM y",
 	"field-fri-relative+1": "vinerea viitoare",
-	"field-day": "zi",
+	"field-day": "Zi",
 	"days-format-wide": [
 		"duminică",
 		"luni",
@@ -225,7 +221,7 @@ define(
 		"vineri",
 		"sâmbătă"
 	],
-	"field-zone": "fus orar",
+	"field-zone": "Fus orar",
 	"dateFormatItem-y": "y",
 	"months-standAlone-narrow": [
 		"I",
@@ -256,9 +252,7 @@ define(
 	"dateFormatItem-yMMMd": "d MMM y",
 	"eraNames": [
 		"înainte de Hristos",
-		"după Hristos",
-		"d.Hr.",
-		"e.n."
+		"după Hristos"
 	],
 	"days-format-narrow": [
 		"D",
@@ -279,7 +273,7 @@ define(
 		"S"
 	],
 	"dateFormatItem-MMM": "LLL",
-	"field-month": "lună",
+	"field-month": "Lună",
 	"field-tue-relative+0": "marțea aceasta",
 	"field-tue-relative+1": "marțea viitoare",
 	"dayPeriods-format-wide-am": "a.m.",
@@ -290,7 +284,7 @@ define(
 	"dateFormat-short": "dd.MM.y",
 	"dateFormatItem-EHms": "E HH:mm:ss",
 	"dateFormatItem-Ehms": "E h:mm:ss a",
-	"field-second": "secundă",
+	"field-second": "Secundă",
 	"field-sat-relative+-1": "sâmbăta trecută",
 	"dateFormatItem-yMMMEd": "E, d MMM y",
 	"field-sun-relative+-1": "duminica trecută",
@@ -298,7 +292,7 @@ define(
 	"field-month-relative+1": "luna viitoare",
 	"dateFormatItem-Ed": "E d",
 	"dateTimeFormats-appendItem-Timezone": "{0} {1}",
-	"field-week": "săptămână",
+	"field-week": "Săptămână",
 	"dateFormat-medium": "d MMM y",
 	"field-year-relative+0": "anul acesta",
 	"field-week-relative+-1": "săptămâna trecută",

@@ -3,7 +3,7 @@ define(
 {
 	"field-sat-relative+0": "deze zaterdag",
 	"field-sat-relative+1": "volgende week zaterdag",
-	"field-dayperiod": "AM/PM",
+	"field-dayperiod": "a.m./p.m.",
 	"field-sun-relative+-1": "afgelopen zondag",
 	"field-mon-relative+-1": "afgelopen maandag",
 	"field-minute": "Minuut",

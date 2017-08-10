@@ -53,7 +53,7 @@ define(
 	"dateFormatItem-Hm": "HH:mm",
 	"field-sun-relative+1": "volgende week zondag",
 	"field-minute": "Minuut",
-	"field-dayperiod": "AM/PM",
+	"field-dayperiod": "a.m./p.m.",
 	"dateFormatItem-d": "d",
 	"dateFormatItem-ms": "mm:ss",
 	"field-day-relative+-1": "gisteren",

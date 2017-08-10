@@ -42,7 +42,7 @@ define(
 	"dateFormatItem-Hm": "HH:mm",
 	"field-sun-relative+1": "next Sunday",
 	"field-minute": "Minute",
-	"field-dayperiod": "AM/PM",
+	"field-dayperiod": "am/pm",
 	"dateFormatItem-d": "d",
 	"dateFormatItem-ms": "mm:ss",
 	"field-day-relative+-1": "yesterday",

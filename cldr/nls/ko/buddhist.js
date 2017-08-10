@@ -180,7 +180,7 @@ define(
 		"11월",
 		"12월"
 	],
-	"field-year-relative+-1": "지난해",
+	"field-year-relative+-1": "작년",
 	"field-month-relative+-1": "지난달",
 	"dateFormatItem-hm": "a h:mm",
 	"days-format-abbr": [

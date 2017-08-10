@@ -8,7 +8,7 @@ define(
 	"field-mon-relative+-1": "上周一",
 	"field-minute": "分钟",
 	"field-day-relative+-1": "昨天",
-	"field-weekday": "星期",
+	"field-weekday": "工作日",
 	"field-day-relative+-2": "前天",
 	"months-standAlone-narrow": [
 		"1",

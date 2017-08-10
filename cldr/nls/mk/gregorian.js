@@ -37,23 +37,23 @@ define(
 	"dateFormatItem-yMEd": "E, d.M.y",
 	"field-wed-relative+0": "оваа среда",
 	"field-wed-relative+1": "следната среда",
-	"dateFormatItem-GyMMMEd": "E, dd MMM y 'г'. G",
+	"dateFormatItem-GyMMMEd": "E, dd MMM y G",
 	"dateFormatItem-MMMEd": "E d MMM",
 	"eraNarrow": [
-		"пр.н.е.",
+		"пр. н.е.",
 		"н.е."
 	],
 	"field-tue-relative+-1": "минатиот вторник",
 	"days-format-short": [
 		"нед.",
 		"пон.",
-		"3",
+		"вт.",
 		"сре.",
 		"чет.",
 		"пет.",
-		"7"
+		"саб."
 	],
-	"dateFormat-long": "dd MMMM y 'г'.",
+	"dateFormat-long": "dd MMMM y",
 	"field-fri-relative+-1": "минатиот петок",
 	"field-wed-relative+-1": "минатата среда",
 	"months-format-wide": [
@@ -72,7 +72,7 @@ define(
 	],
 	"dateTimeFormat-medium": "{1} {0}",
 	"dayPeriods-format-wide-pm": "попладне",
-	"dateFormat-full": "EEEE, dd MMMM y 'г'.",
+	"dateFormat-full": "EEEE, dd MMMM y",
 	"field-thu-relative+-1": "минатиот четврток",
 	"dateFormatItem-Md": "d.M",
 	"dateFormatItem-yMd": "d.M.y",
@@ -121,11 +121,11 @@ define(
 	"field-sat-relative+0": "оваа сабота",
 	"field-sat-relative+1": "следната сабота",
 	"timeFormat-full": "HH:mm:ss zzzz",
-	"field-day-relative+0": "Денес",
+	"field-day-relative+0": "денес",
 	"field-thu-relative+0": "овој четврток",
 	"field-day-relative+1": "утре",
 	"field-thu-relative+1": "следниот четврток",
-	"dateFormatItem-GyMMMd": "dd MMM y 'г'. G",
+	"dateFormatItem-GyMMMd": "dd MMM y G",
 	"field-day-relative+2": "задутре",
 	"dateFormatItem-H": "HH",
 	"months-standAlone-abbr": [
@@ -143,10 +143,10 @@ define(
 		"дек."
 	],
 	"quarters-format-abbr": [
-		"Q1",
-		"Q2",
-		"Q3",
-		"Q4"
+		"јан-мар",
+		"апр-јун",
+		"јул-сеп",
+		"окт-дек"
 	],
 	"quarters-standAlone-wide": [
 		"прво тромесечје",
@@ -154,7 +154,7 @@ define(
 		"трето тромесечје",
 		"четврто тромесечје"
 	],
-	"dateFormatItem-Gy": "y 'г'. G",
+	"dateFormatItem-Gy": "y G",
 	"dateFormatItem-M": "L",
 	"days-standAlone-wide": [
 		"недела",
@@ -221,7 +221,7 @@ define(
 	],
 	"dateFormatItem-Mdd": "dd.M",
 	"field-zone": "зона",
-	"dateFormatItem-y": "y 'г'.",
+	"dateFormatItem-y": "y",
 	"months-standAlone-narrow": [
 		"ј",
 		"ф",
@@ -250,8 +250,8 @@ define(
 	],
 	"dateFormatItem-yMMMd": "d MMM y 'г'.",
 	"eraNames": [
-		"пр.н.е.",
-		"н.е."
+		"пред нашата ера",
+		"од нашата ера"
 	],
 	"days-format-narrow": [
 		"н",
@@ -299,7 +299,7 @@ define(
 	"dateTimeFormat-short": "{1} {0}",
 	"dateFormatItem-Hms": "HH:mm:ss",
 	"dateFormatItem-hms": "h:mm:ss a",
-	"dateFormatItem-GyMMM": "MMM y 'г'. G",
+	"dateFormatItem-GyMMM": "MMM y G",
 	"field-mon-relative+-1": "минатиот понеделник",
 	"field-week-relative+0": "оваа седмица",
 	"field-week-relative+1": "следната седмица"

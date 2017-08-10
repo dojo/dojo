@@ -23,7 +23,7 @@ define(
 	],
 	"field-day-relative+2": "μεθαύριο",
 	"field-tue-relative+0": "αυτήν την Τρίτη",
-	"field-zone": "Ζώνη",
+	"field-zone": "Ζώνη ώρας",
 	"field-tue-relative+1": "επόμενη Τρίτη",
 	"field-week-relative+-1": "προηγούμενη εβδομάδα",
 	"field-year-relative+0": "φέτος",

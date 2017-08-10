@@ -2,13 +2,13 @@ define(
 //begin v1.x content
 {
 	"days-standAlone-short": [
-		"dim.",
-		"lun.",
-		"mar.",
-		"mer.",
-		"jeu.",
-		"ven.",
-		"sam."
+		"Di",
+		"Lu",
+		"Ma",
+		"Me",
+		"Je",
+		"Ve",
+		"Sa"
 	],
 	"field-second-relative+0": "maintenant",
 	"field-weekday": "jour de la semaine",
@@ -127,13 +127,13 @@ define(
 	"dateFormatItem-Gy": "y G",
 	"dateFormatItem-yyyyMMMEd": "E d MMM y G",
 	"days-standAlone-wide": [
-		"dimanche",
-		"lundi",
-		"mardi",
-		"mercredi",
-		"jeudi",
-		"vendredi",
-		"samedi"
+		"Dimanche",
+		"Lundi",
+		"Mardi",
+		"Mercredi",
+		"Jeudi",
+		"Vendredi",
+		"Samedi"
 	],
 	"dateFormatItem-yyyyMMM": "MMM y G",
 	"dateFormatItem-yyyyMMMd": "d MMM y G",
@@ -149,13 +149,13 @@ define(
 	"field-minute": "minute",
 	"field-dayperiod": "cadran",
 	"days-standAlone-abbr": [
-		"dim.",
-		"lun.",
-		"mar.",
-		"mer.",
-		"jeu.",
-		"ven.",
-		"sam."
+		"Dim.",
+		"Lun.",
+		"Mar.",
+		"Mer.",
+		"Jeu.",
+		"Ven.",
+		"Sam."
 	],
 	"field-day-relative+-1": "hier",
 	"dateTimeFormat-long": "{1} 'à' {0}",

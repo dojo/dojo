@@ -11,7 +11,7 @@ define(
 	"dateFormatItem-MMMEd": "E d.M.",
 	"field-day-relative+-1": "eilen",
 	"dateFormatItem-hms": "h.mm.ss a",
-	"field-day-relative+-2": "toissapäivänä",
+	"field-day-relative+-2": "toissa päivänä",
 	"field-weekday": "viikonpäivä",
 	"field-era": "aikakausi",
 	"field-hour": "tunti",

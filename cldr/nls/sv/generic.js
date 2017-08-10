@@ -20,7 +20,7 @@ define(
 	"field-era": "Era",
 	"field-year": "År",
 	"dateFormatItem-MMdd": "dd/MM",
-	"field-hour": "timme",
+	"field-hour": "Timme",
 	"field-sat-relative+0": "lördag denna vecka",
 	"field-sat-relative+1": "lördag nästa vecka",
 	"field-day-relative+0": "i dag",

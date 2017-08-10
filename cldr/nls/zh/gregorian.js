@@ -32,7 +32,7 @@ define(
 		"3",
 		"4"
 	],
-	"field-weekday": "星期",
+	"field-weekday": "工作日",
 	"dateFormatItem-yQQQ": "y年第Q季度",
 	"dateFormatItem-yMEd": "y/M/dE",
 	"field-wed-relative+0": "本周三",
@@ -81,7 +81,7 @@ define(
 	"dayPeriods-format-narrow-midDay": "中午",
 	"dayPeriods-format-wide-noon": "中午",
 	"dateFormatItem-yMd": "y/M/d",
-	"dateFormatItem-yM": "y/M",
+	"dateFormatItem-yM": "y年M月",
 	"field-era": "纪元",
 	"months-standAlone-wide": [
 		"一月",
@@ -104,7 +104,7 @@ define(
 		"第三季度",
 		"第四季度"
 	],
-	"timeFormat-long": "zah:mm:ss",
+	"timeFormat-long": "z ah:mm:ss",
 	"dateFormatItem-yMMM": "y年M月",
 	"dateFormatItem-yQQQQ": "y年第Q季度",
 	"field-year": "年",
@@ -126,7 +126,7 @@ define(
 	],
 	"field-sat-relative+0": "本周六",
 	"field-sat-relative+1": "下周六",
-	"timeFormat-full": "zzzzah:mm:ss",
+	"timeFormat-full": "zzzz ah:mm:ss",
 	"dayPeriods-format-narrow-morning": "上午",
 	"field-day-relative+0": "今天",
 	"field-day-relative+1": "明天",

@@ -11,7 +11,7 @@ define(
 		"周六"
 	],
 	"field-second-relative+0": "现在",
-	"field-weekday": "星期",
+	"field-weekday": "工作日",
 	"field-wed-relative+0": "本周三",
 	"field-wed-relative+1": "下周三",
 	"dateFormatItem-GyMMMEd": "Gy年M月d日E",
@@ -77,7 +77,7 @@ define(
 		"第三季度",
 		"第四季度"
 	],
-	"timeFormat-long": "zah:mm:ss",
+	"timeFormat-long": "z ah:mm:ss",
 	"field-year": "年",
 	"field-hour": "小时",
 	"months-format-abbr-leap": "闰7月",
@@ -98,7 +98,7 @@ define(
 	],
 	"field-sat-relative+0": "本周六",
 	"field-sat-relative+1": "下周六",
-	"timeFormat-full": "zzzzah:mm:ss",
+	"timeFormat-full": "zzzz ah:mm:ss",
 	"field-day-relative+0": "今天",
 	"field-thu-relative+0": "本周四",
 	"field-day-relative+1": "明天",

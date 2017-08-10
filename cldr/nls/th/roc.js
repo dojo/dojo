@@ -64,7 +64,7 @@ define(
 	"field-tue-relative+1": "อังคารหน้า",
 	"field-mon-relative+0": "จันทร์นี้",
 	"field-mon-relative+1": "จันทร์หน้า",
-	"dateFormat-short": "d/M/yy",
+	"dateFormat-short": "d/M/y G",
 	"field-second": "วินาที",
 	"field-sat-relative+-1": "เสาร์ที่แล้ว",
 	"field-sun-relative+-1": "อาทิตย์ที่แล้ว",

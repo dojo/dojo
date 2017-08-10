@@ -4,7 +4,7 @@ define(
 	"dateFormatItem-yM": "M. y. GGGGG",
 	"field-sat-relative+0": "ova subota",
 	"field-sat-relative+1": "sljedeća subota",
-	"field-dayperiod": "Prijepodne/popodne",
+	"field-dayperiod": "AM/PM",
 	"field-sun-relative+-1": "prošla nedjelja",
 	"field-mon-relative+-1": "prošli ponedjeljak",
 	"field-minute": "Minuta",

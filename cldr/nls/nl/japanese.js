@@ -276,7 +276,7 @@ define(
 		"Heisei"
 	],
 	"field-minute": "Minuut",
-	"field-dayperiod": "AM/PM",
+	"field-dayperiod": "a.m./p.m.",
 	"dateFormatItem-d": "d",
 	"field-day-relative+-1": "gisteren",
 	"dateTimeFormat-long": "{1} {0}",

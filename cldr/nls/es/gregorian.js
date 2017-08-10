@@ -27,18 +27,18 @@ define(
 	],
 	"field-second-relative+0": "ahora",
 	"quarters-standAlone-narrow": [
-		"1T",
-		"2T",
-		"3T",
-		"4T"
+		"1",
+		"2",
+		"3",
+		"4"
 	],
-	"field-weekday": "día de la semana",
+	"field-weekday": "Día de la semana",
 	"dateFormatItem-yQQQ": "QQQ y",
 	"dateFormatItem-yMEd": "EEE, d/M/y",
 	"field-wed-relative+0": "este miércoles",
 	"field-wed-relative+1": "el próximo miércoles",
-	"dateFormatItem-GyMMMEd": "E, d 'de' MMMM 'de' y G",
-	"dateFormatItem-MMMEd": "E d 'de' MMM",
+	"dateFormatItem-GyMMMEd": "E, d MMM y G",
+	"dateFormatItem-MMMEd": "E, d MMM",
 	"eraNarrow": [
 		"a. C.",
 		"d. C."
@@ -78,7 +78,7 @@ define(
 	"field-thu-relative+-1": "el jueves pasado",
 	"dateFormatItem-Md": "d/M",
 	"dateFormatItem-yMd": "d/M/y",
-	"field-era": "era",
+	"field-era": "Era",
 	"dateFormatItem-yM": "M/y",
 	"months-standAlone-wide": [
 		"Enero",
@@ -103,9 +103,9 @@ define(
 	],
 	"dateFormatItem-yQQQQ": "QQQQ 'de' y",
 	"timeFormat-long": "H:mm:ss z",
-	"field-year": "año",
-	"dateFormatItem-yMMM": "MMM 'de' y",
-	"field-hour": "hora",
+	"field-year": "Año",
+	"dateFormatItem-yMMM": "MMM y",
+	"field-hour": "Hora",
 	"dateFormatItem-MMdd": "d/M",
 	"months-format-abbr": [
 		"ene.",
@@ -128,7 +128,7 @@ define(
 	"field-thu-relative+0": "este jueves",
 	"field-day-relative+1": "mañana",
 	"field-thu-relative+1": "el próximo jueves",
-	"dateFormatItem-GyMMMd": "d MMM 'de' y G",
+	"dateFormatItem-GyMMMd": "d MMM y G",
 	"field-day-relative+2": "pasado mañana",
 	"dateFormatItem-H": "H",
 	"months-standAlone-abbr": [
@@ -183,8 +183,8 @@ define(
 		"a. C.",
 		"d. C."
 	],
-	"field-minute": "minuto",
-	"field-dayperiod": "periodo del día",
+	"field-minute": "Minuto",
+	"field-dayperiod": "a. m./p. m.",
 	"days-standAlone-abbr": [
 		"Dom.",
 		"Lun.",
@@ -206,14 +206,14 @@ define(
 	"dateFormatItem-h": "h a",
 	"dateTimeFormat-long": "{1}, {0}",
 	"dayPeriods-format-narrow-am": "a.m.",
-	"field-day-relative+-2": "antes de ayer",
-	"dateFormatItem-MMMd": "d 'de' MMM",
+	"field-day-relative+-2": "anteayer",
+	"dateFormatItem-MMMd": "d MMM",
 	"dateFormatItem-MEd": "E, d/M",
 	"dateTimeFormat-full": "{1}, {0}",
 	"field-fri-relative+0": "este viernes",
 	"dateFormatItem-yMMMM": "MMMM 'de' y",
 	"field-fri-relative+1": "el próximo viernes",
-	"field-day": "día",
+	"field-day": "Día",
 	"days-format-wide": [
 		"domingo",
 		"lunes",
@@ -223,7 +223,7 @@ define(
 		"viernes",
 		"sábado"
 	],
-	"field-zone": "zona horaria",
+	"field-zone": "Zona horaria",
 	"dateFormatItem-y": "y",
 	"months-standAlone-narrow": [
 		"E",
@@ -253,9 +253,9 @@ define(
 	],
 	"eraNames": [
 		"antes de Cristo",
-		"anno Dómini"
+		"después de Cristo"
 	],
-	"dateFormatItem-yMMMd": "d 'de' MMM 'de' y",
+	"dateFormatItem-yMMMd": "d MMM y",
 	"days-format-narrow": [
 		"D",
 		"L",
@@ -275,7 +275,7 @@ define(
 		"S"
 	],
 	"dateFormatItem-MMM": "LLL",
-	"field-month": "mes",
+	"field-month": "Mes",
 	"field-tue-relative+0": "este martes",
 	"field-tue-relative+1": "el próximo martes",
 	"dayPeriods-format-wide-am": "a. m.",
@@ -286,16 +286,16 @@ define(
 	"dateFormatItem-MMd": "d/M",
 	"dateFormatItem-EHms": "E, H:mm:ss",
 	"dateFormatItem-Ehms": "E, h:mm:ss a",
-	"field-second": "segundo",
+	"field-second": "Segundo",
 	"field-sat-relative+-1": "el sábado pasado",
-	"dateFormatItem-yMMMEd": "EEE, d 'de' MMMM 'de' y",
+	"dateFormatItem-yMMMEd": "EEE, d MMM y",
 	"field-sun-relative+-1": "el domingo pasado",
 	"field-month-relative+0": "este mes",
 	"field-month-relative+1": "el próximo mes",
 	"dateFormatItem-Ed": "E d",
 	"dateTimeFormats-appendItem-Timezone": "{0} {1}",
-	"field-week": "semana",
-	"dateFormat-medium": "d/M/y",
+	"field-week": "Semana",
+	"dateFormat-medium": "d MMM y",
 	"field-year-relative+0": "este año",
 	"field-week-relative+-1": "la semana pasada",
 	"field-year-relative+1": "el próximo año",
@@ -303,7 +303,7 @@ define(
 	"dateTimeFormat-short": "{1} {0}",
 	"dateFormatItem-Hms": "H:mm:ss",
 	"dateFormatItem-hms": "h:mm:ss a",
-	"dateFormatItem-GyMMM": "MMM 'de' y G",
+	"dateFormatItem-GyMMM": "MMM y G",
 	"field-mon-relative+-1": "el lunes pasado",
 	"field-week-relative+0": "esta semana",
 	"field-week-relative+1": "la próxima semana"

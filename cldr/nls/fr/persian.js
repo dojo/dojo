@@ -2,13 +2,13 @@ define(
 //begin v1.x content
 {
 	"days-standAlone-short": [
-		"dim.",
-		"lun.",
-		"mar.",
-		"mer.",
-		"jeu.",
-		"ven.",
-		"sam."
+		"Di",
+		"Lu",
+		"Ma",
+		"Me",
+		"Je",
+		"Ve",
+		"Sa"
 	],
 	"months-format-narrow": [
 		"J",
@@ -65,18 +65,18 @@ define(
 	"dayPeriods-format-wide-noon": "midi",
 	"field-era": "ère",
 	"months-standAlone-wide": [
-		"janvier",
-		"février",
-		"mars",
-		"avril",
-		"mai",
-		"juin",
-		"juillet",
-		"août",
-		"septembre",
-		"octobre",
-		"novembre",
-		"décembre"
+		"Janvier",
+		"Février",
+		"Mars",
+		"Avril",
+		"Mai",
+		"Juin",
+		"Juillet",
+		"Août",
+		"Septembre",
+		"Octobre",
+		"Novembre",
+		"Décembre"
 	],
 	"quarters-format-wide": [
 		"1er trimestre",
@@ -109,18 +109,18 @@ define(
 	"dateFormatItem-GyMMMd": "d MMM y G",
 	"field-day-relative+2": "après-demain",
 	"months-standAlone-abbr": [
-		"janv.",
-		"févr.",
-		"mars",
-		"avr.",
-		"mai",
-		"juin",
-		"juil.",
-		"août",
-		"sept.",
-		"oct.",
-		"nov.",
-		"déc."
+		"Janv.",
+		"Févr.",
+		"Mars",
+		"Avr.",
+		"Mai",
+		"Juin",
+		"Juil.",
+		"Août",
+		"Sept.",
+		"Oct.",
+		"Nov.",
+		"Déc."
 	],
 	"quarters-format-abbr": [
 		"T1",
@@ -137,13 +137,13 @@ define(
 	"dateFormatItem-Gy": "y G",
 	"dateFormatItem-yyyyMMMEd": "E d MMM y G",
 	"days-standAlone-wide": [
-		"dimanche",
-		"lundi",
-		"mardi",
-		"mercredi",
-		"jeudi",
-		"vendredi",
-		"samedi"
+		"Dimanche",
+		"Lundi",
+		"Mardi",
+		"Mercredi",
+		"Jeudi",
+		"Vendredi",
+		"Samedi"
 	],
 	"dateFormatItem-yyyyMMM": "MMM y G",
 	"dateFormatItem-yyyyMMMd": "d MMM y G",
@@ -158,13 +158,13 @@ define(
 	"field-minute": "minute",
 	"field-dayperiod": "cadran",
 	"days-standAlone-abbr": [
-		"dim.",
-		"lun.",
-		"mar.",
-		"mer.",
-		"jeu.",
-		"ven.",
-		"sam."
+		"Dim.",
+		"Lun.",
+		"Mar.",
+		"Mer.",
+		"Jeu.",
+		"Ven.",
+		"Sam."
 	],
 	"field-day-relative+-1": "hier",
 	"dateTimeFormat-long": "{1} 'à' {0}",

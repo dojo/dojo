@@ -178,7 +178,7 @@ define(
 		"AD"
 	],
 	"field-minute": "Minute",
-	"field-dayperiod": "AM/PM",
+	"field-dayperiod": "am/pm",
 	"dateFormatItem-d": "d",
 	"dateFormatItem-ms": "mm:ss",
 	"field-day-relative+-1": "yesterday",

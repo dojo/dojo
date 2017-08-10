@@ -167,7 +167,7 @@ define(
 	],
 	"dateFormatItem-MMMMd": "d MMMM",
 	"timeFormat-medium": "HH.mm.ss",
-	"field-sun-relative+0": "Minggu ini",
+	"field-sun-relative+0": "hari Minggu ini",
 	"dateFormatItem-Hm": "HH.mm",
 	"quarters-standAlone-abbr": [
 		"K1",
@@ -175,7 +175,7 @@ define(
 		"K3",
 		"K4"
 	],
-	"field-sun-relative+1": "Minggu berikutnya",
+	"field-sun-relative+1": "hari Minggu berikutnya",
 	"eraAbbr": [
 		"SM",
 		"M"
@@ -249,7 +249,7 @@ define(
 	],
 	"dateFormatItem-yMMMd": "d MMM y",
 	"eraNames": [
-		"SM",
+		"Sebelum Masehi",
 		"M"
 	],
 	"days-format-narrow": [
@@ -285,7 +285,7 @@ define(
 	"field-second": "Detik",
 	"field-sat-relative+-1": "Sabtu lalu",
 	"dateFormatItem-yMMMEd": "E, d MMM y",
-	"field-sun-relative+-1": "Minggu lalu",
+	"field-sun-relative+-1": "hari Minggu lalu",
 	"field-month-relative+0": "bulan ini",
 	"field-month-relative+1": "Bulan berikutnya",
 	"dateFormatItem-Ed": "E, d",
@@ -302,7 +302,7 @@ define(
 	"dateFormatItem-GyMMM": "MMM y G",
 	"field-mon-relative+-1": "Senin lalu",
 	"field-week-relative+0": "minggu ini",
-	"field-week-relative+1": "Minggu berikutnya"
+	"field-week-relative+1": "minggu berikutnya"
 }
 //end v1.x content
 );

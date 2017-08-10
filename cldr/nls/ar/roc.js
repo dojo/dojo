@@ -26,7 +26,7 @@ define(
 	"field-zone": "التوقيت",
 	"field-tue-relative+1": "الثلاثاء التالي",
 	"field-week-relative+-1": "الأسبوع الماضي",
-	"field-year-relative+0": "هذه السنة",
+	"field-year-relative+0": "السنة الحالية",
 	"field-year-relative+1": "السنة التالية",
 	"field-sat-relative+-1": "السبت الماضي",
 	"field-year-relative+-1": "السنة الماضية",

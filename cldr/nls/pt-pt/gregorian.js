@@ -148,10 +148,10 @@ define(
 		"Dez"
 	],
 	"quarters-format-abbr": [
-		"T1",
-		"T2",
-		"T3",
-		"T4"
+		"1.º trimestre",
+		"2.º trimestre",
+		"3.º trimestre",
+		"4.º trimestre"
 	],
 	"quarters-standAlone-wide": [
 		"1.º trimestre",
@@ -178,10 +178,10 @@ define(
 	"dateFormatItem-Hm": "HH:mm",
 	"field-sun-relative+1": "próximo domingo",
 	"quarters-standAlone-abbr": [
-		"T1",
-		"T2",
-		"T3",
-		"T4"
+		"1.º trimestre",
+		"2.º trimestre",
+		"3.º trimestre",
+		"4.º trimestre"
 	],
 	"eraAbbr": [
 		"a.C.",
@@ -259,8 +259,8 @@ define(
 	"dayPeriods-standAlone-abbr-pm": "p.m.",
 	"dateFormatItem-yMMMd": "d/MM/y",
 	"eraNames": [
-		"a.C.",
-		"d.C."
+		"antes de Cristo",
+		"depois de Cristo"
 	],
 	"days-format-narrow": [
 		"D",

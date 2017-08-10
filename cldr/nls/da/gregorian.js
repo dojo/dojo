@@ -56,7 +56,7 @@ define(
 		"fr",
 		"lø"
 	],
-	"dateFormat-long": "d. MMM y",
+	"dateFormat-long": "d. MMMM y",
 	"field-fri-relative+-1": "sidste fredag",
 	"field-wed-relative+-1": "sidste onsdag",
 	"months-format-wide": [
@@ -148,10 +148,10 @@ define(
 		"dec"
 	],
 	"quarters-format-abbr": [
-		"K1",
-		"K2",
-		"K3",
-		"K4"
+		"1. kvt.",
+		"2. kvt.",
+		"3. kvt.",
+		"4. kvt."
 	],
 	"quarters-standAlone-wide": [
 		"1. kvartal",
@@ -175,10 +175,10 @@ define(
 	"field-sun-relative+0": "denne søndag",
 	"dateFormatItem-Hm": "HH.mm",
 	"quarters-standAlone-abbr": [
-		"K1",
-		"K2",
-		"K3",
-		"K4"
+		"1. kvt.",
+		"2. kvt.",
+		"3. kvt.",
+		"4. kvt."
 	],
 	"field-sun-relative+1": "næste søndag",
 	"eraAbbr": [
@@ -253,9 +253,7 @@ define(
 	],
 	"eraNames": [
 		"f.Kr.",
-		"før vesterlandsk tidsregning",
-		"e.Kr.",
-		"vesterlandsk tidsregning"
+		"e.Kr."
 	],
 	"dateFormatItem-yMMMd": "d. MMM y",
 	"days-format-narrow": [
@@ -285,7 +283,7 @@ define(
 	"dateFormatItem-EHm": "E HH.mm",
 	"field-mon-relative+0": "denne mandag",
 	"field-mon-relative+1": "næste mandag",
-	"dateFormat-short": "dd/MM/yy",
+	"dateFormat-short": "dd/MM/y",
 	"dateFormatItem-EHms": "E HH.mm.ss",
 	"dateFormatItem-Ehms": "E h.mm.ss a",
 	"dayPeriods-format-narrow-noon": "middag",
@@ -295,10 +293,10 @@ define(
 	"field-sun-relative+-1": "sidste søndag",
 	"field-month-relative+0": "denne måned",
 	"field-month-relative+1": "næste måned",
-	"dateFormatItem-Ed": "E 'd'. d.",
+	"dateFormatItem-Ed": "E 'den' d.",
 	"dateTimeFormats-appendItem-Timezone": "{0} {1}",
 	"field-week": "Uge",
-	"dateFormat-medium": "dd/MM/y",
+	"dateFormat-medium": "d. MMM y",
 	"field-year-relative+0": "i år",
 	"field-week-relative+-1": "sidste uge",
 	"field-year-relative+1": "næste år",

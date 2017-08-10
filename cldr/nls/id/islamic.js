@@ -51,7 +51,7 @@ define(
 		"Jumada I",
 		"Jumada II",
 		"Rajab",
-		"Sya'ban",
+		"Sya’ban",
 		"Ramadhan",
 		"Syawal",
 		"Dhuʻl-Qiʻdah",
@@ -71,7 +71,7 @@ define(
 		"Jumada I",
 		"Jumada II",
 		"Rajab",
-		"Sya'ban",
+		"Sya’ban",
 		"Ramadhan",
 		"Syawal",
 		"Dhuʻl-Qiʻdah",
@@ -152,9 +152,9 @@ define(
 	"dateFormatItem-yyyyMMMd": "d MMM y G",
 	"dateFormatItem-MMMMd": "d MMMM",
 	"timeFormat-medium": "HH.mm.ss",
-	"field-sun-relative+0": "Minggu ini",
+	"field-sun-relative+0": "hari Minggu ini",
 	"dateFormatItem-Hm": "HH.mm",
-	"field-sun-relative+1": "Minggu berikutnya",
+	"field-sun-relative+1": "hari Minggu berikutnya",
 	"quarters-standAlone-abbr": [
 		"K1",
 		"K2",
@@ -251,7 +251,7 @@ define(
 	"dateFormat-short": "d/M/y GGGGG",
 	"field-second": "Detik",
 	"field-sat-relative+-1": "Sabtu lalu",
-	"field-sun-relative+-1": "Minggu lalu",
+	"field-sun-relative+-1": "hari Minggu lalu",
 	"field-month-relative+0": "bulan ini",
 	"field-month-relative+1": "Bulan berikutnya",
 	"dateFormatItem-Ed": "E, d",
@@ -269,7 +269,7 @@ define(
 	"dateFormatItem-GyMMM": "MMM y G",
 	"dateFormatItem-yyyy": "y G",
 	"field-week-relative+0": "minggu ini",
-	"field-week-relative+1": "Minggu berikutnya"
+	"field-week-relative+1": "minggu berikutnya"
 }
 //end v1.x content
 );

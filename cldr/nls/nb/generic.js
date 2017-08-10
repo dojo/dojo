@@ -56,8 +56,8 @@ define(
 	"field-zone": "Tidssone",
 	"dateFormatItem-yyyyMM": "MM.y G",
 	"dateFormatItem-y": "y G",
-	"field-year-relative+-1": "I fjor",
-	"field-month-relative+-1": "Sist måned",
+	"field-year-relative+-1": "i fjor",
+	"field-month-relative+-1": "forrige måned",
 	"dateFormatItem-hm": "h.mm a",
 	"dateFormatItem-yyyyMd": "d.M.y G",
 	"field-month": "Måned",
@@ -70,15 +70,15 @@ define(
 	"field-second": "Sekund",
 	"field-sat-relative+-1": "lørdag sist uke",
 	"field-sun-relative+-1": "søndag sist uke",
-	"field-month-relative+0": "Denne måneden",
-	"field-month-relative+1": "Neste måned",
+	"field-month-relative+0": "denne måneden",
+	"field-month-relative+1": "neste måned",
 	"dateFormatItem-Ed": "E d.",
 	"field-week": "Uke",
 	"dateFormat-medium": "d. MMM y G",
-	"field-year-relative+0": "Dette året",
-	"field-week-relative+-1": "Sist uke",
+	"field-year-relative+0": "i år",
+	"field-week-relative+-1": "forrige uke",
 	"dateFormatItem-yyyyM": "M.y G",
-	"field-year-relative+1": "Neste år",
+	"field-year-relative+1": "neste år",
 	"dateFormatItem-yyyyQQQQ": "QQQQ y G",
 	"dateTimeFormat-short": "{1} {0}",
 	"dateFormatItem-Hms": "HH.mm.ss",
@@ -86,8 +86,8 @@ define(
 	"dateFormatItem-GyMMM": "MMM y G",
 	"field-mon-relative+-1": "mandag sist uke",
 	"dateFormatItem-yyyy": "y G",
-	"field-week-relative+0": "Denne uken",
-	"field-week-relative+1": "Neste uke"
+	"field-week-relative+0": "denne uken",
+	"field-week-relative+1": "neste uke"
 }
 //end v1.x content
 );

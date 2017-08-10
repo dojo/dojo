@@ -250,7 +250,7 @@ define(
 	"field-month-relative+1": "в следующем месяце",
 	"dateFormatItem-Ed": "E, d",
 	"field-week": "Неделя",
-	"dateFormat-medium": "dd.MM.y G",
+	"dateFormat-medium": "d MMM y 'г'. G",
 	"field-year-relative+0": "в этому году",
 	"field-week-relative+-1": "на прошлой неделе",
 	"dateFormatItem-yyyyM": "MM.y G",

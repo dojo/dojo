@@ -2,16 +2,16 @@ define(
 //begin v1.x content
 {
 	"dateFormatItem-yM": "MM.y.",
-	"field-dayperiod": "pre podne/ popodne",
+	"field-dayperiod": "prijepodne/poslijepodne",
 	"dayPeriods-format-wide-pm": "popodne",
 	"field-minute": "minut",
 	"eraNames": [
-		"Pre nove ere",
+		"Prije nove ere",
 		"Nove ere"
 	],
 	"dateFormatItem-MMMEd": "E, dd. MMM",
 	"field-day-relative+-1": "juče",
-	"field-weekday": "dan u nedelji",
+	"field-weekday": "dan u sedmici",
 	"dateFormatItem-hms": "hh:mm:ss a",
 	"dateFormatItem-yQQQ": "y QQQ",
 	"field-day-relative+-2": "prekjuče",
@@ -41,8 +41,8 @@ define(
 	],
 	"field-era": "era",
 	"dateFormatItem-Gy": "y. G",
-	"field-hour": "čas",
-	"dayPeriods-format-wide-am": "pre podne",
+	"field-hour": "sat",
+	"dayPeriods-format-wide-am": "prije podne",
 	"quarters-standAlone-abbr": [
 		"K1",
 		"K2",
@@ -59,7 +59,7 @@ define(
 		"maj",
 		"jun",
 		"jul",
-		"avg",
+		"aug",
 		"sep",
 		"okt",
 		"nov",
@@ -71,7 +71,7 @@ define(
 	"field-day-relative+1": "sutra",
 	"eraAbbr": [
 		"p. n. e.",
-		"n. e"
+		"n. e."
 	],
 	"field-day-relative+2": "prekosutra",
 	"dateFormatItem-GyMMMd": "dd. MMM y. G",
@@ -79,7 +79,7 @@ define(
 	"timeFormat-medium": "HH:mm:ss",
 	"field-zone": "zona",
 	"dateFormatItem-Hm": "HH:mm",
-	"dateFormat-medium": "dd.MM.y.",
+	"dateFormat-medium": "dd. MMM. y.",
 	"dateFormatItem-Hms": "HH:mm:ss",
 	"dateFormatItem-yMd": "dd.MM.y.",
 	"quarters-standAlone-wide": [
@@ -90,7 +90,7 @@ define(
 	],
 	"dateFormatItem-ms": "mm:ss",
 	"field-year": "godina",
-	"field-week": "nedelja",
+	"field-week": "sedmica",
 	"months-standAlone-wide": [
 		"januar",
 		"februar",
@@ -99,7 +99,7 @@ define(
 		"maj",
 		"juni",
 		"juli",
-		"avgust",
+		"august",
 		"septembar",
 		"oktobar",
 		"novembar",
@@ -115,7 +115,7 @@ define(
 		"maj",
 		"jun",
 		"jul",
-		"avg",
+		"aug",
 		"sep",
 		"okt",
 		"nov",
@@ -123,7 +123,7 @@ define(
 	],
 	"dateFormatItem-yQQQQ": "y QQQQ",
 	"timeFormat-short": "HH:mm",
-	"field-month": "mesec",
+	"field-month": "mjesec",
 	"quarters-format-abbr": [
 		"K1",
 		"K2",
@@ -192,7 +192,7 @@ define(
 		"maj",
 		"juni",
 		"juli",
-		"avgust",
+		"august",
 		"septembar",
 		"oktobar",
 		"novembar",
@@ -225,7 +225,7 @@ define(
 	],
 	"eraNarrow": [
 		"p. n. e.",
-		"n. e"
+		"n. e."
 	]
 }
 //end v1.x content

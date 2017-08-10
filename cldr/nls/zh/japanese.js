@@ -2,7 +2,7 @@ define(
 //begin v1.x content
 {
 	"field-second-relative+0": "现在",
-	"field-weekday": "星期",
+	"field-weekday": "工作日",
 	"field-wed-relative+0": "本周三",
 	"field-wed-relative+1": "下周三",
 	"dateFormatItem-GyMMMEd": "Gy年M月d日E",

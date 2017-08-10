@@ -57,7 +57,7 @@ define(
 		"AH"
 	],
 	"field-minute": "Minute",
-	"field-dayperiod": "AM/PM",
+	"field-dayperiod": "am/pm",
 	"field-day-relative+-1": "yesterday",
 	"dateTimeFormat-long": "{1} 'at' {0}",
 	"dateFormatItem-MEd": "E, M/d",

@@ -23,7 +23,7 @@ define(
 	"field-hour": "Час",
 	"field-sat-relative+0": "оваа сабота",
 	"field-sat-relative+1": "следната сабота",
-	"field-day-relative+0": "Денес",
+	"field-day-relative+0": "денес",
 	"field-day-relative+1": "утре",
 	"field-thu-relative+0": "овој четврток",
 	"dateFormatItem-GyMMMd": "dd MMM y 'г'. G",

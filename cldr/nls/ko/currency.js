@@ -14,10 +14,10 @@ define(
 	"USD_displayName": "미국 달러",
 	"EUR_symbol": "€",
 	"CNY_symbol": "CN¥",
-	"GBP_displayName": "영국령 파운드 스털링",
+	"GBP_displayName": "파운드",
 	"GBP_symbol": "£",
 	"AUD_symbol": "AU$",
-	"EUR_displayName": "유로화"
+	"EUR_displayName": "유로"
 }
 //end v1.x content
 );

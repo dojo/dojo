@@ -1,7 +1,7 @@
 define(
 //begin v1.x content
 {
-	"dateFormatItem-Ehm": "E h.mm a",
+	"dateFormatItem-Ehm": "E h:mm a",
 	"days-standAlone-short": [
 		"ned.",
 		"pon.",
@@ -93,7 +93,7 @@ define(
 		"november",
 		"december"
 	],
-	"timeFormat-short": "HH.mm",
+	"timeFormat-short": "HH:mm",
 	"quarters-format-wide": [
 		"1. četrtletje",
 		"2. četrtletje",
@@ -101,7 +101,7 @@ define(
 		"4. četrtletje"
 	],
 	"dateFormatItem-yQQQQ": "QQQQ y",
-	"timeFormat-long": "HH.mm.ss z",
+	"timeFormat-long": "HH:mm:ss z",
 	"field-year": "Leto",
 	"dateFormatItem-yMMM": "MMM y",
 	"field-hour": "Ura",
@@ -121,13 +121,13 @@ define(
 	],
 	"field-sat-relative+0": "To soboto",
 	"field-sat-relative+1": "Naslednjo soboto",
-	"timeFormat-full": "HH.mm.ss zzzz",
-	"field-day-relative+0": "Danes",
+	"timeFormat-full": "HH:mm:ss zzzz",
+	"field-day-relative+0": "danes",
 	"field-thu-relative+0": "Ta četrtek",
-	"field-day-relative+1": "Jutri",
+	"field-day-relative+1": "jutri",
 	"field-thu-relative+1": "Naslednji četrtek",
 	"dateFormatItem-GyMMMd": "d. MMM y G",
-	"field-day-relative+2": "Pojutrišnjem",
+	"field-day-relative+2": "pojutrišnjem",
 	"dateFormatItem-H": "HH",
 	"months-standAlone-abbr": [
 		"jan",
@@ -166,10 +166,10 @@ define(
 		"petek",
 		"sobota"
 	],
-	"timeFormat-medium": "HH.mm.ss",
-	"field-sun-relative+0": "To nedeljo",
-	"dateFormatItem-Hm": "HH.mm",
-	"field-sun-relative+1": "Naslednjo nedeljo",
+	"timeFormat-medium": "HH:mm:ss",
+	"field-sun-relative+0": "to nedeljo",
+	"dateFormatItem-Hm": "HH:mm",
+	"field-sun-relative+1": "naslednjo nedeljo",
 	"quarters-standAlone-abbr": [
 		"Q1",
 		"Q2",
@@ -193,17 +193,17 @@ define(
 		"sob"
 	],
 	"dateFormatItem-d": "d",
-	"dateFormatItem-ms": "mm.ss",
+	"dateFormatItem-ms": "mm:ss",
 	"quarters-format-narrow": [
 		"1",
 		"2",
 		"3",
 		"4"
 	],
-	"field-day-relative+-1": "Včeraj",
+	"field-day-relative+-1": "včeraj",
 	"dateFormatItem-h": "h a",
 	"dateTimeFormat-long": "{1} {0}",
-	"field-day-relative+-2": "Predvčerajšnjim",
+	"field-day-relative+-2": "predvčerajšnjim",
 	"dateFormatItem-MMMd": "d. MMM",
 	"dateFormatItem-MEd": "E, d. MM.",
 	"dateTimeFormat-full": "{1} {0}",
@@ -220,7 +220,7 @@ define(
 		"petek",
 		"sobota"
 	],
-	"field-zone": "Območje",
+	"field-zone": "Časovni pas",
 	"dateFormatItem-y": "y",
 	"months-standAlone-narrow": [
 		"j",
@@ -236,9 +236,9 @@ define(
 		"n",
 		"d"
 	],
-	"field-year-relative+-1": "Lani",
-	"field-month-relative+-1": "Prejšnji mesec",
-	"dateFormatItem-hm": "h.mm a",
+	"field-year-relative+-1": "lani",
+	"field-month-relative+-1": "prejšnji mesec",
+	"dateFormatItem-hm": "h:mm a",
 	"days-format-abbr": [
 		"ned.",
 		"pon.",
@@ -278,32 +278,32 @@ define(
 	"field-tue-relative+0": "Ta torek",
 	"field-tue-relative+1": "Naslednji torek",
 	"dayPeriods-format-wide-am": "dop.",
-	"dateFormatItem-EHm": "E HH.mm",
-	"field-mon-relative+0": "Ta ponedeljek",
-	"field-mon-relative+1": "Naslednji ponedeljek",
+	"dateFormatItem-EHm": "E HH:mm",
+	"field-mon-relative+0": "ta ponedeljek",
+	"field-mon-relative+1": "naslednji ponedeljek",
 	"dateFormat-short": "d. MM. yy",
-	"dateFormatItem-EHms": "E HH.mm.ss",
-	"dateFormatItem-Ehms": "E h.mm.ss a",
+	"dateFormatItem-EHms": "E HH:mm:ss",
+	"dateFormatItem-Ehms": "E h:mm:ss a",
 	"field-second": "Sekunda",
 	"field-sat-relative+-1": "Prejšnjo soboto",
 	"dateFormatItem-yMMMEd": "E, d. MMM y",
-	"field-sun-relative+-1": "Prejšnjo nedeljo",
-	"field-month-relative+0": "Ta mesec",
-	"field-month-relative+1": "Naslednji mesec",
+	"field-sun-relative+-1": "prejšnjo nedeljo",
+	"field-month-relative+0": "ta mesec",
+	"field-month-relative+1": "naslednji mesec",
 	"dateFormatItem-Ed": "E, d.",
 	"dateTimeFormats-appendItem-Timezone": "{0} {1}",
 	"field-week": "Teden",
 	"dateFormat-medium": "d. MMM y",
-	"field-year-relative+0": "Letos",
-	"field-week-relative+-1": "Prejšnji teden",
-	"field-year-relative+1": "Naslednje leto",
+	"field-year-relative+0": "letos",
+	"field-week-relative+-1": "prejšnji teden",
+	"field-year-relative+1": "naslednje leto",
 	"dateTimeFormat-short": "{1} {0}",
-	"dateFormatItem-Hms": "HH.mm.ss",
-	"dateFormatItem-hms": "h.mm.ss a",
+	"dateFormatItem-Hms": "HH:mm:ss",
+	"dateFormatItem-hms": "h:mm:ss a",
 	"dateFormatItem-GyMMM": "MMM y G",
-	"field-mon-relative+-1": "Prejšnji ponedeljek",
-	"field-week-relative+0": "Ta teden",
-	"field-week-relative+1": "Naslednji teden"
+	"field-mon-relative+-1": "prejšnji ponedeljek",
+	"field-week-relative+0": "ta teden",
+	"field-week-relative+1": "naslednji teden"
 }
 //end v1.x content
 );

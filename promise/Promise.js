@@ -104,7 +104,7 @@ define([
 			return this.then(callbackOrErrback, callbackOrErrback);
 		},
 
-        catch: function(errback){
+        "catch": function(errback){
             // summary:
             //		Add new errbacks to the promise. Follows ECMA specification naming.
             // errback: Function?

@@ -1971,12 +1971,12 @@
 	}
 })
 //>>excludeStart("replaceLoaderConfig", kwArgs.replaceLoaderConfig);
-(
+.call(new Function('return this')(),
 	// userConfig
 	(function(){
 		// make sure we're looking at global dojoConfig etc.
 		return this.dojoConfig || this.djConfig || this.require || {};
-	})(),
+	}).call(new Function('return this')()),
 
 	// defaultConfig
 	{

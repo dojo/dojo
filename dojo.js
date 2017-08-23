@@ -1,3 +1,4 @@
+(function(global){
 (function(
 	userConfig,
 	defaultConfig
@@ -125,8 +126,6 @@
 		},
 
 		// the loader uses the has.js API to control feature inclusion/exclusion; define then use throughout
-		global = this,
-
 		doc = global.document,
 
 		element = doc && doc.createElement("DiV"),
@@ -1973,10 +1972,7 @@
 //>>excludeStart("replaceLoaderConfig", kwArgs.replaceLoaderConfig);
 (
 	// userConfig
-	(function(){
-		// make sure we're looking at global dojoConfig etc.
-		return this.dojoConfig || this.djConfig || this.require || {};
-	})(),
+	global.dojoConfig || global.djConfig || global.require || {},
 
 	// defaultConfig
 	{
@@ -2038,4 +2034,21 @@
 		waitSeconds:15
 	}
 );
+})((function(){
+	if (typeof global !== 'undefined') {
+		// global spec defines a reference to the global object called 'global'
+		// https://github.com/tc39/proposal-global
+		// `global` is also defined in NodeJS
+		return global;
+	}
+	else if (typeof window !== 'undefined') {
+		// window is defined in browsers
+		return window;
+	}
+	else if (typeof self !== 'undefined') {
+		// self is defined in WebWorkers
+		return self;
+	}
+	return this;
+})());
 //>>excludeEnd("replaceLoaderConfig")

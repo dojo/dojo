@@ -2036,6 +2036,7 @@
 			waitSeconds:15
 		}
 	);
+    //>>excludeEnd("replaceLoaderConfig")
 })((function(){
 	if (typeof global !== 'undefined') {
 		// global spec defines a reference to the global object called 'global'
@@ -2053,4 +2054,3 @@
 	}
 	return this;
 })());
-//>>excludeEnd("replaceLoaderConfig")

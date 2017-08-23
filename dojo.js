@@ -136,6 +136,8 @@
 
 			hasCache = has.cache = defaultConfig.hasCache;
 
+		req.global = global;
+
 		has.add = function(name, test, now, force){
 			(hasCache[name]===undefined || force) && (hasCache[name] = test);
 			return now && has(name);

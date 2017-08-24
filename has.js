@@ -26,7 +26,7 @@ define(["require", "module"], function(require, module){
 				window.location == location && window.document == document,
 
 			// has API variables
-			global = (function () { return this; })(),
+			global = require.global,
 			doc = isBrowser && document,
 			element = doc && doc.createElement("DiV"),
 			cache = (module.config && module.config()) || {};

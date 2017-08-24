@@ -10,7 +10,7 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 
 		// create dojo, dijit, and dojox
 		// FIXME: in 2.0 remove dijit, dojox being created by dojo
-		global = (function () { return this; })(),
+		global = require.global,
 		dijit = {},
 		dojox = {},
 		dojo = {

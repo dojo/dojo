@@ -1,5 +1,5 @@
-define(['./has'], function(has){
-	var global = (function () { return this; })(),
+define(['./has', 'require'], function(has, require){
+	var global = require.global,
 		doc = document,
 		readyStates = { 'loaded': 1, 'complete': 1 },
 		fixReadyState = typeof doc.readyState != "string",

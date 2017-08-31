@@ -1965,6 +1965,10 @@
 		if(has("dojo-log-api")){
 			signal(error, makeError("defineAlreadyDefined", 0));
 		}
+		if (global.require) {
+			global.require.global = global;
+		}
+		global.define(["require"], function(require){ require.global = global; });
 		return;
 	}else{
 		global.define = def;

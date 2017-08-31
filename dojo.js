@@ -144,7 +144,7 @@
 		},
 
 		// the loader uses the has.js API to control feature inclusion/exclusion; define then use throughout
-		global = req.global = globalObject,
+		global = globalObject,
 
 		doc = global.document,
 

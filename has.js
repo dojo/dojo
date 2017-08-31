@@ -1,4 +1,4 @@
-define(["require", "module"], function(require, module){
+define(["./global", "require", "module"], function(global, require, module){
 	// module:
 	//		dojo/has
 	// summary:
@@ -26,7 +26,6 @@ define(["require", "module"], function(require, module){
 				window.location == location && window.document == document,
 
 			// has API variables
-			global = (function () { return this; })(),
 			doc = isBrowser && document,
 			element = doc && doc.createElement("DiV"),
 			cache = (module.config && module.config()) || {};

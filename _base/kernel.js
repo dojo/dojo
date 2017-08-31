@@ -1,4 +1,4 @@
-define(["../has", "./config", "require", "module"], function(has, config, require, module){
+define(["../global", "../has", "./config", "require", "module"], function(global, has, config, require, module){
 	// module:
 	//		dojo/_base/kernel
 
@@ -10,7 +10,6 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 
 		// create dojo, dijit, and dojox
 		// FIXME: in 2.0 remove dijit, dojox being created by dojo
-		global = (function () { return this; })(),
 		dijit = {},
 		dojox = {},
 		dojo = {

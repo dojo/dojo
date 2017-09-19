@@ -1,4 +1,4 @@
-define(["../has", "require"], function(has, require){
+define(["../global", "../has", "require"], function(global, has, require){
 	// module:
 	//		dojo/_base/config
 
@@ -161,7 +161,6 @@ return {
 				p!="has" && has.add(prefix + p, featureSet[p], 0, booting);
 			}
 		};
-		var global = (function () { return this; })();
 		result = has("dojo-loader") ?
 			// must be a built version of the dojo loader; all config stuffed in require.rawConfig
 			require.rawConfig :

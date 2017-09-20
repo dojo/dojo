@@ -1,5 +1,5 @@
 define(function(){
-    if (typeof global !== 'undefined') {
+    if (typeof global !== 'undefined' && typeof global !== 'function') {
         // global spec defines a reference to the global object called 'global'
         // https://github.com/tc39/proposal-global
         // `global` is also defined in NodeJS

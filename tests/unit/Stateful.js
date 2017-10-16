@@ -68,6 +68,32 @@ define([
 
 				assert.isTrue(onAnyValueChange.calledTwice);
 				assert.isTrue(onFooValueChange.calledOnce);
+			},
+
+			'child watcher': function () {
+				model = new Stateful({
+					user: {
+						name: 1
+					}
+				});
+
+				var results;
+
+				model.watch("user", function(field, oldValue, newValue) {
+					newValue.watch(function(_field, _oldValue, _newValue) {
+						results = [_field, _oldValue, _newValue];
+					});
+				});
+
+				var userPet = new Stateful({
+					name: 2
+				});
+
+				model.set("user", userPet);
+
+				userPet.set("name", 3);
+
+				assert.deepEqual(results, ['name', 2, 3], 'child watcher work correctly');
 			}
 		},
 

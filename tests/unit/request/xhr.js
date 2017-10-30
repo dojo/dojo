@@ -199,6 +199,30 @@ define([
 				def.reject
 			);
 		},
+		'.post File with upload progress': function() {
+			if (!File) {
+				this.skip('File not available');
+			}
+			var def = this.async(),
+				str = 'foo',
+				file = new File([str], 'bar.txt', {type:'text/plain'});
+
+			var promise = xhr.post('/__services/request/xhr', {
+				data: file,
+				handleAs: 'json',
+				uploadProgress: true,
+				query: {
+					simulateProgress: true
+				},
+				headers: {
+					'Content-Type':'text/plain'
+				}
+			});
+
+			promise.then(null, def.reject, def.callback(function (progressEvent) {
+				assert.isDefined(progressEvent.xhr);
+			}));
+		},
 		'.post with query': function () {
 			var def = this.async(),
 				promise = xhr.post('/__services/request/xhr', {

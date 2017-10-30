@@ -32,7 +32,7 @@ define([
 	}
 
 	return function (request) {
-		var promise = new util.Promise(function (resolve) {
+		var dfd = new util.Promise(function (resolve) {
 			function respond(data) {
 				resolve({
 					status: 200,
@@ -60,6 +60,7 @@ define([
 				resolve(responseType(require.toUrl('./support/blob.gif'), 'image/gif'));
 				return;
 			}
+
 			if (request.serviceURL.indexOf('/responseTypeDoc') > -1) {
 				resolve(responseType(require.toUrl('./support/document.html'), 'text/html'));
 				return;
@@ -88,14 +89,18 @@ define([
 			else {
 				respond();
 			}
-		});
+		}, true);
+
+		if (request.query.simulateProgress) {
+			dfd.progress({ type: 'progress' });
+		}
 
 		var milliseconds = request.query.delay;
 		if (milliseconds) {
 			milliseconds = parseInt(milliseconds, 10);
-			promise = util.delay(promise, milliseconds);
+			dfd.promise = util.delay(dfd.promise, milliseconds);
 		}
 
-		return promise;
+		return dfd.promise;
 	};
 });

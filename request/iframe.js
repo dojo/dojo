@@ -11,10 +11,11 @@ define([
 	'../dom',
 	'../dom-construct',
 	'../_base/window',
-	'../NodeList-dom'/*=====,
+	'../NodeList-dom',
+        '../NodeList-manipulate'/*=====,
 	'../request',
 	'../_base/declare' =====*/
-], function(module, require, watch, util, handlers, lang, ioQuery, query, has, dom, domConstruct, win/*=====, NodeList, request, declare =====*/){
+], function(module, require, watch, util, handlers, lang, ioQuery, query, has, dom, domConstruct, win/*=====, NodeList, NodeList, request, declare =====*/){
 	var mid = module.id.replace(/[\/\.\-]/g, '_'),
 		onload = mid + '_onload';
 
@@ -212,10 +213,11 @@ define([
 								createInput(x, val[i]);
 							}
 						}else{
-							if(!formNode[x]){
+							var n = query("input[name='"+x+"']");
+							if(n.indexOf() == -1){
 								createInput(x, val);
 							}else{
-								formNode[x].value = val;
+								n.val(val);
 							}
 						}
 					}

@@ -309,7 +309,7 @@ define([
 		// uploadProgress: Boolean?
 		//		Upload progress events cause preflighted requests. This
 		//		option enables upload progress event support but also
-		//		causes all requests to be pre-lighted.
+		//		causes all requests to be preflighted.
 	});
 	xhr.__MethodOptions = declare(null, {
 		// method: String?

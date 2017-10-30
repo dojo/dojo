@@ -7,7 +7,7 @@ define([
 	'intern/dojo/promise/Promise',
 	'intern/dojo/promise/all'
 ], function (exports, lang, array, Deferred, CancelError, DojoPromise, all) {
-	exports.Promise = function Promise(executor) {
+	exports.Promise = function Promise(executor, returnDfd) {
 		var canceler;
 		var dfd = new Deferred(function (reason) {
 			if (canceler) {
@@ -32,7 +32,7 @@ define([
 			dfd.reject(e);
 		}
 
-		return dfd.promise;
+		return returnDfd ? dfd : dfd.promise;
 	};
 
 	exports.Promise.reject = function (error) {

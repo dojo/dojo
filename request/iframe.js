@@ -11,11 +11,11 @@ define([
 	'../dom',
 	'../dom-construct',
 	'../_base/window',
+	// NodeList enhancement modules;
+	// must be loaded (but no reference needed)
 	'../NodeList-dom',
-        '../NodeList-manipulate'/*=====,
-	'../request',
-	'../_base/declare' =====*/
-], function(module, require, watch, util, handlers, lang, ioQuery, query, has, dom, domConstruct, win/*=====, NodeList, NodeList, request, declare =====*/){
+        '../NodeList-manipulate'
+], function(module, require, watch, util, handlers, lang, ioQuery, query, has, dom, domConstruct, win){
 	var mid = module.id.replace(/[\/\.\-]/g, '_'),
 		onload = mid + '_onload';
 

@@ -213,7 +213,12 @@ define([
 								createInput(x, val[i]);
 							}
 						}else{
-							var n = query("input[name='"+x+"']");
+							// Explicitly search for nodes in the dom tree
+							// using formNode[x] may access attributes of the
+							// form node itself, e.g. formNode['action']
+							var n = query("input[name='"+x+"']", formNode);
+
+							// Not found if indexOf == -1
 							if(n.indexOf() == -1){
 								createInput(x, val);
 							}else{

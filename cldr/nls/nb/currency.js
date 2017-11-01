@@ -14,7 +14,7 @@ define(
 	"USD_displayName": "amerikanske dollar",
 	"EUR_symbol": "€",
 	"CNY_symbol": "CNY",
-	"GBP_displayName": "britiske pund sterling",
+	"GBP_displayName": "britiske pund",
 	"GBP_symbol": "£",
 	"AUD_symbol": "AUD",
 	"EUR_displayName": "euro"

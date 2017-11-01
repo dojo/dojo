@@ -2,13 +2,13 @@ define(
 //begin v1.x content
 {
 	"days-standAlone-short": [
-		"do",
-		"sg",
-		"te",
-		"qu",
-		"qi",
-		"sx",
-		"sb"
+		"dom",
+		"seg",
+		"ter",
+		"qua",
+		"qui",
+		"sex",
+		"sáb"
 	],
 	"field-weekday": "Dia da semana",
 	"field-wed-relative+0": "esta quarta-feira",
@@ -17,13 +17,13 @@ define(
 	"dateFormatItem-MMMEd": "E, d 'de' MMM",
 	"field-tue-relative+-1": "terça-feira passada",
 	"days-format-short": [
-		"do",
-		"sg",
-		"te",
-		"qu",
-		"qi",
-		"sx",
-		"sb"
+		"dom",
+		"seg",
+		"ter",
+		"qua",
+		"qui",
+		"sex",
+		"sáb"
 	],
 	"dateFormat-long": "d 'de' MMMM 'de' y G",
 	"field-fri-relative+-1": "sexta-feira passada",

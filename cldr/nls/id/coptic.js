@@ -4,7 +4,7 @@ define(
 	"field-sat-relative+0": "Sabtu ini",
 	"field-sat-relative+1": "Sabtu berikutnya",
 	"field-dayperiod": "AM/PM",
-	"field-sun-relative+-1": "Minggu lalu",
+	"field-sun-relative+-1": "hari Minggu lalu",
 	"field-mon-relative+-1": "Senin lalu",
 	"field-minute": "Menit",
 	"field-day-relative+-1": "kemarin",
@@ -27,8 +27,8 @@ define(
 	],
 	"field-era": "Era",
 	"field-hour": "Jam",
-	"field-sun-relative+0": "Minggu ini",
-	"field-sun-relative+1": "Minggu berikutnya",
+	"field-sun-relative+0": "hari Minggu ini",
+	"field-sun-relative+1": "hari Minggu berikutnya",
 	"months-standAlone-abbr": [
 		"Tout",
 		"Baba",
@@ -76,7 +76,7 @@ define(
 	],
 	"field-week": "Minggu",
 	"field-week-relative+0": "minggu ini",
-	"field-week-relative+1": "Minggu berikutnya",
+	"field-week-relative+1": "minggu berikutnya",
 	"months-format-abbr": [
 		"Tout",
 		"Baba",

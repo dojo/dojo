@@ -4,7 +4,7 @@ define(
 	"days-standAlone-short": [
 		"dg.",
 		"dl.",
-		"dm.",
+		"dt.",
 		"dc.",
 		"dj.",
 		"dv.",
@@ -28,7 +28,7 @@ define(
 	"field-weekday": "dia de la setmana",
 	"field-wed-relative+0": "aquest dimecres",
 	"field-wed-relative+1": "dimecres que ve",
-	"dateFormatItem-GyMMMEd": "E, d MMM, y G",
+	"dateFormatItem-GyMMMEd": "E, d MMM y G",
 	"dateFormatItem-MMMEd": "E d MMM",
 	"eraNarrow": [
 		"eB"
@@ -47,18 +47,18 @@ define(
 	"field-fri-relative+-1": "divendres passat",
 	"field-wed-relative+-1": "dimecres passat",
 	"months-format-wide": [
-		"gener",
-		"febrer",
-		"març",
-		"abril",
-		"maig",
-		"juny",
-		"juliol",
-		"agost",
-		"setembre",
-		"octubre",
-		"novembre",
-		"desembre"
+		"de gener",
+		"de febrer",
+		"de març",
+		"d’abril",
+		"de maig",
+		"de juny",
+		"de juliol",
+		"d’agost",
+		"de setembre",
+		"d’octubre",
+		"de novembre",
+		"de desembre"
 	],
 	"dateFormatItem-yyyyQQQ": "QQQ y G",
 	"dateTimeFormat-medium": "{1}, {0}",
@@ -94,7 +94,7 @@ define(
 	"field-hour": "hora",
 	"months-format-abbr": [
 		"gen.",
-		"feb.",
+		"febr.",
 		"març",
 		"abr.",
 		"maig",
@@ -118,7 +118,7 @@ define(
 	"dateFormatItem-H": "H",
 	"months-standAlone-abbr": [
 		"gen.",
-		"feb.",
+		"febr.",
 		"març",
 		"abr.",
 		"maig",
@@ -143,7 +143,7 @@ define(
 		"4t trimestre"
 	],
 	"dateFormatItem-Gy": "y G",
-	"dateFormatItem-yyyyMMMEd": "E, d MMM, y G",
+	"dateFormatItem-yyyyMMMEd": "E, d MMM y G",
 	"dateFormatItem-M": "L",
 	"days-standAlone-wide": [
 		"diumenge",
@@ -184,7 +184,7 @@ define(
 	"field-day-relative+-1": "ahir",
 	"dateTimeFormat-long": "{1}, {0}",
 	"dayPeriods-format-narrow-am": "a.m.",
-	"field-day-relative+-2": "abans-d'ahir",
+	"field-day-relative+-2": "abans-d’ahir",
 	"dateFormatItem-MMMd": "d MMM",
 	"dateFormatItem-MEd": "E, d/M",
 	"dateTimeFormat-full": "{1}, {0}",
@@ -216,7 +216,7 @@ define(
 		"NV",
 		"DS"
 	],
-	"field-year-relative+-1": "l'any passat",
+	"field-year-relative+-1": "l’any passat",
 	"field-month-relative+-1": "el mes passat",
 	"days-format-abbr": [
 		"dg.",
@@ -268,7 +268,7 @@ define(
 	"field-year-relative+0": "enguany",
 	"field-week-relative+-1": "la setmana passada",
 	"dateFormatItem-yyyyM": "M/y G",
-	"field-year-relative+1": "l'any que ve",
+	"field-year-relative+1": "l’any que ve",
 	"dayPeriods-format-narrow-pm": "p.m.",
 	"dateFormatItem-yyyyQQQQ": "QQQQ y G",
 	"dateTimeFormat-short": "{1}, {0}",

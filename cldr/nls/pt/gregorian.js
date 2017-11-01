@@ -186,7 +186,7 @@ define(
 		"d.C."
 	],
 	"field-minute": "Minuto",
-	"field-dayperiod": "Período do dia",
+	"field-dayperiod": "AM/PM",
 	"days-standAlone-abbr": [
 		"dom",
 		"seg",
@@ -225,7 +225,7 @@ define(
 		"sexta-feira",
 		"sábado"
 	],
-	"field-zone": "Fuso",
+	"field-zone": "Fuso horário",
 	"dateFormatItem-y": "y",
 	"months-standAlone-narrow": [
 		"J",
@@ -299,7 +299,7 @@ define(
 	"dateFormatItem-Ed": "E, d",
 	"dateTimeFormats-appendItem-Timezone": "{0} {1}",
 	"field-week": "Semana",
-	"dateFormat-medium": "dd/MM/y",
+	"dateFormat-medium": "d 'de' MMM 'de' y",
 	"field-year-relative+0": "este ano",
 	"field-week-relative+-1": "semana passada",
 	"field-year-relative+1": "próximo ano",

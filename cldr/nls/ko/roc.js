@@ -29,7 +29,7 @@ define(
 	"field-year-relative+0": "올해",
 	"field-year-relative+1": "내년",
 	"field-sat-relative+-1": "지난 토요일",
-	"field-year-relative+-1": "지난해",
+	"field-year-relative+-1": "작년",
 	"field-year": "년",
 	"field-fri-relative+0": "이번 금요일",
 	"field-fri-relative+1": "다음 금요일",

@@ -1,4 +1,4 @@
-define(["../has", "./config", "require", "module"], function(has, config, require, module){
+define(["../global", "../has", "./config", "require", "module"], function(global, has, config, require, module){
 	// module:
 	//		dojo/_base/kernel
 
@@ -10,7 +10,6 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 
 		// create dojo, dijit, and dojox
 		// FIXME: in 2.0 remove dijit, dojox being created by dojo
-		global = (function () { return this; })(),
 		dijit = {},
 		dojox = {},
 		dojo = {
@@ -93,7 +92,7 @@ define(["../has", "./config", "require", "module"], function(has, config, requir
 		//		- flag: String: Descriptor flag. If total version is "1.2.0beta1", will be "beta1"
 		//		- revision: Number: The Git rev from which dojo was pulled
 
-		major: 1, minor: 13, patch: 0, flag: "-pre",
+		major: 1, minor: 14, patch: 0, flag: "-pre",
 		revision: rev ? rev[0] : NaN,
 		toString: function(){
 			var v = dojo.version;

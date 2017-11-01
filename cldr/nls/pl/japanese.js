@@ -22,7 +22,7 @@ define(
 	"field-tue-relative+0": "w ten wtorek",
 	"field-zone": "strefa czasowa",
 	"field-tue-relative+1": "w przyszły wtorek",
-	"field-week-relative+-1": "Zeszły tydzień",
+	"field-week-relative+-1": "w zeszłym tygodniu",
 	"dateFormat-medium": "d MMM y G",
 	"field-year-relative+0": "w tym roku",
 	"field-year-relative+1": "w przyszłym roku",

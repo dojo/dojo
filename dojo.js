@@ -62,6 +62,25 @@
 	// prid: plugin resource identifier
 	// The integer constant 1 is used in place of true and 0 in place of false.
 
+	// define global
+	var globalObject = (function(){
+		if (typeof global !== 'undefined' && typeof global !== 'function') {
+			// global spec defines a reference to the global object called 'global'
+			// https://github.com/tc39/proposal-global
+			// `global` is also defined in NodeJS
+			return global;
+		}
+		else if (typeof window !== 'undefined') {
+			// window is defined in browsers
+			return window;
+		}
+		else if (typeof self !== 'undefined') {
+			// self is defined in WebWorkers
+			return self;
+		}
+		return this;
+	})();
+
 	// define a minimal library to help build the loader
 	var	noop = function(){
 		},
@@ -125,7 +144,7 @@
 		},
 
 		// the loader uses the has.js API to control feature inclusion/exclusion; define then use throughout
-		global = this,
+		global = globalObject,
 
 		doc = global.document,
 
@@ -136,6 +155,10 @@
 		},
 
 		hasCache = has.cache = defaultConfig.hasCache;
+
+	if (isFunction(userConfig)) {
+		userConfig = userConfig(globalObject);
+	}
 
 	has.add = function(name, test, now, force){
 		(hasCache[name]===undefined || force) && (hasCache[name] = test);
@@ -1973,10 +1996,7 @@
 //>>excludeStart("replaceLoaderConfig", kwArgs.replaceLoaderConfig);
 (
 	// userConfig
-	(function(){
-		// make sure we're looking at global dojoConfig etc.
-		return this.dojoConfig || this.djConfig || this.require || {};
-	})(),
+	function(global){ return global.dojoConfig || global.djConfig || global.require || {}; },
 
 	// defaultConfig
 	{

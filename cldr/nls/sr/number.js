@@ -17,7 +17,7 @@ define(
 	"currencyFormat": "#,##0.00 ¤;(#,##0.00 ¤)",
 	"plusSign": "+",
 	"decimalFormat-long": "000 трилиона",
-	"decimalFormat-short": "000 бил"
+	"decimalFormat-short": "000 бил'.'"
 }
 //end v1.x content
 );

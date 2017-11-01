@@ -89,7 +89,7 @@ define(
 		"第3季",
 		"第4季"
 	],
-	"timeFormat-long": "zah時mm分ss秒",
+	"timeFormat-long": "ah:mm:ss [z]",
 	"field-year": "年",
 	"field-hour": "小時",
 	"months-format-abbr": [
@@ -108,7 +108,7 @@ define(
 	],
 	"field-sat-relative+0": "本週六",
 	"field-sat-relative+1": "下週六",
-	"timeFormat-full": "zzzzah時mm分ss秒",
+	"timeFormat-full": "ah:mm:ss [zzzz]",
 	"field-day-relative+0": "今天",
 	"field-thu-relative+0": "本週四",
 	"field-day-relative+1": "明天",

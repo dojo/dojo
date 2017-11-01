@@ -11,7 +11,7 @@ define(
 	"field-weekday": "Veckodag",
 	"field-day-relative+-2": "i förrgår",
 	"field-era": "Era",
-	"field-hour": "timme",
+	"field-hour": "Timme",
 	"field-sun-relative+0": "söndag denna vecka",
 	"field-sun-relative+1": "söndag nästa vecka",
 	"field-wed-relative+-1": "onsdag förra veckan",

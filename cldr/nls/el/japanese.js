@@ -28,7 +28,7 @@ define(
 	"field-day-relative+2": "μεθαύριο",
 	"dateFormat-long": "d MMMM, y G",
 	"field-tue-relative+0": "αυτήν την Τρίτη",
-	"field-zone": "Ζώνη",
+	"field-zone": "Ζώνη ώρας",
 	"field-tue-relative+1": "επόμενη Τρίτη",
 	"field-week-relative+-1": "προηγούμενη εβδομάδα",
 	"dateFormat-medium": "d MMM, y G",

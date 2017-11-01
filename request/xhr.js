@@ -116,7 +116,7 @@ define([
 			//		Canceler for deferred
 			response.xhr.abort();
 		};
-		addListeners = function(_xhr, dfd, response){
+		addListeners = function(_xhr, dfd, response, uploadProgress){
 			// summary:
 			//		Adds event listeners to the XMLHttpRequest object
 			function onLoad(evt){
@@ -143,10 +143,15 @@ define([
 			_xhr.addEventListener('error', onError, false);
 			_xhr.addEventListener('progress', onProgress, false);
 
+			if (uploadProgress && _xhr.upload) {
+				_xhr.upload.addEventListener('progress', onProgress, false);
+			}
+
 			return function(){
 				_xhr.removeEventListener('load', onLoad, false);
 				_xhr.removeEventListener('error', onError, false);
 				_xhr.removeEventListener('progress', onProgress, false);
+				_xhr.upload.removeEventListener('progress', onProgress, false);
 				_xhr = null;
 			};
 		};
@@ -193,7 +198,7 @@ define([
 			// older IE breaks point 9 in http://www.w3.org/TR/XMLHttpRequest/#the-open()-method and sends fragment, so strip it
 			url = url.split('#')[0];
 		}
-		
+
 		var remover,
 			last = function(){
 				remover && remover();
@@ -220,7 +225,7 @@ define([
 		response.getHeader = getHeader;
 
 		if(addListeners){
-			remover = addListeners(_xhr, dfd, response);
+			remover = addListeners(_xhr, dfd, response, options.uploadProgress);
 		}
 
 		// IE11 treats data: undefined different than other browsers
@@ -301,6 +306,10 @@ define([
 		// withCredentials: Boolean?
 		//		For cross-site requests, whether to send credentials
 		//		or not.
+		// uploadProgress: Boolean?
+		//		Upload progress events cause preflighted requests. This
+		//		option enables upload progress event support but also
+		//		causes all requests to be preflighted.
 	});
 	xhr.__MethodOptions = declare(null, {
 		// method: String?

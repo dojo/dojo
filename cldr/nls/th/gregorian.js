@@ -55,7 +55,7 @@ define(
 		"ศ.",
 		"ส."
 	],
-	"dateFormat-long": "d MMMM y",
+	"dateFormat-long": "d MMMM G y",
 	"field-fri-relative+-1": "ศุกร์ที่แล้ว",
 	"field-wed-relative+-1": "พุธที่แล้ว",
 	"months-format-wide": [
@@ -101,7 +101,7 @@ define(
 		"ไตรมาส 3",
 		"ไตรมาส 4"
 	],
-	"dateFormatItem-yQQQQ": "QQQQ y",
+	"dateFormatItem-yQQQQ": "QQQQ G y",
 	"timeFormat-long": "H นาฬิกา mm นาที ss วินาที z",
 	"field-year": "ปี",
 	"dateFormatItem-yMMM": "MMM y",
@@ -209,7 +209,7 @@ define(
 	"dateFormatItem-MEd": "E d/M",
 	"dateTimeFormat-full": "{1} {0}",
 	"field-fri-relative+0": "ศุกร์นี้",
-	"dateFormatItem-yMMMM": "MMMM y",
+	"dateFormatItem-yMMMM": "MMMM G y",
 	"field-fri-relative+1": "ศุกร์หน้า",
 	"field-day": "วัน",
 	"days-format-wide": [
@@ -252,9 +252,7 @@ define(
 	"dateFormatItem-yMMMd": "d MMM y",
 	"eraNames": [
 		"ปีก่อนคริสต์ศักราช",
-		"ก่อนสามัญศักราช",
-		"คริสต์ศักราช",
-		"สามัญศักราช"
+		"คริสต์ศักราช"
 	],
 	"days-format-narrow": [
 		"อา",

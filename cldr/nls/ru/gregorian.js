@@ -36,7 +36,7 @@ define(
 	"dateFormatItem-yQQQ": "QQQ y 'г'.",
 	"dateFormatItem-yMEd": "ccc, d.MM.y 'г'.",
 	"field-wed-relative+0": "в эту среду",
-	"dateFormatItem-GyMMMEd": "E, d MMM y G",
+	"dateFormatItem-GyMMMEd": "E, d MMM y 'г'. G",
 	"dateFormatItem-MMMEd": "ccc, d MMM",
 	"field-wed-relative+1": "в следующую среду",
 	"eraNarrow": [
@@ -81,18 +81,18 @@ define(
 	"dateFormatItem-yM": "MM.y",
 	"field-era": "Эра",
 	"months-standAlone-wide": [
-		"Январь",
-		"Февраль",
-		"Март",
-		"Апрель",
-		"Май",
-		"Июнь",
-		"Июль",
-		"Август",
-		"Сентябрь",
-		"Октябрь",
-		"Ноябрь",
-		"Декабрь"
+		"январь",
+		"февраль",
+		"март",
+		"апрель",
+		"май",
+		"июнь",
+		"июль",
+		"август",
+		"сентябрь",
+		"октябрь",
+		"ноябрь",
+		"декабрь"
 	],
 	"timeFormat-short": "H:mm",
 	"quarters-format-wide": [
@@ -133,18 +133,18 @@ define(
 	"field-thu-relative+1": "в следующий четверг",
 	"dateFormatItem-H": "H",
 	"months-standAlone-abbr": [
-		"Янв.",
-		"Февр.",
-		"Март",
-		"Апр.",
-		"Май",
-		"Июнь",
-		"Июль",
-		"Авг.",
-		"Сент.",
-		"Окт.",
-		"Нояб.",
-		"Дек."
+		"янв.",
+		"февр.",
+		"март",
+		"апр.",
+		"май",
+		"июнь",
+		"июль",
+		"авг.",
+		"сент.",
+		"окт.",
+		"нояб.",
+		"дек."
 	],
 	"quarters-format-abbr": [
 		"1-й кв.",
@@ -254,8 +254,8 @@ define(
 		"сб"
 	],
 	"eraNames": [
-		"до н.э.",
-		"н.э."
+		"до н. э.",
+		"н. э."
 	],
 	"dateFormatItem-yMMMd": "d MMM y 'г'.",
 	"days-format-narrow": [
@@ -289,7 +289,7 @@ define(
 	"dateFormatItem-Ehms": "E h:mm:ss a",
 	"field-second": "Секунда",
 	"field-sat-relative+-1": "в прошлую субботу",
-	"dateFormatItem-yMMMEd": "E, d MMM y",
+	"dateFormatItem-yMMMEd": "E, d MMM y 'г'.",
 	"field-sun-relative+-1": "в прошлое воскресенье",
 	"field-month-relative+0": "в этом месяце",
 	"field-month-relative+1": "в следующем месяце",

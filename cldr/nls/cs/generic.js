@@ -42,7 +42,7 @@ define(
 	"dateFormatItem-Hm": "H:mm",
 	"field-sun-relative+1": "příští neděli",
 	"field-minute": "Minuta",
-	"field-dayperiod": "AM/PM",
+	"field-dayperiod": "dop./odp.",
 	"dateFormatItem-d": "d.",
 	"dateFormatItem-ms": "mm:ss",
 	"field-day-relative+-1": "včera",

@@ -2032,7 +2032,8 @@
 			"dojo-sync-loader":1,
 			"dojo-test-sniff":1,
 			"config-deferredInstrumentation":1,
-			"config-tlmSiblingOfDojo":1
+			"config-tlmSiblingOfDojo":1,
+			"foreign-loader":0
 		},
 		packages:[{
 			// note: like v1.6-, this bootstrap computes baseUrl to be the dojo directory

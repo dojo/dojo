@@ -86,7 +86,7 @@
 	})();
 
 	// define a minimal library to help build the loader
-	var	noop = function(){
+	var noop = function(){
 		},
 
 		isEmpty = function(it){
@@ -238,7 +238,7 @@
 
 	// the loader will use these like symbols if the loader has the traceApi; otherwise
 	// define magic numbers so that modules can be provided as part of defaultConfig
-	var	requested = 1,
+	var requested = 1,
 		arrived = 2,
 		nonmodule = 3,
 		executing = 4,
@@ -780,14 +780,14 @@
 	if (!has("foreign-loader")) {
 		if(has("dojo-combo-api")){
 			req.combo = req.combo || {add:noop};
-			var	comboPending = 0,
+			var comboPending = 0,
 				combosPending = [],
 				comboPendingTimer = null;
 		}
 		
 
 		// build the loader machinery iaw configuration, including has feature tests
-		var	injectDependencies = function(module){
+		var injectDependencies = function(module){
 				// checkComplete!=0 holds the idle signal; we're not idle if we're injecting dependencies
 				guardCheckComplete(function(){
 					forEach(module.deps, injectModule);
@@ -1375,7 +1375,7 @@
 			has.add("dojo-loader-eval-hint-url", 1);
 		}
 
-		var	injectPlugin = function(
+		var injectPlugin = function(
 				module
 			){
 				// injects the plugin module given by module; may have to inject the plugin itself

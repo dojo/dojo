@@ -346,6 +346,33 @@ define([
 			);
 		},
 
+		'has Content-Type with data': function () {
+			var def = this.async();
+
+			xhr.post('/__services/request/xhr', {
+				data: 'testing',
+				handleAs: 'json'
+			}).then(
+				def.callback( function (response) {
+					assert.equal(response.headers['content-type'], 'application/x-www-form-urlencoded');
+				}),
+				def.reject
+			);
+		},
+
+		'no Content-Type with no data': function() {
+			var def = this.async();
+
+			xhr.get('/__services/request/xhr', {
+				handleAs: 'json'
+			}).then(
+				def.callback( function (response) {
+					assert.isUndefined(response.headers['content-type']);
+				}),
+				def.reject
+			);
+		},
+
 		headers: function () {
 			var def = this.async();
 

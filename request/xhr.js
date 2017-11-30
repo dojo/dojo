@@ -96,7 +96,7 @@ define([
 				}else{
 					error = new RequestError('Unable to load ' + response.url + ' status: ' + _xhr.status +
 						' and an error in handleAs: transformation of response', response);
-    				this.reject(error);
+					this.reject(error);
 				}
 			}
 		}
@@ -188,6 +188,7 @@ define([
 		);
 		url = response.url;
 		options = response.options;
+		var hasNoData = !options.data && options.method !== 'POST' && options.method !== 'PUT';
 
 		if(has('ie') <= 10){
 			// older IE breaks point 9 in http://www.w3.org/TR/XMLHttpRequest/#the-open()-method and sends fragment, so strip it
@@ -241,7 +242,7 @@ define([
 			}
 
 			var headers = options.headers,
-				contentType = isFormData ? false : 'application/x-www-form-urlencoded';
+				contentType = (isFormData || hasNoData) ? false : 'application/x-www-form-urlencoded';
 			if(headers){
 				for(var hdr in headers){
 					if(hdr.toLowerCase() === 'content-type'){

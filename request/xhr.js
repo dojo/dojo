@@ -67,13 +67,6 @@ define([
 			response.data = _xhr.responseXML;
 		}
 
-		if(!error){
-			try{
-				handlers(response);
-			}catch(e){
-				error = e;
-			}
-		}
 		var handleError;
 		if(error){
 			this.reject(error);

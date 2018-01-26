@@ -339,20 +339,20 @@ define([
 		}
 
 		// set up the query params
-		var miArgs = [{}];
+		var miArgs = {};
 
 		if(formObject){
 			// potentially over-ride url-provided params w/ form values
-			miArgs.push(formObject);
+			lang.mixin(miArgs, formObject);
 		}
 		if(args.content){
 			// stuff in content over-rides what's set by form
-			miArgs.push(args.content);
+			lang.mixin(miArgs, args.content);
 		}
 		if(args.preventCache){
-			miArgs.push({"dojo.preventCache": new Date().valueOf()});
+			miArgs["dojo.preventCache"] = new Date().valueOf();
 		}
-		ioArgs.query = ioq.objectToQuery(lang.mixin.apply(null, miArgs));
+		ioArgs.query = ioq.objectToQuery(miArgs);
 
 		// .. and the real work of getting the deferred in order, etc.
 		ioArgs.handleAs = args.handleAs || "text";

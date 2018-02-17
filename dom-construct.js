@@ -132,6 +132,11 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 		while((fc = master.firstChild)){ // intentional assignment
 			df.appendChild(fc);
 		}
+		if(!df.getElementById && df.querySelector){
+			df.getElementById=function(id){
+				return this.querySelector('#'+id);
+			};
+		}
 		return df; // DocumentFragment
 	};
 

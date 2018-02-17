@@ -916,7 +916,7 @@
 			if(mapItem){
 				url = mapItem[1] + mid.substring(mapItem[3] - 1);
 			}else if(pid){
-				url = pack.location + "/" + midInPackage;
+				url = (pack.location.slice(-1) === '/' ? pack.location.slice(0, -1) : pack.location) + "/" + midInPackage;
 			}else if(has("config-tlmSiblingOfDojo")){
 				url = "../" + mid;
 			}else{

@@ -1,8 +1,9 @@
 define([
 	"../_base/array",
+	"../_base/lang",
 	"../Deferred",
 	"../when"
-], function(array, Deferred, when){
+], function(array, lang, Deferred, when){
 	"use strict";
 
 	// module:
@@ -27,7 +28,7 @@ define([
 		// returns: dojo/promise/Promise
 
 		var object, array;
-		if(objectOrArray instanceof Array){
+		if(lang.isArray(objectOrArray)){
 			array = objectOrArray;
 		}else if(objectOrArray && typeof objectOrArray === "object"){
 			object = objectOrArray;

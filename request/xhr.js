@@ -121,7 +121,8 @@ define([
 				dfd.handleResponse(response, error);
 			}
 
-			function onProgress(evt){
+			function onProgress(transferType, evt){
+				response.transferType = transferType;
 				if(evt.lengthComputable){
 					response.loaded = evt.loaded;
 					response.total = evt.total;
@@ -132,19 +133,27 @@ define([
 				}
 			}
 
+			function onDownloadProgress(evt) {
+				return onProgress('download', evt);
+			}
+
+			function onUploadProgress(evt) {
+				return onProgress('upload', evt);
+			}
+
 			_xhr.addEventListener('load', onLoad, false);
 			_xhr.addEventListener('error', onError, false);
-			_xhr.addEventListener('progress', onProgress, false);
+			_xhr.addEventListener('progress', onDownloadProgress, false);
 
 			if (uploadProgress && _xhr.upload) {
-				_xhr.upload.addEventListener('progress', onProgress, false);
+				_xhr.upload.addEventListener('progress', onUploadProgress, false);
 			}
 
 			return function(){
 				_xhr.removeEventListener('load', onLoad, false);
 				_xhr.removeEventListener('error', onError, false);
-				_xhr.removeEventListener('progress', onProgress, false);
-				_xhr.upload.removeEventListener('progress', onProgress, false);
+				_xhr.removeEventListener('progress', onDownloadProgress, false);
+				_xhr.upload.removeEventListener('progress', onUploadProgress, false);
 				_xhr = null;
 			};
 		};

@@ -76,6 +76,17 @@ define([
 			);
 		},
 
+		'.get with progress': function () {
+			var def = this.async(),
+				promise = xhr.get(require.toUrl('./support/truthy.json'), {
+					handleAs: 'json',
+					preventCache: true
+				});
+			promise.then(null, null, def.callback(function(event) {
+				assert.strictEqual(event.transferType, 'download');
+			}));
+		},
+
 		'.get with query': function () {
 			var def = this.async(),
 				promise = xhr.get('/__services/request/xhr?color=blue', {
@@ -221,6 +232,7 @@ define([
 
 			promise.then(null, def.reject, def.callback(function (progressEvent) {
 				assert.isDefined(progressEvent.xhr);
+				assert.deepEqual(progressEvent.transferType, 'upload');
 			}));
 		},
 		'.post with query': function () {

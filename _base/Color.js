@@ -132,12 +132,12 @@ define("dojo/_base/Color", ["dojo/lib/kernel", "dojo/_base/array", "dojo/_base/l
 	){
 		// summary:
 		//		Blend colors end and start with weight from 0 to 1, 0.5 being a 50/50 blend,
-		//		can reuse a previously allocated dojo.Color object for the result
-		var t = obj || new d.Color();
-		d.forEach(["r", "g", "b", "a"], function(x){
-			t[x] = start[x] + (end[x] - start[x]) * weight;
-			if(x != "a"){ t[x] = Math.round(t[x]); }
-		});
+		//		can reuse a previously allocated Color object for the result
+		var t = obj || new Color();
+		t.r = Math.round(start.r + (end.r - start.r) * weight);
+		t.g = Math.round(start.g + (end.g - start.g) * weight);
+		t.b = Math.round(start.b + (end.b - start.b) * weight);
+		t.a = start.a + (end.a - start.a) * weight;
 		return t.sanitize();	// dojo.Color
 	};
 

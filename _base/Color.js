@@ -145,10 +145,10 @@ define(["./kernel", "./lang", "./array", "./config"], function(dojo, lang, Array
 		//		Blend colors end and start with weight from 0 to 1, 0.5 being a 50/50 blend,
 		//		can reuse a previously allocated Color object for the result
 		var t = obj || new Color();
-		ArrayUtil.forEach(["r", "g", "b", "a"], function(x){
-			t[x] = start[x] + (end[x] - start[x]) * weight;
-			if(x != "a"){ t[x] = Math.round(t[x]); }
-		});
+		t.r = Math.round(start.r + (end.r - start.r) * weight);
+		t.g = Math.round(start.g + (end.g - start.g) * weight);
+		t.b = Math.round(start.b + (end.b - start.b) * weight);
+		t.a = start.a + (end.a - start.a) * weight;
 		return t.sanitize();	// Color
 	};
 

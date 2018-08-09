@@ -318,19 +318,11 @@ define(["./kernel", "../has", "require", "module", "../json", "./lang", "./array
 			return [dojo.trim(text.substring(startApplication, parenRe.lastIndex))+";\n", parenRe.lastIndex];
 		},
 
-		// the following regex is taken from 1.6. It is a very poor technique to remove comments and
-		// will fail in some cases; for example, consider the code...
+		// The following regex matches all comments and strings, with the strings in the capturing group.
+		// Replacing all matches with "$1" will remove comments and keep strings.
 		//
-		//	  var message = "Category-1 */* Category-2";
-		//
-		// The regex that follows will see a /* comment and trash the code accordingly. In fact, there are all
-		// kinds of cases like this with strings and regexs that will cause this design to fail miserably.
-		//
-		// Alternative regex designs exist that will result in less-likely failures, but will still fail in many cases.
-		// The only solution guaranteed 100% correct is to parse the code and that seems overkill for this
-		// backcompat/unbuilt-xdomain layer. In the end, since it's been this way for a while, we won't change it.
-		// See the opening paragraphs of Chapter 7 or ECME-262 which describes the lexical abiguity further.
-		removeCommentRe = /(\/\*([\s\S]*?)\*\/|\/\/(.*)$)/mg,
+		// It accounts for single quotes, double quotes, backslashes (line continuations and escaped characters), and template strings.
+		removeCommentRe = /\/\/.*|\/\*[\s\S]*?\*\/|("(?:\\.|[^"])*"|'(?:\\.|[^'])*'|`(?:\\.|[^`])*`)/mg,
 
 		syncLoaderApiRe = /(^|\s)dojo\.(loadInit|require|provide|requireLocalization|requireIf|requireAfterIf|platformRequire)\s*\(/mg,
 
@@ -360,12 +352,7 @@ define(["./kernel", "../has", "require", "module", "../json", "./lang", "./array
 				allApplications = [];
 
 			// noCommentText may be provided by a build app with comments extracted by a better method than regex (hopefully)
-			noCommentText = noCommentText || text.replace(removeCommentRe, function(match){
-				// remove iff the detected comment has text that looks like a sync loader API application; this helps by
-				// removing as little as possible, minimizing the changes the janky regex will kill the module
-				syncLoaderApiRe.lastIndex = amdLoaderApiRe.lastIndex = 0;
-				return (syncLoaderApiRe.test(match) || amdLoaderApiRe.test(match)) ? "" : match;
-			});
+			noCommentText = noCommentText || text.replace(removeCommentRe, "$1");
 
 			// find and extract all dojo.loadInit applications
 			while((match = syncLoaderApiRe.exec(noCommentText))){

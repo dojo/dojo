@@ -1,4 +1,4 @@
-<html>
+<!--<html>
 <head>
 	<style type="text/css">
 		span.pass {background-color:green}
@@ -12,6 +12,19 @@
 		//#1,,src,./dojo",src,./dtk-i18n-test
 
 		(function(){
+		var escapes = {
+			"&": "&amp;",
+			"<": "&lt;",
+			">": "&gt;",
+			"\"": "&quot;",
+			"'": "&#039;"
+		};
+		function escape(unsafe) {
+			return unsafe.replace(/[&<>"']/g, function (match) {
+				return escapes[match];
+			});
+		}
+
 		var hashInfo = location.search.substring(1),
 			options = hashInfo.split(",");
 			async = options[0]=="async" ? true : undefined,
@@ -23,7 +36,11 @@
 			testId = "async: " + async + ", locale: " + locale + ", dojo: " + dojoType + ", i18nTest: " + i18nTestType + "(" + hashInfo + ")",
 			testKind = options[6];
 
-		document.getElementById("status").innerHTML += hashInfo;
+		if ((/^http/i).test(i18nTestLocation)) {
+			return;
+		}
+
+		document.getElementById("status").innerHTML += escape(hashInfo);
 
 		function report(result){
 			require(["doh"], function(doh){
@@ -39,7 +56,7 @@
 			}else{
 				text = "<span class='fail'>FAIL</span>: " + testId + "<br>" + result;
 			}
-			document.getElementById("status").innerHTML = text;
+			document.getElementById("status").innerHTML = escape(text);
 		}	
 
 		dojoConfig = {
@@ -85,10 +102,11 @@
 		var node = document.createElement("script");
 		node.type = "text/javascript";
 		node.charset = "utf-8";
-		node.src = (/^http/.test(dojoLocation) ? dojoLocation :  "../" + dojoLocation) + "/dojo.js";
+		// If a user passes a remote URL, force it to use the local dojo
+		node.src = ((/^http/i).test(dojoLocation) ? '../dojo' :  "../" + dojoLocation) + "/dojo.js";
 console.log(node.src);
 		document.getElementsByTagName("head")[0].appendChild(node);
 		})();
 	</script>
 </body>
-</html>
+</html>-->

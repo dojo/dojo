@@ -59,6 +59,6 @@ The various built module and loaders are constructed by the v1.7 builder. The sh
 i18n-test/build-test-targets.sh accomplishes this task automatically.
 
 A unit test html page is constructed at i18n-test/unit.html. Given a query string, it will load a particular loader and
-exercise a particular set of modules.
+exercise a particular set of modules. Its contents must be uncommented before running the tests.
 
 Finally, the DOH test dojo/testsDOH/_base/i18nExhaustive runs all the various combinations.

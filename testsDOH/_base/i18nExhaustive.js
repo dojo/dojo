@@ -15,10 +15,6 @@ define([
 		"sync,,rel,./built-i18n-test/rel/dojo,built,./built-i18n-test/built/i18nTest,amd",
 		"sync,,rel,./built-i18n-test/rel/dojo,built,./built-i18n-test/built-with-layers/i18nTest,amd",
 		"sync,,rel,./built-i18n-test/rel/dojo,built,./built-i18n-test/built-with-layers-and-preloads/i18nTest,amd",
-		"sync,,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,src,./i18n-test,amd",
-		"sync,,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,built,./built-i18n-test/built/i18nTest,amd",
-		"sync,,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,built,./built-i18n-test/built-with-layers/i18nTest,amd",
-		"sync,,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,built,./built-i18n-test/built-with-layers-and-preloads/i18nTest,amd",
 				
 		"sync,ab,src,./dojo,src,./i18n-test,legacy",
 		"sync,ab,src,./dojo,legacy-built,./built-i18n-test/152-build,legacy",
@@ -31,10 +27,6 @@ define([
 		"sync,ab,rel,./built-i18n-test/rel/dojo,built,./built-i18n-test/built/i18nTest,amd",
 		"sync,ab,rel,./built-i18n-test/rel/dojo,built,./built-i18n-test/built-with-layers/i18nTest,amd",
 		"sync,ab,rel,./built-i18n-test/rel/dojo,built,./built-i18n-test/built-with-layers-and-preloads/i18nTest,amd",
-		"sync,ab,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,src,./i18n-test,amd",
-		"sync,ab,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,built,./built-i18n-test/built/i18nTest,amd",
-		"sync,ab,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,built,./built-i18n-test/built-with-layers/i18nTest,amd",
-		"sync,ab,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,built,./built-i18n-test/built-with-layers-and-preloads/i18nTest,amd",
 		
 		"sync,ab-cd,src,./dojo,src,./i18n-test,legacy",
 		"sync,ab-cd,src,./dojo,legacy-built,./built-i18n-test/152-build,legacy",
@@ -47,10 +39,6 @@ define([
 		"sync,ab-cd,rel,./built-i18n-test/rel/dojo,built,./built-i18n-test/built/i18nTest,amd",
 		"sync,ab-cd,rel,./built-i18n-test/rel/dojo,built,./built-i18n-test/built-with-layers/i18nTest,amd",
 		"sync,ab-cd,rel,./built-i18n-test/rel/dojo,built,./built-i18n-test/built-with-layers-and-preloads/i18nTest,amd",
-		"sync,ab-cd,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,src,./i18n-test,amd",
-		"sync,ab-cd,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,built,./built-i18n-test/built/i18nTest,amd",
-		"sync,ab-cd,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,built,./built-i18n-test/built-with-layers/i18nTest,amd",
-		"sync,ab-cd,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,built,./built-i18n-test/built-with-layers-and-preloads/i18nTest,amd",
 
 		"sync,ab-cd-ef,src,./dojo,src,./i18n-test,legacy",
 		"sync,ab-cd-ef,src,./dojo,legacy-built,./built-i18n-test/152-build,legacy",
@@ -63,10 +51,6 @@ define([
 		"sync,ab-cd-ef,rel,./built-i18n-test/rel/dojo,built,./built-i18n-test/built/i18nTest,amd",
 		"sync,ab-cd-ef,rel,./built-i18n-test/rel/dojo,built,./built-i18n-test/built-with-layers/i18nTest,amd",
 		"sync,ab-cd-ef,rel,./built-i18n-test/rel/dojo,built,./built-i18n-test/built-with-layers-and-preloads/i18nTest,amd",
-		"sync,ab-cd-ef,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,src,./i18n-test,amd",
-		"sync,ab-cd-ef,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,built,./built-i18n-test/built/i18nTest,amd",
-		"sync,ab-cd-ef,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,built,./built-i18n-test/built-with-layers/i18nTest,amd",
-		"sync,ab-cd-ef,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,built,./built-i18n-test/built-with-layers-and-preloads/i18nTest,amd",
 		"async,,src,./dojo,src,./i18n-test,amd",
 		"async,,src,./dojo,built,./built-i18n-test/built/i18nTest,amd",
 		"async,,src,./dojo,built,./built-i18n-test/built-with-layers/i18nTest,amd",
@@ -75,10 +59,6 @@ define([
 		"async,,rel,./built-i18n-test/rel/dojo,built,./built-i18n-test/built/i18nTest,amd",
 		"async,,rel,./built-i18n-test/rel/dojo,built,./built-i18n-test/built-with-layers/i18nTest,amd",
 		"async,,rel,./built-i18n-test/rel/dojo,built,./built-i18n-test/built-with-layers-and-preloads/i18nTest,amd",
-		"async,,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,src,./i18n-test,amd",
-		"async,,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,built,./built-i18n-test/built/i18nTest,amd",
-		"async,,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,built,./built-i18n-test/built-with-layers/i18nTest,amd",
-		"async,,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,built,./built-i18n-test/built-with-layers-and-preloads/i18nTest,amd",
 		
 		"async,ab,src,./dojo,src,./i18n-test,amd",
 		"async,ab,src,./dojo,built,./built-i18n-test/built/i18nTest,amd",
@@ -88,10 +68,6 @@ define([
 		"async,ab,rel,./built-i18n-test/rel/dojo,built,./built-i18n-test/built/i18nTest,amd",
 		"async,ab,rel,./built-i18n-test/rel/dojo,built,./built-i18n-test/built-with-layers/i18nTest,amd",
 		"async,ab,rel,./built-i18n-test/rel/dojo,built,./built-i18n-test/built-with-layers-and-preloads/i18nTest,amd",
-		"async,ab,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,src,./i18n-test,amd",
-		"async,ab,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,built,./built-i18n-test/built/i18nTest,amd",
-		"async,ab,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,built,./built-i18n-test/built-with-layers/i18nTest,amd",
-		"async,ab,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,built,./built-i18n-test/built-with-layers-and-preloads/i18nTest,amd",
 
 		"async,ab-cd,src,./dojo,src,./i18n-test,amd",
 		"async,ab-cd,src,./dojo,built,./built-i18n-test/built/i18nTest,amd",
@@ -101,10 +77,6 @@ define([
 		"async,ab-cd,rel,./built-i18n-test/rel/dojo,built,./built-i18n-test/built/i18nTest,amd",
 		"async,ab-cd,rel,./built-i18n-test/rel/dojo,built,./built-i18n-test/built-with-layers/i18nTest,amd",
 		"async,ab-cd,rel,./built-i18n-test/rel/dojo,built,./built-i18n-test/built-with-layers-and-preloads/i18nTest,amd",
-		"async,ab-cd,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,src,./i18n-test,amd",
-		"async,ab-cd,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,built,./built-i18n-test/built/i18nTest,amd",
-		"async,ab-cd,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,built,./built-i18n-test/built-with-layers/i18nTest,amd",
-		"async,ab-cd,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,built,./built-i18n-test/built-with-layers-and-preloads/i18nTest,amd",
 		
 		"async,ab-cd-ef,src,./dojo,src,./i18n-test,amd",
 		"async,ab-cd-ef,src,./dojo,built,./built-i18n-test/built/i18nTest,amd",
@@ -113,11 +85,7 @@ define([
 		"async,ab-cd-ef,rel,./built-i18n-test/rel/dojo,src,./i18n-test,amd",
 		"async,ab-cd-ef,rel,./built-i18n-test/rel/dojo,built,./built-i18n-test/built/i18nTest,amd",
 		"async,ab-cd-ef,rel,./built-i18n-test/rel/dojo,built,./built-i18n-test/built-with-layers/i18nTest,amd",
-		"async,ab-cd-ef,rel,./built-i18n-test/rel/dojo,built,./built-i18n-test/built-with-layers-and-preloads/i18nTest,amd",
-		"async,ab-cd-ef,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,src,./i18n-test,amd",
-		"async,ab-cd-ef,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,built,./built-i18n-test/built/i18nTest,amd",
-		"async,ab-cd-ef,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,built,./built-i18n-test/built-with-layers/i18nTest,amd",
-		"async,ab-cd-ef,cdn,http://192.168.1.114/dev/dtk/built-i18n-test/cdn/dojo,built,./built-i18n-test/built-with-layers-and-preloads/i18nTest,amd"];
+		"async,ab-cd-ef,rel,./built-i18n-test/rel/dojo,built,./built-i18n-test/built-with-layers-and-preloads/i18nTest,amd"];
 
 	for(var i = 0; i<testParams.length; i++){
 		doh.register("testsDOH._base.i18nExhaustive" + i, require.toUrl("dojo/main") + "/../../i18n-test/unit.html?" + testParams[i]);

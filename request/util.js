@@ -44,7 +44,7 @@ define([
 			}
 		});
 		return clonedArray;
-	}
+	};
 
 	exports.deepCreate = function deepCreate(source, properties){
 		properties = properties || {};

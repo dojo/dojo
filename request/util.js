@@ -9,7 +9,7 @@ define([
 	'../promise/Promise',
 	'../has'
 ], function(exports, RequestError, CancelError, Deferred, ioQuery, array, lang, Promise, has){
-	exports.deepCopy(target, source) {
+	exports.deepCopy = function(target, source) {
 		for (var name in source) {
 			var tval = target[name], 
   			    sval = source[name];
@@ -34,7 +34,7 @@ define([
 		return target;
 	}
 
-	exports.deepCopyArray(source) {
+	exports.deepCopyArray = function(source) {
 		var clonedArray = [];
 		source.forEach(function(svalItem) {
 			if (typeof svalItem === 'object') {

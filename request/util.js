@@ -32,7 +32,7 @@ define([
 			}
 		}
 		return target;
-	}
+	};
 
 	exports.deepCopyArray(source) {
 		var clonedArray = [];

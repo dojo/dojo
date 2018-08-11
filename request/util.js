@@ -17,7 +17,7 @@ define([
 				if (sval && typeof sval === 'object') {
 					if (Object.prototype.toString.call(sval) === '[object Date]') { // use this date test to handle crossing frame boundaries
 						target[name] = new Date(sval);
-					} else if (Array.isArray(sval)) {
+					} else if (lang.isArray(sval)) {
  						  target[name] = exports.deepCopyArray(sval);
 					} else {
 						if (tval && typeof tval === 'object') {

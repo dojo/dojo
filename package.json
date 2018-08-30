@@ -24,9 +24,13 @@
 		"test-proxy": "intern-runner config=tests/dojo.intern.proxy proxyOnly=true"
 	},
 	"description": "Dojo core is a powerful, lightweight library that makes common tasks quicker and easier. Animate elements, manipulate the DOM, and query with easy CSS syntax, all without sacrificing performance.",
-	"license" : "BSD-3-Clause OR AFL-2.1",
+	"license": "BSD-3-Clause OR AFL-2.1",
 	"bugs": "http://bugs.dojotoolkit.org/",
-	"keywords": [ "JavaScript", "Dojo", "Toolkit" ],
+	"keywords": [
+		"JavaScript",
+		"Dojo",
+		"Toolkit"
+	],
 	"homepage": "http://dojotoolkit.org/",
 	"repository": {
 		"type": "git",

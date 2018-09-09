@@ -14,7 +14,7 @@ define([
 			var tval = target[name],
   			    sval = source[name];
 			if (tval !== sval) {
-				if (sval && typeof sval === 'object' && !(sval instanceof FormData)) {
+				if (sval && typeof sval === 'object' && !(has('native-formdata') && sval instanceof FormData)) {
 					if (Object.prototype.toString.call(sval) === '[object Date]') { // use this date test to handle crossing frame boundaries
 						target[name] = new Date(sval);
 					} else if (lang.isArray(sval)) {

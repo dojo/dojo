@@ -9,23 +9,41 @@ define([
 	'../promise/Promise',
 	'../has'
 ], function(exports, RequestError, CancelError, Deferred, ioQuery, array, lang, Promise, has){
-	exports.deepCopy = function deepCopy(target, source){
-		for(var name in source){
+	exports.deepCopy = function(target, source) {
+		for (var name in source) {
 			var tval = target[name],
-				sval = source[name];
-			if(tval !== sval){
-				if(tval && typeof tval === 'object' && sval && typeof sval === 'object'){
-					if(sval instanceof Date){
+  			    sval = source[name];
+			if (tval !== sval) {
+				if (sval && typeof sval === 'object' && !(has('native-formdata') && sval instanceof FormData)) {
+					if (Object.prototype.toString.call(sval) === '[object Date]') { // use this date test to handle crossing frame boundaries
 						target[name] = new Date(sval);
-					}else{
-						exports.deepCopy(tval, sval);
+					} else if (lang.isArray(sval)) {
+ 						  target[name] = exports.deepCopyArray(sval);
+					} else {
+						if (tval && typeof tval === 'object') {
+							exports.deepCopy(tval, sval);
+						} else {
+							target[name] = exports.deepCopy({}, sval);
+						}
 					}
-				}else{
+				} else {
 					target[name] = sval;
 				}
 			}
 		}
 		return target;
+	};
+
+	exports.deepCopyArray = function(source) {
+		var clonedArray = [];
+		source.forEach(function(svalItem) {
+			if (typeof svalItem === 'object') {
+				clonedArray.push(exports.deepCopy({}, svalItem));
+			} else {
+				clonedArray.push(svalItem);
+			}
+		});
+		return clonedArray;
 	};
 
 	exports.deepCreate = function deepCreate(source, properties){

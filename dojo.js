@@ -1660,7 +1660,7 @@
 					errorDisconnector = domOn(node, "error", "onerror", function(e){
 						loadDisconnector();
 						errorDisconnector();
-						signal(error, makeError("scriptError", [url, e]));
+						signal(error, makeError("scriptError: " + url, [url, e]));
 					});
 
 				node.type = "text/javascript";

@@ -1,9 +1,9 @@
 dojo
 ====
 
-This is the foundation package for the Dojo 1 Toolkit.  While still being maintained, new development is focused on Dojo 2.
+This is the foundation package for the Dojo 1 Toolkit.  While still being maintained, new development is primarily focused on modern Dojo.
 
-Checkout the [Dojo 2 website](https://dojo.io/) or if you want a more detailed technical status and overview, checkout [`dojo/meta`](https://github.com/dojo/meta).
+Checkout the [Dojo framework website](https://dojo.io/) or if you want a more detailed technical status and overview, checkout the [`Dojo roadmap`](https://dojo.io/community/).
 
 This package is sometimes
 referred to as the “core”, it contains the most generally applicable sub-packages
@@ -77,4 +77,4 @@ License and Copyright
 The Dojo Toolkit (including this package) is dual licensed under BSD 3-Clause
 and AFL. For more information on the license please see the [License
 Information](<http://dojotoolkit.org/license>). The Dojo Toolkit is Copyright
-(c) 2005-2017, JS Foundation. All rights reserved.
+(c) 2005-2018, JS Foundation. All rights reserved.

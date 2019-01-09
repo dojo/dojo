@@ -477,6 +477,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 	if(has("dojo-v1x-i18n-Api")){
 		// this code path assumes the dojo loader and won't work with a standard AMD loader
 		var amdValue = {},
+			l10nCache = {},
 			evalBundle,
 
 			syncRequire = function(deps, callback, require){
@@ -599,6 +600,11 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 		thisModule.getLocalization = function(moduleName, bundleName, locale){
 			var result,
 				l10nName = getBundleName(moduleName, bundleName, locale);
+
+			if (l10nCache[l10nName]) {
+				return l10nCache[l10nName];
+			}
+
 			load(
 				l10nName,
 
@@ -607,7 +613,10 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 				// dojo/i18n module, which, itself may have been mapped.
 				(!isXd(l10nName, require) ? function(deps, callback){ syncRequire(deps, callback, require); } : require),
 
-				function(result_){ result = result_; }
+				function(result_){
+					l10nCache[l10nName] = result_;
+					result = result_;
+				}
 			);
 			return result;
 		};

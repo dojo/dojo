@@ -69,6 +69,13 @@ define([
 					assert.throws(function () {
 						getLocalizationTest('lolipop-guild', undefined)();
 					});
+				},
+				'cached results': function () {
+					var l10n = i18n.getLocalization(bundlePath, 'salutations', 'en');
+					assert.equal(l10n.hello, 'Hello');
+					l10n.hello = 'test';
+					l10n = i18n.getLocalization(bundlePath, 'salutations', 'en');
+					assert.equal(l10n.hello, 'test');
 				}
 			})
 		};

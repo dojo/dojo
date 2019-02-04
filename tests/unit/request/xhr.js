@@ -6,13 +6,25 @@ define([
 	'../../../errors/CancelError',
 	'dojo/promise/all',
 	'dojo/query',
-	'require'
-], function (registerSuite, assert, xhr, RequestTimeoutError, CancelError, all, query, require) {
+	'require',
+	'../../../has'
+], function (registerSuite, assert, xhr, RequestTimeoutError, CancelError, all, query, require, has) {
 	var global = this;
 	var hasFormData = 'FormData' in this && typeof FormData === 'function';
 	var hasResponseType = typeof XMLHttpRequest !== 'undefined' &&
 		typeof new XMLHttpRequest().responseType !== 'undefined';
 	var formData;
+
+	function hasFile() {
+		if (typeof File !== 'undefined') {
+			try {
+				new File();
+			} catch (e) {
+				// File is not a constructor.
+			}
+		}
+		return false;
+	}
 
 	registerSuite({
 		name: 'dojo/request/xhr',
@@ -82,9 +94,13 @@ define([
 					handleAs: 'json',
 					preventCache: true
 				});
-			promise.then(null, null, def.callback(function(event) {
+			promise.then(def.callback(
+				function (){}), function (error) {
+				assert.isTrue(false, error);
+			}, def.callback(function(event) {
 				assert.strictEqual(event.transferType, 'download');
 			}));
+			return def.promise;
 		},
 
 		'.get with query': function () {
@@ -129,111 +145,115 @@ define([
 			);
 		},
 		'.post ArrayBuffer': function() {
-			if (!ArrayBuffer) {
+			if (has('native-arraybuffer')) {
+				var def = this.async(),
+					str = 'foo',
+					arrbuff = new ArrayBuffer(str.length),
+					i8array = new Uint8Array(arrbuff);
+
+				for (var i = 0; i < str.length; i++) {
+					i8array[i] = str.charCodeAt(i);
+				}
+				var promise = xhr.post('/__services/request/xhr', {
+					data: arrbuff,
+					handleAs: 'json',
+					headers: {
+						'Content-Type':'text/plain'
+					}
+				});
+
+				promise.response.then(
+					def.callback(function (response) {
+						assert.strictEqual(response.data.method, 'POST');
+						var payload = response.data.payload;
+
+						assert.deepEqual(payload, {'foo':''});
+					}),
+					def.reject
+				);
+			} else {
 				this.skip('ArrayBuffer not available');
 			}
-			var def = this.async(),
-				str = 'foo',
-				arrbuff = new ArrayBuffer(str.length),
-				i8array = new Uint8Array(arrbuff);
-
-			for (var i = 0; i < str.length; i++) {
-				i8array[i] = str.charCodeAt(i);
-			}
-			var promise = xhr.post('/__services/request/xhr', {
-				data: arrbuff,
-				handleAs: 'json',
-				headers: {
-					'Content-Type':'text/plain'
-				}
-			});
-
-			promise.response.then(
-				def.callback(function (response) {
-					assert.strictEqual(response.data.method, 'POST');
-					var payload = response.data.payload;
-
-					assert.deepEqual(payload, {'foo':''});
-				}),
-				def.reject
-			);
 		},
 		'.post Blob': function() {
-			if (!Blob) {
+			if (has('native-blob')) {
+				var def = this.async(),
+					str = 'foo',
+					blob = new Blob([str], {type:'text/plain'});
+
+				var promise = xhr.post('/__services/request/xhr', {
+					data: blob,
+					handleAs: 'json',
+					headers: {
+						'Content-Type':'text/plain'
+					}
+				});
+
+				promise.response.then(
+					def.callback(function (response) {
+						assert.strictEqual(response.data.method, 'POST');
+						var payload = response.data.payload;
+
+						assert.deepEqual(payload, {'foo':''});
+					}),
+					def.reject
+				);
+			} else {
 				this.skip('Blob not available');
 			}
-			var def = this.async(),
-				str = 'foo',
-				blob = new Blob([str], {type:'text/plain'});
-
-			var promise = xhr.post('/__services/request/xhr', {
-				data: blob,
-				handleAs: 'json',
-				headers: {
-					'Content-Type':'text/plain'
-				}
-			});
-
-			promise.response.then(
-				def.callback(function (response) {
-					assert.strictEqual(response.data.method, 'POST');
-					var payload = response.data.payload;
-
-					assert.deepEqual(payload, {'foo':''});
-				}),
-				def.reject
-			);
 		},
 		'.post File': function() {
-			if (!File) {
-				this.skip('File not available');
+			if (hasFile()) {
+				var def = this.async(),
+					str = 'foo',
+					file = new File([str], 'bar.txt', {type:'text/plain'});
+
+				var promise = xhr.post('/__services/request/xhr', {
+					data: file,
+					handleAs: 'json',
+					headers: {
+						'Content-Type':'text/plain'
+					}
+				});
+
+				promise.response.then(
+					def.callback(function (response) {
+						assert.strictEqual(response.data.method, 'POST');
+						var payload = response.data.payload;
+
+						assert.deepEqual(payload, {'foo':''});
+					}),
+					def.reject
+				);
+			} else {
+				this.skip('File or File constructor not available');
 			}
-			var def = this.async(),
-				str = 'foo',
-				file = new File([str], 'bar.txt', {type:'text/plain'});
-
-			var promise = xhr.post('/__services/request/xhr', {
-				data: file,
-				handleAs: 'json',
-				headers: {
-					'Content-Type':'text/plain'
-				}
-			});
-
-			promise.response.then(
-				def.callback(function (response) {
-					assert.strictEqual(response.data.method, 'POST');
-					var payload = response.data.payload;
-
-					assert.deepEqual(payload, {'foo':''});
-				}),
-				def.reject
-			);
 		},
 		'.post File with upload progress': function() {
-			if (!File) {
-				this.skip('File not available');
+			if (hasFile()) {
+				var def = this.async(),
+					str = 'foo',
+					file = new File([str], 'bar.txt', {type:'text/plain'});
+
+				var promise = xhr.post('/__services/request/xhr', {
+					data: file,
+					handleAs: 'json',
+					uploadProgress: true,
+					query: {
+						simulateProgress: true
+					},
+					headers: {
+						'Content-Type':'text/plain'
+					}
+				});
+
+				promise.then(null, def.reject, def.callback(function (progressEvent) {
+					assert.isDefined(progressEvent.xhr);
+					assert.deepEqual(progressEvent.transferType, 'upload');
+				}));
+			} else {
+				this.skip('File or File constructor not available');
 			}
-			var def = this.async(),
-				str = 'foo',
-				file = new File([str], 'bar.txt', {type:'text/plain'});
-
-			var promise = xhr.post('/__services/request/xhr', {
-				data: file,
-				handleAs: 'json',
-				uploadProgress: true,
-				query: {
-					simulateProgress: true
-				},
-				headers: {
-					'Content-Type':'text/plain'
-				}
-			});
-
-			promise.then(null, def.reject, def.callback(function (progressEvent) {
-				assert.isDefined(progressEvent.xhr);
-				assert.deepEqual(progressEvent.transferType, 'upload');
-			}));
 		},
 		'.post with query': function () {
 			var def = this.async(),
@@ -542,27 +562,27 @@ define([
 			},
 
 			'ArrayBuffer': function () {
-				if (!hasResponseType) {
+				if (has('native-arraybuffer') && hasResponseType) {
+					return xhr.get('/__services/request/xhr/responseTypeGif', {
+						handleAs: 'arraybuffer'
+					}).then(function (response) {
+						assert.strictEqual(response.constructor, ArrayBuffer);
+					});
+				} else {
 					this.skip('No responseType to test');
 				}
-
-				return xhr.get('/__services/request/xhr/responseTypeGif', {
-					handleAs: 'arraybuffer'
-				}).then(function (response) {
-					assert.strictEqual(response.constructor, ArrayBuffer);
-				});
 			},
 
 			'ArrayBuffer POST': function () {
-				if (!hasResponseType) {
+				if (has('native-arraybuffer') && hasResponseType) {
+					return xhr.post('/__services/request/xhr/responseTypeGif', {
+						handleAs: 'arraybuffer'
+					}).then(function (response) {
+						assert.strictEqual(response.constructor, ArrayBuffer);
+					});
+				} else {
 					this.skip('No responseType to test');
 				}
-
-				return xhr.post('/__services/request/xhr/responseTypeGif', {
-					handleAs: 'arraybuffer'
-				}).then(function (response) {
-					assert.strictEqual(response.constructor, ArrayBuffer);
-				});
 			},
 
 			'document': function () {

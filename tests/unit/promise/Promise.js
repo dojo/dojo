@@ -19,6 +19,7 @@ define([
 			var deferredToReject = new Deferred();
 			var expectedRejectedResult = {};
 			var rejectedResult;
+			var dfd = this.async();
 
 			deferredToResolve.promise.then(function (result) {
 				resolvedResult = result;
@@ -33,7 +34,7 @@ define([
 				});
 
 				// Use this.async so we don't rely on the promise implementation under test
-				deferredToReject.promise.always(this.async().callback(function (rejectedAlwaysResult) {
+				deferredToReject.promise.always(dfd.callback(function (rejectedAlwaysResult) {
 					assert.strictEqual(resolvedResult, expectedResolvedResult);
 					assert.strictEqual(resolvedAlwaysResult, resolvedResult);
 					assert.strictEqual(rejectedResult, expectedRejectedResult);

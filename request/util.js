@@ -22,13 +22,13 @@ define([
 		return has('native-formdata') && value instanceof FormData;
 	}
 
-    function shouldDeepCopy(value) {
-        return value &&
-            typeof value === 'object' &&
-            !isFormData(value) &&
-            !isBlob(value) &&
-            !isArrayBuffer(value)
-    }
+	function shouldDeepCopy(value) {
+		return value &&
+			typeof value === 'object' &&
+			!isFormData(value) &&
+			!isBlob(value) &&
+			!isArrayBuffer(value)
+	}
 
 	exports.deepCopy = function(target, source) {
 		for (var name in source) {

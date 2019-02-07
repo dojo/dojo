@@ -32,10 +32,10 @@ define([
 		return typeof Blob !== 'undefined';
 	});
 
-    has.add('native-arraybuffer', function(){
-        // if true, the environment has a native ArrayBuffer implementation
-        return typeof ArrayBuffer !== 'undefined';
-    });
+	has.add('native-arraybuffer', function(){
+		// if true, the environment has a native ArrayBuffer implementation
+		return typeof ArrayBuffer !== 'undefined';
+	});
 
 	has.add('native-response-type', function(){
 		return has('native-xhr') && typeof new XMLHttpRequest().responseType !== 'undefined';

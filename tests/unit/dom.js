@@ -5,7 +5,8 @@ define([
     '../../dom',
     '../../sniff',
     '../../dom-construct',
-], function (registerSuite, assert, sinon, dom, has, domConstruct) {
+    '../../Deferred'
+], function (registerSuite, assert, sinon, dom, has, domConstruct, Deferred) {
 
     var baseId = "dojo_dom",
         uniqueId = 0;
@@ -39,13 +40,22 @@ define([
                     iframeChild = iframe.contentDocument.createElement("div");
                     iframeChildId = getId();
 
-                    setTimeout(function () { //make async because FF seems to need a bit to setup the iframe's contentDocument after adding to the page
-                        iframe.contentDocument.body.appendChild(iframeChild);
+                    //make async because FF seems to need a bit to setup the iframe's contentDocument after adding to the page
+                    var dfd = new Deferred();
+                    function placeContent() {
+                        if (iframe.contentDocument && iframe.contentDocument.body) {
+                            iframe.contentDocument.body.appendChild(iframeChild);
 
-                        node.id = nodeId;
-                        iframeChild.id = iframeChildId;
-                    }, 0);
+                            node.id = nodeId;
+                            iframeChild.id = iframeChildId;
+                            dfd.resolve();
+                        } else {
+                            setTimeout(placeContent, 0);
+                        }
+                    }
+                    setTimeout(placeContent, 0);
 
+                    return dfd.promise;
                 },
                 teardown: function () {
                     document.body.removeChild(container);
@@ -203,7 +213,7 @@ define([
                     if (cssUserSelect) {
                         assert.equal(node.style[cssUserSelect], "");
                     } else {
-                        assert.isTrue(node.hasAttribute("unselectable"));
+                        assert.isFalse(node.hasAttribute("unselectable"));
                     }
 
                 },
@@ -225,7 +235,7 @@ define([
                     if (cssUserSelect) {
                         assert.equal(node.style[cssUserSelect], "");
                     } else {
-                        assert.isTrue(node.hasAttribute("unselectable"));
+                        assert.isFalse(node.hasAttribute("unselectable"));
                     }
 
                 },
@@ -247,7 +257,7 @@ define([
                     if (cssUserSelect) {
                         assert.equal(node.style[cssUserSelect], "none");
                     } else {
-                        assert.isFalse(node.hasAttribute("unselectable"));
+                        assert.isTrue(node.hasAttribute("unselectable"));
                     }
 
                 },
@@ -294,10 +304,20 @@ define([
                             container.appendChild(iframe);
                             container.appendChild(node);
                             node.appendChild(child);
-                            setTimeout(function () { //make async because FF seems to need a bit to setup the iframe's contentDocument after adding to the page
-                                domConstruct.place(iframeContent, iframe.contentDocument.body);
-                            }, 0);
 
+                            //make async because FF seems to need a bit to setup the iframe's contentDocument after adding to the page
+                            var dfd = new Deferred();
+                            function placeContent() {
+                                if (iframe.contentDocument && iframe.contentDocument.body) {
+                                    domConstruct.place(iframeContent, iframe.contentDocument.body);
+                                    dfd.resolve();
+                                } else {
+                                    setTimeout(placeContent, 0);
+                                }
+                            }
+                            setTimeout(placeContent, 0);
+
+                            return dfd.promise;
                         },
                         teardown: function () {
                             document.body.removeChild(container);

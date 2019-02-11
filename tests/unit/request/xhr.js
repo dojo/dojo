@@ -6,17 +6,29 @@ define([
 	'../../../errors/CancelError',
 	'dojo/promise/all',
 	'dojo/query',
-	'require'
-], function (registerSuite, assert, xhr, RequestTimeoutError, CancelError, all, query, require) {
+	'require',
+	'../../../has'
+], function(registerSuite, assert, xhr, RequestTimeoutError, CancelError, all, query, require, has){
 	var global = this;
 	var hasFormData = 'FormData' in this && typeof FormData === 'function';
 	var hasResponseType = typeof XMLHttpRequest !== 'undefined' &&
 		typeof new XMLHttpRequest().responseType !== 'undefined';
 	var formData;
 
+	function hasFile(){
+		if (typeof File !== 'undefined') {
+			try {
+				new File();
+			} catch (e) {
+				// File is not a constructor.
+			}
+		}
+		return false;
+	}
+
 	registerSuite({
 		name: 'dojo/request/xhr',
-		'.get': function () {
+		'.get': function(){
 			var promise = xhr.get('/__services/request/xhr', {
 				preventCache: true,
 				handleAs: 'json'
@@ -28,14 +40,14 @@ define([
 			assert.isFunction(promise.response.then);
 			assert.isFunction(promise.response.cancel);
 
-			return promise.response.then(function (response) {
+			return promise.response.then(function(response){
 				assert.strictEqual(response.data.method, 'GET');
 				assert.strictEqual(response.xhr.readyState, 4);
 				return response;
 			});
 		},
 
-		'.get 404': function () {
+		'.get 404': function(){
 			var def = this.async(),
 				promise = xhr.get(require.toUrl('./xhr_blarg.html'), {
 					preventCache: true
@@ -43,13 +55,13 @@ define([
 
 			promise.response.then(
 				def.reject,
-				def.callback(function (error) {
+				def.callback(function(error){
 					assert.strictEqual(error.response.status, 404);
 				})
 			);
 		},
 
-		'.get json with truthy value': function () {
+		'.get json with truthy value': function(){
 			var def = this.async(),
 				promise = xhr.get(require.toUrl('./support/truthy.json'), {
 					preventCache: true,
@@ -57,12 +69,12 @@ define([
 				});
 
 			promise.then(
-				def.callback(function (response) {
+				def.callback(function(response){
 					assert.strictEqual(response, true);
 				})
 			);
 		},
-		'.get json with falsy value': function () {
+		'.get json with falsy value': function(){
 			var def = this.async(),
 				promise = xhr.get(require.toUrl('./support/falsy.json'), {
 					preventCache: true,
@@ -70,7 +82,7 @@ define([
 				});
 
 			promise.then(
-				def.callback(function (response) {
+				def.callback(function(response){
 					assert.strictEqual(response, false);
 				})
 			);
@@ -80,14 +92,14 @@ define([
 			var def = this.async(),
 				promise = xhr.get('/__services/request/xhr?color=blue', {
 					query: {
-						foo: [ 'bar', 'baz' ],
+						foo: ['bar', 'baz'],
 						thud: 'thonk',
 						xyzzy: 3
 					},
 					handleAs: 'json'
 				});
 
-			promise.response.then(def.callback(function (response) {
+			promise.response.then(def.callback(function(response){
 				assert.strictEqual(response.data.method, 'GET');
 				var query = response.data.query;
 				assert.ok(query.color && query.foo && query.foo.length && query.thud && query.xyzzy);
@@ -99,15 +111,15 @@ define([
 			}));
 		},
 
-		'.post': function () {
+		'.post': function(){
 			var def = this.async(),
 				promise = xhr.post('/__services/request/xhr', {
-					data: { color: 'blue' },
+					data: {color: 'blue'},
 					handleAs: 'json'
 				});
 
 			promise.response.then(
-				def.callback(function (response) {
+				def.callback(function(response){
 					assert.strictEqual(response.data.method, 'POST');
 					var payload = response.data.payload;
 
@@ -117,108 +129,111 @@ define([
 				def.reject
 			);
 		},
-		'.post ArrayBuffer': function() {
-			if (!ArrayBuffer) {
+		'.post ArrayBuffer': function(){
+			if (has('native-arraybuffer')) {
+				var def = this.async(),
+					str = 'foo',
+					arrbuff = new ArrayBuffer(str.length),
+					i8array = new Uint8Array(arrbuff);
+
+				for (var i = 0; i < str.length; i++) {
+					i8array[i] = str.charCodeAt(i);
+				}
+				var promise = xhr.post('/__services/request/xhr', {
+					data: arrbuff,
+					handleAs: 'json',
+					headers: {
+						'Content-Type': 'text/plain'
+					}
+				});
+
+				promise.response.then(
+					def.callback(function(response){
+						assert.strictEqual(response.data.method, 'POST');
+						var payload = response.data.payload;
+
+						assert.deepEqual(payload, {'foo': ''});
+					}),
+					def.reject
+				);
+			} else {
 				this.skip('ArrayBuffer not available');
 			}
-			var def = this.async(),
-				str = 'foo',
-				arrbuff = new ArrayBuffer(str.length),
-				i8array = new Uint8Array(arrbuff);
-
-			for (var i = 0; i < str.length; i++) {
-				i8array[i] = str.charCodeAt(i);
-			}
-			var promise = xhr.post('/__services/request/xhr', {
-				data: arrbuff,
-				handleAs: 'json',
-				headers: {
-					'Content-Type':'text/plain'
-				}
-			});
-
-			promise.response.then(
-				def.callback(function (response) {
-					assert.strictEqual(response.data.method, 'POST');
-					var payload = response.data.payload;
-
-					assert.deepEqual(payload, {'foo':''});
-				}),
-				def.reject
-			);
 		},
-		'.post Blob': function() {
-			if (!Blob) {
+		'.post Blob': function(){
+			if (has('native-blob')) {
+				var def = this.async(),
+					str = 'foo',
+					blob = new Blob([str], {type: 'text/plain'});
+
+				var promise = xhr.post('/__services/request/xhr', {
+					data: blob,
+					handleAs: 'json',
+					headers: {
+						'Content-Type': 'text/plain'
+					}
+				});
+
+				promise.response.then(
+					def.callback(function(response){
+						assert.strictEqual(response.data.method, 'POST');
+						var payload = response.data.payload;
+
+						assert.deepEqual(payload, {'foo': ''});
+					}),
+					def.reject
+				);
+			} else {
 				this.skip('Blob not available');
 			}
-			var def = this.async(),
-				str = 'foo',
-				blob = new Blob([str], {type:'text/plain'});
-
-			var promise = xhr.post('/__services/request/xhr', {
-				data: blob,
-				handleAs: 'json',
-				headers: {
-					'Content-Type':'text/plain'
-				}
-			});
-
-			promise.response.then(
-				def.callback(function (response) {
-					assert.strictEqual(response.data.method, 'POST');
-					var payload = response.data.payload;
-
-					assert.deepEqual(payload, {'foo':''});
-				}),
-				def.reject
-			);
 		},
-		'.post File': function() {
-			if (!File) {
-				this.skip('File not available');
+		'.post File': function(){
+			if (hasFile()) {
+				var def = this.async(),
+					str = 'foo',
+					file = new File([str], 'bar.txt', {type: 'text/plain'});
+
+				var promise = xhr.post('/__services/request/xhr', {
+					data: file,
+					handleAs: 'json',
+					headers: {
+						'Content-Type': 'text/plain'
+					}
+				});
+
+				promise.response.then(
+					def.callback(function(response){
+						assert.strictEqual(response.data.method, 'POST');
+						var payload = response.data.payload;
+
+						assert.deepEqual(payload, {'foo': ''});
+					}),
+					def.reject
+				);
+			} else {
+				this.skip('File or File constructor not available');
 			}
-			var def = this.async(),
-				str = 'foo',
-				file = new File([str], 'bar.txt', {type:'text/plain'});
-
-			var promise = xhr.post('/__services/request/xhr', {
-				data: file,
-				handleAs: 'json',
-				headers: {
-					'Content-Type':'text/plain'
-				}
-			});
-
-			promise.response.then(
-				def.callback(function (response) {
-					assert.strictEqual(response.data.method, 'POST');
-					var payload = response.data.payload;
-
-					assert.deepEqual(payload, {'foo':''});
-				}),
-				def.reject
-			);
 		},
 		'.post with query': function () {
 			var def = this.async(),
 				promise = xhr.post('/__services/request/xhr', {
 					query: {
-						foo: [ 'bar', 'baz' ],
+						foo: ['bar', 'baz'],
 						thud: 'thonk',
 						xyzzy: 3
 					},
-					data: { color: 'blue' },
+					data: {color: 'blue'},
 					handleAs: 'json'
 				});
 
 			promise.then(
-				def.callback(function (data) {
+				def.callback(function(data){
 					assert.strictEqual(data.method, 'POST');
 					var query = data.query,
 						payload = data.payload;
 
 					assert.ok(query);
-					assert.deepEqual(query.foo, [ 'bar', 'baz' ]);
+					assert.deepEqual(query.foo, ['bar', 'baz']);
 					assert.strictEqual(query.thud, 'thonk');
 					assert.strictEqual(query.xyzzy, '3');
 
@@ -229,7 +244,7 @@ define([
 			);
 		},
 
-		'.post string payload': function () {
+		'.post string payload': function(){
 			var def = this.async(),
 				promise = xhr.post('/__services/request/xhr', {
 					data: 'foo=bar&color=blue&height=average',
@@ -237,7 +252,7 @@ define([
 				});
 
 			promise.then(
-				def.callback(function (data) {
+				def.callback(function(data){
 					assert.strictEqual(data.method, 'POST');
 
 					var payload = data.payload;
@@ -251,16 +266,16 @@ define([
 			);
 		},
 
-		'.put': function () {
+		'.put': function(){
 			var def = this.async(),
 				promise = xhr.put('/__services/request/xhr', {
-					query: { foo: 'bar' },
-					data: { color: 'blue' },
+					query: {foo: 'bar'},
+					data: {color: 'blue'},
 					handleAs: 'json'
 				});
 
 			promise.then(
-				def.callback(function (data) {
+				def.callback(function(data){
 					assert.strictEqual(data.method, 'PUT');
 
 					assert.ok(data.payload);
@@ -273,15 +288,15 @@ define([
 			);
 		},
 
-		'.del': function () {
+		'.del': function(){
 			var def = this.async(),
 				promise = xhr.del('/__services/request/xhr', {
-					query: { foo: 'bar' },
+					query: {foo: 'bar'},
 					handleAs: 'json'
 				});
 
 			promise.then(
-				def.callback(function (data) {
+				def.callback(function(data){
 					assert.strictEqual(data.method, 'DELETE');
 					assert.strictEqual(data.query.foo, 'bar');
 				}),
@@ -289,7 +304,7 @@ define([
 			);
 		},
 
-		'timeout': function () {
+		'timeout': function(){
 			var def = this.async(),
 				promise = xhr.get('/__services/request/xhr', {
 					query: {
@@ -300,13 +315,13 @@ define([
 
 			promise.then(
 				def.reject,
-				def.callback(function (error) {
+				def.callback(function(error){
 					assert.instanceOf(error, RequestTimeoutError);
 				})
 			);
 		},
 
-		cancel: function () {
+		cancel: function(){
 			var def = this.async(),
 				promise = xhr.get('/__services/request/xhr', {
 					query: {
@@ -316,79 +331,79 @@ define([
 
 			promise.then(
 				def.reject,
-				def.callback(function (error) {
+				def.callback(function(error){
 					assert.instanceOf(error, CancelError);
 				})
 			);
 			promise.cancel();
 		},
 
-		sync: function () {
+		sync: function(){
 			var called = false;
 
 			xhr.get('/__services/request/xhr', {
 				sync: true
-			}).then(function () {
+			}).then(function(){
 				called = true;
 			});
 
 			assert.ok(called);
 		},
 
-		'cross-domain fails': function () {
+		'cross-domain fails': function(){
 			var def = this.async();
 
 			xhr.get('http://dojotoolkit.org').response.then(
 				def.reject,
-				function () {
+				function(){
 					def.resolve(true);
 				}
 			);
 		},
 
-		'has Content-Type with data': function () {
+		'has Content-Type with data': function(){
 			var def = this.async();
 
 			xhr.post('/__services/request/xhr', {
 				data: 'testing',
 				handleAs: 'json'
 			}).then(
-				def.callback( function (response) {
+				def.callback(function(response){
 					assert.equal(response.headers['content-type'], 'application/x-www-form-urlencoded');
 				}),
 				def.reject
 			);
 		},
 
-		'no Content-Type with no data': function() {
+		'no Content-Type with no data': function(){
 			var def = this.async();
 
 			xhr.get('/__services/request/xhr', {
 				handleAs: 'json'
 			}).then(
-				def.callback( function (response) {
+				def.callback(function(response){
 					assert.isUndefined(response.headers['content-type']);
 				}),
 				def.reject
 			);
 		},
 
-		headers: function () {
+		headers: function(){
 			var def = this.async();
 
 			xhr.get('/__services/request/xhr').response.then(
-				def.callback(function (response) {
+				def.callback(function(response){
 					assert.notEqual(response.getHeader('Content-Type'), null);
 				}),
 				def.reject
 			);
 		},
 
-		'custom Content-Type': function () {
+		'custom Content-Type': function(){
 			var def = this.async(),
 				expectedContentType = 'application/x-test-xhr';
 
-			function post(headers) {
+			function post(headers){
 				return xhr.post('/__services/request/xhr', {
 					query: {
 						'header-test': 'true'
@@ -407,7 +422,7 @@ define([
 					'CONTENT-TYPE': expectedContentType
 				})
 			}).then(
-				def.callback(function (results) {
+				def.callback(function(results){
 					assert.match(
 						results.lowercase.headers['content-type'],
 						/^application\/x-test-xhr(?:;.*)?$/
@@ -421,13 +436,13 @@ define([
 			);
 		},
 
-		'queryable xml': function () {
+		'queryable xml': function(){
 			var def = this.async();
 
 			xhr.get('/__services/request/xhr/xml', {
 				handleAs: 'xml'
 			}).then(
-				def.callback(function (xmlDoc) {
+				def.callback(function(xmlDoc){
 					var results = query('bar', xmlDoc);
 
 					assert.strictEqual(results.length, 2);
@@ -436,29 +451,31 @@ define([
 			);
 		},
 
-		'strip fragment': function () {
+		'strip fragment': function(){
 			var def = this.async(),
 				promise = xhr.get('/__services/request/xhr?color=blue#some-hash', {
 					handleAs: 'json'
 				});
-		
-			promise.response.then(def.callback(function (response) {
+
+			promise.response.then(def.callback(function(response){
 				assert.strictEqual(response.data.method, 'GET');
 				assert.strictEqual(response.data.url, '/__services/request/xhr?color=blue');
 			}));
 		},
 
 		'form data': {
-			setup: function () {
-				if(!hasFormData) { return; }
+			setup: function(){
+				if (!hasFormData) {
+					return;
+				}
 
 				formData = new FormData();
 				formData.append('foo', 'bar');
 				formData.append('baz', 'blah');
 			},
 
-			post: function () {
-				if(!hasFormData) {
+			post: function(){
+				if (!hasFormData) {
 					this.skip('No FormData to test');
 				}
 
@@ -468,94 +485,94 @@ define([
 					data: formData,
 					handleAs: 'json'
 				}).then(
-					def.callback(function (data) {
-						assert.deepEqual(data, { foo: 'bar', baz: 'blah' });
+					def.callback(function(data){
+						assert.deepEqual(data, {foo: 'bar', baz: 'blah'});
 					}),
 					def.reject
 				);
 			},
 
-			teardown: function () {
+			teardown: function(){
 				formData = null;
 			}
 		},
 
 		'response type': {
-			'Blob': function () {
+			'Blob': function(){
 				if (!hasResponseType) {
 					this.skip('No responseType to test');
 				}
 
 				return xhr.get('/__services/request/xhr/responseTypeGif', {
 					handleAs: 'blob'
-				}).then(function (response) {
+				}).then(function(response){
 					assert.strictEqual(response.constructor, Blob);
 				});
 			},
 
-			'Blob POST': function () {
+			'Blob POST': function(){
 				if (!hasResponseType) {
 					this.skip('No responseType to test');
 				}
 
 				return xhr.post('/__services/request/xhr/responseTypeGif', {
 					handleAs: 'blob'
-				}).then(function (response) {
+				}).then(function(response){
 					assert.strictEqual(response.constructor, Blob);
 				});
 			},
 
-			'ArrayBuffer': function () {
-				if (!hasResponseType) {
+			'ArrayBuffer': function(){
+				if (has('native-arraybuffer') && hasResponseType) {
+					return xhr.get('/__services/request/xhr/responseTypeGif', {
+						handleAs: 'arraybuffer'
+					}).then(function(response){
+						assert.strictEqual(response.constructor, ArrayBuffer);
+					});
+				} else {
 					this.skip('No responseType to test');
 				}
-
-				return xhr.get('/__services/request/xhr/responseTypeGif', {
-					handleAs: 'arraybuffer'
-				}).then(function (response) {
-					assert.strictEqual(response.constructor, ArrayBuffer);
-				});
 			},
 
-			'ArrayBuffer POST': function () {
-				if (!hasResponseType) {
+			'ArrayBuffer POST': function(){
+				if (has('native-arraybuffer') && hasResponseType) {
+					return xhr.post('/__services/request/xhr/responseTypeGif', {
+						handleAs: 'arraybuffer'
+					}).then(function(response){
+						assert.strictEqual(response.constructor, ArrayBuffer);
+					});
+				} else {
 					this.skip('No responseType to test');
 				}
-
-				return xhr.post('/__services/request/xhr/responseTypeGif', {
-					handleAs: 'arraybuffer'
-				}).then(function (response) {
-					assert.strictEqual(response.constructor, ArrayBuffer);
-				});
 			},
 
-			'document': function () {
+			'document': function(){
 				if (!hasResponseType) {
 					this.skip('No responseType to test');
 				}
 
 				return xhr.get('/__services/request/xhr/responseTypeDoc', {
 					handleAs: 'document'
-				}).then(function (response) {
+				}).then(function(response){
 					assert.strictEqual(response.constructor, document.constructor);
 				});
 			},
 
-			'document POST': function () {
+			'document POST': function(){
 				if (!hasResponseType) {
 					this.skip('No responseType to test');
 				}
 
 				return xhr.post('/__services/request/xhr/responseTypeDoc', {
 					handleAs: 'document'
-				}).then(function (response) {
+				}).then(function(response){
 					assert.strictEqual(response.constructor, document.constructor);
 				});
 			}
 		},
 
 		'Web Workers': {
-			'from blob': function () {
+			'from blob': function(){
 				if (!('URL' in global)) {
 					this.skip('URL is not supported');
 				}
@@ -576,21 +593,21 @@ define([
 				var baseUrl = location.origin + '/' + require.toUrl('testing');
 				var testUrl = location.origin + '/' + require.toUrl('./support/truthy.json');
 
-				var workerFunction = function () {
-					self.addEventListener('message', function (event) {
+				var workerFunction = function(){
+					self.addEventListener('message', function(event){
 						if (event.data.baseUrl) {
 							testXhr(event.data.baseUrl, event.data.testUrl);
 						}
 					});
 
-					dojoConfig = { async: true };
+					dojoConfig = {async: true};
 
-					function testXhr(baseUrl, testUrl) {
+					function testXhr(baseUrl, testUrl){
 						var xhr = new XMLHttpRequest();
 
 						dojoConfig.baseUrl = baseUrl;
 
-						xhr.onreadystatechange = function () {
+						xhr.onreadystatechange = function(){
 							if (xhr.readyState === 4 && xhr.status === 200) {
 								var blob = new Blob([xhr.response], {type: 'application/javascript'});
 								var blobURL = URL.createObjectURL(blob);
@@ -599,15 +616,14 @@ define([
 
 								require([
 									'dojo/request/xhr'
-								], function(xhr) {
-									xhr.get(testUrl).then(function (response) {
+								], function(xhr){
+									xhr.get(testUrl).then(function(response){
 										if (response === 'true') {
 											self.postMessage('success');
-										}
-										else {
+										} else {
 											throw new Error(response);
 										}
-									}, function (error) {
+									}, function(error){
 										throw error;
 									});
 								});
@@ -618,18 +634,17 @@ define([
 					}
 				};
 
-				var blob = new Blob(['(' + workerFunction.toString()+')()'], {type: 'application/javascript'});
+				var blob = new Blob(['(' + workerFunction.toString() + ')()'], {type: 'application/javascript'});
 				var worker = new Worker(URL.createObjectURL(blob));
 
-				worker.addEventListener('error', function (error) {
+				worker.addEventListener('error', function(error){
 					dfd.reject(error);
 				});
 
-				worker.addEventListener('message', function (message) {
+				worker.addEventListener('message', function(message){
 					if (message.data === 'success') {
 						dfd.resolve();
-					}
-					else {
+					} else {
 						dfd.reject(message);
 					}
 				});

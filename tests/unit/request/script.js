@@ -53,8 +53,9 @@ define([
 				jsonp: 'callback',
 				timeout: 3000 // timeout for old IE
 			}).then(def.reject, def.callback(function (error) {
-				if (error.type) {
-					assert.strictEqual(error.type, 'error');
+				var source = error.source;
+				if (source.type) {
+					assert.strictEqual(source.type, 'error');
 				}
 				else {
 					// old IE doesn't emit an error event, timeout instead

@@ -20,7 +20,7 @@ define(["exports", "./sniff", "./_base/lang", "./dom", "./dom-style", "./dom-pro
 			innerHTML:	1,
 			textContent:1,
 			className:	1,
-			htmlFor:	has("ie"),
+			htmlFor:	has("ie") ? 1 : 0,
 			value:		1
 		},
 		attrNames = {
@@ -55,7 +55,7 @@ define(["exports", "./sniff", "./_base/lang", "./dom", "./dom-style", "./dom-pro
 		//		given element, and false otherwise
 
 		var lc = name.toLowerCase();
-		return forcePropNames[prop.names[lc] || name] || _hasAttr(dom.byId(node), attrNames[lc] || name);	// Boolean
+		return !!forcePropNames[prop.names[lc] || name] || _hasAttr(dom.byId(node), attrNames[lc] || name);	// Boolean
 	};
 
 	exports.get = function getAttr(/*DOMNode|String*/ node, /*String*/ name){

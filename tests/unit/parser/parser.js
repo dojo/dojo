@@ -40,6 +40,8 @@ define([
 	/* global tests */
 	function setup(id, shouldReturn) {
 		return function () {
+			delete window.tests;
+
 			var MyNonDojoClass = window.MyNonDojoClass = function () {};
 			MyNonDojoClass.extend = function () {
 				var args = arguments;
@@ -266,7 +268,8 @@ define([
 	function teardown() {
 		domConstruct.destroy(container);
 		container = null;
-		window.foo = undefined;
+		delete window.foo;
+		delete window.tests;
 	}
 
 	registerSuite({

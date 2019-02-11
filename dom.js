@@ -26,7 +26,7 @@ define(["./sniff", "./_base/window", "./_base/kernel"],
 	if(has("ie")){
 		dom.byId = function(id, doc){
 			if(typeof id != "string"){
-				return id;
+				return id || null;
 			}
 			var _d = doc || win.doc, te = id && _d.getElementById(id);
 			// attributes.id.value is better than just id in case the
@@ -46,6 +46,7 @@ define(["./sniff", "./_base/window", "./_base/kernel"],
 					}
 				}
 			}
+			return null;
 		};
 	}else{
 		dom.byId = function(id, doc){

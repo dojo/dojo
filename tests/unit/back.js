@@ -1,8 +1,10 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'../../back'
-], function (registerSuite, assert, back) {
+	'../../back',
+	'../../has',
+	'../../sniff'
+], function (registerSuite, assert, back, has) {
 	registerSuite({
 		name: 'dojo/back',
 
@@ -21,11 +23,16 @@ define([
 				'#leadinghash'
 			];
 			var str;
+			var hasMozilla = has('mozilla');
 
 			for (var i = cases.length; i--;) {
 				str = cases[i];
 				back.setHash(str);
-				assert.strictEqual(str, back.getHash());
+				if (hasMozilla) {
+					assert.strictEqual(str, decodeURIComponent(back.getHash()));
+				} else {
+					assert.strictEqual(str, back.getHash());
+				}
 			}
 		}
 	});

@@ -10,12 +10,19 @@ define([
 	'../has'
 ], function(exports, RequestError, CancelError, Deferred, ioQuery, array, lang, Promise, has){
 
+	var HAS_FORM_ELEMENT = !!window.HTMLFormElement;
+	
 	function isArrayBuffer(value) {
 		return has('native-arraybuffer') && value instanceof ArrayBuffer
 	}
 
 	function isBlob(value) {
 		return has('native-blob') && value instanceof Blob
+	}
+	
+	function isFormElement(value) {
+		return HAS_FORM_ELEMENT && value instanceof HTMLFormElement //all other
+				|| !HAS_FORM_ELEMENT && value.tagName === "FORM"; //IE<=7
 	}
 
 	function isFormData(value) {
@@ -26,6 +33,7 @@ define([
 		return value &&
 			typeof value === 'object' &&
 			!isFormData(value) &&
+			!isFormElement(value) &&
 			!isBlob(value) &&
 			!isArrayBuffer(value)
 	}

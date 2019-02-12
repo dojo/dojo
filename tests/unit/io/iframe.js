@@ -8,16 +8,20 @@ define([
 	'dojo/dom-construct',
 	'dojo/domReady!'
 ], function (registerSuite, assert, iframe, kernel, topic, dom, domConstruct) {
+	var sandbox;
 	function form(method, test) {
 		return {
 			setup: function () {
-				domConstruct.place('<form id="postTest" method="' + method + '" enctype="multipart/form-data"></form>', document.body);
+				delete document.__dojoToDomId;
+				sandbox = document.createElement('div');
+				document.body.appendChild(sandbox);
+				domConstruct.place('<form id="postTest" method="' + method + '" enctype="multipart/form-data"></form>', sandbox);
 			},
 
 			test: test,
 
 			teardown: function () {
-				domConstruct.destroy('postTest');
+				document.body.removeChild(sandbox);
 			}
 		};
 	}
@@ -208,13 +212,10 @@ define([
 				this._testTopicCount = 0;
 				var self = this;
 				function increment() {
-					self._testTopicCount++;
+						self._testTopicCount++;
 				}
 				var handles = [
-					topic.subscribe('/dojo/io/start', increment),
-					topic.subscribe('/dojo/io/send', increment),
-					topic.subscribe('/dojo/io/load', increment),
-					topic.subscribe('/dojo/io/done', increment)
+					topic.subscribe('/dojo/io/load', increment)
 				];
 
 				this._remover = function () {
@@ -228,9 +229,8 @@ define([
 				var dfd = this.async();
 				var self = this;
 
-				topic.subscribe('/dojo/io/stop', dfd.callback(function () {
-					self.parent._testTopicCount++;
-					assert.strictEqual(self.parent._testTopicCount, 5);
+				topic.subscribe('/dojo/io/done', dfd.callback(function () {
+					assert.strictEqual(self.parent._testTopicCount, 1);
 				}));
 
 				iframe.send({

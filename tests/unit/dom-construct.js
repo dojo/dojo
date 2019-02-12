@@ -3,8 +3,9 @@ define([
     'intern/chai!assert',
     'sinon',
     '../../dom-construct',
-    '../../dom-attr'
-], function (registerSuite, assert, sinon, domConstruct, domAttr) {
+    '../../dom-attr',
+    '../../has'
+], function (registerSuite, assert, sinon, domConstruct, domAttr, has) {
     var baseId = "dom-construct",
         uniqueId = 0;
 
@@ -549,7 +550,12 @@ define([
                     domConstruct.empty(svg);
 
                     //assert
-                    assert.equal(svg.children.length, 0);
+                    if (svg.children == null) {
+                        // IE does not support children property on <svg>.
+                        assert.equal(svg.innerHTML, "");
+                    } else {
+                        assert.equal(svg.children.length, 0);
+                    }
                 }
             };
         })(),

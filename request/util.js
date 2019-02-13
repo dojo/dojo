@@ -17,6 +17,14 @@ define([
 	function isBlob(value) {
 		return has('native-blob') && value instanceof Blob
 	}
+	
+	function isFormElement(value) {
+		if(typeof HTMLFormElement !== 'undefined') { //all other
+			return value instanceof HTMLFormElement;
+		} else { //IE<=7
+			value.tagName === "FORM"
+		}
+	}
 
 	function isFormData(value) {
 		return has('native-formdata') && value instanceof FormData;
@@ -26,6 +34,7 @@ define([
 		return value &&
 			typeof value === 'object' &&
 			!isFormData(value) &&
+			!isFormElement(value) &&
 			!isBlob(value) &&
 			!isArrayBuffer(value)
 	}

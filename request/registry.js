@@ -13,7 +13,7 @@ define([
 
 		while(matcher=matchers[i++]){
 			if(matcher(url, options)){
-				return matcher.request.call(null, url, options);
+				return matcher.request.apply(null, arguments);
 			}
 		}
 

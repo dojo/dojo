@@ -39,6 +39,25 @@ define([
 			throwAbstract();
 		},
 
+		"finally": function(callback) {
+			// summary:
+			//		Add a callback to the promise that will fire whether it
+			//		resolves or rejects.
+			// description:
+			//		Add a callback to the promise that will fire whether it
+			//		resolves or rejects. No value is passed, no return value
+			//		is expected (the returned promise will be identical to
+			//		the parent promise).
+			// callback: Function?
+			//		Callback to be invoked when the promise is resolved
+			//		or rejected. Doesn't receive any value.
+			// returns: dojo/promise/Promise
+			//		Returns a new promise. The value/reason is not affected
+			//		by the callback.
+
+			throwAbstract();
+		},
+
 		cancel: function(reason, strict){
 			// summary:
 			//		Inform the deferred it may cancel its asynchronous operation.
@@ -100,7 +119,7 @@ define([
 			//		A function that is used both as a callback and errback.
 			// returns: dojo/promise/Promise
 			//		Returns a new promise for the result of the callback/errback.
-
+			
 			return this.then(callbackOrErrback, callbackOrErrback);
 		},
 

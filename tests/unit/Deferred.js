@@ -561,12 +561,12 @@ define([
 					
 					deferred.resolve(thenExpected);
 
-					return deferred.promise["finally"](function(finallyResult) {
+					return deferred.promise["finally"](function (finallyResult) {
 						assert.equal(finallyResult, finallyExpected);
 						return "blah";
-					}).then(function(thenResult) {
+					}).then(function (thenResult) {
 						assert.equal(thenResult, thenExpected);
-					}).otherwise(function() {
+					}).otherwise(function () {
 						assert.fail("Promise should not have rejected.");
 					});
 				},
@@ -575,16 +575,16 @@ define([
 					var thenExpected = {};
 					var finallyExpected = void 0; //always undefined
 
-					setTimeout(function() {
+					setTimeout(function () {
 						deferred.resolve(thenExpected);
 					},0);
 
-					return deferred.promise["finally"](function(finallyResult) {
+					return deferred.promise["finally"](function (finallyResult) {
 						assert.equal(finallyResult, finallyExpected);
 						return "blahblah";
-					}).then(function(thenResult) {
+					}).then(function (thenResult) {
 						assert.equal(thenResult, thenExpected);
-					}).otherwise(function() {
+					}).otherwise(function () {
 						assert.fail("Promise should not have rejected.");
 					});
 				},
@@ -595,11 +595,11 @@ define([
 
 					deferred.reject(otherwiseExpected);
 
-					return deferred.promise["finally"](function(finallyResult) {
+					return deferred.promise["finally"](function (finallyResult) {
 						assert.equal(finallyResult, finallyExpected);
-					}).then(function() {
+					}).then(function () {
 						assert.fail("Promise should not have resolved.");
-					}).otherwise(function(otherwiseResult) {
+					}).otherwise(function (otherwiseResult) {
 						assert.equal(otherwiseResult, otherwiseExpected);
 					});
 				},
@@ -608,15 +608,15 @@ define([
 					var otherwiseExpected = new Error();
 					var finallyExpected = void 0; //always undefined;
 
-					setTimeout(function() {
+					setTimeout(function () {
 						deferred.reject(otherwiseExpected);
 					},0);
 
-					return deferred.promise["finally"](function(finallyResult) {
+					return deferred.promise["finally"](function (finallyResult) {
 						assert.equal(finallyResult, finallyExpected);
-					}).then(function() {
+					}).then(function () {
 						assert.fail("Promise should not have resolved.");
-					}).otherwise(function(otherwiseResult) {
+					}).otherwise(function (otherwiseResult) {
 						assert.equal(otherwiseResult, otherwiseExpected);
 					});
 				},
@@ -628,10 +628,10 @@ define([
 					
 					deferred.resolve();
 
-					var resultPromise = deferred.promise["finally"](function() {
+					var resultPromise = deferred.promise["finally"](function () {
 						var dfd2 = new Deferred();
 
-						setTimeout(function() {
+						setTimeout(function () {
 							testValue = expectedTestValue;
 							dfd2.resolve(thenExpected);
 						},0);
@@ -643,10 +643,10 @@ define([
 					assert.equal(resultPromise.isResolved(), false);
 					assert.equal(resultPromise.isFulfilled(), false);
 
-					return resultPromise.then(function(thenResult) {
+					return resultPromise.then(function (thenResult) {
 						assert.equal(testValue, expectedTestValue);
 						assert.equal(thenResult, thenExpected);
-					},function() {
+					},function () {
 						assert.fail("Promise should not have rejected");
 					});
 				},
@@ -656,10 +656,10 @@ define([
 
 					deferred.reject();
 
-					var resultPromise = deferred.promise["finally"](function() {
+					var resultPromise = deferred.promise["finally"](function () {
 						var dfd2 = new Deferred();
 
-						setTimeout(function() {
+						setTimeout(function () {
 							dfd2.reject(expectedError);
 						},0);
 
@@ -669,9 +669,9 @@ define([
 					assert.equal(resultPromise.isRejected(), false);
 					assert.equal(resultPromise.isFulfilled(), false);
 
-					return resultPromise.then(function() {
+					return resultPromise.then(function () {
 						assert.fail("Promise should not have resolved.");
-					},function(resultError) {
+					},function (resultError) {
 						assert.equal(resultError, expectedError);
 					});
 				},
@@ -681,11 +681,11 @@ define([
 
 					deferred.resolve();
 
-					return deferred.promise["finally"](function() {
+					return deferred.promise["finally"](function () {
 						throw expectedError;
-					}).then(function() {
+					}).then(function () {
 						assert.fail("Promise should not have resolved.");
-					}).otherwise(function(resultError) {
+					}).otherwise(function (resultError) {
 						assert.equal(resultError, expectedError);
 					});
 				},
@@ -695,11 +695,11 @@ define([
 
 					deferred.resolve();
 
-					return deferred.promise["finally"](function() {
+					return deferred.promise["finally"](function () {
 						return new Deferred.reject(expectedError);
-					}).then(function() {
+					}).then(function () {
 						assert.fail("Promise should not have resolved");
-					}).otherwise(function(resultError) {
+					}).otherwise(function (resultError) {
 						assert.equal(resultError, expectedError);
 					});
 				},
@@ -709,11 +709,11 @@ define([
 
 					deferred.reject(new Error() /* not the expected error */);
 
-					return deferred.promise["finally"](function() {
+					return deferred.promise["finally"](function () {
 						return new Deferred.reject(expectedError);
-					}).then(function() {
+					}).then(function () {
 						assert.fail("Promise should not have resolved");
-					}).otherwise(function(resultError) {
+					}).otherwise(function (resultError) {
 						assert.equal(resultError, expectedError);
 					});
 				},
@@ -724,7 +724,7 @@ define([
 
 					deferred.resolve("blah");
 
-					return finallyMethod(function(finallyResult) {
+					return finallyMethod(function (finallyResult) {
 						assert.equal(finallyResult, finallyExpected)
 						return "blah";
 					});

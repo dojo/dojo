@@ -288,19 +288,19 @@ define([
 
 			var listener = [
 				null,
-				function (value) {
+				function (value){
 					var valueOrPromise = callback();
 					if (valueOrPromise && typeof valueOrPromise.then === "function"){
-						return valueOrPromise.then(function(){
+						return valueOrPromise.then(function (){
 							return value;
 						});
 					}
 					return value;
 				},
-				function (reason) {
+				function (reason){
 					var valueOrPromise = callback();
 					if (valueOrPromise && typeof valueOrPromise.then === "function"){
-						return valueOrPromise.then(function() {
+						return valueOrPromise.then(function (){
 							return new Deferred().reject(reason);
 						});
 					}
@@ -308,7 +308,7 @@ define([
 				}
 			];
 			listener.cancel = promise.cancel;
-			listener.deferred = new Deferred(function(reason) {
+			listener.deferred = new Deferred(function (reason){
 				return listener.cancel && listener.cancel(reason);
 			});
 			if (fulfilled && !waiting){

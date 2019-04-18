@@ -552,6 +552,183 @@ define([
 					assert.isTrue(progressStub.called, 'Progress was received.');
 					assert.isFalse(promise.isFulfilled(), 'Promise is not fulfilled.');
 				}
+			},
+			
+			'.finally': {
+				'finally() called when deferred already resolved': function () {
+					var thenExpected = {};
+					var finallyExpected = void 0; //always undefined
+					
+					deferred.resolve(thenExpected);
+
+					return deferred.promise["finally"](function(finallyResult) {
+						assert.equal(finallyResult, finallyExpected);
+						return "blah";
+					}).then(function(thenResult) {
+						assert.equal(thenResult, thenExpected);
+					}).otherwise(function() {
+						assert.fail("Promise should not have rejected.");
+					});
+				},
+
+				'finally() called when deferred is resolved later': function () {
+					var thenExpected = {};
+					var finallyExpected = void 0; //always undefined
+
+					setTimeout(function() {
+						deferred.resolve(thenExpected);
+					},0);
+
+					return deferred.promise["finally"](function(finallyResult) {
+						assert.equal(finallyResult, finallyExpected);
+						return "blahblah";
+					}).then(function(thenResult) {
+						assert.equal(thenResult, thenExpected);
+					}).otherwise(function() {
+						assert.fail("Promise should not have rejected.");
+					});
+				},
+
+				'finally() called when deferred already rejected': function () {
+					var otherwiseExpected = new Error();
+					var finallyExpected = void 0; //always undefined;
+
+					deferred.reject(otherwiseExpected);
+
+					return deferred.promise["finally"](function(finallyResult) {
+						assert.equal(finallyResult, finallyExpected);
+					}).then(function() {
+						assert.fail("Promise should not have resolved.");
+					}).otherwise(function(otherwiseResult) {
+						assert.equal(otherwiseResult, otherwiseExpected);
+					});
+				},
+
+				'finally() called when deferred is rejected later': function () {
+					var otherwiseExpected = new Error();
+					var finallyExpected = void 0; //always undefined;
+
+					setTimeout(function() {
+						deferred.reject(otherwiseExpected);
+					},0);
+
+					return deferred.promise["finally"](function(finallyResult) {
+						assert.equal(finallyResult, finallyExpected);
+					}).then(function() {
+						assert.fail("Promise should not have resolved.");
+					}).otherwise(function(otherwiseResult) {
+						assert.equal(otherwiseResult, otherwiseExpected);
+					});
+				},
+
+				'finally() holds up call chain when chaining from a resolved promise and returning a promise that will resolve': function () {
+					var testValue = 0;
+					var expectedTestValue = 1;
+					var thenExpected = {};
+					
+					deferred.resolve();
+
+					var resultPromise = deferred.promise["finally"](function() {
+						var dfd2 = new Deferred();
+
+						setTimeout(function() {
+							testValue = expectedTestValue;
+							dfd2.resolve(thenExpected);
+						},0);
+
+						return dfd2.promise;
+					});
+
+					//shouldn't be resolved until after the setTimeout fires.
+					assert.equal(resultPromise.isResolved(), false);
+					assert.equal(resultPromise.isFulfilled(), false);
+
+					return resultPromise.then(function(thenResult) {
+						assert.equal(testValue, expectedTestValue);
+						assert.equal(thenResult, thenExpected);
+					},function() {
+						assert.fail("Promise should not have rejected");
+					});
+				},
+
+				'finally() holds up call chain correctly when chaining from a rejected promise and returning a promise that will reject': function () {
+					var expectedError = new Error();
+
+					deferred.reject();
+
+					var resultPromise = deferred.promise["finally"](function() {
+						var dfd2 = new Deferred();
+
+						setTimeout(function() {
+							dfd2.reject(expectedError);
+						},0);
+
+						return dfd2.promise;
+					});
+
+					assert.equal(resultPromise.isRejected(), false);
+					assert.equal(resultPromise.isFulfilled(), false);
+
+					return resultPromise.then(function() {
+						assert.fail("Promise should not have resolved.");
+					},function(resultError) {
+						assert.equal(resultError, expectedError);
+					});
+				},
+
+				'finally() returns rejected promise if callback throws exception': function () {
+					var expectedError = new Error();
+
+					deferred.resolve();
+
+					return deferred.promise["finally"](function() {
+						throw expectedError;
+					}).then(function() {
+						assert.fail("Promise should not have resolved.");
+					}).otherwise(function(resultError) {
+						assert.equal(resultError, expectedError);
+					});
+				},
+
+				'finally() returns rejected promise if chained off resolved promise and callback returns rejected promise': function () {
+					var expectedError = new Error();
+
+					deferred.resolve();
+
+					return deferred.promise["finally"](function() {
+						return new Deferred.reject(expectedError);
+					}).then(function() {
+						assert.fail("Promise should not have resolved");
+					}).otherwise(function(resultError) {
+						assert.equal(resultError, expectedError);
+					});
+				},
+
+				'finally() returns rejected promise if chained off rejected promise and callback returns rejected promise': function () {
+					var expectedError = new Error();
+
+					deferred.reject(new Error() /* not the expected error */);
+
+					return deferred.promise["finally"](function() {
+						return new Deferred.reject(expectedError);
+					}).then(function() {
+						assert.fail("Promise should not have resolved");
+					}).otherwise(function(resultError) {
+						assert.equal(resultError, expectedError);
+					});
+				},
+
+				'finally() is already bound to the deferred': function () {
+					var finallyExpected = void 0;
+					var finallyMethod = deferred["finally"];
+
+					deferred.resolve("blah");
+
+					return finallyMethod(function(finallyResult) {
+						assert.equal(finallyResult, finallyExpected)
+						return "blah";
+					});
+				}
 			}
 		};
 	});

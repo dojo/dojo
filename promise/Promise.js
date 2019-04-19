@@ -19,6 +19,28 @@ define([
 	}, {
 		then: function(callback, errback, progback){
 			// summary:
+			//		Add new callbacks to the promise.
+			// description:
+			//		Add new callbacks to the deferred. Callbacks can be added
+			//		before or after the deferred is fulfilled.
+			// callback: Function?
+			//		Callback to be invoked when the promise is resolved.
+			//		Receives the resolution value.
+			// errback: Function?
+			//		Callback to be invoked when the promise is rejected.
+			//		Receives the rejection error.
+			// progback: Function?
+			//		Callback to be invoked when the promise emits a progress
+			//		update. Receives the progress update.
+			// returns: dojo/promise/Promise
+			//		Returns a new promise for the result of the callback(s).
+			//		This can be used for chaining many asynchronous operations.
+
+			throwAbstract();
+		},
+
+		"finally": function(callback) {
+			// summary:
 			//		Add a callback to the promise that will fire whether it
 			//		resolves or rejects.
 			// description:
@@ -40,25 +62,6 @@ define([
 			//		Returns a new promise that reflects the state of the original promise,
 			//		with two small exceptions (see description).
 			//
-
-			throwAbstract();
-		},
-
-		"finally": function(callback) {
-			// summary:
-			//		Add a callback to the promise that will fire whether it
-			//		resolves or rejects.
-			// description:
-			//		Add a callback to the promise that will fire whether it
-			//		resolves or rejects. No value is passed, no return value
-			//		is expected (the returned promise will be identical to
-			//		the parent promise).
-			// callback: Function?
-			//		Callback to be invoked when the promise is resolved
-			//		or rejected. Doesn't receive any value.
-			// returns: dojo/promise/Promise
-			//		Returns a new promise. The value/reason is not affected
-			//		by the callback.
 
 			throwAbstract();
 		},

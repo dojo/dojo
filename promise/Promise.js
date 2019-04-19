@@ -19,22 +19,27 @@ define([
 	}, {
 		then: function(callback, errback, progback){
 			// summary:
-			//		Add new callbacks to the promise.
+			//		Add a callback to the promise that will fire whether it
+			//		resolves or rejects.
 			// description:
-			//		Add new callbacks to the deferred. Callbacks can be added
-			//		before or after the deferred is fulfilled.
+			//		Conforms to ES2018's `Promise.prototype.finally`.
+			//		Add a callback to the promise that will fire whether it
+			//		resolves or rejects. No value is passed to the callback.
+			//		Returns a promise that reflects the state of the original promise,
+			//		with two exceptions:
+			//		- If the callback return a promise, the outer promise will wait
+			//		until the returned promise is resolved, then it will resolve
+			//		with the original value.
+			//		- If the callback throws an exception or returns a promise that
+			//		is rejected (or rejects later), the outer promise will reject
+			//		with the inner promise's rejection reason.
 			// callback: Function?
-			//		Callback to be invoked when the promise is resolved.
-			//		Receives the resolution value.
-			// errback: Function?
-			//		Callback to be invoked when the promise is rejected.
-			//		Receives the rejection error.
-			// progback: Function?
-			//		Callback to be invoked when the promise emits a progress
-			//		update. Receives the progress update.
+			//		Callback to be invoked when the promise is resolved
+			//		or rejected. Doesn't receive any value.
 			// returns: dojo/promise/Promise
-			//		Returns a new promise for the result of the callback(s).
-			//		This can be used for chaining many asynchronous operations.
+			//		Returns a new promise that reflects the state of the original promise,
+			//		with two small exceptions (see description).
+			//
 
 			throwAbstract();
 		},

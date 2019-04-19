@@ -264,13 +264,13 @@ define([
 
 		this["finally"] = promise["finally"] = function(callback) {
 			// summary:
-			//		Add a callback to the promise that will fire whether it
+			//		Add a callback to the deferred that will fire whether it
 			//		resolves or rejects.
 			// description:
 			//		Conforms to ES2018's `Promise.prototype.finally`.
-			//		Add a callback to the promise that will fire whether it
+			//		Add a callback to the deferred that will fire whether it
 			//		resolves or rejects. No value is passed to the callback.
-			//		Returns a promise that reflects the state of the original promise,
+			//		Returns a promise that reflects the state of the original deferred,
 			//		with two exceptions:
 			//		- If the callback return a promise, the outer promise will wait
 			//		until the returned promise is resolved, then it will resolve
@@ -279,10 +279,10 @@ define([
 			//		is rejected (or rejects later), the outer promise will reject
 			//		with the inner promise's rejection reason.
 			// callback: Function?
-			//		Callback to be invoked when the promise is resolved
+			//		Callback to be invoked when the deferred is resolved
 			//		or rejected. Doesn't receive any value.
 			// returns: dojo/promise/Promise
-			//		Returns a new promise that reflects the state of the original promise,
+			//		Returns a new promise that reflects the state of the original deferred,
 			//		with two small exceptions (see description).
 			//
 

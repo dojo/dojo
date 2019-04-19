@@ -557,7 +557,7 @@ define([
 			'.finally': {
 				'finally() called when deferred already resolved': function () {
 					var thenExpected = {};
-					var finallyExpected = void 0; //always undefined
+					var finallyExpected = undefined;
 					
 					deferred.resolve(thenExpected);
 
@@ -573,7 +573,7 @@ define([
 
 				'finally() called when deferred is resolved later': function () {
 					var thenExpected = {};
-					var finallyExpected = void 0; //always undefined
+					var finallyExpected = undefined;
 
 					setTimeout(function () {
 						deferred.resolve(thenExpected);
@@ -591,7 +591,7 @@ define([
 
 				'finally() called when deferred already rejected': function () {
 					var otherwiseExpected = new Error();
-					var finallyExpected = void 0; //always undefined;
+					var finallyExpected = undefined;
 
 					deferred.reject(otherwiseExpected);
 
@@ -606,7 +606,7 @@ define([
 
 				'finally() called when deferred is rejected later': function () {
 					var otherwiseExpected = new Error();
-					var finallyExpected = void 0; //always undefined;
+					var finallyExpected = undefined;
 
 					setTimeout(function () {
 						deferred.reject(otherwiseExpected);
@@ -719,7 +719,7 @@ define([
 				},
 
 				'finally() is already bound to the deferred': function () {
-					var finallyExpected = void 0;
+					var finallyExpected = undefined;
 					var finallyMethod = deferred["finally"];
 
 					deferred.resolve("blah");

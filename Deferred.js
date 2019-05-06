@@ -301,10 +301,10 @@ define([
 					var valueOrPromise = callback();
 					if (valueOrPromise && typeof valueOrPromise.then === "function"){
 						return valueOrPromise.then(function (){
-							return new Deferred().reject(reason);
+							throw reason;
 						});
 					}
-					return new Deferred().reject(reason);
+					throw reason;
 				}
 			];
 			listener.cancel = promise.cancel;

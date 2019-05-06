@@ -626,14 +626,14 @@ define([
 					var expectedTestValue = 1;
 					var thenExpected = {};
 					
-					deferred.resolve();
+					deferred.resolve(thenExpected);
 
 					var resultPromise = deferred.promise["finally"](function () {
 						var dfd2 = new Deferred();
 
 						setTimeout(function () {
 							testValue = expectedTestValue;
-							dfd2.resolve(thenExpected);
+							dfd2.resolve({});
 						},0);
 
 						return dfd2.promise;
@@ -696,7 +696,7 @@ define([
 					deferred.resolve();
 
 					return deferred.promise["finally"](function () {
-						return new Deferred.reject(expectedError);
+						return new Deferred().reject(expectedError);
 					}).then(function () {
 						assert.fail("Promise should not have resolved");
 					}).otherwise(function (resultError) {
@@ -710,7 +710,7 @@ define([
 					deferred.reject(new Error() /* not the expected error */);
 
 					return deferred.promise["finally"](function () {
-						return new Deferred.reject(expectedError);
+						return new Deferred().reject(expectedError);
 					}).then(function () {
 						assert.fail("Promise should not have resolved");
 					}).otherwise(function (resultError) {

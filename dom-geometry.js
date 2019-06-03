@@ -308,6 +308,31 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 		return geom.boxModel == "border-box" || node.tagName.toLowerCase() == "table" || isButtonTag(node); // boolean
 	}
 
+	function getBoundingClientRect(/*DomNode*/ node) {
+		// summary:
+		//		Gets the bounding client rectangle for a dom node.
+		// node: DOMNode
+
+		// This will return the result of node.getBoundingClientRect if node is in the dom, and
+		// {x:0, y:0, width:0, height:0, top:0, right:0, bottom:0, left:0} if it throws an error or the node is not on the dom
+		// This will handle when IE throws an error or Edge returns an empty object when node is not on the dom
+
+		var retEmpty = { x: 0, y: 0, width: 0, height: 0, top: 0, right: 0, bottom: 0, left: 0 },
+			ret;
+
+		try {
+			ret = node.getBoundingClientRect();
+		} catch (e) {
+			// IE throws an Unspecified Error if the node is not in the dom. Handle this by returning an object with 0 values
+			return retEmpty;
+		}
+
+		// Edge returns an empty object if the node is not in the dom. Handle this by returning an object with 0 values
+		if (typeof ret.left === "undefined") { return retEmpty; }
+
+		return ret;
+	}
+
 	geom.setContentSize = function setContentSize(/*DomNode*/ node, /*Object*/ box, /*Object*/ computedStyle){
 		// summary:
 		//		Sets the size of the node's contents, irrespective of margins,
@@ -476,7 +501,7 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 
 		node = dom.byId(node);
 		var	db = win.body(node.ownerDocument),
-			ret = node.getBoundingClientRect();
+			ret= getBoundingClientRect(node);
 		ret = {x: ret.left, y: ret.top, w: ret.right - ret.left, h: ret.bottom - ret.top};
 
 		if(has("ie") < 9){
@@ -514,7 +539,7 @@ define(["./sniff", "./_base/window","./dom", "./dom-style"],
 
 		node = dom.byId(node);
 		var me = geom.getMarginExtents(node, computedStyle || style.getComputedStyle(node));
-		var size = node.getBoundingClientRect();
+		var size = getBoundingClientRect(node);
 		return {
 			w: (size.right - size.left) + me.w,
 			h: (size.bottom - size.top) + me.h

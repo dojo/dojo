@@ -92,6 +92,49 @@ define([
 			throwAbstract();
 		},
 
+		"finally": function(callback) {
+			// summary:
+			//		Add a callback to the promise that will fire whether it
+			//		resolves or rejects.
+			// description:
+			//		Conforms to ES2018's `Promise.prototype.finally`.
+			//		Add a callback to the promise that will fire whether it
+			//		resolves or rejects. No value is passed to the callback.
+			//		Returns a promise that reflects the state of the original promise,
+			//		with two exceptions:
+			//		- If the callback return a promise, the outer promise will wait
+			//		until the returned promise is resolved, then it will resolve
+			//		with the original value.
+			//		- If the callback throws an exception or returns a promise that
+			//		is rejected (or rejects later), the outer promise will reject
+			//		with the inner promise's rejection reason.
+			// callback: Function?
+			//		Callback to be invoked when the promise is resolved
+			//		or rejected. Doesn't receive any value.
+			// returns: dojo/promise/Promise
+			//		Returns a new promise that reflects the state of the original promise,
+			//		with two small exceptions (see description).
+			//
+
+			return this.then(function (value){
+				var valueOrPromise = callback();
+				if (valueOrPromise && typeof valueOrPromise.then === "function"){
+					return valueOrPromise.then(function (){
+						return value;
+					});
+				}
+				return value;
+			}, function(reason) {
+				var valueOrPromise = callback();
+				if (valueOrPromise && typeof valueOrPromise.then === "function"){
+					return valueOrPromise.then(function (){
+						throw reason;
+					});
+				}
+				throw reason;
+			});
+		},
+
 		always: function(callbackOrErrback){
 			// summary:
 			//		Add a callback to be invoked when the promise is resolved

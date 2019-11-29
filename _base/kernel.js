@@ -92,7 +92,7 @@ define(["../global", "../has", "./config", "require", "module"], function(global
 		//		- flag: String: Descriptor flag. If total version is "1.2.0beta1", will be "beta1"
 		//		- revision: Number: The Git rev from which dojo was pulled
 
-		major: 1, minor: 15, patch: 1, flag: "",
+		major: 1, minor: 15, patch: 2, flag: "-pre",
 		revision: rev ? rev[0] : NaN,
 		toString: function(){
 			var v = dojo.version;

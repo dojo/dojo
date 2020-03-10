@@ -13,7 +13,7 @@ define([
 		for(var name in source){
 			var tval = target[name],
 				sval = source[name];
-			if(tval !== sval){
+			if(name !== '__proto__' && tval !== sval){
 				if(tval && typeof tval === 'object' && sval && typeof sval === 'object'){
 					exports.deepCopy(tval, sval);
 				}else{

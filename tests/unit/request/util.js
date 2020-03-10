@@ -34,6 +34,12 @@ define([
 			assert.equal(object1.banana.purchased.getTime(), new Date(2017, 0, 1).getTime());
 		},
 
+		'.deepCopy should ignore the __proto__ property': function() {
+			var payload = JSON.parse('{ "__proto__": { "protoPollution": true }}');
+			util.deepCopy({}, payload);
+			assert.isUndefined(({}).protoPollution);
+		},
+
 		'deepCopy with FormData': function(){
 			if (has('native-formdata')) {
 				var formData = new FormData();

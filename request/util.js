@@ -44,7 +44,7 @@ define([
 		for (var name in source) {
 			var tval = target[name],
   			    sval = source[name];
-			if (tval !== sval) {
+			if (name !== '__proto__' && tval !== sval) {
 				if (shouldDeepCopy(sval)) {
 					if (Object.prototype.toString.call(sval) === '[object Date]') { // use this date test to handle crossing frame boundaries
 						target[name] = new Date(sval);

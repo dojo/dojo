@@ -38,13 +38,13 @@ define([
 				}
 			},
 
-			'en-ca locale': {
+			'en-au locale': {
 				'USD currency': function () {
-					assert.equal(currency.format(123.45, {currency: 'USD', locale: 'en-ca'}), 'US$123.45');
+					assert.equal(currency.format(123.45, {currency: 'USD', locale: 'en-au'}), 'USD123.45');
 				},
 
 				'CAD currency': function () {
-					assert.equal(currency.format(123.45, {currency: 'CAD', locale: 'en-ca'}), '$123.45');
+					assert.equal(currency.format(123.45, {currency: 'AUD', locale: 'en-au'}), '$123.45');
 				}
 			},
 

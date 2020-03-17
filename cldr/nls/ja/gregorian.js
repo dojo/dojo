@@ -139,7 +139,7 @@ define(
 	"field-sat-short-relative+0": "今週の土曜",
 	"field-sat-short-relative+1": "来週の土曜",
 	"dayPeriods-format-narrow-pm": "午後",
-	"dateFormat-medium": "y/MM/dd",
+	"dateFormat-medium": "y年M月d日",
 	"dateFormatItem-EEEEd": "d日EEEE",
 	"eraAbbr": [
 		"紀元前",
@@ -252,7 +252,7 @@ define(
 	"field-quarter-relative+1": "翌四半期",
 	"field-wed-short-relative+-1": "先週の水曜",
 	"dateFormatItem-yMMM": "y年M月",
-	"dateFormat-short": "y/MM/dd",
+	"dateFormat-short": "y年M月d日",
 	"dayPeriods-format-abbr-night1": "夜",
 	"dateFormatItem-MMMMW": "M月第W週",
 	"field-year-narrow-relative+-1": "昨年",

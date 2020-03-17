@@ -10,7 +10,6 @@ define([
 		'!util': function () {
 			dfd = this.async();
 			require(['../../node!util'], dfd.callback(function (util) {
-				console.log(util)
 				assert('puts' in util, 'this is the built in node module');
 			}));
 		},

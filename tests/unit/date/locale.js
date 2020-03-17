@@ -76,7 +76,7 @@ define([
 					assert.equal(locale.format(date, {formatLength: 'short', selector: 'date', locale: 'en-us'}), '8/11/06');
 					assert.equal(locale.format(date, {formatLength: 'short', selector: 'date', locale: 'fr-fr'}), '11/08/2006');
 					assert.equal(locale.format(date, {formatLength: 'short', selector: 'date', locale: 'de-at'}), '11.08.06');
-					assert.equal(locale.format(date, {formatLength: 'short', selector: 'date', locale: 'ja-jp'}), '2006\u5E748\u670811\u65E5');
+					assert.equal(locale.format(date, {formatLength: 'short', selector: 'date', locale: 'ja-jp'}), '2006/08/11');
 				},
 
 				'time': function () {
@@ -249,15 +249,18 @@ define([
 				'ja locale': {
 					'short format': {
 						'leading zero month': function () {
-							assertDates(locale.parse('06\u5E7408\u670811\u65E5', {formatLength: 'short', selector: 'date', locale: 'ja'}), AUG_11_2006);
+							var actual = locale.parse('06/08/11', {formatLength: 'short', selector: 'date', locale: 'ja'});
+							assertDates(actual, AUG_11_2006);
 						},
 
 						'single digit month': function () {
-							assertDates(locale.parse('06\u5E748\u670811\u65E5', {formatLength: 'short', selector: 'date', locale: 'ja'}), AUG_11_2006);
+							var actual = locale.parse('06/8/11', {formatLength: 'short', selector: 'date', locale: 'ja'});
+							assertDates(actual, AUG_11_2006);
 						},
 
 						'tolerate four digit year': function () {
-							assertDates(locale.parse('2006\u5E748\u670811\u65E5', {formatLength: 'short', selector: 'date', locale: 'ja'}), AUG_11_2006);
+							var actual = locale.parse('2006/8/11', {formatLength: 'short', selector: 'date', locale: 'ja'});
+							assertDates(actual, AUG_11_2006);
 						}
 
 						// 'four digit year in strict mode returns null': function () {
@@ -267,11 +270,13 @@ define([
 
 					'medium format': {
 						'leading zero month': function () {
-							assertDates(locale.parse('2006\u5E7408\u670811\u65E5', {formatLength: 'medium', selector: 'date', locale: 'ja'}), AUG_11_2006);
+							var actual = locale.parse('2006/08/11', {formatLength: 'medium', selector: 'date', locale: 'ja'});
+							assertDates(actual, AUG_11_2006);
 						},
 
 						'single digit month': function () {
-							assertDates(locale.parse('2006\u5E748\u670811\u65E5', {formatLength: 'medium', selector: 'date', locale: 'ja'}), AUG_11_2006);
+							var actual = locale.parse('2006/8/11', {formatLength: 'medium', selector: 'date', locale: 'ja'});
+							assertDates(actual, AUG_11_2006);
 						}
 					},
 

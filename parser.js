@@ -376,14 +376,19 @@ define([
 							break;
 						default:
 							var pVal = proto[name];
-							params[name] =
-								(pVal && "length" in pVal) ? (value ? value.split(/\s*,\s*/) : []) :	// array
-									(pVal instanceof Date) ?
-										(value == "" ? new Date("") :	// the NaN of dates
-										value == "now" ? new Date() :	// current date
-										dates.fromISOString(value)) :
-								(pVal instanceof _Url) ? (dojo.baseUrl + value) :
-								myEval(value);
+							try{
+								params[name] =
+									(pVal && "length" in pVal) ? (value ? value.split(/\s*,\s*/) : []) :	// array
+										(pVal instanceof Date) ?
+											(value == "" ? new Date("") :	// the NaN of dates
+											value == "now" ? new Date() :	// current date
+											dates.fromISOString(value)) :
+									(pVal instanceof _Url) ? (dojo.baseUrl + value) :
+									myEval(value);
+							}
+							catch(error){
+								console.error(error);
+							}
 						}
 					}else{
 						params[name] = value;

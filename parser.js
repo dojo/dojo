@@ -1,7 +1,9 @@
 define([
 	"require", "./_base/kernel", "./_base/lang", "./_base/array", "./_base/config", "./dom", "./_base/window",
-		"./_base/url", "./aspect", "./promise/all", "./date/stamp", "./Deferred", "./has", "./query", "./on", "./ready"
-], function(require, dojo, dlang, darray, config, dom, dwindow, _Url, aspect, all, dates, Deferred, has, query, don, ready){
+	"./_base/url", "./aspect", "./promise/all", "./date/stamp", "./Deferred", "./has", "./json5", "./query", "./on",
+	"./ready"
+], function(require, dojo, dlang, darray, config, dom, dwindow, _Url, aspect, all, dates, Deferred, has, json5, query,
+	don, ready){
 
 	// module:
 	//		dojo/parser
@@ -9,8 +11,14 @@ define([
 	new Date("X"); // workaround for #11279, new Date("") == NaN
 
 	// data-dojo-props etc. is not restricted to JSON, it can be any javascript
-	function myEval(text){
-		return eval("(" + text + ")");
+	var myEval;
+	if(has('csp-restrictions')) {
+		myEval = json5.parse;
+	}
+	else {
+		myEval = function(text){
+			return eval("(" + text + ")");
+		};
 	}
 
 	// Widgets like BorderContainer add properties to _Widget via dojo.extend().

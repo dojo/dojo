@@ -1,6 +1,6 @@
 These modules are adapted from the [JSON5](https://github.com/json5/json5) project. JSON5 was adopted by
 the Dojo Toolkit for use by `dojo/parser` to facilitate parsing data attributes without using the unsafe
-JavaScript function `eval()`. As such only the parsing ability is included.
+JavaScript function `eval()`. As such only the parsing related modules from JSON5 are included.
 
 Updates from the JSON5 project can be incorporated into the Dojo Toolkit with the following process:
 
@@ -17,9 +17,6 @@ Toolkit folder.
   * require `'../string'` as `dstring`
   * replace calls to `codePointAt` with `dstring.codePointAt(str, position)`
   * replace calls to `String.fromCodePoint` with `dstring.fromCodePoint`
-* Run Dojo's JSON5 and parser tests to ensure all updates were successful
-  * [JSON5 tests](/TODO)
-  * [parser tests](/TODO)
 * Update the line below recording the most recent update
 
 Current as of 2020-06-12, commit [32bb2cd](https://github.com/json5/json5/commit/32bb2cdae4864b2ac80a6d9b4045efc4cc54f47a)

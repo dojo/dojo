@@ -10,13 +10,15 @@ define([
 
 	new Date("X"); // workaround for #11279, new Date("") == NaN
 
-	// data-dojo-props etc. is not restricted to JSON, it can be any javascript
 	var myEval;
 	if(has('csp-restrictions')) {
+		// JSON5 data attributes can be parsed without using eval; JS expressions will throw an error
 		myEval = json5.parse;
 	}
 	else {
 		myEval = function(text){
+			// data-dojo-props etc. is not restricted to JSON, it can be any javascript
+			/* jshint -W061 */
 			return eval("(" + text + ")");
 		};
 	}

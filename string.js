@@ -34,11 +34,11 @@ string.escape = function(/*String*/str){
 // Adapted from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/codePointAt#Polyfill
 string.codePointAt = String.prototype.codePointAt ?
 	function (str, position) {
-		return str.codePointAt(position);
+		return String.prototype.codePointAt.call(str, position);
 	} :
 	function(str, position) {
 		if (str == null) {
-			throw TypeError();
+			throw new TypeError('codePointAt called on null or undefined');
 		}
 
 		var size;

@@ -19,6 +19,7 @@ define([
 	'./i18n',
 	'./io-query',
 	'./json',
+	'./json5',
 	'./keys',
 	'./loadInit',
 	'./loader_tests/all',

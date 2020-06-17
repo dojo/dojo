@@ -1,5 +1,20 @@
-define(["../_base/kernel", "../_base/lang", "../when", "../_base/array" /*=====, "./api/Store" =====*/
-], function(kernel, lang, when, array /*=====, Store =====*/){
+define(["../_base/lang", "../when", "../_base/array" /*=====, "./api/Store" =====*/
+], function(lang, when, array /*=====, Store =====*/){
+
+function findObject(store, data, id, start, end){
+	var i;
+
+	start = start == undefined ? 0: start;
+	end = end == undefined ? data.length : end;
+
+	for (i = start; i < end; ++i) {
+		if (store.getIdentity(data[i]) === id) {
+			return i;
+		}
+	}
+
+	return -1;
+}
 
 // module:
 //		dojo/store/Observable
@@ -38,12 +53,12 @@ var Observable = function(/*Store*/ store){
 	// changed on the backend
 	// create a new instance
 	store = lang.delegate(store);
-	
-	store.notify = function(object, existingId){
+
+	store.notify = function(object, existingId, storeMethodOptions){
 		revision++;
 		var updaters = queryUpdaters.slice();
 		for(var i = 0, l = updaters.length; i < l; i++){
-			updaters[i](object, existingId);
+			updaters[i](object, existingId, storeMethodOptions);
 		}
 	};
 	var originalQuery = store.query;
@@ -61,7 +76,11 @@ var Observable = function(/*Store*/ store){
 			results.observe = function(listener, includeObjectUpdates){
 				if(listeners.push(listener) == 1){
 					// first listener was added, create the query checker and updater
-					queryUpdaters.push(queryUpdater = function(changed, existingId){
+					queryUpdaters.push(queryUpdater = function(changed, existingId, storeMethodOptions){
+						var beforeId =  storeMethodOptions &&
+							storeMethodOptions.before &&
+							store.getIdentity(storeMethodOptions.before);
+
 						when(results, function(resultsArray){
 							var atEnd = resultsArray.length != options.count;
 							var i, l, listener;
@@ -69,6 +88,7 @@ var Observable = function(/*Store*/ store){
 								throw new Error("Query is out of date, you must observe() the query prior to any data modifications");
 							}
 							var removedObject, removedFrom = -1, insertedInto = -1;
+							var beforeIndex;
 							if(existingId !== undef){
 								// remove the old one
 								var filteredArray = [].concat(resultsArray);
@@ -94,25 +114,35 @@ var Observable = function(/*Store*/ store){
 										// if a matches function exists, use that (probably more efficient)
 										(queryExecutor.matches ? queryExecutor.matches(changed) : queryExecutor([changed]).length)){
 
-									var firstInsertedInto = removedFrom > -1 ? 
+									var firstInsertedInto = removedFrom > -1 ?
 										removedFrom : // put back in the original slot so it doesn't move unless it needs to (relying on a stable sort below)
 										resultsArray.length;
 									resultsArray.splice(firstInsertedInto, 0, changed); // add the new item
 									insertedInto = array.indexOf(queryExecutor(resultsArray), changed); // sort it
 									// we now need to push the change back into the original results array
 									resultsArray.splice(firstInsertedInto, 1); // remove the inserted item from the previous index
-									
+
 									if((options.start && insertedInto == 0) ||
 										(!atEnd && insertedInto == resultsArray.length)){
 										// if it is at the end of the page, assume it goes into the prev or next page
 										insertedInto = -1;
 									}else{
+										if(storeMethodOptions && storeMethodOptions.before !== undefined){
+											beforeIndex = storeMethodOptions.before === null ?
+												resultsArray.length :
+												findObject(store, resultsArray, beforeId);
+
+											if(beforeIndex !== -1){
+												insertedInto = beforeIndex;
+											}
+										}
 										resultsArray.splice(insertedInto, 0, changed); // and insert into the results array with the correct index
 									}
 								}
 							}else if(changed){
-								// we don't have a queryEngine, so we can't provide any information
-								// about where it was inserted or moved to. If it is an update, we leave it's position alone, other we at least indicate a new object
+								// we don't have a queryEngine, so we can't provide any information about where it
+								// was inserted or moved to. If it is an update, we leave it's position alone,
+								// otherwise we at least indicate a new object
 								if(existingId !== undef){
 									// an update, keep the index the same
 									insertedInto = removedFrom;
@@ -154,7 +184,7 @@ var Observable = function(/*Store*/ store){
 	function whenFinished(method, action){
 		var original = store[method];
 		if(original){
-			store[method] = function(value){
+			store[method] = function(value, storeMethodOptions){
 				var originalId;
 				if(method === 'put'){
 					originalId = store.getIdentity(value);
@@ -167,7 +197,7 @@ var Observable = function(/*Store*/ store){
 				try{
 					var results = original.apply(this, arguments);
 					when(results, function(results){
-						action((typeof results == "object" && results) || value, originalId);
+						action((typeof results == "object" && results) || value, originalId, storeMethodOptions);
 					});
 					return results;
 				}finally{
@@ -177,11 +207,11 @@ var Observable = function(/*Store*/ store){
 		}
 	}
 	// monitor for updates by listening to these methods
-	whenFinished("put", function(object, originalId){
-		store.notify(object, originalId);
+	whenFinished("put", function(object, originalId, storeMethodOptions){
+		store.notify(object, originalId, storeMethodOptions);
 	});
-	whenFinished("add", function(object){
-		store.notify(object);
+	whenFinished("add", function(object, originalId, storeMethodOptions){
+		store.notify(object, originalId, storeMethodOptions);
 	});
 	whenFinished("remove", function(id){
 		store.notify(undefined, id);

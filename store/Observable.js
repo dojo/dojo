@@ -4,7 +4,7 @@ define(["../_base/lang", "../when", "../_base/array" /*=====, "./api/Store" ====
 function findObject(store, data, id, start, end){
 	var i;
 
-	start = start == undefined ? 0: start;
+	start = start == undefined ? 0 : start;
 	end = end == undefined ? data.length : end;
 
 	for (i = start; i < end; ++i) {

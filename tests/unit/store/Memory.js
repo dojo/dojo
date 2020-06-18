@@ -4,20 +4,22 @@ define([
 	'../../../store/Memory',
 	'dojo/store/util/QueryResults'
 ], function (registerSuite, assert, MemoryStore, QueryResults) {
-	var data = [
-		{ id: 1, name: 'one',	even: false,	prime: false,	mappedTo: 'E', date: new Date(1970, 0, 1) },
-		{ id: 2, name: 'two',	even: true,		prime: true,	mappedTo: 'D', date: new Date(1980, 1, 2) },
-		{ id: 3, name: 'three',	even: false,	prime: true,	mappedTo: 'C', date: new Date(1990, 2, 3) },
-		{ id: 4, name: 'four',	even: true,		prime: false,	mappedTo: null, date: new Date(1972, 3, 6, 12, 1) },
-		{ id: 5, name: 'five',	even: false,	prime: true,	mappedTo: 'A', date: new Date(1972, 3, 6, 6, 2) }
-	];
-
-	var store = new MemoryStore({
-		data: data
-	});
+	var store;
 
 	registerSuite({
 		name: 'dojo/store/Memory',
+
+		beforeEach: function () {
+			store = new MemoryStore({
+				data: [
+					{ id: 1, name: 'one',	even: false,	prime: false,	mappedTo: 'E',	date: new Date(1970, 0, 1) },
+					{ id: 2, name: 'two',	even: true,		prime: true,	mappedTo: 'D',	date: new Date(1980, 1, 2) },
+					{ id: 3, name: 'three',	even: false,	prime: true,	mappedTo: 'C',	date: new Date(1990, 2, 3) },
+					{ id: 4, name: 'four',	even: true,		prime: false,	mappedTo: null,	date: new Date(1972, 3, 6, 12, 1) },
+					{ id: 5, name: 'five',	even: false,	prime: true,	mappedTo: 'A',	date: new Date(1972, 3, 6, 6, 2) }
+				]
+			});
+		},
 
 		'.get': [
 			function () {
@@ -81,8 +83,9 @@ define([
 						assert.deepEqual(actual[i], expected[i]);
 					}
 				}
-				var sortedByMappedTo = new QueryResults([data[4], data[2], data[1], data[0], data[3]]),
-					evenSortedByName = new QueryResults([data[3], data[1]]);
+				var data = store.query();
+				var sortedByMappedTo = new QueryResults([data[4], data[2], data[1], data[0], data[3]]);
+				var evenSortedByName = new QueryResults([data[3], data[1]]);
 
 				assert.strictEqual(store.query({ prime: true }, { sort: [ { attribute: 'name' } ] }).length, 3);
 				queryDeepEqual(store.query({ even: true }, { sort: [ { attribute: 'name' } ] }), evenSortedByName);
@@ -119,23 +122,42 @@ define([
 					perfect: true
 				});
 				assert.ok(store.get(6).perfect);
+			},
+
+			'options.before': function () {
+				var item2 = store.get(2);
+				var item4 = store.get(4);
+
+				store.put(item2, { before: item4 });
+				store.put({ id: 0 }, { before: null });
+
+				var results = store.query();
+				assert.strictEqual(results[2].id, 2);
+				assert.strictEqual(results[3].id, 4);
+				assert.strictEqual(results[results.length - 1].id, 0);
+
+				// Test beforeId puts at the end of the data
+				var item3 = store.get(3);
+				var item0 = store.get(0);
+				store.put(item3, { before: item0 });
+				store.put(item0, { before: item3 });
+				var item5 = store.get(5);
+				store.put(item5, { before: null });
+				store.put(item5, { before: item5 });
+				results = store.query();
+				assert.strictEqual(results[3].id, 0);
+				assert.strictEqual(results[4].id, 3);
+				assert.strictEqual(results[5].id, 5);
 			}
 		},
 
 		'.add': {
 			duplicate: function () {
-				var threw;
-
-				try {
-					store.add({
-						id: 6,
-						perfect: true
-					});
-				} catch (error) {
-					threw = true;
-				}
-
-				assert.ok(threw);
+				var item3 = store.get(3);
+				assert.isDefined(item3);
+				assert.throws(function () {
+					store.add({ id: item3.id });
+				});
 			},
 
 			'new': function () {
@@ -154,19 +176,36 @@ define([
 
 				store.add(object);
 				assert.isDefined(object.id);
+			},
+
+			'options.before': function () {
+				var item3 = store.get(3);
+
+				store.add({ id: 42 }, { before: item3 });
+				store.add({ id: 24 }, { before: null });
+				var results = store.query();
+				assert.strictEqual(results[2].id, 42);
+				assert.strictEqual(results[3].id, 3);
+				assert.strictEqual(results[results.length - 1].id, 24);
 			}
 		},
 
 		'.remove': {
 			'existing item': function () {
-				assert.ok(store.remove(7));
-				assert.ok(!store.get(7));
+				assert.isDefined(store.get(5));
+				assert.ok(store.remove(5));
+				assert.isUndefined(store.get(5));
 			},
 
 			'missing item': function () {
-				assert.ok(!store.remove(77));
+				var results = store.query();
+				var previousCount = results.length;
+
+				assert.isUndefined(store.remove(77));
 				// make sure nothing changed
 				assert.strictEqual(store.get(1).id, 1);
+				results = store.query();
+				assert.strictEqual(results.length, previousCount);
 			}
 		},
 

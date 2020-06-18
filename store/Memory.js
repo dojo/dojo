@@ -64,21 +64,56 @@ return declare("dojo.store.Memory", base, {
 		//		Additional metadata for storing the data.  Includes an "id"
 		//		property if a specific id is to be used.
 		// returns: Number
-		var data = this.data,
-			index = this.index,
-			idProperty = this.idProperty;
-		var id = object[idProperty] = (options && "id" in options) ? options.id : idProperty in object ? object[idProperty] : Math.random();
-		if(id in index){
-			// object exists
+		var data = this.data;
+		var index = this.index;
+		var idProperty = this.idProperty;
+		var id = object[idProperty] = (options && "id" in options) ?
+			options.id : idProperty in object ? object[idProperty] : Math.random();
+		var defaultDestination = 0;
+		var newIndex;
+		var previousIndex;
+		var eventType = id in index ? "update" : "add";
+
+		if(eventType === "update"){
 			if(options && options.overwrite === false){
 				throw new Error("Object already exists");
 			}
-			// replace the entry in data
-			data[index[id]] = object;
-		}else{
-			// add the new object
-			index[id] = data.push(object) - 1;
+			else{
+				previousIndex = index[id];
+				defaultDestination = previousIndex;
+			}
 		}
+
+		if(options && "before" in options){
+			if(options.before == null){
+				newIndex = data.length;
+				if(eventType === "update"){
+					--newIndex;
+				}
+			}
+			else{
+				newIndex = index[this.getIdentity(options.before)];
+				// Account for the removed item
+				if(previousIndex < newIndex){
+					--newIndex;
+				}
+			}
+		}
+		else{
+			newIndex = defaultDestination;
+		}
+
+		if(newIndex === previousIndex){
+			data[newIndex] = object;
+		}
+		else{
+			if(previousIndex !== undefined){
+				data.splice(previousIndex, 1);
+			}
+			data.splice(newIndex, 0, object);
+			this._rebuildIndex(previousIndex === undefined ? newIndex : Math.min(previousIndex, newIndex));
+		}
+
 		return id;
 	},
 	add: function(object, options){
@@ -105,8 +140,7 @@ return declare("dojo.store.Memory", base, {
 		var data = this.data;
 		if(id in index){
 			data.splice(index[id], 1);
-			// now we have to reindex
-			this.setData(data);
+			this._rebuildIndex();
 			return true;
 		}
 	},
@@ -155,7 +189,15 @@ return declare("dojo.store.Memory", base, {
 			this.data = data;
 		}
 		this.index = {};
-		for(var i = 0, l = data.length; i < l; i++){
+		this._rebuildIndex();
+	},
+	_rebuildIndex: function(startIndex){
+		var data = this.data;
+		var dataLength = data.length;
+		var i;
+
+		startIndex = startIndex || 0;
+		for(i = startIndex; i < dataLength; i++){
 			this.index[data[i][this.idProperty]] = i;
 		}
 	}

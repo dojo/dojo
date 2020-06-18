@@ -117,6 +117,98 @@ define([
 						assert.lengthOf(results, 4);
 					},
 
+					'add new record with options.before and query': function () {
+						var item2 = store.get(2);
+						var item7 = {
+							id: 7,
+							name: 'seven',
+							prime: true
+						};
+						var item11 = {
+							id: 11,
+							name: 'eleven',
+							prime: true
+						};
+
+						store.add(item7, {
+							before: item2
+						});
+						store.add(item11, {
+							before: null
+						});
+
+						assert.strictEqual(results[0].id, item7.id);
+						assert.strictEqual(results[1].id, item2.id);
+						assert.strictEqual(results[results.length - 1].id, item11.id);
+					},
+
+					'add new record with options.before and no query': function () {
+						observer.cancel();
+						results = store.query();
+						observer = results.observe(handlerStub);
+
+						var item0 = store.get(0);
+						var item7 = {
+							id: 7,
+							name: 'seven',
+							prime: true
+						};
+						var item8 = {
+							id: 8,
+							name: 'eight',
+							prime: false
+						};
+
+						store.put(item7, {
+							before: item0
+						});
+						store.put(item8, {
+							before: null
+						});
+
+						assert.strictEqual(results[0].id, item7.id);
+						assert.strictEqual(results[1].id, item0.id);
+						assert.strictEqual(results[results.length - 1].id, item8.id);
+					},
+
+					'update existing record with options.before and query': function () {
+						var item2 = store.get(2);
+						var item3 = store.get(3);
+						var item5 = store.get(5);
+
+						store.put(item5, {
+							before: item3
+						});
+						store.put(item2, {
+							before: null
+						});
+
+						assert.strictEqual(results[0].id, item5.id);
+						assert.strictEqual(results[1].id, item3.id);
+						assert.strictEqual(results[results.length - 1].id, item2.id);
+					},
+
+					'update existing record with options.before and no query': function () {
+						observer.cancel();
+						results = store.query();
+						observer = results.observe(handlerStub);
+
+						var item0 = store.get(0);
+						var item1 = store.get(1);
+						var item5 = store.get(5);
+
+						store.put(item5, {
+							before: item1
+						});
+						store.put(item0, {
+							before: null
+						});
+
+						assert.strictEqual(results[0].id, item5.id);
+						assert.strictEqual(results[1].id, item1.id);
+						assert.strictEqual(results[results.length - 1].id, item0.id);
+					},
+
 					includeObjectUpdates: {
 						beforeEach: function () {
 							observer.cancel();

@@ -5,9 +5,13 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 	// our old simple function builder stuff
 	var cache = {}, u;
 
-	function buildFn(fn){
-		return cache[fn] = new Function("item", "index", "array", fn); // Function
+	var buildFn;
+	if(!has("csp-restrictions")){
+		buildFn = function (fn){
+			return cache[fn] = new Function("item", "index", "array", fn); // Function
+		};
 	}
+
 	// magic snippet: if(typeof fn == "string") fn = cache[fn] || buildFn(fn);
 
 	// every & some
@@ -17,7 +21,14 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 		return function(a, fn, o){
 			var i = 0, l = a && a.length || 0, result;
 			if(l && typeof a == "string") a = a.split("");
-			if(typeof fn == "string") fn = cache[fn] || buildFn(fn);
+			if(typeof fn == "string"){
+				if(has("csp-restrictions")){
+					throw new TypeError("callback must be a function");
+				}
+				else{
+					fn = cache[fn] || buildFn(fn);
+				}
+			}
 			if(o){
 				for(; i < l; ++i){
 					result = !fn.call(o, a[i], i, a);
@@ -241,7 +252,14 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 
 			var i = 0, l = arr && arr.length || 0;
 			if(l && typeof arr == "string") arr = arr.split("");
-			if(typeof callback == "string") callback = cache[callback] || buildFn(callback);
+			if(typeof callback == "string"){
+				if(has("csp-restrictions")){
+					throw new TypeError("callback must be a function");
+				}
+				else{
+					callback = cache[callback] || buildFn(callback);
+				}
+			}
 			if(thisObject){
 				for(; i < l; ++i){
 					callback.call(thisObject, arr[i], i, arr);
@@ -279,7 +297,14 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 			// TODO: why do we have a non-standard signature here? do we need "Ctr"?
 			var i = 0, l = arr && arr.length || 0, out = new (Ctr || Array)(l);
 			if(l && typeof arr == "string") arr = arr.split("");
-			if(typeof callback == "string") callback = cache[callback] || buildFn(callback);
+			if(typeof callback == "string"){
+				if(has("csp-restrictions")){
+					throw new TypeError("callback must be a function");
+				}
+				else{
+					callback = cache[callback] || buildFn(callback);
+				}
+			}
 			if(thisObject){
 				for(; i < l; ++i){
 					out[i] = callback.call(thisObject, arr[i], i, arr);
@@ -319,7 +344,14 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 			// TODO: do we need "Ctr" here like in map()?
 			var i = 0, l = arr && arr.length || 0, out = [], value;
 			if(l && typeof arr == "string") arr = arr.split("");
-			if(typeof callback == "string") callback = cache[callback] || buildFn(callback);
+			if(typeof callback == "string"){
+				if(has("csp-restrictions")){
+					throw new TypeError("callback must be a function");
+				}
+				else{
+					callback = cache[callback] || buildFn(callback);
+				}
+			}
 			if(thisObject){
 				for(; i < l; ++i){
 					value = arr[i];

@@ -1,8 +1,11 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
+	'dojo/has',
 	'../../../_base/array'
-], function (registerSuite, assert, array) {
+], function (registerSuite, assert, has, array) {
+	var hasCspRestrictions = has('csp-restrictions');
+
 	registerSuite({
 		name: 'dojo/_base/array',
 
@@ -83,7 +86,7 @@ define([
 
 			// FIXME: test forEach w/ a NodeList()?
 			'string callback': function () {
-				// Test using strings as callback", which accept the parameters with
+				// Test using strings as callback, which accept the parameters with
 				// the names "item", "index" and "array"!
 				var foo = [128, 'bbb', 512];
 
@@ -177,6 +180,38 @@ define([
 						}
 					})
 				);
+			},
+
+			'string callback': function () {
+				// Test using strings as callback, which accept the parameters with
+				// the names "item", "index" and "array"!
+				var foo = [128, 'bbb', 512];
+
+				// Test that the variable "item" contains the value of each item.
+				var obj = {
+					_res: ''
+				};
+				assert(array.every(foo, 'this._res += item; return true', obj));
+				assert.strictEqual(obj._res, '128bbb512');
+
+				// Test that the variable "index" contains each index.
+				obj._res = [];
+				assert(array.every(foo, 'this._res.push(index); return true', obj));
+				assert.deepEqual(obj._res, [0,1,2]);
+
+				// Test that the variable "array" always contains the entire array.
+				obj._res = [];
+				assert(array.every(foo, 'this._res.push(array); return true', obj));
+				assert.deepEqual(obj._res, [
+					[128, 'bbb', 512],
+					[128, 'bbb', 512],
+					[128, 'bbb', 512]
+				]);
+
+				// Catch undefined variable usage (I used to use "i" :-)).
+				assert.throws(function () {
+					array.every(foo, 'this._res += arr[i];', obj);
+				}, /.*/, 'every on undefined variable');
 			}
 		},
 
@@ -245,6 +280,38 @@ define([
 						return false;
 					})
 				);
+			},
+
+			'string callback': function () {
+				// Test using strings as callback, which accept the parameters with
+				// the names "item", "index" and "array"!
+				var foo = [128, 'bbb', 512];
+
+				// Test that the variable "item" contains the value of each item.
+				var obj = {
+					_res: ''
+				};
+				assert(array.some(foo, 'this._res += item; return item === "bbb"', obj));
+				assert.strictEqual(obj._res, '128bbb');
+
+				// Test that the variable "index" contains each index.
+				obj._res = [];
+				assert(array.some(foo, 'this._res.push(index); return item === "bbb"', obj));
+				assert.deepEqual(obj._res, [0,1]);
+
+				// Test that the variable "array" always contains the entire array.
+				obj._res = [];
+				assert.isFalse(array.some(foo, 'this._res.push(array); return item === "ZZZ"', obj));
+				assert.deepEqual(obj._res, [
+					[128, 'bbb', 512],
+					[128, 'bbb', 512],
+					[128, 'bbb', 512]
+				]);
+
+				// Catch undefined variable usage (I used to use "i" :-)).
+				assert.throws(function () {
+					array.some(foo, 'this._res += arr[i];', obj);
+				}, /.*/, 'some on undefined variable');
 			}
 		},
 
@@ -299,21 +366,127 @@ define([
 					}),
 					[]
 				);
+			},
+
+			'string callback': function () {
+				// Test using strings as callback, which accept the parameters with
+				// the names "item", "index" and "array"!
+				var foo = [128, 'bbb', 512];
+
+				// Test that the variable "item" contains the value of each item.
+				var obj = {
+					_res: ''
+				};
+				array.filter(foo, 'this._res += item', obj);
+				assert.strictEqual(obj._res, '128bbb512');
+
+				// Test that the variable "index" contains each index.
+				obj._res = [];
+				array.filter(foo, 'this._res.push(index)', obj);
+				assert.deepEqual(obj._res, [0,1,2]);
+
+				// Test that the variable "array" always contains the entire array.
+				obj._res = [];
+				array.filter(foo, 'this._res.push(array)', obj);
+				assert.deepEqual(obj._res, [
+					[128, 'bbb', 512],
+					[128, 'bbb', 512],
+					[128, 'bbb', 512]
+				]);
+
+				// Catch undefined variable usage (I used to use "i" :-)).
+				assert.throws(function () {
+					array.filter(foo, 'this._res += arr[i];', obj);
+				}, /.*/, 'filter on undefined variable');
 			}
 		},
 
-		'.map': function () {
-			assert.deepEqual(
-				array.map(function () { return true; }, []),
-				[]
-			);
+		'.map': {
+			array: function () {
+				assert.deepEqual(
+					array.map(function () { return true; }, []),
+					[]
+				);
 
-			assert.deepEqual(
-				array.map(['cat', 'dog', 'mouse'], function (item, index) {
-					return index+1;
-				}),
-				[1, 2, 3]
-			);
+				assert.deepEqual(
+					array.map(['cat', 'dog', 'mouse'], function (item, index) {
+						return index+1;
+					}),
+					[1, 2, 3]
+				);
+			},
+
+			'string callback': function () {
+				// Test using strings as callback, which accept the parameters with
+				// the names "item", "index" and "array"!
+				var foo = [128, 'bbb', 512];
+
+				// Test that the variable "item" contains the value of each item.
+				var obj = {
+					_res: ''
+				};
+				array.map(foo, 'this._res += item', obj);
+				assert.strictEqual(obj._res, '128bbb512');
+
+				// Test that the variable "index" contains each index.
+				obj._res = [];
+				array.map(foo, 'this._res.push(index)', obj);
+				assert.deepEqual(obj._res, [0,1,2]);
+
+				// Test that the variable "array" always contains the entire array.
+				obj._res = [];
+				array.map(foo, 'this._res.push(array)', obj);
+				assert.deepEqual(obj._res, [
+					[128, 'bbb', 512],
+					[128, 'bbb', 512],
+					[128, 'bbb', 512]
+				]);
+
+				// Catch undefined variable usage (I used to use "i" :-)).
+				assert.throws(function () {
+					array.map(foo, 'this._res += arr[i];', obj);
+				}, /.*/, 'map on undefined variable');
+			}
+		},
+
+		'csp-restrictions': {
+			setup: function () {
+				has.add('csp-restrictions', true);
+			},
+
+			teardown: function () {
+				has.add('csp-restrictions', hasCspRestrictions);
+			},
+
+			'.forEach': function () {
+				assert.throws(function () {
+					array.forEach([1], 'abc');
+				});
+			},
+
+			'.every': function () {
+				assert.throws(function () {
+					array.every([1], 'abc');
+				});
+			},
+
+			'.some': function () {
+				assert.throws(function () {
+					array.some([1], 'abc');
+				});
+			},
+
+			'.filter': function () {
+				assert.throws(function () {
+					array.filter([1], 'abc');
+				});
+			},
+
+			'.map': function () {
+				assert.throws(function () {
+					array.map([1], 'abc');
+				});
+			}
 		}
 	});
 });

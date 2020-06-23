@@ -540,14 +540,14 @@ define([
 		},
 		end: function () {
 			throw invalidChar(read());
-		},
+		}
 	};
 	function newToken(type, value) {
 		return {
 			type: type,
 			value: value,
 			line: line,
-			column: column,
+			column: column
 		};
 	}
 	function literal(s) {
@@ -713,7 +713,7 @@ define([
 			}
 		},
 		end: function () {
-		},
+		}
 	};
 	function push() {
 		var value;
@@ -811,7 +811,7 @@ define([
 			'\v': '\\v',
 			'\0': '\\0',
 			'\u2028': '\\u2028',
-			'\u2029': '\\u2029',
+			'\u2029': '\\u2029'
 		};
 		if (replacements[c]) {
 			return replacements[c];

@@ -12,8 +12,10 @@ tsc lib/parse.js lib/unicode.js lib/util.js --allowJs --module ES6 --outDir dojo
 * Visually compare the existing modules in `dojo/json5` with the newly converted modules to see what changes will need
 to be made
 * Copy the files from the `json5/dojo` folder to the `dojo/json5` folder
-* Manually convert indentation to tabs in each module
-* Manually convert each module to AMD syntax
+* Manual updates:
+  * convert indentation to tabs in each module
+  * remove any trailing commas
+  * convert each module to AMD syntax
 * Update `json5/parse.js` to use `dojo/string` methods for ES5 String methods:
   * require `'../string'` as `dstring`
   * replace calls to `codePointAt` with `dstring.codePointAt(str, position)`

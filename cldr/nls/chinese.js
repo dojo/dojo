@@ -724,6 +724,7 @@ define({ root:
 	"de": true,
 	"en": true,
 	"en-ca": true,
+	"en-gb": true,
 	"es": true,
 	"fi": true,
 	"fr": true,

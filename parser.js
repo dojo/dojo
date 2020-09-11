@@ -532,10 +532,10 @@ define([
 			//	- scripts: if specified, collects <script type="dojo/..."> type nodes from children
 			var inherited = options.inherited;
 			if(!inherited){
-				function findAncestorAttr(node, attr){
+				var findAncestorAttr = function findAncestorAttr(node, attr){
 					return (node.getAttribute && node.getAttribute(attr)) ||
 						(node.parentNode && findAncestorAttr(node.parentNode, attr));
-				}
+				};
 
 				inherited = {
 					dir: findAncestorAttr(root, "dir"),

@@ -587,13 +587,13 @@ define(["./kernel", "./config", /*===== "./declare", =====*/ "./lang", "../Event
 					prop.end = prop.end(n);
 				}
 				var isColor = (p.toLowerCase().indexOf("color") >= 0);
-				function getStyle(node, p){
+				var getStyle = function getStyle(node, p){
 					// domStyle.get(node, "height") can return "auto" or "" on IE; this is more reliable:
 					var v = { height: node.offsetHeight, width: node.offsetWidth }[p];
 					if(v !== undefined){ return v; }
 					v = style.get(node, p);
 					return (p == "opacity") ? +v : (isColor ? v : parseFloat(v));
-				}
+				};
 				if(!("end" in prop)){
 					prop.end = getStyle(n, p);
 				}else if(!("start" in prop)){

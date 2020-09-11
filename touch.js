@@ -107,7 +107,7 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 			if(!clicksInited){
 				clicksInited = true;
 
-				function updateClickTracker(e){
+				var updateClickTracker = function updateClickTracker(e){
 					if(useTarget){
 						clickTracker = dom.isDescendant(
 							win.doc.elementFromPoint(
@@ -120,7 +120,7 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 							Math.abs((e.changedTouches ? e.changedTouches[0].pageX - win.global.pageXOffset : e.clientX) - clickX) <= clickDx &&
 							Math.abs((e.changedTouches ? e.changedTouches[0].pageY - win.global.pageYOffset : e.clientY) - clickY) <= clickDy;
 					}
-				}
+				};
 
 				win.doc.addEventListener(moveType, function(e){
 					if(mouse.isRight(e)){
@@ -149,7 +149,7 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 						//some attributes can be on the Touch object, not on the Event:
 						//http://www.w3.org/TR/touch-events/#touch-interface
 						var src = (e.changedTouches) ? e.changedTouches[0] : e;
-						function createMouseEvent(type){
+						var createMouseEvent = function createMouseEvent(type){
 							//create the synthetic event.
 							//http://www.w3.org/TR/DOM-Level-3-Events/#widl-MouseEvent-initMouseEvent
 							var evt = document.createEvent("MouseEvents");
@@ -171,7 +171,7 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 								null //related target
 							);
 							return evt;
-						}
+						};
 						var mouseDownEvt = createMouseEvent("mousedown");
 						var mouseUpEvt = createMouseEvent("mouseup");
 						var clickEvt = createMouseEvent("click");
@@ -187,7 +187,7 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 					}
 				}, true);
 
-				function stopNativeEvents(type){
+				var stopNativeEvents = function stopNativeEvents(type){
 					win.doc.addEventListener(type, function(e){
 						// Stop native events when we emitted our own click event.  Note that the native click may occur
 						// on a different node than the synthetic click event was generated on.  For example,
@@ -223,7 +223,7 @@ function(dojo, aspect, dom, domClass, lang, on, has, mouse, domReady, win){
 							}
 						}
 					}, true);
-				}
+				};
 
 				stopNativeEvents("click");
 

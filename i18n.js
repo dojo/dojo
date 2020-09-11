@@ -402,7 +402,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 
 										if(loc !== locale){
 											// capture some locale variables
-											function improveBundle(bundlePath, bundleName, bundle, localized){
+											var improveBundle = function improveBundle(bundlePath, bundleName, bundle, localized){
 												// locale was not flattened and we've fallen back to a less-specific locale that was flattened
 												// for example, we had a flattened 'fr', a 'fr-ca' is available for at least this bundle, and
 												// locale==='fr-ca'; therefore, we must improve the bundle as retrieved from the rollup by
@@ -447,7 +447,7 @@ define(["./_base/kernel", "require", "./has", "./_base/array", "./_base/config",
 													// this is the best possible (definitely not a perfect match), accept it
 													cache[cacheId(bundlePath, bundleName, locale, require)] = bundle;
 												}
-											}
+											};
 											improveBundle(bundlePath, bundleName, bundle, localized);
 										}
 									}

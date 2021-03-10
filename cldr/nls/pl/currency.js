@@ -14,7 +14,7 @@ define(
 	"GBP_symbol": "GBP",
 	"CAD_displayName": "dolar kanadyjski",
 	"USD_symbol": "USD",
-	"EUR_symbol": "€",
+	"EUR_symbol": "↑↑↑",
 	"AUD_displayName": "dolar australijski",
 	"CHF_symbol": "CHF",
 	"HKD_symbol": "HKD",

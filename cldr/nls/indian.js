@@ -4,6 +4,10 @@ define({ root:
 {
 	"field-thu-narrow-relative+0": "this Thursday",
 	"field-thu-narrow-relative+1": "next Thursday",
+	"dayPeriods-format-wide@localeAlias933": {
+		"bundle": "gregorian",
+		"target": "dayPeriods-format-abbr"
+	},
 	"field-sun-narrow-relative+0": "this Sunday",
 	"field-sun-narrow-relative+1": "next Sunday",
 	"months-format-wide": [
@@ -23,10 +27,22 @@ define({ root:
 	"dayPeriods-standAlone-abbr-pm": "PM",
 	"dateFormatItem-Hms": "HH:mm:ss",
 	"field-fri-narrow-relative+0": "this Friday",
-	"field-fri-narrow-relative+1": "next Friday",
 	"eraNarrow": [
 		"Saka"
 	],
+	"field-fri-narrow-relative+1": "next Friday",
+	"field-dayOfYear-short@localeAlias965": {
+		"bundle": "",
+		"target": "field-dayOfYear"
+	},
+	"field-quarter-narrow@localeAlias951": {
+		"bundle": "",
+		"target": "field-quarter-short"
+	},
+	"field-quarter-narrow@localeAlias952": {
+		"bundle": "",
+		"target": "field-quarter"
+	},
 	"days-standAlone-narrow": [
 		"S",
 		"M",
@@ -45,17 +61,9 @@ define({ root:
 		"Fri",
 		"Sat"
 	],
-	"days-format-abbr@localeAlias726": {
-		"bundle": "gregorian",
-		"target": "days-format-wide"
-	},
 	"dateFormatItem-Ehm": "E h:mm a",
 	"dateTimeFormats-appendItem-Timezone": "{0} {1}",
 	"field-wed-narrow-relative+-1": "last Wednesday",
-	"months-standAlone-wide@localeAlias724": {
-		"bundle": "indian",
-		"target": "months-format-wide"
-	},
 	"field-minute-narrow-relative+0": "this minute",
 	"days-format-wide": [
 		"Sun",
@@ -66,58 +74,74 @@ define({ root:
 		"Fri",
 		"Sat"
 	],
-	"field-day-short@localeAlias767": {
-		"bundle": "",
-		"target": "field-day"
+	"days-standAlone-abbr@localeAlias919": {
+		"bundle": "gregorian",
+		"target": "days-format-abbr"
 	},
 	"field-month-short-relative+0": "this month",
 	"field-month-short-relative+1": "next month",
 	"dateFormatItem-Ehms": "E h:mm:ss a",
-	"field-mon-narrow@localeAlias774": {
+	"field-weekdayOfMonth-narrow@localeAlias972": {
 		"bundle": "",
-		"target": "field-mon-short"
+		"target": "field-weekdayOfMonth-short"
 	},
-	"field-mon-narrow@localeAlias775": {
+	"field-wed-narrow@localeAlias984": {
 		"bundle": "",
-		"target": "field-mon"
+		"target": "field-wed-short"
+	},
+	"field-weekdayOfMonth-narrow@localeAlias973": {
+		"bundle": "",
+		"target": "field-weekdayOfMonth"
+	},
+	"field-wed-narrow@localeAlias985": {
+		"bundle": "",
+		"target": "field-wed"
 	},
 	"field-thu-relative+0": "this Thursday",
-	"field-thu-relative+1": "next Thursday",
 	"dayPeriods-format-wide-am": "AM",
-	"field-fri-relative+0": "this Friday",
-	"field-month-short@localeAlias761": {
+	"field-thu-relative+1": "next Thursday",
+	"field-thu-short@localeAlias986": {
 		"bundle": "",
-		"target": "field-month"
+		"target": "field-thu"
 	},
+	"field-fri-relative+0": "this Friday",
 	"field-fri-relative+1": "next Friday",
-	"field-thu-narrow-relative+-1": "last Thursday",
+	"days-standAlone-abbr@localeAlias920": {
+		"bundle": "gregorian",
+		"target": "days-format-wide"
+	},
 	"field-quarter-relative+0": "this quarter",
+	"field-thu-narrow-relative+-1": "last Thursday",
 	"field-quarter-relative+1": "next quarter",
-	"months-format-abbr@localeAlias720": {
-		"bundle": "indian",
-		"target": "months-format-wide"
+	"field-weekdayOfMonth-short@localeAlias971": {
+		"bundle": "",
+		"target": "field-weekdayOfMonth"
 	},
 	"field-sun-short-relative+0": "this Sunday",
 	"timeFormat-short": "HH:mm",
 	"field-sun-short-relative+1": "next Sunday",
 	"dateFormatItem-hms": "h:mm:ss a",
 	"dateFormatItem-Md": "MM-dd",
-	"field-sun-narrow@localeAlias771": {
+	"field-tue-short@localeAlias980": {
 		"bundle": "",
-		"target": "field-sun-short"
-	},
-	"days-format-narrow@localeAlias727": {
-		"bundle": "gregorian",
-		"target": "days-standAlone-narrow"
+		"target": "field-tue"
 	},
 	"field-week-narrow": "Week",
-	"field-sun-narrow@localeAlias772": {
-		"bundle": "",
-		"target": "field-sun"
+	"quarters@localeAlias925": {
+		"bundle": "gregorian",
+		"target": "quarters"
 	},
 	"field-hour-relative+0": "this hour",
 	"field-day-relative+-1": "yesterday",
 	"field-mon-narrow-relative+-1": "last Monday",
+	"field-day-narrow@localeAlias963": {
+		"bundle": "",
+		"target": "field-day-short"
+	},
+	"field-day-narrow@localeAlias964": {
+		"bundle": "",
+		"target": "field-day"
+	},
 	"field-minute-narrow": "Minute",
 	"dateFormatItem-yyyyMMM": "G y MMM",
 	"field-thu-short-relative+0": "this Thursday",
@@ -126,12 +150,21 @@ define({ root:
 	"field-mon-relative+1": "next Monday",
 	"dateTimeFormats-appendItem-Era": "{1} {0}",
 	"field-day-narrow-relative+0": "today",
+	"field-era-short": "Era",
 	"field-day-narrow-relative+1": "tomorrow",
 	"field-sat-narrow-relative+0": "this Saturday",
 	"timeFormat-long": "HH:mm:ss z",
 	"field-sat-narrow-relative+1": "next Saturday",
 	"field-week-narrow-relative+0": "this week",
 	"field-week-narrow-relative+1": "next week",
+	"dayPeriods-standAlone-narrow@localeAlias935": {
+		"bundle": "gregorian",
+		"target": "dayPeriods-standAlone-abbr"
+	},
+	"dayPeriods-standAlone-narrow@localeAlias936": {
+		"bundle": "gregorian",
+		"target": "dayPeriods-format-abbr"
+	},
 	"field-hour-short-relative+0": "this hour",
 	"field-wed-narrow-relative+0": "this Wednesday",
 	"field-wed-narrow-relative+1": "next Wednesday",
@@ -151,189 +184,258 @@ define({ root:
 		"Phalguna"
 	],
 	"dateTimeFormats-appendItem-Second": "{0} ({2}: {1})",
-	"field-year-relative+0": "this year",
-	"field-year-relative+1": "next year",
-	"dayPeriods@localeAlias742": {
+	"field-weekday-narrow": "Day of the Week",
+	"eraNames@localeAlias939": {
+		"bundle": "indian",
+		"target": "eraAbbr"
+	},
+	"field-sat-narrow@localeAlias993": {
+		"bundle": "",
+		"target": "field-sat-short"
+	},
+	"days-format-short@localeAlias917": {
 		"bundle": "gregorian",
-		"target": "dayPeriods"
+		"target": "days-format-abbr"
+	},
+	"field-sat-narrow@localeAlias994": {
+		"bundle": "",
+		"target": "field-sat"
+	},
+	"field-year-relative+0": "this year",
+	"days-format-short@localeAlias918": {
+		"bundle": "gregorian",
+		"target": "days-format-wide"
+	},
+	"field-year-relative+1": "next year",
+	"field-minute-short@localeAlias1001": {
+		"bundle": "",
+		"target": "field-minute"
 	},
 	"field-tue-relative+0": "this Tuesday",
 	"field-tue-relative+1": "next Tuesday",
 	"field-minute-short-relative+0": "this minute",
 	"dateFormatItem-hm": "h:mm a",
 	"field-year-narrow": "Year",
-	"dateTimeFormats-appendItem-Day": "{0} ({2}: {1})",
-	"field-tue-short-relative+0": "this Tuesday",
-	"field-tue-short-relative+1": "next Tuesday",
-	"field-fri-short@localeAlias785": {
+	"field-year-short@localeAlias947": {
 		"bundle": "",
-		"target": "field-fri"
+		"target": "field-year"
+	},
+	"dateTimeFormats-appendItem-Day": "{0} ({2}: {1})",
+	"field-second-narrow@localeAlias1005": {
+		"bundle": "",
+		"target": "field-second-short"
+	},
+	"field-tue-short-relative+0": "this Tuesday",
+	"field-second-narrow@localeAlias1006": {
+		"bundle": "",
+		"target": "field-second"
+	},
+	"field-tue-short-relative+1": "next Tuesday",
+	"field-mon-short@localeAlias977": {
+		"bundle": "",
+		"target": "field-mon"
 	},
 	"dateTimeFormats-appendItem-Year": "{1} {0}",
 	"dateTimeFormats-appendItem-Day-Of-Week": "{0} {1}",
+	"dayPeriods-format-narrow@localeAlias932": {
+		"bundle": "gregorian",
+		"target": "dayPeriods-format-abbr"
+	},
 	"field-tue-narrow-relative+0": "this Tuesday",
-	"field-hour-narrow@localeAlias792": {
-		"bundle": "",
-		"target": "field-hour-short"
-	},
 	"field-tue-narrow-relative+1": "next Tuesday",
-	"field-hour-narrow@localeAlias793": {
-		"bundle": "",
-		"target": "field-hour"
-	},
-	"field-week-narrow@localeAlias765": {
-		"bundle": "",
-		"target": "field-week-short"
-	},
-	"field-week-narrow@localeAlias766": {
-		"bundle": "",
-		"target": "field-week"
-	},
 	"dateTimeFormat-full": "{1} {0}",
 	"dateFormatItem-E": "ccc",
+	"field-era-short@localeAlias944": {
+		"bundle": "",
+		"target": "field-era"
+	},
+	"dateFormatItem-EBhm": "E h:mm B",
 	"dateFormatItem-H": "HH",
 	"field-wed-relative+0": "this Wednesday",
 	"field-wed-relative+1": "next Wednesday",
 	"dateFormatItem-M": "L",
 	"field-wed-short-relative+0": "this Wednesday",
-	"field-fri-short-relative+0": "this Friday",
 	"field-wed-short-relative+1": "next Wednesday",
+	"field-fri-short-relative+0": "this Friday",
+	"field-weekOfMonth-short": "Week Of Month",
 	"field-fri-short-relative+1": "next Friday",
-	"field-thu-narrow@localeAlias783": {
-		"bundle": "",
-		"target": "field-thu-short"
-	},
-	"field-thu-narrow@localeAlias784": {
-		"bundle": "",
-		"target": "field-thu"
-	},
 	"field-quarter-short-relative+-1": "last quarter",
 	"field-year-short-relative+-1": "last year",
+	"dateFormatItem-Bhm": "h:mm B",
 	"dateTimeFormats-appendItem-Hour": "{0} ({2}: {1})",
 	"dateTimeFormat-medium": "{1} {0}",
 	"field-quarter-narrow-relative+-1": "last quarter",
 	"dateFormatItem-d": "d",
-	"months-format-narrow@localeAlias721": {
-		"bundle": "indian",
-		"target": "months-standAlone-narrow"
+	"dayPeriods-standAlone-abbr@localeAlias934": {
+		"bundle": "gregorian",
+		"target": "dayPeriods-format-abbr"
 	},
 	"dayPeriods-format-abbr-pm": "PM",
 	"dateFormatItem-h": "h a",
+	"months-standAlone-abbr@localeAlias911": {
+		"bundle": "indian",
+		"target": "months-format-abbr"
+	},
 	"quarters-standAlone-wide": [
 		"Q1",
 		"Q2",
 		"Q3",
 		"Q4"
 	],
-	"dateFormatItem-yyyyQQQ": "G y QQQ",
-	"quarters-standAlone-abbr@localeAlias739": {
+	"timeFormat@localeAlias942": {
 		"bundle": "gregorian",
-		"target": "quarters-format-abbr"
+		"target": "timeFormat"
+	},
+	"months-standAlone-abbr@localeAlias912": {
+		"bundle": "indian",
+		"target": "months-format-wide"
+	},
+	"field-weekOfMonth-narrow": "Week Of Month",
+	"field-zone-short@localeAlias1007": {
+		"bundle": "",
+		"target": "field-zone"
+	},
+	"days-standAlone-wide@localeAlias924": {
+		"bundle": "gregorian",
+		"target": "days-format-wide"
+	},
+	"dateFormatItem-yyyyQQQ": "G y QQQ",
+	"field-second-short@localeAlias1004": {
+		"bundle": "",
+		"target": "field-second"
 	},
 	"dateFormatItem-yyyyMMMM": "G y MMMM",
 	"dateFormatItem-y": "G y",
+	"quarters-standAlone-wide@localeAlias930": {
+		"bundle": "gregorian",
+		"target": "quarters-format-wide"
+	},
 	"field-minute-relative+0": "this minute",
 	"field-year-short-relative+0": "this year",
+	"dateFormatItem-EBhms": "E h:mm:ss B",
 	"field-year-short-relative+1": "next year",
 	"field-weekday": "Day of the Week",
 	"dayPeriods-format-narrow-pm": "PM",
 	"dateTimeFormats-appendItem-Quarter": "{0} ({2}: {1})",
-	"eraNarrow@localeAlias751": {
-		"bundle": "indian",
-		"target": "eraAbbr"
-	},
 	"field-tue-narrow-relative+-1": "last Tuesday",
-	"quarters-standAlone-abbr@localeAlias740": {
-		"bundle": "gregorian",
-		"target": "quarters-format-wide"
+	"dateTime@localeAlias943": {
+		"bundle": "generic",
+		"target": "dateTime"
 	},
-	"dayPeriods-standAlone-wide@localeAlias748": {
-		"bundle": "gregorian",
-		"target": "dayPeriods-standAlone-abbr"
+	"field-minute-narrow@localeAlias1002": {
+		"bundle": "",
+		"target": "field-minute-short"
 	},
-	"dayPeriods-standAlone-wide@localeAlias749": {
-		"bundle": "gregorian",
-		"target": "dayPeriods-format-abbr"
+	"field-minute-narrow@localeAlias1003": {
+		"bundle": "",
+		"target": "field-minute"
+	},
+	"field-tue-narrow@localeAlias981": {
+		"bundle": "",
+		"target": "field-tue-short"
 	},
 	"field-year-narrow-relative+-1": "last year",
 	"dateFormatItem-yyyyMMMd": "G y MMM d",
+	"field-tue-narrow@localeAlias982": {
+		"bundle": "",
+		"target": "field-tue"
+	},
 	"field-sat-relative+-1": "last Saturday",
-	"days@localeAlias725": {
-		"bundle": "gregorian",
-		"target": "days"
-	},
-	"field-fri-narrow@localeAlias786": {
+	"field-wed-short@localeAlias983": {
 		"bundle": "",
-		"target": "field-fri-short"
-	},
-	"field-fri-narrow@localeAlias787": {
-		"bundle": "",
-		"target": "field-fri"
+		"target": "field-wed"
 	},
 	"dayPeriods-standAlone-narrow-pm": "PM",
 	"field-mon-narrow-relative+0": "this Monday",
 	"field-mon-narrow-relative+1": "next Monday",
-	"field-week-short@localeAlias764": {
-		"bundle": "",
-		"target": "field-week"
-	},
 	"field-second": "Second",
 	"field-year-relative+-1": "last year",
+	"field-weekdayOfMonth-short": "Weekday Of Month",
 	"dateFormat-short": "GGGGG y-MM-dd",
 	"eraNames": [
 		"Saka"
 	],
 	"field-second-short": "Second",
+	"quarters-format-narrow@localeAlias927": {
+		"bundle": "gregorian",
+		"target": "quarters-standAlone-narrow"
+	},
 	"field-thu-short-relative+-1": "last Thursday",
 	"field-zone": "Zone",
+	"field-dayperiod-narrow": "Dayperiod",
 	"field-sun-short-relative+-1": "last Sunday",
+	"field-year-narrow@localeAlias948": {
+		"bundle": "",
+		"target": "field-year-short"
+	},
 	"eraAbbr": [
 		"Saka"
 	],
 	"field-week-short": "Week",
 	"dayPeriods-standAlone-abbr-am": "AM",
+	"field-year-narrow@localeAlias949": {
+		"bundle": "",
+		"target": "field-year"
+	},
 	"dayPeriods-standAlone-wide-pm": "PM",
-	"quarters-format-abbr@localeAlias737": {
-		"bundle": "gregorian",
-		"target": "quarters-format-wide"
-	},
-	"field-minute-narrow@localeAlias795": {
+	"field-hour-short@localeAlias998": {
 		"bundle": "",
-		"target": "field-minute-short"
-	},
-	"field-minute-narrow@localeAlias796": {
-		"bundle": "",
-		"target": "field-minute"
+		"target": "field-hour"
 	},
 	"dateFormatItem-ms": "mm:ss",
 	"field-day-relative+0": "today",
 	"field-day-relative+1": "tomorrow",
+	"days-standAlone-short@localeAlias921": {
+		"bundle": "gregorian",
+		"target": "days-format-short"
+	},
+	"days-standAlone-short@localeAlias922": {
+		"bundle": "gregorian",
+		"target": "days-format-abbr"
+	},
+	"field-month-narrow@localeAlias954": {
+		"bundle": "",
+		"target": "field-month-short"
+	},
+	"days-standAlone-short@localeAlias923": {
+		"bundle": "gregorian",
+		"target": "days-format-wide"
+	},
+	"field-month-narrow@localeAlias955": {
+		"bundle": "",
+		"target": "field-month"
+	},
 	"field-day-short-relative+0": "today",
+	"field-dayOfYear-short": "Day Of Year",
 	"field-day-short-relative+1": "tomorrow",
 	"dateFormat-long": "G y MMMM d",
-	"field-sun-narrow-relative+-1": "last Sunday",
-	"field-sun-short@localeAlias770": {
+	"field-weekOfMonth-short@localeAlias959": {
 		"bundle": "",
-		"target": "field-sun"
+		"target": "field-weekOfMonth"
 	},
+	"field-sun-narrow-relative+-1": "last Sunday",
 	"field-second-relative+0": "now",
 	"field-quarter-relative+-1": "last quarter",
-	"field-quarter-short@localeAlias758": {
-		"bundle": "",
-		"target": "field-quarter"
-	},
 	"quarters-format-abbr": [
 		"Q1",
 		"Q2",
 		"Q3",
 		"Q4"
 	],
-	"dateFormat@localeAlias752": {
-		"bundle": "generic",
-		"target": "dateFormat"
-	},
 	"field-week-relative+-1": "last week",
+	"field-sat-short@localeAlias992": {
+		"bundle": "",
+		"target": "field-sat"
+	},
+	"days-format-abbr@localeAlias915": {
+		"bundle": "gregorian",
+		"target": "days-format-wide"
+	},
 	"field-month-relative+-1": "last month",
+	"months-standAlone-wide@localeAlias913": {
+		"bundle": "indian",
+		"target": "months-format-wide"
+	},
 	"months-format-narrow": [
 		"1",
 		"2",
@@ -365,83 +467,83 @@ define({ root:
 		"3",
 		"4"
 	],
-	"field-quarter-narrow@localeAlias759": {
-		"bundle": "",
-		"target": "field-quarter-short"
-	},
 	"field-day-short-relative+-1": "yesterday",
-	"dayPeriods-format-wide@localeAlias744": {
-		"bundle": "gregorian",
-		"target": "dayPeriods-format-abbr"
+	"months-format-abbr@localeAlias909": {
+		"bundle": "indian",
+		"target": "months-format-wide"
 	},
 	"dateFormatItem-GyMMM": "G y MMM",
 	"timeFormat-full": "HH:mm:ss zzzz",
+	"dateFormatItem-Bhms": "h:mm:ss B",
+	"field-day-short@localeAlias962": {
+		"bundle": "",
+		"target": "field-day"
+	},
 	"field-hour": "Hour",
-	"field-quarter-narrow@localeAlias760": {
+	"field-month-short@localeAlias953": {
 		"bundle": "",
-		"target": "field-quarter"
+		"target": "field-month"
 	},
-	"field-tue-short@localeAlias776": {
-		"bundle": "",
-		"target": "field-tue"
+	"days-format-narrow@localeAlias916": {
+		"bundle": "gregorian",
+		"target": "days-standAlone-narrow"
 	},
-	"field-wed-narrow@localeAlias780": {
-		"bundle": "",
-		"target": "field-wed-short"
-	},
-	"field-wed-narrow@localeAlias781": {
-		"bundle": "",
-		"target": "field-wed"
-	},
+	"field-dayOfYear-narrow": "Day Of Year",
 	"field-second-narrow-relative+0": "now",
-	"field-thu-short@localeAlias782": {
-		"bundle": "",
-		"target": "field-thu"
-	},
 	"field-quarter": "Quarter",
 	"field-month-narrow-relative+0": "this month",
-	"field-minute-short@localeAlias794": {
-		"bundle": "",
-		"target": "field-minute"
-	},
 	"field-month-narrow-relative+1": "next month",
+	"field-dayOfYear-narrow@localeAlias966": {
+		"bundle": "",
+		"target": "field-dayOfYear-short"
+	},
+	"field-weekday-short@localeAlias968": {
+		"bundle": "",
+		"target": "field-weekday"
+	},
+	"field-dayOfYear-narrow@localeAlias967": {
+		"bundle": "",
+		"target": "field-dayOfYear"
+	},
+	"field-mon-narrow@localeAlias978": {
+		"bundle": "",
+		"target": "field-mon-short"
+	},
+	"field-mon-narrow@localeAlias979": {
+		"bundle": "",
+		"target": "field-mon"
+	},
 	"dateFormatItem-yyyy": "G y",
 	"dateTimeFormats-appendItem-Minute": "{0} ({2}: {1})",
 	"field-day": "Day",
 	"field-mon-relative+-1": "last Monday",
-	"field-day-narrow@localeAlias768": {
+	"field-sun-narrow@localeAlias975": {
 		"bundle": "",
-		"target": "field-day-short"
+		"target": "field-sun-short"
 	},
-	"field-day-narrow@localeAlias769": {
+	"field-sun-narrow@localeAlias976": {
 		"bundle": "",
-		"target": "field-day"
+		"target": "field-sun"
 	},
+	"field-dayOfYear": "Day Of Year",
 	"dateFormat-medium": "G y MMM d",
-	"days-standAlone-abbr@localeAlias730": {
-		"bundle": "gregorian",
-		"target": "days-format-abbr"
-	},
-	"days-standAlone-abbr@localeAlias731": {
-		"bundle": "gregorian",
-		"target": "days-format-wide"
-	},
 	"dateTimeFormat-short": "{1} {0}",
 	"dateFormatItem-GyMMMd": "G y MMM d",
 	"dateFormatItem-MEd": "MM-dd, E",
 	"field-tue-short-relative+-1": "last Tuesday",
-	"field-sat-narrow@localeAlias789": {
-		"bundle": "",
-		"target": "field-sat-short"
-	},
 	"field-year-short": "Year",
-	"quarters@localeAlias736": {
+	"dayPeriods@localeAlias931": {
 		"bundle": "gregorian",
-		"target": "quarters"
+		"target": "dayPeriods"
 	},
 	"field-month-short": "Month",
+	"field-hour-narrow@localeAlias1000": {
+		"bundle": "",
+		"target": "field-hour"
+	},
 	"dateFormatItem-MMMEd": "MMM d, E",
 	"dateFormatItem-MMMd": "MMM d",
+	"dateFormatItem-Bh": "h B",
 	"months-format-abbr": [
 		"Chaitra",
 		"Vaisakha",
@@ -456,22 +558,10 @@ define({ root:
 		"Magha",
 		"Phalguna"
 	],
-	"field-sat-narrow@localeAlias790": {
-		"bundle": "",
-		"target": "field-sat"
-	},
 	"dayPeriods-format-abbr-am": "AM",
-	"dayPeriods-standAlone-narrow@localeAlias746": {
-		"bundle": "gregorian",
-		"target": "dayPeriods-standAlone-abbr"
-	},
-	"dayPeriods-standAlone-narrow@localeAlias747": {
-		"bundle": "gregorian",
-		"target": "dayPeriods-format-abbr"
-	},
 	"field-sat-relative+0": "this Saturday",
-	"field-sat-relative+1": "next Saturday",
 	"dayPeriods-format-wide-pm": "PM",
+	"field-sat-relative+1": "next Saturday",
 	"days-standAlone-abbr": [
 		"Sun",
 		"Mon",
@@ -481,14 +571,35 @@ define({ root:
 		"Fri",
 		"Sat"
 	],
+	"field-weekday-narrow@localeAlias969": {
+		"bundle": "",
+		"target": "field-weekday-short"
+	},
+	"field-zone-short": "Zone",
 	"field-week-short-relative+0": "this week",
 	"field-week-short-relative+1": "next week",
 	"dateFormatItem-yyyyMMMEd": "G y MMM d, E",
 	"dateTimeFormats-appendItem-Week": "{0} ({2}: {1})",
 	"field-fri-short-relative+-1": "last Friday",
 	"field-month-narrow": "Month",
+	"field-week-narrow@localeAlias957": {
+		"bundle": "",
+		"target": "field-week-short"
+	},
 	"dayPeriods-format-narrow-am": "AM",
+	"field-week-narrow@localeAlias958": {
+		"bundle": "",
+		"target": "field-week"
+	},
+	"field-era-narrow@localeAlias945": {
+		"bundle": "",
+		"target": "field-era-short"
+	},
 	"field-month-narrow-relative+-1": "last month",
+	"field-era-narrow@localeAlias946": {
+		"bundle": "",
+		"target": "field-era"
+	},
 	"days-format-abbr": [
 		"Sun",
 		"Mon",
@@ -498,19 +609,20 @@ define({ root:
 		"Fri",
 		"Sat"
 	],
-	"days-format-short@localeAlias728": {
-		"bundle": "gregorian",
-		"target": "days-format-abbr"
-	},
-	"days-format-short@localeAlias729": {
-		"bundle": "gregorian",
-		"target": "days-format-wide"
-	},
-	"field-mon-short@localeAlias773": {
+	"field-weekday-short": "Day of the Week",
+	"field-weekday-narrow@localeAlias970": {
 		"bundle": "",
-		"target": "field-mon"
+		"target": "field-weekday"
+	},
+	"field-zone-narrow@localeAlias1008": {
+		"bundle": "",
+		"target": "field-zone-short"
 	},
 	"field-day-narrow-relative+-1": "yesterday",
+	"field-zone-narrow@localeAlias1009": {
+		"bundle": "",
+		"target": "field-zone"
+	},
 	"field-quarter-short": "Quarter",
 	"days-format-short": [
 		"Sun",
@@ -535,10 +647,6 @@ define({ root:
 		"11",
 		"12"
 	],
-	"eraNames@localeAlias750": {
-		"bundle": "indian",
-		"target": "eraAbbr"
-	},
 	"days-format-narrow": [
 		"S",
 		"M",
@@ -550,40 +658,79 @@ define({ root:
 	],
 	"dateFormatItem-EHm": "E HH:mm",
 	"field-quarter-narrow": "Quarter",
+	"field-fri-short@localeAlias989": {
+		"bundle": "",
+		"target": "field-fri"
+	},
 	"field-mon-short-relative+0": "this Monday",
 	"field-mon-short-relative+1": "next Monday",
-	"field-year-short@localeAlias755": {
-		"bundle": "",
-		"target": "field-year"
+	"months-format-narrow@localeAlias910": {
+		"bundle": "indian",
+		"target": "months-standAlone-narrow"
 	},
+	"field-dayperiod-short": "Dayperiod",
 	"dayPeriods-standAlone-narrow-am": "AM",
 	"field-week-narrow-relative+-1": "last week",
+	"field-hour-narrow@localeAlias999": {
+		"bundle": "",
+		"target": "field-hour-short"
+	},
 	"field-thu-relative+-1": "last Thursday",
-	"field-fri-narrow-relative+-1": "last Friday",
 	"field-mon-short-relative+-1": "last Monday",
+	"field-fri-narrow-relative+-1": "last Friday",
 	"timeFormat-medium": "HH:mm:ss",
-	"dayPeriods-format-narrow@localeAlias743": {
+	"quarters-standAlone-abbr@localeAlias928": {
 		"bundle": "gregorian",
-		"target": "dayPeriods-format-abbr"
+		"target": "quarters-format-abbr"
+	},
+	"quarters-standAlone-abbr@localeAlias929": {
+		"bundle": "gregorian",
+		"target": "quarters-format-wide"
 	},
 	"field-quarter-short-relative+0": "this quarter",
 	"field-quarter-short-relative+1": "next quarter",
+	"field-thu-narrow@localeAlias987": {
+		"bundle": "",
+		"target": "field-thu-short"
+	},
 	"dateFormatItem-Ed": "d, E",
+	"field-thu-narrow@localeAlias988": {
+		"bundle": "",
+		"target": "field-thu"
+	},
 	"field-wed-relative+-1": "last Wednesday",
-	"field-second-short@localeAlias797": {
-		"bundle": "",
-		"target": "field-second"
+	"field-weekOfMonth": "Week Of Month",
+	"eraNarrow@localeAlias940": {
+		"bundle": "indian",
+		"target": "eraAbbr"
 	},
+	"field-weekdayOfMonth-narrow": "Weekday Of Month",
 	"dayPeriods-standAlone-wide-am": "AM",
-	"field-tue-narrow@localeAlias777": {
+	"field-dayperiod-narrow@localeAlias996": {
 		"bundle": "",
-		"target": "field-tue-short"
+		"target": "field-dayperiod-short"
 	},
-	"field-tue-narrow@localeAlias778": {
+	"field-dayperiod-narrow@localeAlias997": {
 		"bundle": "",
-		"target": "field-tue"
+		"target": "field-dayperiod"
+	},
+	"dayPeriods-standAlone-wide@localeAlias937": {
+		"bundle": "gregorian",
+		"target": "dayPeriods-standAlone-abbr"
+	},
+	"dayPeriods-standAlone-wide@localeAlias938": {
+		"bundle": "gregorian",
+		"target": "dayPeriods-format-abbr"
 	},
 	"field-fri-relative+-1": "last Friday",
+	"field-weekOfMonth-narrow@localeAlias960": {
+		"bundle": "",
+		"target": "field-weekOfMonth-short"
+	},
+	"field-weekOfMonth-narrow@localeAlias961": {
+		"bundle": "",
+		"target": "field-weekOfMonth"
+	},
 	"field-minute": "Minute",
 	"quarters-standAlone-narrow": [
 		"1",
@@ -591,6 +738,10 @@ define({ root:
 		"3",
 		"4"
 	],
+	"days@localeAlias914": {
+		"bundle": "gregorian",
+		"target": "days"
+	},
 	"field-second-short-relative+0": "now",
 	"quarters-format-wide": [
 		"Q1",
@@ -599,36 +750,8 @@ define({ root:
 		"Q4"
 	],
 	"field-day-short": "Day",
-	"field-wed-short@localeAlias779": {
-		"bundle": "",
-		"target": "field-wed"
-	},
 	"field-dayperiod": "Dayperiod",
-	"dayPeriods-standAlone-abbr@localeAlias745": {
-		"bundle": "gregorian",
-		"target": "dayPeriods-format-abbr"
-	},
 	"field-hour-short": "Hour",
-	"field-second-narrow@localeAlias798": {
-		"bundle": "",
-		"target": "field-second-short"
-	},
-	"months-standAlone-abbr@localeAlias722": {
-		"bundle": "indian",
-		"target": "months-format-abbr"
-	},
-	"field-second-narrow@localeAlias799": {
-		"bundle": "",
-		"target": "field-second"
-	},
-	"timeFormat@localeAlias753": {
-		"bundle": "gregorian",
-		"target": "timeFormat"
-	},
-	"months-standAlone-abbr@localeAlias723": {
-		"bundle": "indian",
-		"target": "months-format-wide"
-	},
 	"months-standAlone-abbr": [
 		"Chaitra",
 		"Vaisakha",
@@ -643,30 +766,32 @@ define({ root:
 		"Magha",
 		"Phalguna"
 	],
+	"field-dayperiod-short@localeAlias995": {
+		"bundle": "",
+		"target": "field-dayperiod"
+	},
 	"field-month-relative+0": "this month",
 	"field-second-narrow": "Second",
 	"field-month-relative+1": "next month",
 	"dateFormat-full": "G y MMMM d, EEEE",
 	"dateFormatItem-yyyyMEd": "GGGGG y-MM-dd, E",
+	"field-era-narrow": "Era",
 	"field-sat-short-relative+-1": "last Saturday",
-	"days-standAlone-wide@localeAlias735": {
-		"bundle": "gregorian",
-		"target": "days-format-wide"
+	"field-week-short@localeAlias956": {
+		"bundle": "",
+		"target": "field-week"
 	},
 	"field-week-short-relative+-1": "last week",
 	"dateTimeFormat-long": "{1} {0}",
 	"field-sun-relative+-1": "last Sunday",
-	"quarters-standAlone-wide@localeAlias741": {
+	"field-wed-short-relative+-1": "last Wednesday",
+	"dateFormatItem-yyyyQQQQ": "G y QQQQ",
+	"field-weekdayOfMonth": "Weekday Of Month",
+	"dateFormatItem-yyyyMd": "GGGGG y-MM-dd",
+	"quarters-format-abbr@localeAlias926": {
 		"bundle": "gregorian",
 		"target": "quarters-format-wide"
 	},
-	"field-wed-short-relative+-1": "last Wednesday",
-	"dateFormatItem-yyyyQQQQ": "G y QQQQ",
-	"dateTime@localeAlias754": {
-		"bundle": "generic",
-		"target": "dateTime"
-	},
-	"dateFormatItem-yyyyMd": "GGGGG y-MM-dd",
 	"field-quarter-narrow-relative+0": "this quarter",
 	"dateFormatItem-GyMMMEd": "G y MMM d, E",
 	"field-quarter-narrow-relative+1": "next quarter",
@@ -676,9 +801,14 @@ define({ root:
 	"field-year-narrow-relative+0": "this year",
 	"field-year-narrow-relative+1": "next year",
 	"dateFormatItem-Gy": "G y",
-	"field-hour-short@localeAlias791": {
+	"field-fri-narrow@localeAlias990": {
 		"bundle": "",
-		"target": "field-hour"
+		"target": "field-fri-short"
+	},
+	"field-zone-narrow": "Zone",
+	"field-fri-narrow@localeAlias991": {
+		"bundle": "",
+		"target": "field-fri"
 	},
 	"dateFormatItem-yyyyM": "GGGGG y-MM",
 	"field-tue-relative+-1": "last Tuesday",
@@ -686,21 +816,13 @@ define({ root:
 	"dateFormatItem-Hm": "HH:mm",
 	"field-week-relative+0": "this week",
 	"field-week-relative+1": "next week",
-	"quarters-format-narrow@localeAlias738": {
-		"bundle": "gregorian",
-		"target": "quarters-standAlone-narrow"
-	},
-	"field-year-narrow@localeAlias756": {
-		"bundle": "",
-		"target": "field-year-short"
-	},
 	"dateFormatItem-MMM": "LLL",
-	"field-year-narrow@localeAlias757": {
-		"bundle": "",
-		"target": "field-year"
-	},
 	"field-sun-relative+0": "this Sunday",
 	"field-sun-relative+1": "next Sunday",
+	"dateFormat@localeAlias941": {
+		"bundle": "generic",
+		"target": "dateFormat"
+	},
 	"field-sat-narrow-relative+-1": "last Saturday",
 	"dateTimeFormats-appendItem-Month": "{0} ({2}: {1})",
 	"quarters-standAlone-abbr": [
@@ -709,29 +831,13 @@ define({ root:
 		"Q3",
 		"Q4"
 	],
-	"field-sat-short@localeAlias788": {
+	"field-sun-short@localeAlias974": {
 		"bundle": "",
-		"target": "field-sat"
+		"target": "field-sun"
 	},
-	"field-month-narrow@localeAlias762": {
+	"field-quarter-short@localeAlias950": {
 		"bundle": "",
-		"target": "field-month-short"
-	},
-	"field-month-narrow@localeAlias763": {
-		"bundle": "",
-		"target": "field-month"
-	},
-	"days-standAlone-short@localeAlias732": {
-		"bundle": "gregorian",
-		"target": "days-format-short"
-	},
-	"days-standAlone-short@localeAlias733": {
-		"bundle": "gregorian",
-		"target": "days-format-abbr"
-	},
-	"days-standAlone-short@localeAlias734": {
-		"bundle": "gregorian",
-		"target": "days-format-wide"
+		"target": "field-quarter"
 	},
 	"field-month-short-relative+-1": "last month",
 	"dateFormatItem-EHms": "E HH:mm:ss",
@@ -743,19 +849,31 @@ define({ root:
 //end v1.x content
 ,
 	"cs": true,
+	"da": true,
+	"de": true,
+	"el": true,
+	"en-au": true,
+	"en-ca": true,
+	"en-gb": true,
+	"es": true,
+	"fi": true,
 	"fr": true,
+	"he": true,
 	"hr": true,
 	"hu": true,
 	"id": true,
 	"ja": true,
+	"mk": true,
 	"nb": true,
 	"nl": true,
 	"pl": true,
-	"pt": true,
+	"ro": true,
 	"ru": true,
+	"sk": true,
 	"sr": true,
 	"sv": true,
 	"th": true,
+	"tr": true,
 	"zh": true,
 	"zh-hant": true
 });

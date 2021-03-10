@@ -12,11 +12,12 @@ define(
 	"plusSign": "+",
 	"currencyFormat": "#,##0.00 ¤",
 	"perMille": "‰",
+	"approximatelySign": "↑↑↑",
 	"group": ".",
 	"percentFormat": "#,##0 %",
 	"decimalFormat-long": "000 billones",
 	"decimalFormat": "#,##0.###",
-	"currencyFormat-short": "000 B ¤",
+	"currencyFormat-short": "000 B¤",
 	"timeSeparator": ":",
 	"decimal": ",",
 	"exponential": "E"

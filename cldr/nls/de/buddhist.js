@@ -21,14 +21,16 @@ define(
 	"field-week-narrow-relative+1": "nächste Woche",
 	"field-wed-narrow-relative+-1": "letzten Mi.",
 	"field-year-narrow": "J",
+	"field-era-short": "Epoche",
 	"field-year-narrow-relative+0": "dieses Jahr",
 	"field-tue-relative+0": "diesen Dienstag",
 	"field-year-narrow-relative+1": "nächstes Jahr",
 	"field-tue-relative+1": "nächsten Dienstag",
+	"field-weekdayOfMonth": "Wochentag",
 	"field-second-short": "Sek.",
-	"dayPeriods-format-narrow-am": "vm.",
+	"dayPeriods-format-narrow-am": "↑↑↑",
 	"dateFormatItem-MMMd": "d. MMM",
-	"dayPeriods-format-abbr-am": "vorm.",
+	"field-weekdayOfMonth-narrow": "WT",
 	"field-week-relative+0": "diese Woche",
 	"field-month-relative+0": "diesen Monat",
 	"field-week-relative+1": "nächste Woche",
@@ -53,13 +55,16 @@ define(
 		"N",
 		"D"
 	],
-	"dayPeriods-standAlone-abbr-pm": "nachm.",
+	"eraNames": [
+		"B.E."
+	],
+	"field-weekOfMonth": "Woche des Monats",
 	"field-month-short": "Monat",
 	"dateFormatItem-GyMMMEd": "E, d. MMM y G",
 	"dateFormatItem-yyyyMd": "d.M.y GGGGG",
 	"field-day": "Tag",
+	"field-dayOfYear-short": "Tag des Jahres",
 	"field-year-relative+-1": "letztes Jahr",
-	"dayPeriods-format-wide-am": "vorm.",
 	"field-sat-short-relative+-1": "letzten Sa.",
 	"field-hour-relative+0": "in dieser Stunde",
 	"dateFormatItem-yyyyMEd": "E, d.M.y GGGGG",
@@ -68,15 +73,14 @@ define(
 	"field-sat-narrow-relative+-1": "letzten Sa.",
 	"field-second": "Sekunde",
 	"days-standAlone-narrow": [
-		"S",
-		"M",
+		"↑↑↑",
+		"↑↑↑",
 		"D",
 		"M",
 		"D",
-		"F",
-		"S"
+		"↑↑↑",
+		"↑↑↑"
 	],
-	"dayPeriods-standAlone-wide-pm": "nachm.",
 	"dateFormat-long": "d. MMMM y G",
 	"dateFormatItem-GyMMMd": "d. MMM y G",
 	"field-hour-short-relative+0": "in dieser Stunde",
@@ -92,13 +96,13 @@ define(
 		"4. Quartal"
 	],
 	"days-format-narrow": [
-		"S",
-		"M",
+		"↑↑↑",
+		"↑↑↑",
 		"D",
 		"M",
 		"D",
-		"F",
-		"S"
+		"↑↑↑",
+		"↑↑↑"
 	],
 	"field-tue-short-relative+0": "diesen Di.",
 	"field-tue-short-relative+1": "nächsten Di.",
@@ -111,13 +115,12 @@ define(
 	"field-dayperiod": "Tageshälfte",
 	"field-sat-short-relative+0": "diesen Sa.",
 	"field-sat-short-relative+1": "nächsten Sa.",
-	"dayPeriods-format-narrow-pm": "nm.",
+	"dayPeriods-format-narrow-pm": "↑↑↑",
 	"dateFormat-medium": "dd.MM.y G",
 	"dateFormatItem-yyyyMMMM": "MMMM y G",
 	"eraAbbr": [
 		"BE"
 	],
-	"dayPeriods-format-abbr-pm": "nachm.",
 	"dateFormatItem-yyyyM": "M.y GGGGG",
 	"field-second-narrow": "Sek.",
 	"field-mon-relative+0": "diesen Montag",
@@ -141,7 +144,8 @@ define(
 	],
 	"field-quarter-relative+-1": "letztes Quartal",
 	"dateFormatItem-yyyyMMMd": "d. MMM y G",
-	"dayPeriods-standAlone-narrow-am": "vorm.",
+	"field-dayperiod-narrow": "Tagesh.",
+	"dayPeriods-standAlone-narrow-am": "↑↑↑",
 	"field-week-narrow-relative+-1": "letzte Woche",
 	"days-format-short": [
 		"So.",
@@ -152,7 +156,7 @@ define(
 		"Fr.",
 		"Sa."
 	],
-	"dayPeriods-format-wide-pm": "nachm.",
+	"field-dayOfYear": "Tag des Jahres",
 	"field-sat-relative+-1": "letzten Samstag",
 	"dateTimeFormat-long": "{1} 'um' {0}",
 	"dateFormatItem-Md": "d.M.",
@@ -194,7 +198,7 @@ define(
 		"Juni",
 		"Juli",
 		"Aug.",
-		"Sep.",
+		"Sept.",
 		"Okt.",
 		"Nov.",
 		"Dez."
@@ -221,8 +225,9 @@ define(
 	"field-thu-narrow-relative+-1": "letzten Do.",
 	"field-tue-narrow-relative+-1": "letzten Di.",
 	"dateFormatItem-H": "HH 'Uhr'",
+	"field-weekOfMonth-short": "W/M",
 	"dateFormatItem-yyyy": "y G",
-	"dayPeriods-standAlone-narrow-pm": "nachm.",
+	"dayPeriods-standAlone-narrow-pm": "↑↑↑",
 	"field-wed-short-relative+0": "diesen Mi.",
 	"months-standAlone-wide": [
 		"Januar",
@@ -274,9 +279,12 @@ define(
 		"Nov",
 		"Dez"
 	],
+	"field-dayOfYear-narrow": "T/J",
 	"field-month-short-relative+0": "diesen Monat",
 	"field-month-short-relative+1": "nächsten Monat",
+	"field-weekdayOfMonth-short": "Wochentag",
 	"dateFormatItem-MEd": "E, d.M.",
+	"field-zone-narrow": "Zeitz.",
 	"dateFormatItem-y": "y G",
 	"field-thu-narrow-relative+0": "diesen Do.",
 	"field-thu-narrow-relative+1": "nächsten Do.",
@@ -298,6 +306,7 @@ define(
 	"field-wed-narrow-relative+1": "nächsten Mi.",
 	"field-quarter-narrow-relative+-1": "letztes Quartal",
 	"field-year-short-relative+0": "dieses Jahr",
+	"field-dayperiod-short": "Tageshälfte",
 	"dateFormatItem-yyyyMMM": "MMM y G",
 	"field-year-short-relative+1": "nächstes Jahr",
 	"field-fri-short-relative+0": "diesen Fr.",
@@ -315,12 +324,15 @@ define(
 	"field-hour-narrow-relative+0": "in dieser Stunde",
 	"dateFormatItem-yyyyQQQQ": "QQQQ y G",
 	"field-hour-short": "Std.",
+	"field-zone-short": "Zeitzone",
 	"field-month-narrow": "M",
 	"field-hour-narrow": "Std.",
 	"field-fri-narrow-relative+-1": "letzten Fr.",
 	"field-year-relative+0": "dieses Jahr",
 	"field-year-relative+1": "nächstes Jahr",
+	"field-era-narrow": "E",
 	"field-fri-relative+-1": "letzten Freitag",
+	"eraNarrow": "BE",
 	"field-tue-short-relative+-1": "letzten Di.",
 	"field-minute-narrow": "Min.",
 	"days-format-wide": [
@@ -337,11 +349,13 @@ define(
 	"field-year-short-relative+-1": "letztes Jahr",
 	"field-zone": "Zeitzone",
 	"dateFormatItem-MMMEd": "E, d. MMM",
+	"field-weekOfMonth-narrow": "Wo. des Monats",
+	"field-weekday-narrow": "Wochent.",
 	"field-quarter-narrow": "Q",
 	"field-sun-short-relative+-1": "letzten So.",
 	"field-day-relative+-1": "gestern",
-	"dayPeriods-standAlone-abbr-am": "vorm.",
 	"field-day-relative+-2": "vorgestern",
+	"field-weekday-short": "Wochentag",
 	"days-format-abbr": [
 		"So.",
 		"Mo.",
@@ -358,8 +372,7 @@ define(
 	"field-week-narrow": "W",
 	"field-era": "Epoche",
 	"field-fri-narrow-relative+0": "diesen Fr.",
-	"field-fri-narrow-relative+1": "nächsten Fr.",
-	"dayPeriods-standAlone-wide-am": "vorm."
+	"field-fri-narrow-relative+1": "nächsten Fr."
 }
 //end v1.x content
 );

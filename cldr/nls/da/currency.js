@@ -1,7 +1,7 @@
 define(
 //begin v1.x content
 {
-	"HKD_displayName": "Hongkong dollar",
+	"HKD_displayName": "hongkongsk dollar",
 	"CNY_displayName": "kinesisk yuan",
 	"JPY_displayName": "japansk yen",
 	"JPY_symbol": "JP¥",
@@ -13,7 +13,7 @@ define(
 	"EUR_displayName": "euro",
 	"GBP_symbol": "£",
 	"CAD_displayName": "canadisk dollar",
-	"USD_symbol": "$",
+	"USD_symbol": "↑↑↑",
 	"EUR_symbol": "€",
 	"AUD_displayName": "australsk dollar",
 	"CHF_symbol": "CHF",

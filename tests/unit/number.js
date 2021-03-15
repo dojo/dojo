@@ -251,9 +251,9 @@ define([
 				// assert.strictEqual(number.format(-1234567.89, {locale: 'en-in'}), '-12,34,567.89');
 				assert.strictEqual(number.format(-1234567.89, {places:0, locale: 'en-us'}), '-1,234,568');
 				// assert.strictEqual(number.format(-1234567.89, {places:0, locale: 'en-in'}), '-12,34,568');
-				assert.strictEqual(number.format(-1000.1, {places:2, locale: 'fr-fr'}), '-1\xa0000,10');
+				assert.strictEqual(number.format(-1000.1, {places:2, locale: 'fr-fr'}), '-1 000,10');
 				assert.strictEqual(number.format(-1000.1, {places:2, locale: 'en-us'}), '-1,000.10');
-				assert.strictEqual(number.format(-1000.1, {places:2, locale: 'fr-fr'}), '-1\xa0000,10');
+				assert.strictEqual(number.format(-1000.1, {places:2, locale: 'fr-fr'}), '-1 000,10');
 				assert.strictEqual(number.format(-1234.56, {places:2, locale: 'de-de'}), '-1.234,56');
 				assert.strictEqual(number.format(-1000.1, {places:2, locale: 'en-us'}), '-1,000.10');
 				assert.strictEqual(number.format(1.23456, {places:2, locale: 'en-us', type: 'percent'}), '123.46%');
@@ -271,7 +271,7 @@ define([
 				assert.strictEqual(number.format(0, {places:2, locale: 'en-us'}), '0.00');
 
 				// change decimal places
-				assert.strictEqual(number.format(-1000.1, {places:3, locale: 'fr-fr'}), '-1\xa0000,100');
+				assert.strictEqual(number.format(-1000.1, {places:3, locale: 'fr-fr'}), '-1 000,100');
 				assert.strictEqual(number.format(-1000.1, {places:3, locale: 'en-us'}), '-1,000.100');
 			},
 
@@ -317,7 +317,7 @@ define([
 				assert.strictEqual(number.parse('-1000', {locale: 'en-us'}), -1000);
 				assert.strictEqual(number.parse('-1000.123', {locale: 'en-us'}), -1000.123);
 				assert.strictEqual(number.parse('-1,234,567.89', {locale: 'en-us'}), -1234567.89);
-				assert.strictEqual(number.parse('-1 234 567,89', {locale: 'fr-fr'}), -1234567.89);
+				assert.strictEqual(number.parse('-1 234 567,89', {locale: 'fr-fr'}), -1234567.89);
 				assertStrictNaN(number.parse('-1 234 567,89', {locale: 'en-us'}));
 
 				assert.strictEqual(number.parse('0123', {pattern: '0000'}), 123);
@@ -360,27 +360,27 @@ define([
 				checkParse({ pattern: "#,###.00 ¤;(#,###.00) ¤", locale: locale }, "1,00", 1);
 				checkParse({ pattern: "#,###.00¤;(#,###.00)¤", locale: locale }, "1,00 ", NaN);
 				checkParse({ pattern: "#,###.00¤;(#,###.00)¤", locale: locale }, "1,00", 1);
-				checkParse({ pattern: "#,###.00 ¤;(#,###.00) ¤", locale: locale }, "1 000,00 ", NaN);
-				checkParse({ pattern: "#,###.00 ¤;(#,###.00) ¤", locale: locale }, "1 000,00", 1000);
-				checkParse({ pattern: "#,###.00¤;(#,###.00)¤", locale: locale }, "1 000,00 ", NaN);
-				checkParse({ pattern: "#,###.00¤;(#,###.00)¤", locale: locale }, "1 000,00", 1000);
-				checkFormatParseCycle({ pattern: "#,###.00 ¤;(#,###.00) ¤", locale: locale }, "1200", "1\xa0200,00", true)
-				checkFormatParseCycle({ pattern: "#,###.00¤;(#,###.00)¤", locale: locale }, "1200", "1\xa0200,00", true)
-				checkFormatParseCycle({ pattern: "#,###.00 ¤;(#,###.00) ¤", locale: locale }, "1200 ", "1\xa0200,00", true)
-				checkFormatParseCycle({ pattern: "#,###.00¤;(#,###.00)¤", locale: locale }, "1200 ", "1\xa0200,00", true)
+				checkParse({ pattern: "#,###.00 ¤;(#,###.00) ¤", locale: locale }, "1 000,00 ", NaN);
+				checkParse({ pattern: "#,###.00 ¤;(#,###.00) ¤", locale: locale }, "1 000,00", 1000);
+				checkParse({ pattern: "#,###.00¤;(#,###.00)¤", locale: locale }, "1 000,00 ", NaN);
+				checkParse({ pattern: "#,###.00¤;(#,###.00)¤", locale: locale }, "1 000,00", 1000);
+				checkFormatParseCycle({ pattern: "#,###.00 ¤;(#,###.00) ¤", locale: locale }, "1200", "1 200,00", true)
+				checkFormatParseCycle({ pattern: "#,###.00¤;(#,###.00)¤", locale: locale }, "1200", "1 200,00", true)
+				checkFormatParseCycle({ pattern: "#,###.00 ¤;(#,###.00) ¤", locale: locale }, "1200 ", "1 200,00", true)
+				checkFormatParseCycle({ pattern: "#,###.00¤;(#,###.00)¤", locale: locale }, "1200 ", "1 200,00", true)
 
 				checkParse({ pattern: "¤ #,###.00;¤ (#,###.00)", locale: locale }, " 1,00", NaN);
 				checkParse({ pattern: "¤ #,###.00;¤ (#,###.00)", locale: locale }, "1,00", 1);
 				checkParse({ pattern: "¤#,###.00;¤(#,###.00)", locale: locale }, " 1,00", NaN);
 				checkParse({ pattern: "¤#,###.00;¤(#,###.00)", locale: locale }, "1,00", 1);
-				checkParse({ pattern: "¤ #,###.00;¤ (#,###.00)", locale: locale }, " 1 000,00", NaN);
-				checkParse({ pattern: "¤ #,###.00;¤ (#,###.00)", locale: locale }, "1 000,00", 1000);
-				checkParse({ pattern: "¤#,###.00;¤(#,###.00)", locale: locale }, " 1 000,00", NaN);
-				checkParse({ pattern: "¤#,###.00;¤(#,###.00)", locale: locale }, "1 000,00", 1000);
-				checkFormatParseCycle({ pattern: "¤ #,###.00;¤ (#,###.00)", locale: locale }, "1200", "1\xa0200,00", true)
-				checkFormatParseCycle({ pattern: "¤#,###.00;¤(#,###.00)", locale: locale }, "1200", "1\xa0200,00", true)
-				checkFormatParseCycle({ pattern: "¤ #,###.00;¤ (#,###.00)", locale: locale }, " 1200", "1\xa0200,00", true)
-				checkFormatParseCycle({ pattern: "¤#,###.00;¤(#,###.00)", locale: locale }, " 1200 ", "1\xa0200,00", true)
+				checkParse({ pattern: "¤ #,###.00;¤ (#,###.00)", locale: locale }, " 1 000,00", NaN);
+				checkParse({ pattern: "¤ #,###.00;¤ (#,###.00)", locale: locale }, "1 000,00", 1000);
+				checkParse({ pattern: "¤#,###.00;¤(#,###.00)", locale: locale }, " 1 000,00", NaN);
+				checkParse({ pattern: "¤#,###.00;¤(#,###.00)", locale: locale }, "1 000,00", 1000);
+				checkFormatParseCycle({ pattern: "¤ #,###.00;¤ (#,###.00)", locale: locale }, "1200", "1 200,00", true)
+				checkFormatParseCycle({ pattern: "¤#,###.00;¤(#,###.00)", locale: locale }, "1200", "1 200,00", true)
+				checkFormatParseCycle({ pattern: "¤ #,###.00;¤ (#,###.00)", locale: locale }, " 1200", "1 200,00", true)
+				checkFormatParseCycle({ pattern: "¤#,###.00;¤(#,###.00)", locale: locale }, " 1200 ", "1 200,00", true)
 
 
 			}
@@ -429,8 +429,8 @@ define([
 			// space as group separator
 			pattern = '#,###.00;(#,###.00)';
 			options = { pattern: pattern, locale: locale };
-			checkFormatParseCycle(options, 1234, '1\u00a0234,00', false); // Expect 1 234,00
-			checkFormatParseCycle(options, -1234, '(1\u00a0234,00)', false); // Expect (1 234,00)
+			checkFormatParseCycle(options, 1234, '1 234,00', false); // Expect 1 234,00
+			checkFormatParseCycle(options, -1234, '(1 234,00)', false); // Expect (1 234,00)
 
 
 			// NumberRegression.Test4092480, NumberRegression.Test4074454

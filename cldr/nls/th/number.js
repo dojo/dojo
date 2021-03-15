@@ -7,7 +7,7 @@ define(
 	"list": ";",
 	"percentSign": "%",
 	"minusSign": "-",
-	"decimalFormat-short": "000 ล'.'ล'.'",
+	"decimalFormat-short": "000T",
 	"nan": "NaN",
 	"plusSign": "+",
 	"currencyFormat": "¤#,##0.00;(¤#,##0.00)",
@@ -16,7 +16,7 @@ define(
 	"percentFormat": "#,##0%",
 	"decimalFormat-long": "000 ล้านล้าน",
 	"decimalFormat": "#,##0.###",
-	"currencyFormat-short": "¤000 ล'.'ล'.'",
+	"currencyFormat-short": "¤000T",
 	"timeSeparator": ":",
 	"decimal": ".",
 	"exponential": "E"

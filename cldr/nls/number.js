@@ -3,7 +3,7 @@ define({ root:
 //begin v1.x content
 {
 	"scientificFormat": "#E0",
-	"currencySpacing-afterCurrency-currencyMatch": "[:^S:]",
+	"currencySpacing-afterCurrency-currencyMatch": "[[:^S:]&[:^Z:]]",
 	"infinity": "∞",
 	"superscriptingExponent": "×",
 	"list": ";",
@@ -15,9 +15,10 @@ define({ root:
 	"nan": "NaN",
 	"plusSign": "+",
 	"currencySpacing-afterCurrency-surroundingMatch": "[:digit:]",
-	"currencySpacing-beforeCurrency-currencyMatch": "[:^S:]",
+	"currencySpacing-beforeCurrency-currencyMatch": "[[:^S:]&[:^Z:]]",
 	"currencyFormat": "¤ #,##0.00",
 	"perMille": "‰",
+	"approximatelySign": "~",
 	"group": ",",
 	"percentFormat": "#,##0%",
 	"decimalFormat-long": "000T",
@@ -39,6 +40,7 @@ define({ root:
 	"el": true,
 	"en": true,
 	"en-au": true,
+	"en-ca": true,
 	"es": true,
 	"fi": true,
 	"fr": true,

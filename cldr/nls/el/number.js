@@ -10,7 +10,7 @@ define(
 	"decimalFormat-short": "000 τρισ'.'",
 	"nan": "NaN",
 	"plusSign": "+",
-	"currencyFormat": "#,##0.00 ¤;(#,##0.00 ¤)",
+	"currencyFormat": "#,##0.00 ¤",
 	"perMille": "‰",
 	"group": ".",
 	"percentFormat": "#,##0%",

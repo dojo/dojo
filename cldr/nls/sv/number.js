@@ -8,7 +8,7 @@ define(
 	"percentSign": "%",
 	"minusSign": "−",
 	"decimalFormat-short": "000 bn",
-	"nan": "¤¤¤",
+	"nan": "NaN",
 	"plusSign": "+",
 	"currencyFormat": "#,##0.00 ¤",
 	"perMille": "‰",

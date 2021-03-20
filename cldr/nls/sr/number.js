@@ -17,7 +17,7 @@ define(
 	"decimalFormat-long": "000 билиона",
 	"decimalFormat": "#,##0.###",
 	"currencyFormat-short": "000 бил'.' ¤",
-	"timeSeparator": ".",
+	"timeSeparator": ":",
 	"decimal": ",",
 	"exponential": "E"
 }

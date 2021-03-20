@@ -4,7 +4,6 @@ define(
 	"scientificFormat": "#E0",
 	"infinity": "∞",
 	"superscriptingExponent": "×",
-	"list": ";",
 	"percentSign": "%",
 	"minusSign": "-",
 	"decimalFormat-short": "000 Bln",

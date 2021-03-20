@@ -9,7 +9,7 @@ define(
 	"CAD_symbol": "CA$",
 	"GBP_displayName": "英镑",
 	"CHF_displayName": "瑞士法郎",
-	"CNY_symbol": "￥",
+	"CNY_symbol": "¥",
 	"EUR_displayName": "欧元",
 	"GBP_symbol": "£",
 	"CAD_displayName": "加拿大元",

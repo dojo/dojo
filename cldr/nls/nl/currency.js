@@ -2,7 +2,7 @@ define(
 //begin v1.x content
 {
 	"HKD_displayName": "Hongkongse dollar",
-	"CNY_displayName": "Chinese renminbi",
+	"CNY_displayName": "Chinese yuan",
 	"JPY_displayName": "Japanse yen",
 	"JPY_symbol": "JP¥",
 	"USD_displayName": "Amerikaanse dollar",

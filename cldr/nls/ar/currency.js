@@ -11,7 +11,7 @@ define(
 	"CHF_displayName": "فرنك سويسري",
 	"CNY_symbol": "CN¥",
 	"EUR_displayName": "يورو",
-	"GBP_symbol": "£",
+	"GBP_symbol": "UK£",
 	"CAD_displayName": "دولار كندي",
 	"USD_symbol": "US$",
 	"EUR_symbol": "€",

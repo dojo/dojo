@@ -7,7 +7,7 @@ define(
 	"JPY_symbol": "JP¥",
 	"USD_displayName": "Dólar americano",
 	"CAD_symbol": "CA$",
-	"GBP_displayName": "Libra britânica",
+	"GBP_displayName": "Libra esterlina",
 	"CHF_displayName": "Franco suíço",
 	"CNY_symbol": "CN¥",
 	"EUR_displayName": "Euro",

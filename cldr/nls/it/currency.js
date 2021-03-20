@@ -2,23 +2,19 @@ define(
 //begin v1.x content
 {
 	"HKD_displayName": "dollaro di Hong Kong",
-	"CNY_displayName": "renminbi cinese",
-	"JPY_displayName": "yen giapponese",
-	"JPY_symbol": "JPY",
-	"USD_displayName": "dollaro statunitense",
-	"CAD_symbol": "CA$",
-	"GBP_displayName": "sterlina britannica",
 	"CHF_displayName": "franco svizzero",
-	"CNY_symbol": "CN¥",
-	"EUR_displayName": "euro",
-	"GBP_symbol": "£",
+	"JPY_symbol": "JPY",
 	"CAD_displayName": "dollaro canadese",
-	"USD_symbol": "US$",
-	"EUR_symbol": "€",
-	"AUD_displayName": "dollaro australiano",
-	"CHF_symbol": "CHF",
 	"HKD_symbol": "HKD",
-	"AUD_symbol": "A$"
+	"CNY_displayName": "renminbi cinese",
+	"USD_symbol": "USD",
+	"AUD_displayName": "dollaro australiano",
+	"JPY_displayName": "yen giapponese",
+	"USD_displayName": "dollaro statunitense",
+	"EUR_symbol": "€",
+	"GBP_displayName": "sterlina britannica",
+	"AUD_symbol": "A$",
+	"EUR_displayName": "euro"
 }
 //end v1.x content
 );

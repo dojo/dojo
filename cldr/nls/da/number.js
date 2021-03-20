@@ -7,7 +7,7 @@ define(
 	"list": ";",
 	"percentSign": "%",
 	"minusSign": "-",
-	"decimalFormat-short": "000 bio",
+	"decimalFormat-short": "000 bio'.'",
 	"nan": "NaN",
 	"plusSign": "+",
 	"currencyFormat": "#,##0.00 ¤",
@@ -16,7 +16,7 @@ define(
 	"percentFormat": "#,##0 %",
 	"decimalFormat-long": "000 billioner",
 	"decimalFormat": "#,##0.###",
-	"currencyFormat-short": "000 bio ¤",
+	"currencyFormat-short": "000 bio'.' ¤",
 	"timeSeparator": ".",
 	"decimal": ",",
 	"exponential": "E"

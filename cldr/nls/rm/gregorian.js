@@ -1,0 +1,252 @@
+define(
+//begin v1.x content
+{
+	"days-standAlone-short": [
+		"du",
+		"gli",
+		"ma",
+		"me",
+		"gie",
+		"ve",
+		"so"
+	],
+	"months-format-narrow": [
+		"S",
+		"F",
+		"M",
+		"A",
+		"M",
+		"Z",
+		"F",
+		"A",
+		"S",
+		"O",
+		"N",
+		"D"
+	],
+	"field-weekday": "di da l'emna",
+	"dateFormatItem-yQQQ": "QQQ y",
+	"dateFormatItem-yMEd": "E, y-M-d",
+	"dateFormatItem-MMMEd": "E d. MMM",
+	"eraNarrow": [
+		"av. Cr.",
+		"s. Cr."
+	],
+	"dateFormatItem-yMM": "MM.y",
+	"days-format-short": [
+		"du",
+		"gli",
+		"ma",
+		"me",
+		"gie",
+		"ve",
+		"so"
+	],
+	"dateFormat-long": "d 'da' MMMM y",
+	"months-format-wide": [
+		"schaner",
+		"favrer",
+		"mars",
+		"avrigl",
+		"matg",
+		"zercladur",
+		"fanadur",
+		"avust",
+		"settember",
+		"october",
+		"november",
+		"december"
+	],
+	"dayPeriods-format-wide-pm": "sm",
+	"dateFormat-full": "EEEE, 'ils' d 'da' MMMM y",
+	"dateFormatItem-Md": "d.M.",
+	"field-era": "epoca",
+	"dateFormatItem-yM": "y-M",
+	"months-standAlone-wide": [
+		"schaner",
+		"favrer",
+		"mars",
+		"avrigl",
+		"matg",
+		"zercladur",
+		"fanadur",
+		"avust",
+		"settember",
+		"october",
+		"november",
+		"december"
+	],
+	"timeFormat-short": "HH:mm",
+	"quarters-format-wide": [
+		"1. quartal",
+		"2. quartal",
+		"3. quartal",
+		"4. quartal"
+	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
+	"timeFormat-long": "HH:mm:ss z",
+	"field-year": "onn",
+	"dateFormatItem-yMMM": "MMM y",
+	"field-hour": "ura",
+	"dateFormatItem-MMdd": "dd.MM.",
+	"months-format-abbr": [
+		"schan.",
+		"favr.",
+		"mars",
+		"avr.",
+		"matg",
+		"zercl.",
+		"fan.",
+		"avust",
+		"sett.",
+		"oct.",
+		"nov.",
+		"dec."
+	],
+	"timeFormat-full": "HH:mm:ss zzzz",
+	"field-day-relative+0": "oz",
+	"field-day-relative+1": "damaun",
+	"field-day-relative+2": "puschmaun",
+	"dateFormatItem-H": "H",
+	"months-standAlone-abbr": [
+		"schan.",
+		"favr.",
+		"mars",
+		"avr.",
+		"matg",
+		"zercl.",
+		"fan.",
+		"avust",
+		"sett.",
+		"oct.",
+		"nov.",
+		"dec."
+	],
+	"quarters-format-abbr": [
+		"1. quartal",
+		"2. quartal",
+		"3. quartal",
+		"4. quartal"
+	],
+	"quarters-standAlone-wide": [
+		"1. quartal",
+		"2. quartal",
+		"3. quartal",
+		"4. quartal"
+	],
+	"dateFormatItem-HHmmss": "HH:mm:ss",
+	"dateFormatItem-M": "L",
+	"days-standAlone-wide": [
+		"dumengia",
+		"glindesdi",
+		"mardi",
+		"mesemna",
+		"gievgia",
+		"venderdi",
+		"sonda"
+	],
+	"dateFormatItem-MMMMd": "d. MMMM",
+	"timeFormat-medium": "HH:mm:ss",
+	"dateFormatItem-yMMdd": "dd.MM.y",
+	"dateFormatItem-Hm": "H:mm",
+	"quarters-standAlone-abbr": [
+		"1. quartal",
+		"2. quartal",
+		"3. quartal",
+		"4. quartal"
+	],
+	"eraAbbr": [
+		"av. Cr.",
+		"s. Cr."
+	],
+	"field-minute": "minuta",
+	"field-dayperiod": "mesadad dal di",
+	"days-standAlone-abbr": [
+		"du",
+		"gli",
+		"ma",
+		"me",
+		"gie",
+		"ve",
+		"so"
+	],
+	"dateFormatItem-d": "d",
+	"dateFormatItem-ms": "mm:ss",
+	"field-day-relative+-1": "ier",
+	"field-day-relative+-2": "stersas",
+	"dateFormatItem-MMMd": "d. MMM",
+	"dateFormatItem-MEd": "E, d.M.",
+	"dateFormatItem-yMMMM": "MMMM y",
+	"field-day": "Tag",
+	"days-format-wide": [
+		"dumengia",
+		"glindesdi",
+		"mardi",
+		"mesemna",
+		"gievgia",
+		"venderdi",
+		"sonda"
+	],
+	"field-zone": "zona d'urari",
+	"dateFormatItem-y": "y",
+	"months-standAlone-narrow": [
+		"S",
+		"F",
+		"M",
+		"A",
+		"M",
+		"Z",
+		"F",
+		"A",
+		"S",
+		"O",
+		"N",
+		"D"
+	],
+	"days-format-abbr": [
+		"du",
+		"gli",
+		"ma",
+		"me",
+		"gie",
+		"ve",
+		"so"
+	],
+	"eraNames": [
+		"avant Cristus",
+		"suenter Cristus"
+	],
+	"days-format-narrow": [
+		"D",
+		"G",
+		"M",
+		"M",
+		"G",
+		"V",
+		"S"
+	],
+	"field-month": "mais",
+	"days-standAlone-narrow": [
+		"D",
+		"G",
+		"M",
+		"M",
+		"G",
+		"V",
+		"S"
+	],
+	"dateFormatItem-MMM": "LLL",
+	"dateFormatItem-HHmm": "HH:mm",
+	"dayPeriods-format-wide-am": "am",
+	"dateFormatItem-MMMMEd": "E d. MMMM",
+	"dateFormat-short": "dd-MM-yy",
+	"dateFormatItem-MMd": "d.MM.",
+	"field-second": "secunda",
+	"dateFormatItem-yMMMEd": "E, d. MMM y",
+	"dateFormatItem-Ed": "E d.",
+	"field-week": "emna",
+	"dateFormat-medium": "dd-MM-y",
+	"dateFormatItem-mmss": "mm:ss"
+}
+//end v1.x content
+);

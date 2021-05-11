@@ -1,16 +1,26 @@
 define([
 	"require", "./_base/kernel", "./_base/lang", "./_base/array", "./_base/config", "./dom", "./_base/window",
-		"./_base/url", "./aspect", "./promise/all", "./date/stamp", "./Deferred", "./has", "./query", "./on", "./ready"
-], function(require, dojo, dlang, darray, config, dom, dwindow, _Url, aspect, all, dates, Deferred, has, query, don, ready){
+	"./_base/url", "./aspect", "./promise/all", "./date/stamp", "./Deferred", "./has", "./json5", "./query", "./on",
+	"./ready"
+], function(require, dojo, dlang, darray, config, dom, dwindow, _Url, aspect, all, dates, Deferred, has, json5, query,
+	don, ready){
 
 	// module:
 	//		dojo/parser
 
 	new Date("X"); // workaround for #11279, new Date("") == NaN
 
-	// data-dojo-props etc. is not restricted to JSON, it can be any javascript
-	function myEval(text){
-		return eval("(" + text + ")");
+	var myEval;
+	if(has('csp-restrictions')) {
+		// JSON5 data attributes can be parsed without using eval; JS expressions will throw an error
+		myEval = json5.parse;
+	}
+	else {
+		myEval = function(text){
+			// data-dojo-props etc. is not restricted to JSON, it can be any javascript
+			/* jshint -W061 */
+			return eval("(" + text + ")");
+		};
 	}
 
 	// Widgets like BorderContainer add properties to _Widget via dojo.extend().
@@ -368,14 +378,19 @@ define([
 							break;
 						default:
 							var pVal = proto[name];
-							params[name] =
-								(pVal && "length" in pVal) ? (value ? value.split(/\s*,\s*/) : []) :	// array
-									(pVal instanceof Date) ?
-										(value == "" ? new Date("") :	// the NaN of dates
-										value == "now" ? new Date() :	// current date
-										dates.fromISOString(value)) :
-								(pVal instanceof _Url) ? (dojo.baseUrl + value) :
-								myEval(value);
+							try{
+								params[name] =
+									(pVal && "length" in pVal) ? (value ? value.split(/\s*,\s*/) : []) :	// array
+										(pVal instanceof Date) ?
+											(value == "" ? new Date("") :	// the NaN of dates
+											value == "now" ? new Date() :	// current date
+											dates.fromISOString(value)) :
+									(pVal instanceof _Url) ? (dojo.baseUrl + value) :
+									myEval(value);
+							}
+							catch(error){
+								console.error(error);
+							}
 						}
 					}else{
 						params[name] = value;

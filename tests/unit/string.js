@@ -1,8 +1,9 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'../../string'
-], function (registerSuite, assert, string) {
+	'../../string',
+	'./string-codePoint'
+], function (registerSuite, assert, string, codePointTests) {
 	registerSuite({
 		name: 'dojo/string',
 
@@ -114,6 +115,9 @@ define([
 			assert.equal(string.escape('astoria'), 'astoria');
 			assert.equal(string.escape('&<>\'/'), '&amp;&lt;&gt;&#x27;&#x2F;');
 			assert.equal(string.escape('oh"oh"oh'), 'oh&quot;oh&quot;oh');
-		}
+		},
+
+		'.codePointAt': codePointTests.codePointAt,
+		'.fromCodePoint': codePointTests.fromCodePoint
 	});
 });

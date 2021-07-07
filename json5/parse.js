@@ -87,7 +87,7 @@ define([
 		return c;
 	}
 	var lexStates = {
-		default: function () {
+		'default': function () {
 			switch (c) {
 				case '\t':
 				case '\v':

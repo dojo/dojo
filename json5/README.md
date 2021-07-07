@@ -13,6 +13,7 @@ tsc lib/parse.js lib/unicode.js lib/util.js --allowJs --module ES6 --outDir dojo
 to be made
 * Copy the files from the `json5/dojo` folder to the `dojo/json5` folder
 * Manual updates:
+  * IMPORTANT: wrap the `lexStates` object property `default:` in quotes => `'default':`
   * convert indentation to tabs in each module
   * remove any trailing commas
   * convert each module to AMD syntax

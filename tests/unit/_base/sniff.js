@@ -9,7 +9,7 @@ define([
         name: 'dojo/_base/sniff',
 
         "direct delegates": function () {
-            assert.isTrue(kernel.isBrowser == has("host-browser"));
+            assert.isTrue(!(kernel.isBrowser && has("host-browser")));
             assert.equal(kernel.isFF, has("ff"));
             assert.equal(kernel.isIE, has("ie"));
             assert.equal(kernel.isKhtml, has("khtml"));

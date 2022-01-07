@@ -67,15 +67,15 @@ define([
 			// Test that you can't set fields on Object.prototype itself.
 			const obj = {};
 			lang.setObject("__proto__.vuln", "polluted!", obj);
-			assert.isTrue("anything".vuln === undefined);
+			assert.isUndefined("anything".vuln);
 
 			// Test that you can't set fields on Object.constructor itself.
 			lang.setObject("constructor.vuln", "polluted!", obj);
-			assert.isTrue("anything".constructor.vuln === undefined);
+			assert.isUndefined("anything".constructor.vuln);
 
 			// Test that you can still set normal fields in an obj.
 			lang.setObject("foo.bar", "value for normal field", obj);
-			assert.isTrue(obj.foo.bar === "value for normal field");
+			assert.strictEqual(obj.foo.bar, "value for normal field");
 		},
 
 		'.mixin': function () {

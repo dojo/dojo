@@ -62,6 +62,20 @@ define([
 
 			lang.setObject('foo', { bar: 'test' }, test);
 			assert.deepEqual(test, { foo: { bar: 'test' } });
+
+			// CVE-2021-23450 tests
+			// Test that you can't set fields on Object.prototype itself.
+			const obj = {};
+			lang.setObject("__proto__.vuln", "polluted!", obj);
+			assert.isTrue("anything".vuln === undefined);
+
+			// Test that you can't set fields on Object.constructor itself.
+			lang.setObject("constructor.vuln", "polluted!", obj);
+			assert.isTrue("anything".constructor.vuln === undefined);
+
+			// Test that you can still set normal fields in an obj.
+			lang.setObject("foo.bar", "value for normal field", obj);
+			assert.isTrue(obj.foo.bar === "value for normal field");
 		},
 
 		'.mixin': function () {

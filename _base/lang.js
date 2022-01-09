@@ -31,6 +31,9 @@ define(["./kernel", "../has", "../sniff"], function(dojo, has){
 			try{
 				for(var i = 0; i < parts.length; i++){
 					var p = parts[i];
+					if (p === "__proto__") {
+						return;
+					}
 					if(!(p in context)){
 						if(create){
 							context[p] = {};

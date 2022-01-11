@@ -31,6 +31,10 @@ define(["./kernel", "../has", "../sniff"], function(dojo, has){
 			try{
 				for(var i = 0; i < parts.length; i++){
 					var p = parts[i];
+					// Fix for prototype pollution CVE-2021-23450
+					if (p === '__proto__' || p === 'constructor') {
+						return;
+					}
 					if(!(p in context)){
 						if(create){
 							context[p] = {};

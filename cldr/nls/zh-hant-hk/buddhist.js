@@ -1,0 +1,201 @@
+define(
+//begin v1.x content
+{
+	"dateFormatItem-yyyyMMMEd": "G y 年 M 月 d 日 (E)",
+	"dayPeriods-format-wide-pm": "下午",
+	"dateFormatItem-MMMEd": "M 月 d 日 (E)",
+	"dateFormatItem-hms": "ah:mm:ss",
+	"days-standAlone-wide": [
+		"星期日",
+		"星期一",
+		"星期二",
+		"星期三",
+		"星期四",
+		"星期五",
+		"星期六"
+	],
+	"dateTimeFormat-short": "{1}{0}",
+	"dayPeriods-format-narrow-noon": "中午",
+	"dateFormatItem-Gy": "G y 年",
+	"dayPeriods-format-wide-am": "上午",
+	"dateTimeFormat-medium": "{1}{0}",
+	"quarters-standAlone-abbr": [
+		"1季",
+		"2季",
+		"3季",
+		"4季"
+	],
+	"dateFormatItem-y": "G y 年",
+	"timeFormat-full": "ah:mm:ss [zzzz]",
+	"dateFormatItem-yyyy": "G y 年",
+	"months-standAlone-abbr": [
+		"1月",
+		"2月",
+		"3月",
+		"4月",
+		"5月",
+		"6月",
+		"7月",
+		"8月",
+		"9月",
+		"10月",
+		"11月",
+		"12月"
+	],
+	"dateFormatItem-Ed": "d E",
+	"days-standAlone-narrow": [
+		"日",
+		"一",
+		"二",
+		"三",
+		"四",
+		"五",
+		"六"
+	],
+	"dateFormatItem-GyMMMd": "G y 年 M 月 d 日",
+	"timeFormat-medium": "ah:mm:ss",
+	"dateFormatItem-Hm": "H:mm",
+	"dateFormatItem-Hms": "H:mm:ss",
+	"dayPeriods-format-narrow-pm": "下午",
+	"field-year-relative+0": "本年",
+	"field-year-relative+1": "下年",
+	"quarters-standAlone-wide": [
+		"第1季",
+		"第2季",
+		"第3季",
+		"第4季"
+	],
+	"field-year-relative+-1": "上年",
+	"dateFormatItem-yyyyQQQQ": "G y 年QQQQ",
+	"dayPeriods-format-narrow-am": "上午",
+	"months-standAlone-wide": [
+		"1月",
+		"2月",
+		"3月",
+		"4月",
+		"5月",
+		"6月",
+		"7月",
+		"8月",
+		"9月",
+		"10月",
+		"11月",
+		"12月"
+	],
+	"dateFormatItem-yyyyMd": "d/M/yGGGGG",
+	"dateFormatItem-yyyyMMMd": "G y 年 M 月 d 日",
+	"dateFormatItem-yyyyMEd": "E, d/M/yGGGGG",
+	"dateFormatItem-MMMd": "M 月 d 日",
+	"timeFormat-long": "ah:mm:ss [z]",
+	"months-format-abbr": [
+		"1月",
+		"2月",
+		"3月",
+		"4月",
+		"5月",
+		"6月",
+		"7月",
+		"8月",
+		"9月",
+		"10月",
+		"11月",
+		"12月"
+	],
+	"dayPeriods-format-wide-noon": "中午",
+	"timeFormat-short": "ah:mm",
+	"field-month-relative+1": "下月",
+	"dateFormatItem-H": "H時",
+	"quarters-format-abbr": [
+		"1季",
+		"2季",
+		"3季",
+		"4季"
+	],
+	"days-format-abbr": [
+		"週日",
+		"週一",
+		"週二",
+		"週三",
+		"週四",
+		"週五",
+		"週六"
+	],
+	"days-format-narrow": [
+		"日",
+		"一",
+		"二",
+		"三",
+		"四",
+		"五",
+		"六"
+	],
+	"dateFormatItem-GyMMMEd": "G y 年 M 月 d 日 (E)",
+	"dateFormatItem-GyMMM": "G y 年 M 月",
+	"dateFormatItem-yyyyQQQ": "G y 年第QQQ",
+	"dateFormatItem-MEd": "M-d（E）",
+	"days-standAlone-short": [
+		"日",
+		"一",
+		"二",
+		"三",
+		"四",
+		"五",
+		"六"
+	],
+	"dateFormatItem-hm": "ah:mm",
+	"days-standAlone-abbr": [
+		"週日",
+		"週一",
+		"週二",
+		"週三",
+		"週四",
+		"週五",
+		"週六"
+	],
+	"dateFormat-short": "d/M/yGGGGG",
+	"dateFormatItem-yyyyM": "M/yGGGGG",
+	"dateFormatItem-Md": "M-d",
+	"months-format-wide": [
+		"1月",
+		"2月",
+		"3月",
+		"4月",
+		"5月",
+		"6月",
+		"7月",
+		"8月",
+		"9月",
+		"10月",
+		"11月",
+		"12月"
+	],
+	"days-format-short": [
+		"日",
+		"一",
+		"二",
+		"三",
+		"四",
+		"五",
+		"六"
+	],
+	"dateFormatItem-yyyyMMM": "G y 年 M 月",
+	"field-month-relative+-1": "上月",
+	"quarters-format-wide": [
+		"第1季",
+		"第2季",
+		"第3季",
+		"第4季"
+	],
+	"days-format-wide": [
+		"星期日",
+		"星期一",
+		"星期二",
+		"星期三",
+		"星期四",
+		"星期五",
+		"星期六"
+	],
+	"dateFormatItem-h": "ah時"
+}
+//end v1.x content
+);

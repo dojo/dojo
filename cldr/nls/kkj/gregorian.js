@@ -1,0 +1,162 @@
+define(
+//begin v1.x content
+{
+	"dateFormatItem-yM": "MM y",
+	"dateFormatItem-MMMEd": "E d MMM",
+	"dateTimeFormat-full": "{1} {0}",
+	"field-day-relative+-1": "kwey",
+	"days-standAlone-wide": [
+		"sɔndi",
+		"lundi",
+		"mardi",
+		"mɛrkɛrɛdi",
+		"yedi",
+		"vaŋdɛrɛdi",
+		"mɔnɔ sɔndi"
+	],
+	"dateTimeFormat-short": "{1} {0}",
+	"dateFormatItem-Gy": "y G",
+	"dateTimeFormat-medium": "{1} {0}",
+	"months-standAlone-abbr": [
+		"pamba",
+		"wanja",
+		"mbiyɔ mɛndoŋgɔ",
+		"Nyɔlɔmbɔŋgɔ",
+		"Mɔnɔ ŋgbanja",
+		"Nyaŋgwɛ ŋgbanja",
+		"kuŋgwɛ",
+		"fɛ",
+		"njapi",
+		"nyukul",
+		"11",
+		"ɓulɓusɛ"
+	],
+	"dateFormatItem-Ed": "E d",
+	"dateFormatItem-yMMM": "MMM y",
+	"field-day-relative+0": "muka",
+	"field-day-relative+1": "nɛmɛnɔ",
+	"days-standAlone-narrow": [
+		"so",
+		"lu",
+		"ma",
+		"mɛ",
+		"ye",
+		"va",
+		"ms"
+	],
+	"dateFormatItem-GyMMMd": "d MMM y G",
+	"dateFormat-long": "d MMMM y",
+	"timeFormat-medium": "HH:mm:ss",
+	"dateFormat-medium": "d MMM y",
+	"dateFormatItem-yMd": "dd/MM y",
+	"dateTimeFormat-long": "{1} {0}",
+	"months-standAlone-wide": [
+		"pamba",
+		"wanja",
+		"mbiyɔ mɛndoŋgɔ",
+		"Nyɔlɔmbɔŋgɔ",
+		"Mɔnɔ ŋgbanja",
+		"Nyaŋgwɛ ŋgbanja",
+		"kuŋgwɛ",
+		"fɛ",
+		"njapi",
+		"nyukul",
+		"11",
+		"ɓulɓusɛ"
+	],
+	"dateFormatItem-MMMd": "d MMM",
+	"months-format-abbr": [
+		"pamba",
+		"wanja",
+		"mbiyɔ mɛndoŋgɔ",
+		"Nyɔlɔmbɔŋgɔ",
+		"Mɔnɔ ŋgbanja",
+		"Nyaŋgwɛ ŋgbanja",
+		"kuŋgwɛ",
+		"fɛ",
+		"njapi",
+		"nyukul",
+		"11",
+		"ɓulɓusɛ"
+	],
+	"timeFormat-short": "HH:mm",
+	"days-format-abbr": [
+		"sɔndi",
+		"lundi",
+		"mardi",
+		"mɛrkɛrɛdi",
+		"yedi",
+		"vaŋdɛrɛdi",
+		"mɔnɔ sɔndi"
+	],
+	"days-format-narrow": [
+		"so",
+		"lu",
+		"ma",
+		"mɛ",
+		"ye",
+		"va",
+		"ms"
+	],
+	"dateFormatItem-yMMMd": "d MMM y",
+	"dateFormatItem-GyMMMEd": "E d MMM y G",
+	"dateFormatItem-GyMMM": "MMM y G",
+	"dateFormatItem-MEd": "E dd/MM",
+	"days-standAlone-short": [
+		"so",
+		"lu",
+		"ma",
+		"mɛ",
+		"ye",
+		"va",
+		"ms"
+	],
+	"days-standAlone-abbr": [
+		"sɔndi",
+		"lundi",
+		"mardi",
+		"mɛrkɛrɛdi",
+		"yedi",
+		"vaŋdɛrɛdi",
+		"mɔnɔ sɔndi"
+	],
+	"dateFormat-short": "dd/MM y",
+	"dateFormatItem-yMMMEd": "E d MMM y",
+	"dateFormat-full": "EEEE dd MMMM y",
+	"dateFormatItem-Md": "dd/MM",
+	"dateFormatItem-yMEd": "E dd/MM y",
+	"months-format-wide": [
+		"pamba",
+		"wanja",
+		"mbiyɔ mɛndoŋgɔ",
+		"Nyɔlɔmbɔŋgɔ",
+		"Mɔnɔ ŋgbanja",
+		"Nyaŋgwɛ ŋgbanja",
+		"kuŋgwɛ",
+		"fɛ",
+		"njapi",
+		"nyukul",
+		"11",
+		"ɓulɓusɛ"
+	],
+	"days-format-short": [
+		"sɔndi",
+		"lundi",
+		"mardi",
+		"mɛrkɛrɛdi",
+		"yedi",
+		"vaŋdɛrɛdi",
+		"mɔnɔ sɔndi"
+	],
+	"days-format-wide": [
+		"sɔndi",
+		"lundi",
+		"mardi",
+		"mɛrkɛrɛdi",
+		"yedi",
+		"vaŋdɛrɛdi",
+		"mɔnɔ sɔndi"
+	]
+}
+//end v1.x content
+);

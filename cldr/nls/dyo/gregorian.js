@@ -1,0 +1,213 @@
+define(
+//begin v1.x content
+{
+	"dateFormatItem-yM": "M/y",
+	"field-dayperiod": "Bujom / Kalíim",
+	"eraNames": [
+		"Ariŋuu Yeesu",
+		"Atooŋe Yeesu"
+	],
+	"dateFormatItem-MMMEd": "E d MMM",
+	"field-day-relative+-1": "Fucen",
+	"dateFormatItem-hms": "h:mm:ss a",
+	"dateFormatItem-yQQQ": "QQQ y",
+	"days-standAlone-wide": [
+		"Dimas",
+		"Teneŋ",
+		"Talata",
+		"Alarbay",
+		"Aramisay",
+		"Arjuma",
+		"Sibiti"
+	],
+	"dateFormatItem-MMM": "LLL",
+	"months-standAlone-narrow": [
+		"S",
+		"F",
+		"M",
+		"A",
+		"M",
+		"S",
+		"S",
+		"U",
+		"S",
+		"O",
+		"N",
+		"D"
+	],
+	"field-era": "Jamanay",
+	"dateFormatItem-y": "y",
+	"timeFormat-full": "HH:mm:ss zzzz",
+	"months-standAlone-abbr": [
+		"Sa",
+		"Fe",
+		"Ma",
+		"Ab",
+		"Me",
+		"Su",
+		"Sú",
+		"Ut",
+		"Se",
+		"Ok",
+		"No",
+		"De"
+	],
+	"dateFormatItem-Ed": "E d",
+	"dateFormatItem-yMMM": "MMM y",
+	"field-day-relative+0": "Jaat",
+	"field-day-relative+1": "Kajom",
+	"days-standAlone-narrow": [
+		"D",
+		"T",
+		"T",
+		"A",
+		"A",
+		"A",
+		"S"
+	],
+	"eraAbbr": [
+		"ArY",
+		"AtY"
+	],
+	"dateFormat-long": "d MMMM y",
+	"timeFormat-medium": "HH:mm:ss",
+	"dateFormatItem-Hm": "HH:mm",
+	"dateFormat-medium": "d MMM y",
+	"dateFormatItem-Hms": "HH:mm:ss",
+	"dateFormatItem-yMd": "d/M/y",
+	"dateFormatItem-ms": "m:ss",
+	"field-year": "Emit",
+	"months-standAlone-wide": [
+		"Sanvie",
+		"Fébirie",
+		"Mars",
+		"Aburil",
+		"Mee",
+		"Sueŋ",
+		"Súuyee",
+		"Ut",
+		"Settembar",
+		"Oktobar",
+		"Novembar",
+		"Disambar"
+	],
+	"field-week": "Lóokuŋ",
+	"dateFormatItem-MMMd": "d MMM",
+	"timeFormat-long": "HH:mm:ss z",
+	"months-format-abbr": [
+		"Sa",
+		"Fe",
+		"Ma",
+		"Ab",
+		"Me",
+		"Su",
+		"Sú",
+		"Ut",
+		"Se",
+		"Ok",
+		"No",
+		"De"
+	],
+	"dateFormatItem-yQQQQ": "QQQQ y",
+	"timeFormat-short": "HH:mm",
+	"field-month": "Fuleeŋ",
+	"days-format-abbr": [
+		"Dim",
+		"Ten",
+		"Tal",
+		"Ala",
+		"Ara",
+		"Arj",
+		"Sib"
+	],
+	"dateFormatItem-M": "L",
+	"days-format-narrow": [
+		"D",
+		"T",
+		"T",
+		"A",
+		"A",
+		"A",
+		"S"
+	],
+	"dateFormatItem-yMMMd": "d MMM y",
+	"field-day": "Funak",
+	"dateFormatItem-MEd": "E d/M",
+	"months-format-narrow": [
+		"S",
+		"F",
+		"M",
+		"A",
+		"M",
+		"S",
+		"S",
+		"U",
+		"S",
+		"O",
+		"N",
+		"D"
+	],
+	"days-standAlone-short": [
+		"Dim",
+		"Ten",
+		"Tal",
+		"Ala",
+		"Ara",
+		"Arj",
+		"Sib"
+	],
+	"dateFormatItem-hm": "h:mm a",
+	"days-standAlone-abbr": [
+		"Dim",
+		"Ten",
+		"Tal",
+		"Ala",
+		"Ara",
+		"Arj",
+		"Sib"
+	],
+	"dateFormat-short": "d/M/y",
+	"dateFormatItem-yMMMEd": "E d MMM y",
+	"dateFormat-full": "EEEE d MMMM y",
+	"dateFormatItem-Md": "d/M",
+	"dateFormatItem-yMEd": "E d/M/y",
+	"months-format-wide": [
+		"Sanvie",
+		"Fébirie",
+		"Mars",
+		"Aburil",
+		"Mee",
+		"Sueŋ",
+		"Súuyee",
+		"Ut",
+		"Settembar",
+		"Oktobar",
+		"Novembar",
+		"Disambar"
+	],
+	"days-format-short": [
+		"Dim",
+		"Ten",
+		"Tal",
+		"Ala",
+		"Ara",
+		"Arj",
+		"Sib"
+	],
+	"dateFormatItem-d": "d",
+	"days-format-wide": [
+		"Dimas",
+		"Teneŋ",
+		"Talata",
+		"Alarbay",
+		"Aramisay",
+		"Arjuma",
+		"Sibiti"
+	],
+	"eraNarrow": [
+		"ArY",
+		"AtY"
+	]
+}
+//end v1.x content
+);

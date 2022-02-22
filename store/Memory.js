@@ -140,6 +140,7 @@ return declare("dojo.store.Memory", base, {
 		var data = this.data;
 		if(id in index){
 			data.splice(index[id], 1);
+			this.index = {};
 			this._rebuildIndex();
 			return true;
 		}
@@ -197,11 +198,7 @@ return declare("dojo.store.Memory", base, {
 		var i;
 
 		startIndex = startIndex || 0;
-		
-		// clear index first
-		this.index = {};
-		
-		// now rebuild index
+
 		for(i = startIndex; i < dataLength; i++){
 			this.index[data[i][this.idProperty]] = i;
 		}

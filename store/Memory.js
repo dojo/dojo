@@ -197,6 +197,11 @@ return declare("dojo.store.Memory", base, {
 		var i;
 
 		startIndex = startIndex || 0;
+		
+		// clear index first
+		this.index = {};
+		
+		// now rebuild index
 		for(i = startIndex; i < dataLength; i++){
 			this.index[data[i][this.idProperty]] = i;
 		}

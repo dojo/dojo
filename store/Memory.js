@@ -69,7 +69,7 @@ return declare("dojo.store.Memory", base, {
 		var idProperty = this.idProperty;
 		var id = object[idProperty] = (options && "id" in options) ?
 			options.id : idProperty in object ? object[idProperty] : Math.random();
-		var defaultDestination = 0;
+		var defaultDestination = data.length;
 		var newIndex;
 		var previousIndex;
 		var eventType = id in index ? "update" : "add";

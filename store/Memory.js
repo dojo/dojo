@@ -69,7 +69,7 @@ return declare("dojo.store.Memory", base, {
 		var idProperty = this.idProperty;
 		var id = object[idProperty] = (options && "id" in options) ?
 			options.id : idProperty in object ? object[idProperty] : Math.random();
-		var defaultDestination = 0;
+		var defaultDestination = data.length;
 		var newIndex;
 		var previousIndex;
 		var eventType = id in index ? "update" : "add";
@@ -140,6 +140,7 @@ return declare("dojo.store.Memory", base, {
 		var data = this.data;
 		if(id in index){
 			data.splice(index[id], 1);
+			this.index = {};
 			this._rebuildIndex();
 			return true;
 		}
@@ -197,6 +198,7 @@ return declare("dojo.store.Memory", base, {
 		var i;
 
 		startIndex = startIndex || 0;
+
 		for(i = startIndex; i < dataLength; i++){
 			this.index[data[i][this.idProperty]] = i;
 		}

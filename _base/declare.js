@@ -326,12 +326,13 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 		//	|	// B.m1
 		//	|	// X.m1
 
-		var name, t;
+		var name, t, ts;
 		// add props adding metadata for incoming functions skipping a constructor
 		for(name in source){
 			t = source[name];
 			if((t !== op[name] || !(name in op)) && name != cname){
-				if(opts.call(t) == "[object Function]"){
+				ts = opts.call(t);
+				if(ts == "[object Function]" || ts == "[object AsyncFunction]"){
 					// non-trivial function method => attach its name
 					t.nom = name;
 				}
@@ -343,7 +344,8 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 				name = extraNames[--i];
 				t = source[name];
 				if((t !== op[name] || !(name in op)) && name != cname){
-					if(opts.call(t) == "[object Function]"){
+					ts = opts.call(t);
+					if(ts == "[object Function]" || ts == "[object AsyncFunction]"){
 						// non-trivial function method => attach its name
 						  t.nom = name;
 					}

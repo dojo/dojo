@@ -90,6 +90,17 @@ return {
 	//		Run the parser after the page is loaded
 	parseOnLoad: false,
 
+	// allowEval: Boolean
+	//		When true, allows dojo/parser to use eval/new Function for parsing
+	//		data-dojo-props and function-valued attributes. Defaults to false
+	//		for safer parsing of untrusted markup.
+	allowEval: false,
+
+	// allowInlineScripts: Boolean
+	//		When true, allows <script type="dojo/*"> blocks in markup to be
+	//		executed by dojo/parser. Defaults to false for security.
+	allowInlineScripts: false,
+
 	// require: String[]
 	//		An array of module names to be loaded immediately after dojo.js has been included
 	//		in a page.

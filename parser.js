@@ -10,17 +10,18 @@ define([
 
 	new Date("X"); // workaround for #11279, new Date("") == NaN
 
+	var allowUnsafeEval = !has('csp-restrictions') && config.allowEval === true;
+	var allowInlineScripts = config.allowInlineScripts === true;
 	var myEval;
-	if(has('csp-restrictions')) {
-		// JSON5 data attributes can be parsed without using eval; JS expressions will throw an error
-		myEval = json5.parse;
-	}
-	else {
+	if(allowUnsafeEval){
 		myEval = function(text){
 			// data-dojo-props etc. is not restricted to JSON, it can be any javascript
 			/* jshint -W061 */
 			return eval("(" + text + ")");
 		};
+	}else{
+		// JSON5 data attributes can be parsed without using eval; JS expressions will throw an error
+		myEval = json5.parse;
 	}
 
 	// Widgets like BorderContainer add properties to _Widget via dojo.extend().
@@ -102,6 +103,12 @@ define([
 			// attrData: String
 			//		For HTML5 compliance, searches for attrData + "args" (typically
 			//		"data-dojo-args") instead of "args"
+			if(!allowInlineScripts){
+				return function(){
+					throw new Error("Inline dojo/* scripts are disabled by configuration");
+				};
+			}
+
 			var preamble = "",
 				suffix = "",
 				argsStr = (script.getAttribute(attrData + "args") || script.getAttribute("args")),
@@ -368,11 +375,21 @@ define([
 						case "function":
 							if(value === "" || value.search(/[^\w\.]+/i) != -1){
 								// The user has specified some text for a function like "return x+5"
+								if(!allowUnsafeEval){
+									throw new Error("Function attribute parsing is disabled by configuration");
+								}
 								params[name] = new Function(value);
 							}else{
 								// The user has specified the name of a global function like "myOnClick"
 								// or a single word function "return"
-								params[name] = dlang.getObject(value, false) || new Function(value);
+								var fn = dlang.getObject(value, false);
+								if(fn){
+									params[name] = fn;
+								}else if(allowUnsafeEval){
+									params[name] = new Function(value);
+								}else{
+									throw new Error("Function attribute parsing is disabled by configuration");
+								}
 							}
 							funcAttrs.push(name);	// prevent "double connect", see #15026
 							break;

@@ -73,6 +73,10 @@ define([
 			lang.setObject("constructor.vuln", "polluted!", obj);
 			assert.isUndefined("anything".constructor.vuln);
 
+			// Test that you can't reach a prototype through a named global.
+			lang.setObject("Object.prototype.vuln", "polluted!");
+			assert.isUndefined(({}).vuln);
+
 			// Test that you can still set normal fields in an obj.
 			lang.setObject("foo.bar", "value for normal field", obj);
 			assert.strictEqual(obj.foo.bar, "value for normal field");

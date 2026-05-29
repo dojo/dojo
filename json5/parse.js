@@ -743,6 +743,14 @@ define([
 			if (Array.isArray(parent_1)) {
 				parent_1.push(value);
 			}
+			else if (key === '__proto__') {
+				Object.defineProperty(parent_1, key, {
+					value: value,
+					writable: true,
+					enumerable: true,
+					configurable: true
+				});
+			}
 			else {
 				parent_1[key] = value;
 			}

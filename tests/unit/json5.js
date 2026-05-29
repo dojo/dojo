@@ -52,6 +52,13 @@ define([
 
 				'parses nested objects': function () {
 					assert.deepEqual(json5.parse('{a:{b:2}}'), {a: {b: 2}});
+				},
+
+				'parses "__proto__" property names without polluting the prototype': function () {
+					var value = json5.parse('{"__proto__":{"polluted":true}}');
+					assert.deepEqual(value['__proto__'], {polluted: true});
+					assert.strictEqual(Object.getPrototypeOf(value), Object.prototype);
+					assert.isUndefined(({}).polluted);
 				}
 			},
 

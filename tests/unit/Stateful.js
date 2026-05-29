@@ -116,6 +116,13 @@ define([
 				// stateObj1 watchers should not be copied to stateObj2
 				assert.isTrue(onValueChange.calledOnce);
 				handle.unwatch();
+			},
+
+			'hashed value does not reassign the prototype': function () {
+				var stateObj = new Stateful();
+				stateObj.set(JSON.parse('{"__proto__":{"injected":"yes"}}'));
+				assert.notEqual(Object.getPrototypeOf(stateObj).injected, 'yes');
+				assert.equal(typeof stateObj.get, 'function');
 			}
 		},
 

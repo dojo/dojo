@@ -203,6 +203,11 @@ define(["./kernel", "../has", "../sniff"], function(dojo, has){
 			//	| lang.setObject("parent.child.prop", "some value", obj);
 
 			var parts = name.split("."), p = parts.pop(), obj = getProp(parts, true, context);
+			// Fix for prototype pollution CVE-2021-23450: the getProp guard covers
+			// the walked segments, but the final assignment segment must be rejected too.
+			if(p === '__proto__' || p === 'constructor' || p === 'prototype'){
+				return;
+			}
 			return obj && p ? (obj[p] = value) : undefined; // Object
 		},
 

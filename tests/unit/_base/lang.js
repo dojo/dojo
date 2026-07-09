@@ -77,6 +77,13 @@ define([
 			lang.setObject("Object.prototype.vuln", "polluted!");
 			assert.isUndefined(({}).vuln);
 
+			// Test that the final path segment can't reassign a prototype either.
+			const protoTarget = {};
+			lang.setObject("__proto__", { vuln: "polluted!" }, protoTarget);
+			assert.isUndefined(protoTarget.vuln);
+			lang.setObject("nested.__proto__", { vuln: "polluted!" }, protoTarget);
+			assert.isUndefined(protoTarget.nested && protoTarget.nested.vuln);
+
 			// Test that you can still set normal fields in an obj.
 			lang.setObject("foo.bar", "value for normal field", obj);
 			assert.strictEqual(obj.foo.bar, "value for normal field");

@@ -123,6 +123,26 @@ define([
 				stateObj.set(JSON.parse('{"__proto__":{"injected":"yes"}}'));
 				assert.notEqual(Object.getPrototypeOf(stateObj).injected, 'yes');
 				assert.equal(typeof stateObj.get, 'function');
+			},
+
+			'scalar value does not reassign the prototype': function () {
+				// The hash branch above skips the key, but the two argument form
+				// reaches this branch, which assigned it directly.
+				var stateObj = new Stateful();
+				stateObj.set('__proto__', { injected: 'yes' });
+				assert.notEqual(Object.getPrototypeOf(stateObj).injected, 'yes');
+				assert.equal(typeof stateObj.get, 'function');
+				assert.isTrue(stateObj instanceof Stateful);
+				// ordinary attributes still go through
+				stateObj.set('foo', 'bar');
+				assert.equal(stateObj.get('foo'), 'bar');
+			},
+
+			'_changeAttrValue does not reassign the prototype': function () {
+				var stateObj = new Stateful();
+				stateObj._changeAttrValue('__proto__', { injected: 'yes' });
+				assert.notEqual(Object.getPrototypeOf(stateObj).injected, 'yes');
+				assert.equal(typeof stateObj.get, 'function');
 			}
 		},
 

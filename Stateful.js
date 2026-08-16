@@ -119,8 +119,11 @@ return declare("dojo.Stateful", null, {
 		if(typeof setter === "function"){
 			// use the explicit setter
 			result = setter.apply(this, Array.prototype.slice.call(arguments, 1));
-		}else{
+		}else if(name !== "__proto__"){
 			// no setter so set attribute directly
+			// __proto__ is skipped here for the same reason the hash branch
+			// above skips it: assigning it replaces the prototype of this
+			// instance rather than setting an attribute on it
 			this[name] = value;
 		}
 		if(this._watchCallbacks){
@@ -148,7 +151,9 @@ return declare("dojo.Stateful", null, {
 		//		of attributes that are linked, but calling .set() is not appropriate.
 
 		var oldValue = this.get(name);
-		this[name] = value;
+		if(name !== "__proto__"){
+			this[name] = value;
+		}
 		if(this._watchCallbacks){
 			this._watchCallbacks(name, oldValue, value);
 		}

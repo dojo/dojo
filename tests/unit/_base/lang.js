@@ -89,6 +89,29 @@ define([
 			assert.strictEqual(obj.foo.bar, "value for normal field");
 		},
 
+		'.mixin does not reassign the prototype': function () {
+			// _mixin documents that it excludes non-standard extensions found on
+			// Object.prototype. The existing empty[name] !== s comparison cannot
+			// catch __proto__, because empty["__proto__"] is Object.prototype and
+			// never equals the payload.
+			const target = { keep: 1 };
+			lang.mixin(target, JSON.parse('{"__proto__":{"vuln":"polluted!"}}'));
+			assert.isUndefined(target.vuln);
+			assert.strictEqual(Object.getPrototypeOf(target), Object.prototype);
+			// ordinary properties are still copied
+			assert.strictEqual(target.keep, 1);
+			lang.mixin(target, { added: 2 });
+			assert.strictEqual(target.added, 2);
+		},
+
+		'.clone does not reassign the prototype': function () {
+			const src = JSON.parse('{"a":1,"__proto__":{"vuln":"polluted!"}}');
+			const copy = lang.clone(src);
+			assert.isUndefined(copy.vuln);
+			assert.strictEqual(Object.getPrototypeOf(copy), Object.prototype);
+			assert.strictEqual(copy.a, 1);
+		},
+
 		'.mixin': function () {
 			var src = {
 				foo: function () {

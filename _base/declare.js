@@ -330,7 +330,7 @@ define(["./kernel", "../has", "./lang"], function(dojo, has, lang){
 		// add props adding metadata for incoming functions skipping a constructor
 		for(name in source){
 			t = source[name];
-			if((t !== op[name] || !(name in op)) && name != cname){
+			if((t !== op[name] || !(name in op)) && name != cname && name != "__proto__"){
 				ts = opts.call(t);
 				if(ts == "[object Function]" || ts == "[object AsyncFunction]"){
 					// non-trivial function method => attach its name

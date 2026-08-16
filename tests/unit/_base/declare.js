@@ -653,6 +653,25 @@
 				assert.doesNotThrow(function () {
 					declare.safeMixin(c);
 				});
+			},
+
+			'safeMixin does not reassign the prototype': function () {
+				var payload = JSON.parse('{"__proto__":{"vuln":"polluted!"}}');
+
+				var C = declare(null, {});
+				var c = new C();
+				declare.safeMixin(c, payload);
+				assert.isUndefined(c.vuln);
+				assert.isTrue(c instanceof C);
+
+				// ordinary members are still mixed in
+				declare.safeMixin(c, { added: 2 });
+				assert.equal(c.added, 2);
+
+				// declare() and extend() route their props through safeMixin
+				assert.isUndefined(new (declare(null, payload))().vuln);
+				C.extend(payload);
+				assert.isUndefined(new C().vuln);
 			}
 			// TODO: there are still some permutations to test like:
 			//	- ctor arguments

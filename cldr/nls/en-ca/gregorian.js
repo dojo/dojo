@@ -125,7 +125,7 @@ define(
 	"field-fri-narrow-relative+1": "next Fr",
 	"dayPeriods-standAlone-wide-am": "a.m.",
 	"dayPeriods-format-narrow-night1": "night",
-	"dateFormat-short": "d/M/yy",
+	"dateFormat-short": "y-MM-dd",
 	"field-second-short": "sec.",
 	"dayPeriods-format-narrow-noon": "n",
 	"dateFormatItem-yMMMEd": "E, MMM d, y",

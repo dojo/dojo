@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<!-- 'unsafe-eval' is only there for the test harness: leadfoot's pollUntil and the coverage
+		instrumentation use the Function constructor. Script elements still need the nonce. -->
+	<meta http-equiv="Content-Security-Policy" content="script-src 'nonce-dojo-test-nonce' 'unsafe-eval'">
+	<title>Loader test page: CSP nonce</title>
+	<script nonce="dojo-test-nonce">
+		var ready = 0;
+		var dojoConfig = {
+			async: true,
+			cspNonce: 'dojo-test-nonce',
+			packages: [
+				{ name: 'test-modules', location: 'tests/functional/_base/loader' }
+			],
+			callback: function () {
+				ready = 1;
+			}
+		};
+	</script>
+	<script nonce="dojo-test-nonce" src="../../../../dojo.js"></script>
+</head>
+<body>
+</body>
+</html>

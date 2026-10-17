@@ -44,6 +44,10 @@ define([
 		element.id = id;
 		element.async = true;
 		element.charset = 'utf-8';
+		if (has('config-cspNonce')) {
+			// lets the script run under a nonce-based Content Security Policy
+			element.setAttribute('nonce', has('config-cspNonce'));
+		}
 
 		return doc.getElementsByTagName('head')[0].appendChild(element);
 	}

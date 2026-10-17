@@ -908,6 +908,46 @@ define([
 				assert.strictEqual(data.shift(), 'idFactoryArityExports');
 				assert.strictEqual(data.shift(), 'impliedDep4');
 			}
-		)
+		),
+
+		'csp nonce': {
+			'loader': loaderTest(
+				require.toUrl('./loader/cspNonce.html'),
+				function (callback) {
+					var handle = require.on('error', function (error) {
+						handle.remove();
+						callback({ error: error.message });
+					});
+					require([ 'test-modules/a' ], function (a) {
+						handle.remove();
+						callback({ number: a.number });
+					});
+				},
+				function (data) {
+					assert.deepEqual(data, { number: 42 });
+				}
+			),
+
+			'dojo/request/script': loaderTest(
+				require.toUrl('./loader/cspNonce.html'),
+				function (callback) {
+					var handle = require.on('error', function (error) {
+						handle.remove();
+						callback({ error: error.message });
+					});
+					require([ 'dojo/request/script' ], function (script) {
+						handle.remove();
+						script.get('cspNonceScript.js').then(function () {
+							callback({ loaded: window.cspNonceScriptLoaded });
+						}, function (error) {
+							callback({ error: error.message });
+						});
+					});
+				},
+				function (data) {
+					assert.deepEqual(data, { loaded: true });
+				}
+			)
+		}
 	});
 });

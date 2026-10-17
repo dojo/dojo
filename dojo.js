@@ -1766,6 +1766,10 @@
 
 				node.type = "text/javascript";
 				node.charset = "utf-8";
+				if(has("config-cspNonce")){
+					// lets the script run under a nonce-based Content Security Policy
+					node.setAttribute("nonce", has("config-cspNonce"));
+				}
 				node.src = url;
 				insertPointSibling.parentNode.insertBefore(node, insertPointSibling);
 				return node;

@@ -72,7 +72,7 @@ return declare("dojo.store.Memory", base, {
 		var defaultDestination = data.length;
 		var newIndex;
 		var previousIndex;
-		var eventType = id in index ? "update" : "add";
+		var eventType = Object.hasOwnProperty.call(index, id) ? "update" : "add";
 
 		if(eventType === "update"){
 			if(options && options.overwrite === false){
@@ -138,7 +138,7 @@ return declare("dojo.store.Memory", base, {
 		//		Returns true if an object was removed, falsy (undefined) if no object matched the id
 		var index = this.index;
 		var data = this.data;
-		if(id in index){
+		if(Object.hasOwnProperty.call(index, id)){
 			data.splice(index[id], 1);
 			this.index = {};
 			this._rebuildIndex();

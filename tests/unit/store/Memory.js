@@ -206,6 +206,22 @@ define([
 				assert.strictEqual(store.get(1).id, 1);
 				results = store.query();
 				assert.strictEqual(results.length, previousCount);
+			},
+
+			'id named like an Object.prototype member': function () {
+				var previousCount = store.query().length;
+
+				assert.isUndefined(store.remove('constructor'));
+				assert.isUndefined(store.remove('hasOwnProperty'));
+				// make sure nothing changed
+				assert.strictEqual(store.get(1).id, 1);
+				assert.strictEqual(store.query().length, previousCount);
+
+				store.add({ id: 'toString' });
+				assert.strictEqual(store.get('toString').id, 'toString');
+				assert.strictEqual(store.query({ id: 'toString' }).length, 1);
+				assert.ok(store.remove('toString'));
+				assert.isUndefined(store.get('toString'));
 			}
 		},
 

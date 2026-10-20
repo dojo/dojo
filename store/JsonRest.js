@@ -69,6 +69,8 @@ return declare("dojo.store.JsonRest", base, {
 		//		The identity of the requested target
 		var target = this.target;
 		if(typeof id != "undefined"){
+			// encode the id so path, query and fragment characters in it cannot escape the target
+			id = encodeURIComponent(id);
 			if( (target.charAt(target.length-1) == '/') || (target.charAt(target.length-1) == '=')){
 				target += id;
 			}else{

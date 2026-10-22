@@ -14,12 +14,13 @@ define([
 
 	var NodeList = query.NodeList;
 
-	var dataCache = {}, x = 0, dataattr = "data-dojo-dataid",
+	var dataCache = {}, x = 0, dataattr = "data-dojo-dataid", pidre = /^pid\d+$/,
 		dopid = function(node){
 			// summary:
 			//		Return a uniqueish ID for the passed node reference
 			var pid = attr.get(node, dataattr);
-			if(!pid){
+			// only reuse ids we generated, so markup can't supply a key like "__proto__"
+			if(!pid || !pidre.test(pid)){
 				pid = "pid" + (x++);
 				attr.set(node, dataattr, pid);
 			}

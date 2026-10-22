@@ -170,6 +170,22 @@
 
 					},
 
+					function markupdataid(t){
+						// a data-dojo-dataid supplied by markup must not select a cache key
+						var proto = domConstruct.create("div", { "data-dojo-dataid": "__proto__" }, "b"),
+							ctor = domConstruct.create("div", { "data-dojo-dataid": "constructor" }, "b");
+
+						$(proto).data("polluted", "yes");
+						$(proto).data({ pollutedHash: "yes" });
+						$(ctor).data("keys", "clobbered");
+
+						t.f(({}).polluted, "Object.prototype untouched");
+						t.f(({}).pollutedHash, "Object.prototype untouched by hash form");
+						t.is("function", typeof Object.keys, "Object constructor untouched");
+						t.is("yes", $(proto).data("polluted")[0]);
+						t.is("clobbered", $(ctor).data("keys")[0]);
+					},
+
 					function clearall(t){
 
 						if(!NodeList._nodeDataCache){

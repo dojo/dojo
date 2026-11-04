@@ -109,6 +109,13 @@ return {
 	//		to the path on your domain your copy of blank.html.
 	dojoBlankHtmlUrl: undefined,
 
+	// cspNonce: String
+	//		The nonce of a nonce-based Content Security Policy on the page. When set, the loader
+	//		and dojo/request/script add it as the nonce attribute of the script elements they
+	//		insert, so that a policy like `script-src 'nonce-...'` allows them. A policy with
+	//		'strict-dynamic' allows these scripts without it.
+	cspNonce: undefined,
+
 	// ioPublish: Boolean?
 	//		Set this to true to enable publishing of topics for the different phases of
 	//		IO operations. Publishing is done via dojo/topic.publish(). See dojo/main.__IoPublish for a list

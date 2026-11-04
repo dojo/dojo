@@ -1,0 +1,1 @@
+var cspNonceScriptLoaded = true;

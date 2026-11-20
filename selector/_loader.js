@@ -8,7 +8,9 @@ if (typeof document !== "undefined") {
 	has.add("dom-qsa3", function(){
 		// test to see if we have a reasonable native selector engine available
 		try{
-			testDiv.innerHTML = "<p class='TEST'></p>"; // test kind of from sizzle
+			// a page that enforces Trusted Types only accepts TrustedHTML here
+			var trustedTypesPolicy = has("config-trustedTypesPolicy"), html = "<p class='TEST'></p>";
+			testDiv.innerHTML = trustedTypesPolicy ? trustedTypesPolicy.createHTML(html) : html; // test kind of from sizzle
 			// Safari can't handle uppercase or unicode characters when
 			// in quirks mode, IE8 can't handle pseudos like :empty
 			return testDiv.querySelectorAll(".TEST:empty").length == 1;

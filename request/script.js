@@ -36,7 +36,9 @@ define([
 
 		element.type = 'text/javascript';
 		try {
-			element.src = url;
+			// a page that enforces Trusted Types only accepts a TrustedScriptURL here
+			var trustedTypesPolicy = has('config-trustedTypesPolicy');
+			element.src = trustedTypesPolicy ? trustedTypesPolicy.createScriptURL(url) : url;
 		} catch(err) {
 			errorHandler && errorHandler(element);
 		}

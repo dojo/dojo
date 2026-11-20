@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<!-- The page enforces Trusted Types. dojo-test is the policy that dojoConfig gives to Dojo; it rejects
+		script URLs that contain "rejected". The default policy is there for the test harness: its
+		createScript() lets leadfoot's pollUntil and the coverage instrumentation use the Function
+		constructor, and its createHTML() and createScriptURL() record every string that reaches an HTML or
+		script URL sink without going through dojo-test, then block it. -->
+	<meta http-equiv="Content-Security-Policy" content="require-trusted-types-for 'script'; trusted-types dojo-test default">
+	<title>Loader test page: Trusted Types</title>
+	<script>
+		var ready = 0;
+		var trustedTypesViolations = [];
+		var dojoConfig = {
+			async: true,
+			has: { 'csp-restrictions': true },
+			packages: [
+				{ name: 'test-modules', location: 'tests/functional/_base/loader' }
+			],
+			callback: function () {
+				ready = 1;
+			}
+		};
+		if (typeof trustedTypes !== 'undefined') {
+			trustedTypes.createPolicy('default', {
+				createHTML: function (html, type, sink) {
+					trustedTypesViolations.push(sink + ': ' + html);
+					return null;
+				},
+				createScriptURL: function (url, type, sink) {
+					trustedTypesViolations.push(sink + ': ' + url);
+					return null;
+				},
+				createScript: function (script) {
+					return script;
+				}
+			});
+			dojoConfig.trustedTypesPolicy = trustedTypes.createPolicy('dojo-test', {
+				createHTML: function (html) {
+					return html;
+				},
+				createScriptURL: function (url) {
+					if (/rejected/.test(url)) {
+						throw new TypeError('rejected by the test policy');
+					}
+					return url;
+				}
+			});
+		}
+	</script>
+	<script src="../../../../dojo.js"></script>
+</head>
+<body>
+</body>
+</html>

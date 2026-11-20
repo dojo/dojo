@@ -7,6 +7,14 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 
 	// TODOC: summary not showing up in output, see https://github.com/csnover/js-doc-parse/issues/42
 
+	function trustedHTML(html){
+		// summary:
+		//		Turns the html string into TrustedHTML with dojoConfig.trustedTypesPolicy, if it is set,
+		//		because a page that enforces Trusted Types only accepts TrustedHTML for innerHTML.
+		var trustedTypesPolicy = has("config-trustedTypesPolicy");
+		return trustedTypesPolicy ? trustedTypesPolicy.createHTML(html) : html;
+	}
+
 	// support stuff for toDom()
 	var tagWrap = {
 			option: ["select"],
@@ -114,12 +122,12 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 			wrap, i, fc, df;
 		if(match && tagWrap[tag]){
 			wrap = tagWrap[tag];
-			master.innerHTML = wrap.pre + frag + wrap.post;
+			master.innerHTML = trustedHTML(wrap.pre + frag + wrap.post);
 			for(i = wrap.length; i; --i){
 				master = master.firstChild;
 			}
 		}else{
-			master.innerHTML = frag;
+			master.innerHTML = trustedHTML(frag);
 		}
 
 		// one node shortcut => return the node itself
@@ -309,7 +317,7 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/window", "./dom", "./do
 		if("innerHTML" in node){
 			try{
 				// fast path
-				node.innerHTML = "";
+				node.innerHTML = trustedHTML("");
 				return;
 			}catch(e){
 				// innerHTML is readOnly (e.g. TABLE (sub)elements in quirks mode)

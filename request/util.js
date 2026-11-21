@@ -27,8 +27,8 @@ define([
 		return value.nodeType === 1;
 	}
 
-	function isFormData(value) {
-		return has('native-formdata') && value instanceof FormData;
+	function isFormData(value) { 
+		return has('native-formdata') && (value instanceof FormData || (typeof value.tagName === 'string' && value.tagName.toLowerCase() === 'form'));
 	}
 
 	function shouldDeepCopy(value) {

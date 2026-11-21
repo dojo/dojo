@@ -39,7 +39,7 @@ define(
 	"field-week-short": "wk.",
 	"field-quarter-narrow": "qtr.",
 	"field-month-short": "mo.",
-	"dateFormat-short": "d/M/y GGGGG",
+	"dateFormat-short": "GGGGG y-MM-dd",
 	"dateFormatItem-yyyyM": "M/y GGGGG",
 	"dateFormat-full": "EEEE, MMMM d, y G",
 	"dateFormatItem-Md": "d/M",

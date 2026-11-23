@@ -617,6 +617,12 @@ var ItemFileReadStore = declare("dojo.data.ItemFileReadStore", [Evented],{
 				item = this._arrayOfAllItems[i];
 				arrayOfValues = item[identifier];
 				var identity = arrayOfValues[0];
+				if(identity === "__proto__"){
+					// an identity of __proto__ would replace the prototype of the lookup
+					// table instead of adding an entry to it; such an item stays
+					// unindexed, the same way attributes named __proto__ are dropped
+					continue;
+				}
 				if(!Object.hasOwnProperty.call(this._itemsByIdentity, identity)){
 					this._itemsByIdentity[identity] = item;
 				}else{

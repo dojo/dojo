@@ -157,6 +157,13 @@ return declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 
 		//Clone over the properties to the new item
 		for(var key in keywordArgs){
+			if(key === "__proto__"){
+				// assigning __proto__ would replace the prototype of the new item
+				// instead of adding an attribute to it, and the properties of that
+				// prototype would then be read back through getValue() as if they
+				// were attributes of the item
+				continue;
+			}
 			if(key === this._storeRefPropName || key === this._itemNumPropName){
 				// Bummer, the user is trying to do something like
 				// newItem({_S:"foo"}).  Unfortunately, our superclass,
@@ -334,6 +341,12 @@ return declare("dojo.data.ItemFileWriteStore", ItemFileReadStore, {
 			// have a record of the original state.
 			var copyOfItemState = {};
 			for(var key in item){
+				if(key === "__proto__"){
+					// copying __proto__ would replace the prototype of the snapshot, and
+					// revert() would then read the properties of that prototype back as
+					// attributes of the item
+					continue;
+				}
 				if((key === this._storeRefPropName) || (key === this._itemNumPropName) || (key === this._rootItemPropName)){
 					copyOfItemState[key] = item[key];
 				}else if(key === this._reverseRefMap){

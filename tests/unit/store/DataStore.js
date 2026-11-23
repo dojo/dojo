@@ -8,6 +8,19 @@ define([
 ], function (registerSuite, assert, DataStore, ItemFileReadStore, ItemFileWriteStore, lang) {
 	var data, dataStore, store;
 
+	// dojo/data has no public getItemByIdentity; the identity lookup is
+	// synchronous for in-memory data, so a callback is enough
+	function fetchItemByIdentity(store, identity) {
+		var item;
+		store.fetchItemByIdentity({
+			identity: identity,
+			onItem: function (result) {
+				item = result;
+			}
+		});
+		return item;
+	}
+
 	registerSuite({
 		name: 'dojo/store/DataStore',
 
@@ -139,6 +152,54 @@ define([
 				}).then(function (result) {
 					assert.ok(!result);
 				});
+			}
+		},
+
+		'prototype pollution through attribute names': {
+			'__proto__ attribute does not replace the prototype of the returned object': function () {
+				var json = '{"identifier":"id","items":[{"id":"1","name":"kermit","__proto__":{"polluted":"yes","id":"2"}}]}';
+				var readStore = new ItemFileReadStore({ data: JSON.parse(json) });
+				var adapter = new DataStore({ store: readStore, idProperty: 'id' });
+				var record = adapter.get('1');
+
+				assert.strictEqual(Object.getPrototypeOf(record), Object.prototype);
+				assert.isUndefined(record.polluted);
+				assert.deepEqual(Object.keys(record), ['id', 'name']);
+			},
+
+			'__proto__ keyword argument is not copied by newItem': function () {
+				var writeStore = new ItemFileWriteStore({ data: { identifier: 'id', items: [{ id: '1' }] } });
+				var item = writeStore.newItem(JSON.parse('{"id":"2","__proto__":{"polluted":"yes"}}'));
+
+				assert.strictEqual(Object.getPrototypeOf(item), Object.prototype);
+				assert.isUndefined(item.polluted);
+				assert.equal(writeStore.getAttributes(item).indexOf('polluted'), -1);
+			},
+
+			'revert() does not turn the __proto__ attribute into item attributes': function () {
+				var json = '{"identifier":"id","items":[{"id":"1","name":"kermit","__proto__":{"polluted":"yes","id":"2"}}]}';
+				var writeStore = new ItemFileWriteStore({ data: JSON.parse(json) });
+				var item = fetchItemByIdentity(writeStore, '1');
+
+				writeStore.setValue(item, 'name', 'piggy');
+				writeStore.revert();
+				item = fetchItemByIdentity(writeStore, '1');
+
+				assert.deepEqual(writeStore.getAttributes(item), ['id', 'name']);
+				assert.isUndefined(item.polluted);
+			},
+
+			'an identity of __proto__ does not replace the identity lookup table': function () {
+				var json = '{"identifier":"id","items":[{"id":"__proto__","name":"kermit"},{"id":"real","name":"piggy"}]}';
+				var readStore = new ItemFileReadStore({ data: JSON.parse(json) });
+
+				// fetching an item is what loads the data and builds the lookup table
+				assert.equal(fetchItemByIdentity(readStore, 'real').name, 'piggy');
+
+				// the lookup table itself must stay a plain object; a __proto__ identity
+				// used to be assigned into it as a prototype
+				assert.strictEqual(Object.getPrototypeOf(readStore._itemsByIdentity), Object.prototype);
+				assert.isNull(fetchItemByIdentity(readStore, 'missing'));
 			}
 		}
 	});

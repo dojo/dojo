@@ -79,7 +79,13 @@ return declare("dojo.store.DataStore", base, {
 						value = convert(value);
 					}
 				}
-				object[attributes[i]] = value;
+				if(attribute !== "__proto__"){
+					// attribute names come from the data store, so from the data itself;
+					// assigning __proto__ would replace the prototype of the new object
+					// instead of setting a property on it, and the properties of that
+					// prototype would then be read as if they were attributes of the item
+					object[attributes[i]] = value;
+				}
 			}
 			if(!(idProperty in object) && store.getIdentity){
 				object[idProperty] = store.getIdentity(item);

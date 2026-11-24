@@ -9,6 +9,20 @@ define([
 	'./loader/moduleIds',
 	'./loader/hostenv_webworkers'
 ], function (require, registerSuite, assert, loaderTest, pageReady) {
+	// Runs execute in trustedTypes.html, a page that enforces Trusted Types, and passes its result to check.
+	// execute calls back with null in a browser without Trusted Types, and then the test is skipped.
+	function trustedTypesTest(execute, check) {
+		return function () {
+			var self = this;
+			return loaderTest(require.toUrl('./loader/trustedTypes.html'), execute, function (data) {
+				if (data === null) {
+					self.skip('no Trusted Types in this browser');
+				}
+				check(data);
+			}).call(this);
+		};
+	}
+
 	registerSuite({
 		name: 'dojo/_base/loader',
 
@@ -946,6 +960,212 @@ define([
 				},
 				function (data) {
 					assert.deepEqual(data, { loaded: true });
+				}
+			)
+		},
+
+		'trusted types': {
+			'loader': trustedTypesTest(
+				function (callback) {
+					/* global trustedTypesViolations */
+					if (typeof trustedTypes === 'undefined') {
+						callback(null);
+						return;
+					}
+					var handle = require.on('error', function (error) {
+						handle.remove();
+						callback({ error: error.message, violations: trustedTypesViolations });
+					});
+					try {
+						require([ 'test-modules/a' ], function (a) {
+							handle.remove();
+							callback({ number: a.number, violations: trustedTypesViolations });
+						});
+					}
+					catch (error) {
+						handle.remove();
+						callback({ error: error.message, violations: trustedTypesViolations });
+					}
+				},
+				function (data) {
+					assert.deepEqual(data, { number: 42, violations: [] });
+				}
+			),
+
+			'loader, URL rejected by the policy': trustedTypesTest(
+				function (callback) {
+					if (typeof trustedTypes === 'undefined') {
+						callback(null);
+						return;
+					}
+					var handle = require.on('error', function (error) {
+						var cause = error.info && error.info[1];
+						handle.remove();
+						callback({
+							error: error.message.split(':')[0],
+							cause: cause && cause.message,
+							violations: trustedTypesViolations
+						});
+					});
+					try {
+						require([ 'test-modules/rejected' ], function () {
+							handle.remove();
+							callback({ loaded: true, violations: trustedTypesViolations });
+						});
+					}
+					catch (error) {
+						handle.remove();
+						callback({ thrown: error.message, violations: trustedTypesViolations });
+					}
+				},
+				function (data) {
+					assert.deepEqual(data, {
+						error: 'scriptError',
+						cause: 'rejected by the test policy',
+						violations: []
+					});
+				}
+			),
+
+			'dojo/request/script': trustedTypesTest(
+				function (callback) {
+					if (typeof trustedTypes === 'undefined') {
+						callback(null);
+						return;
+					}
+					var handle = require.on('error', function (error) {
+						handle.remove();
+						callback({ error: error.message, violations: trustedTypesViolations });
+					});
+					require([ 'dojo/request/script' ], function (script) {
+						handle.remove();
+						script.get('trustedTypesScript.js').then(function () {
+							callback({ loaded: window.trustedTypesScriptLoaded, violations: trustedTypesViolations });
+						}, function (error) {
+							callback({ error: error.message, violations: trustedTypesViolations });
+						});
+					});
+				},
+				function (data) {
+					assert.deepEqual(data, { loaded: true, violations: [] });
+				}
+			),
+
+			'dojo/dom-construct and dojo/dom-attr': trustedTypesTest(
+				function (callback) {
+					if (typeof trustedTypes === 'undefined') {
+						callback(null);
+						return;
+					}
+					var handle = require.on('error', function (error) {
+						handle.remove();
+						callback({ error: error.message, violations: trustedTypesViolations });
+					});
+					require([ 'dojo/dom-construct', 'dojo/dom-attr' ], function (domConstruct, domAttr) {
+						handle.remove();
+						try {
+							var node = domConstruct.create('div', { innerHTML: '<i>create</i>' }, document.body),
+								result = {
+									toDom: domConstruct.toDom('<b>toDom</b>').nodeName,
+									toDomTableRow: domConstruct.toDom('<tr><td>cell</td></tr>').nodeName,
+									create: node.firstChild.nodeName
+								};
+							domConstruct.place('<u>place</u>', node, 'only');
+							result.place = node.firstChild.nodeName;
+							domAttr.set(node, 'innerHTML', null);
+							result.innerHTMLNull = node.innerHTML;
+							domAttr.set(node, 'innerHTML', trustedTypes.emptyHTML);
+							result.innerHTMLTrusted = node.innerHTML;
+							domConstruct.place('<u>place</u>', node, 'only');
+							domConstruct.empty(node);
+							result.empty = node.childNodes.length;
+							result.violations = trustedTypesViolations;
+							callback(result);
+						}
+						catch (error) {
+							callback({ error: error.message, violations: trustedTypesViolations });
+						}
+					});
+				},
+				function (data) {
+					assert.deepEqual(data, {
+						toDom: 'B',
+						toDomTableRow: 'TR',
+						create: 'I',
+						place: 'U',
+						innerHTMLNull: '',
+						innerHTMLTrusted: '',
+						empty: 0,
+						violations: []
+					});
+				}
+			),
+
+			'dojo/query': trustedTypesTest(
+				function (callback) {
+					if (typeof trustedTypes === 'undefined') {
+						callback(null);
+						return;
+					}
+					var handle = require.on('error', function (error) {
+						handle.remove();
+						callback({ error: error.message, violations: trustedTypesViolations });
+					});
+					require([ 'dojo/has', 'dojo/query' ], function (has, query) {
+						handle.remove();
+						callback({
+							qsa3: has('dom-qsa3'),
+							query: query('body').length,
+							violations: trustedTypesViolations
+						});
+					});
+				},
+				function (data) {
+					assert.deepEqual(data, { qsa3: true, query: 1, violations: [] });
+				}
+			),
+
+			'dojo/dnd/Avatar': trustedTypesTest(
+				function (callback) {
+					if (typeof trustedTypes === 'undefined') {
+						callback(null);
+						return;
+					}
+					var handle = require.on('error', function (error) {
+						handle.remove();
+						callback({ error: error.message, violations: trustedTypesViolations });
+					});
+					require([ 'dojo/dnd/Avatar', 'dojo/has', 'dojo/query' ], function (Avatar, has, query) {
+						handle.remove();
+						try {
+							var manager = {
+									source: { generateText: true },
+									nodes: [ document.createElement('div') ],
+									copy: true,
+									canDropFlag: true
+								},
+								avatar = new Avatar(manager),
+								result;
+							document.body.appendChild(avatar.node);
+							avatar.update();
+							result = { text: query('tr.dojoDndAvatarHeader td span', avatar.node)[0].innerHTML };
+							avatar.destroy();
+							// in high contrast mode update() also sets the text of the a11yIcon element
+							has.add('highcontrast', true, false, true);
+							avatar = new Avatar(manager);
+							document.body.appendChild(avatar.node);
+							avatar.update();
+							result.icon = document.getElementById('a11yIcon').innerHTML;
+							result.violations = trustedTypesViolations;
+							callback(result);
+						}
+						catch (error) {
+							callback({ error: error.message, violations: trustedTypesViolations });
+						}
+					});
+				},
+				function (data) {
+					assert.deepEqual(data, { text: '1', icon: '+', violations: [] });
 				}
 			)
 		}

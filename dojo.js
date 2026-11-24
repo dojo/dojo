@@ -1770,7 +1770,21 @@
 					// lets the script run under a nonce-based Content Security Policy
 					node.setAttribute("nonce", has("config-cspNonce"));
 				}
-				node.src = url;
+				// a page that enforces Trusted Types only accepts a TrustedScriptURL here
+				var trustedTypesPolicy = has("config-trustedTypesPolicy");
+				if(trustedTypesPolicy){
+					try{
+						node.src = trustedTypesPolicy.createScriptURL(url);
+					}catch(e){
+						// the URL was rejected: report it like a script that failed to load
+						loadDisconnector();
+						errorDisconnector();
+						signal(error, makeError("scriptError: " + url, [url, e]));
+						return node;
+					}
+				}else{
+					node.src = url;
+				}
 				insertPointSibling.parentNode.insertBefore(node, insertPointSibling);
 				return node;
 			};

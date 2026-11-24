@@ -144,6 +144,13 @@ define(["exports", "./_base/kernel", "./sniff", "./_base/lang", "./dom", "./dom-
 				ctr.empty(node);
 				node.appendChild(ctr.toDom(value, node.ownerDocument));
 			}else{
+				// a page that enforces Trusted Types only accepts TrustedHTML here: objects such as a
+				// TrustedHTML are assigned as they are, other values go through the policy (null as "",
+				// the way innerHTML treats it)
+				var trustedTypesPolicy = has("config-trustedTypesPolicy");
+				if(trustedTypesPolicy && (value === null || typeof value != "object")){
+					value = trustedTypesPolicy.createHTML(value === null ? "" : value);
+				}
 				node[propName] = value;
 			}
 			return node; // DomNode

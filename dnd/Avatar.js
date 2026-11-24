@@ -104,12 +104,12 @@ return declare("dojo.dnd.Avatar", null, {
 			}else if(!this.manager.canDropFlag){
 				text = 'x';  // !canDrop && copy
 			}
-			icon.innerHTML=text;
+			domAttr.set(icon, "innerHTML", text);
 		}
 		// replace text
 		query(("tr.dojoDndAvatarHeader td span" +(has("highcontrast") ? " span" : "")), this.node).forEach(
 			function(node){
-				node.innerHTML = this.manager.source.generateText ? this._generateText() : "";
+				domAttr.set(node, "innerHTML", this.manager.source.generateText ? this._generateText() : "");
 			}, this);
 	},
 	_generateText: function(){

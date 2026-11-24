@@ -116,6 +116,25 @@ return {
 	//		'strict-dynamic' allows these scripts without it.
 	cspNonce: undefined,
 
+	// trustedTypesPolicy: Object?
+	//		A Trusted Types policy that the page creates with trustedTypes.createPolicy(), for pages
+	//		that enforce Trusted Types with `require-trusted-types-for 'script'`; set it in the
+	//		dojoConfig object. When it is set, the loader and dojo/request/script pass the URLs of the
+	//		script elements they insert through its createScriptURL(), and dojo/dom-construct,
+	//		dojo/dom-prop (innerHTML, also through dojo/dom-attr), dojo/dnd/Avatar and the selector
+	//		engine test pass HTML through its createHTML(). Dojo creates no policy itself, so the page
+	//		decides what these functions accept. Prefer a policy that checks its input, for example a
+	//		createScriptURL() that only accepts your script locations (the URLs can be relative, so
+	//		resolve them first), since other scripts can reach the policy through dojoConfig,
+	//		dojo.config and require.rawConfig. createHTML() also gets markup that Dojo builds itself,
+	//		such as the table wrappers of toDom(), empty strings and the iframe of dojo/request/iframe,
+	//		so a sanitizing createHTML() can break Dojo. Unless the page also has a default policy with
+	//		createScript(), it needs has("csp-restrictions"), as dojo.js fails to load otherwise, and
+	//		features that evaluate strings as code do not work: dojo.eval, dojo.fromJson (and so
+	//		handleAs "json" in dojo.xhr), handleAs "javascript", functions written as code in parser
+	//		attributes and dojo/method scripts, and the synchronous loader.
+	trustedTypesPolicy: undefined,
+
 	// ioPublish: Boolean?
 	//		Set this to true to enable publishing of topics for the different phases of
 	//		IO operations. Publishing is done via dojo/topic.publish(). See dojo/main.__IoPublish for a list

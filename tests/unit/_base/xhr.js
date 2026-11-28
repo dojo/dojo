@@ -11,10 +11,15 @@ define([
 	'dojo/dom-construct',
 	'dojo/Deferred',
 	'dojo/promise/all',
+	'dojo/has',
+	// dojo/_base/json loads dojo/json5 only when the flag is set at load time
+	'../../../json5',
 	'dojo/domReady!'
 ], function (registerSuite, assert, dojo, xhr, baseDeferred, topic,
-			 array, query, JSON, domConstruct, Deferred, all) {
+			 array, query, JSON, domConstruct, Deferred, all, has) {
 	var form, topicCount, remover;
+	var hasCspRestrictions = has('csp-restrictions');
+	var globalEval;
 	registerSuite({
 		name: 'dojo/_base/xhr',
 
@@ -41,6 +46,64 @@ define([
 				}),
 				object
 			);
+		},
+
+		'json content handler with {}&& prefix': function () {
+			assert.deepEqual(
+				dojo._contentHandlers.json({
+					responseText: '{}&&{ "foo": "bar" }'
+				}),
+				{ foo: 'bar' }
+			);
+			assert.isNull(dojo._contentHandlers.json({ responseText: '' }));
+		},
+
+		'csp-restrictions': {
+			setup: function () {
+				has.add('csp-restrictions', true, false, true);
+				// what a Content Security Policy without 'unsafe-eval' does
+				globalEval = dojo.global.eval;
+				dojo.global.eval = function () {
+					throw new EvalError('eval is not allowed');
+				};
+			},
+
+			teardown: function () {
+				dojo.global.eval = globalEval;
+				has.add('csp-restrictions', hasCspRestrictions, false, true);
+			},
+
+			'json content handler': function () {
+				assert.deepEqual(
+					dojo._contentHandlers.json({
+						responseText: '{ "foo": "bar", "baz": [1, null] }'
+					}),
+					{ foo: 'bar', baz: [1, null] }
+				);
+				assert.deepEqual(
+					dojo._contentHandlers.json({
+						responseText: '{}&&{ "foo": "bar" }'
+					}),
+					{ foo: 'bar' }
+				);
+				assert.isNull(dojo._contentHandlers.json({ responseText: '' }));
+			},
+
+			'json-comment handlers': function () {
+				var responseText = '\tblag\n/*{ "foo": "bar" }*/\n\r\t\r';
+				assert.deepEqual(
+					dojo._contentHandlers['json-comment-filtered']({
+						responseText: responseText
+					}),
+					{ foo: 'bar' }
+				);
+				assert.deepEqual(
+					dojo._contentHandlers['json-comment-optional']({
+						responseText: responseText
+					}),
+					{ foo: 'bar' }
+				);
+			}
 		},
 
 		'json-comment-filtered handler': function () {

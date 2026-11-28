@@ -455,7 +455,7 @@ define([
 			},
 
 			teardown: function () {
-				has.add('csp-restrictions', hasCspRestrictions);
+				has.add('csp-restrictions', hasCspRestrictions, false, true);
 			},
 
 			'.forEach': function () {

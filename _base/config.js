@@ -140,6 +140,14 @@ return {
 	//		Should be used with deps.
 	callback: undefined,
 	
+	// has: Object
+	//		Feature flags for has(), keyed by feature name; set it in the dojoConfig object.
+	//		`has: { "csp-restrictions": true }` is for pages whose Content Security Policy does
+	//		not allow 'unsafe-eval': Dojo then avoids eval() and the Function constructor where
+	//		it can. For example, dojo.fromJson and data-dojo-props are parsed as JSON5, and
+	//		dojo.eval and string callbacks in dojo/_base/array throw.
+	has: undefined,
+
 	// deferredInstrumentation: Boolean
 	//		Whether deferred instrumentation should be loaded or included
 	//		in builds.

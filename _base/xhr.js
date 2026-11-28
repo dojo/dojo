@@ -75,7 +75,12 @@ define([
 		"json": function(xhr){
 			// summary:
 			//		A contentHandler which returns a JavaScript object created from the response data
-			return json.fromJson(xhr.responseText || null);
+			var text = xhr.responseText || null;
+			if(text && has("csp-restrictions")){
+				// dojo/json5 does not evaluate expressions, so drop the {}&& prefix here
+				text = text.replace(/^\s*\{\}\s*&&/, "");
+			}
+			return json.fromJson(text);
 		},
 		"json-comment-filtered": function(xhr){
 			// summary:

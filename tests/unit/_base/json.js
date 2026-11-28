@@ -1,8 +1,14 @@
 define([
 	'intern!object',
 	'intern/chai!assert',
-	'../../../_base/json'
-], function (registerSuite, assert, json) {
+	'dojo/has',
+	'../../../_base/json',
+	// dojo/_base/json loads dojo/json5 only when the flag is set at load time
+	'../../../json5'
+], function (registerSuite, assert, has, json) {
+	var hasCspRestrictions = has('csp-restrictions');
+	var globalEval;
+
 	registerSuite({
 		name: 'dojo/_base/json',
 		'toJson and fromJson': function () {
@@ -71,6 +77,37 @@ define([
 
 			assert.isFunction(testObj.func);
 			assert.isNumber(testObj.number);
+			assert.deepEqual(json.fromJson('{x: 1 + 1}'), { x: 2 });
+		},
+
+		'csp-restrictions': {
+			setup: function () {
+				has.add('csp-restrictions', true, false, true);
+				// what a Content Security Policy without 'unsafe-eval' does
+				globalEval = json.global.eval;
+				json.global.eval = function () {
+					throw new EvalError('eval is not allowed');
+				};
+			},
+
+			teardown: function () {
+				json.global.eval = globalEval;
+				has.add('csp-restrictions', hasCspRestrictions, false, true);
+			},
+
+			'fromJson parses JSON5': function () {
+				assert.deepEqual(
+					json.fromJson('{a: 1, \'b\': [2, 3,], /* c */ "d": null}'),
+					{ a: 1, b: [2, 3], d: null }
+				);
+				assert.isNull(json.fromJson(null));
+			},
+
+			'fromJson rejects expressions': function () {
+				assert.throws(function () {
+					json.fromJson('{x: 1 + 1}');
+				}, SyntaxError);
+			}
 		},
 
 		'toJson called on string': function () {

@@ -5,8 +5,11 @@ define([
 	'../../rpc/JsonService',
 	'../../rpc/JsonpService',
 	'../../_base/array',
-	'dojo/_base/array'
-], function (require, registerSuite, assert, JsonService, JsonpService, array1, array2) {
+	'dojo/_base/array',
+	'dojo/has',
+	// dojo/_base/json loads dojo/json5 only when the flag is set at load time
+	'../../json5'
+], function (require, registerSuite, assert, JsonService, JsonpService, array1, array2, has) {
 	assert.notStrictEqual(array1, array2);
 	registerSuite({
 		name: 'dojo/rpc',
@@ -45,6 +48,24 @@ define([
 			'SMD loading': function () {
 				var svc = new JsonService(require.toUrl('./rpc/support/testClass.smd'));
 				assert.strictEqual(svc.smd.objectName, 'testClass');
+			},
+
+			'SMD string': function () {
+				var svc = new JsonService({ smdStr: '{objectName: "testClass", methods: []}' });
+				assert.strictEqual(svc.smd.objectName, 'testClass');
+			},
+
+			'SMD string with csp-restrictions': function () {
+				var hasCspRestrictions = has('csp-restrictions');
+				has.add('csp-restrictions', true, false, true);
+				try {
+					assert.throws(function () {
+						new JsonService({ smdStr: '{objectName: "test" + "Class"}' });
+					}, SyntaxError);
+				}
+				finally {
+					has.add('csp-restrictions', hasCspRestrictions, false, true);
+				}
 			}
 		},
 

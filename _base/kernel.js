@@ -108,6 +108,10 @@ define(["../global", "../has", "./config", "require", "module"], function(global
 
 	if(!has("csp-restrictions")){
 		(Function("d", "d.eval = function(){return d.global.eval ? d.global.eval(arguments[0]) : eval(arguments[0]);}"))(dojo);
+	}else{
+		dojo.eval = function(){
+			throw new Error("dojo.eval is not available with has(\"csp-restrictions\")");
+		};
 	}
 	/*=====
 	dojo.eval = function(scriptText){

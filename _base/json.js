@@ -1,4 +1,4 @@
-define(["./kernel", "../json"], function(dojo, json){
+define(["./kernel", "../json", "../has", "require", "../has!csp-restrictions?../json5"], function(dojo, json, has, require){
 
 // module:
 //		dojo/_base/json
@@ -15,14 +15,19 @@ dojo.fromJson = function(/*String*/ js){
 	//		Parses a JavaScript expression and returns a JavaScript value.
 	// description:
 	//		Throws for invalid JavaScript expressions. It does not use a strict JSON parser. It
-	//		always delegates to eval(). The content passed to this method must therefore come
+	//		delegates to eval(), so the content passed to this method must come
 	//		from a trusted source.
+	//		The exception is has("csp-restrictions"): with it set, the string is parsed with
+	//		dojo/json5 instead and eval() is not used, so anything that is not JSON5 throws.
 	//		It is recommend that you use dojo/json's parse function for an
 	//		implementation uses the (faster) native JSON parse when available.
 	// js:
 	//		a string literal of a JavaScript expression, for instance:
 	//		`'{ "foo": [ "bar", 1, { "baz": "thud" } ] }'`
 
+	if(has("csp-restrictions")){
+		return require("../json5").parse(js); // Object
+	}
 	return eval("(" + js + ")"); // Object
 };
 

@@ -1,7 +1,7 @@
 define([
-	"../_base/array", "../_base/declare", "../_base/Deferred", "../_base/kernel","../_base/lang",
+	"../_base/array", "../_base/declare", "../_base/Deferred", "../_base/json","../_base/lang",
 	"../_base/url", "../_base/xhr"
-], function(array, declare, Deferred, kernel, lang, _Url, xhr){
+], function(array, declare, Deferred, json, lang, _Url, xhr){
 
 // module:
 //		dojo/rpc/RpcService
@@ -46,7 +46,7 @@ return declare("dojo.rpc.RpcService", null, {
 				});
 
 			}else if(args.smdStr){
-				this.processSmd(kernel.eval("("+args.smdStr+")"));
+				this.processSmd(json.fromJson(args.smdStr));
 			}else{
 				// otherwise we assume it's an arguments object with the following
 				// (optional) properties:
